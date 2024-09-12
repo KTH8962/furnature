@@ -5,13 +5,6 @@
 <head>
 	<jsp:include page="/layout/headlink.jsp"></jsp:include>
 	<style>
-		img{
-			width:600px;
-		}
-		input[type="file"] {
-			appearance: initial;
-			width: auto; height:auto; position:static;
-		}
 	</style>	
 </head>
 <body>
@@ -66,39 +59,53 @@
 	            };
 	        },
 	        methods: {
-	            fnFileUpload(event) {
-	                this.files = event.target.files;
-	            },
-	            fnSave() {
-	                var formData = new FormData();
-
-	                for (var i = 0; i < this.files.length; i++) {
-	                    formData.append('files', this.files[i]);
-	                }
-
-	                // 데이터 추가
-	                formData.append('className', this.className);
-	                formData.append('classDate', this.classDate);
-	                formData.append('headCount', this.headCount);
-	                formData.append('price', this.price);
-	                formData.append('startDay', this.startDay);
-	                formData.append('endDay', this.endDay);
-
-	                $.ajax({
-	                    url: '/oneday/oneday-file.dox', // 서버의 파일 업로드와 데이터 저장을 위한 URL
-	                    type: 'POST',
-	                    data: formData,
-	                    contentType: false,
-	                    processData: false,
-	                    success: function(response) {
-	                        console.log('성공:', response);
-	                    },
-	                    error: function(err) {
-	                        console.error('실패:', err);
-	                    }
-	                });
-	            }
-	        }
-	    });
+				fnFileUpload(event) {
+					this.files = event.target.files;
+				},
+				fnSave (){
+					var self = this;
+					var nparam = {
+						className : self.className, 
+						classDate : self.classDate,
+						headCount : self.headCount,
+						price : self.price,
+						startDay : self.startDay,
+						endDay : self.endDay				
+					};
+					$.ajax({
+						url:"/oneday/oneday-register.dox",
+						dataType:"json",	
+						type : "POST", 
+						data : nparam,
+						success : function(data) { 
+							var classNo = data.classNo;
+							console.log(classNo);
+							if (self.file) {
+								console.log(self.file);
+							  const formData = new FormData();
+							  formData.append('file1', self.file);
+							  formData.append('boardNo', boardNo);
+							  $.ajax({
+								url: '/oneday/oneday-file.dox',
+								type: 'POST',
+								data: formData,
+								processData: false,  
+								contentType: false,  
+								success: function() {
+								  console.log('업로드 성공!');
+								},
+								error: function(jqXHR, textStatus, errorThrown) {
+								  console.error('업로드 실패!', textStatus, errorThrown);
+								}
+							  });
+							}
+						}
+					});
+				}
+				},
+		mounted() {
+			var self = this;
+            }
+        });
 	    app.mount('#app');
 	</script>

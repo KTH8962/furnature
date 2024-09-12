@@ -47,6 +47,14 @@ public class OnedayServiceImpl implements OnedayService{
 	}
 
 	@Override
+	public HashMap<String, Object> onedayReg(HashMap<String, Object> map) {
+		HashMap<String,Object> resultMap = new HashMap<>();
+		onedayMapper.onedayReg(map);
+		resultMap.put("result", ResMessage.RM_SUCCESS);
+		return resultMap;
+	}
+	
+	@Override
 	public HashMap<String, Object> onedayFile(HashMap<String, Object> map) {
 		HashMap<String,Object> resultMap = new HashMap<>();
 		onedayMapper.onedayFile(map);

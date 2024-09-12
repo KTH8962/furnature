@@ -16,9 +16,14 @@
 		INSERT INTO TBL_PARTICIPANT (PAY_ID, USER_NAME, USER_ID, COUNT, PRICE, PAY_DAY, CLASS_NO) VALUES (#{payId}, #{name}, 'user1', 1, #{price}, SYSDATE, #{classNo})
 	</insert>
 	
+	<insert id="onedayReg" parameterType="hashmap">
+		INSERT INTO TBL_CLASS (CLASS_NO, CLASS_NAME, PRICE, HEAD_COUNT, CLASS_DATE, START_DAY, END_DAY, FILE_PATH)
+		VALUES (CLASS_NO_SEQ.NEXTVAL, #(className}, #{price}, #{headCount}, #{classDate}, #{startDay}, #{endDay}, #{filePath})
+	</insert>
+	
 	<insert id="onedayFile" parameterType="hashmap">
-		INSERT INTO TBL_CLASS (CLASS_NO, CLASSS_NAME, PRICE, HEAD_COUNT, CLASS_DATE, START_DAY, END_DAY, FILE_NO, FILE_NAME, EXT_NAME, FILE_PATH, FILE_SIZE)
-		VALUES (CLASS_NO_SEQ.NEXTVAL, #{price}, #{className}, #{headCount}, #{classDate}, #{startDay}, #{endDay}, FILE_NO_SEQ.NEXTVAL, #{fileName}, 'jpg', #{filePath}, #{fileSize})
+		INSERT INTO TBL_ONEDAYFILE (FILE_NAME, FILE_PATH, FILE_SIZE, EXT_NAME, FILE_NO)
+		VALUES (#{fileName}, #{filePath}, #{fileSize}, #{extName}, FILE_NO_SEQ.NEXTVAL)
 	</insert>
 	
 </mapper>	
