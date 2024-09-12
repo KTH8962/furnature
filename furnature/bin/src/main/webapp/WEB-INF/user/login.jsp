@@ -6,39 +6,52 @@
 	<jsp:include page="/layout/headlink.jsp"></jsp:include>
 </head>
 <body>
-	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
+		<jsp:include page="/layout/header.jsp"></jsp:include>
 		<div id="container">            
             <p class="blind">기본페이지</p>
+			<div class="login-wrap">
+				<div class="ip-box">
+			        <input type="text" placeholder="텍스트입력" v-model="userId">
+			    </div>
+				<div class="ip-box">
+			        <input type="text" placeholder="텍스트입력" v-model="pwd">
+			    </div>
+				<button @click="login">로그인</button>
+			</div>
 		</div>
+		<jsp:include page="/layout/footer.jsp"></jsp:include>
 	</div>
-	<jsp:include page="/layout/footer.jsp"></jsp:include>
 </body>
 </html>
 <script>
     const app = Vue.createApp({
         data() {
             return {
+				userId : "",
+				pwd : ""
             };
         },
         methods: {
-            fnGetList(){
+            login(){
 				var self = this;
-				var nparmap = {};
+				var nparmap = {userId: self.userId, pwd: self.pwd};
 				$.ajax({
-					url:"/sample/sample.dox",
+					url:"/user/login.dox",
 					dataType:"json",	
 					type : "POST", 
 					data : nparmap,
-					success : function(data) {
+					success : function(data) { 
+						console.log(data);
+						self.empList = data.empList;
 					}
 				});
             },
         },
         mounted() {
             var self = this;
-			self.fnGetList();
         }
     });
     app.mount('#app');
 </script>
+​

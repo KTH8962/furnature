@@ -7,15 +7,15 @@
 </head>
 <body>
 	<jsp:include page="/layout/header.jsp"></jsp:include>
-	<div id="app">         
-        <p class="blind">샘플페이지</p>
-        <div style="display: flex; align-items: center; flex-direction: column;">
-            
+	<div id="app">
+		<div id="container">            
+            <p class="blind">샘플페이지</p>
+            <div style="display: flex; align-items: center; flex-direction: column;">
+
             <p style="font-size: 20px; font-weight: bold; margin-bottom: 20px;">인풋</p>
             <div class="ip-box">
                 <input type="text" placeholder="텍스트입력">
             </div>
-
             <p style="font-size: 20px; font-weight: bold; margin: 20px;">체크박스 - 텍스트X</p>
             <div class="ip-chk">
                 <input type="checkbox" name="t" id="t1"><label for="t1">체크박스1</label>

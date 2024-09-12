@@ -10,25 +10,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.furnature.dao.SampleService;
+import com.example.furnature.dao.BoardService;
 import com.google.gson.Gson;
 
 @Controller
-public class SampleController {
+public class BoardController {
 	@Autowired
-	SampleService sampleService;
+	BoardService boardService;
 	
-	@RequestMapping("/sample/sample.do")
+	@RequestMapping("/board-list.do")
 	public String boardList(Model model) throws Exception{
-		return "/sample/sample";
+		return "/board/board-list";
 	}
+	
 	// 게시글 목록 db
-	@RequestMapping(value = "/sample/sample.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/board-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	//@RequestParam
 	public String searchBoard(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap = sampleService.searchSampleList(map);
+		resultMap = boardService.searchBoardList(map);
 		return new Gson().toJson(resultMap);
 	}
 }

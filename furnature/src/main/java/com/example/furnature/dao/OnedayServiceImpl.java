@@ -1,0 +1,58 @@
+package com.example.furnature.dao;
+
+import java.util.HashMap;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.furnature.constants.ResMessage;
+import com.example.furnature.mapper.OnedayMapper;
+import com.example.furnature.model.Oneday;
+
+@Service
+public class OnedayServiceImpl implements OnedayService{
+	
+	@Autowired
+	OnedayMapper onedayMapper;
+
+	@Override
+	public HashMap<String, Object> onedayList(HashMap<String, Object> map) {
+		HashMap<String,Object> resultMap = new HashMap<>();
+		List<Oneday> onedayList = onedayMapper.onedayList(map);
+		resultMap.put("onedayList", onedayList);
+		resultMap.put("result", "success");
+		return resultMap;
+	}
+
+	@Override
+	public HashMap<String, Object> onedayPay(HashMap<String, Object> map) {
+		HashMap<String,Object> resultMap = new HashMap<>();
+		onedayMapper.onedayPay(map);
+		resultMap.put("result", "success");
+		System.out.println(resultMap);
+		return resultMap;
+	}
+	
+	
+
+	@Override
+	public HashMap<String, Object> onedayDetail(HashMap<String, Object> map) {
+		HashMap<String,Object> resultMap = new HashMap<>();
+		Oneday onedayDetail = onedayMapper.onedayDetail(map);
+		System.out.println(onedayDetail);
+		resultMap.put("onedayDetail", onedayDetail);
+		resultMap.put("result", "success");
+		return resultMap;
+	}
+
+	@Override
+	public HashMap<String, Object> onedayFile(HashMap<String, Object> map) {
+		HashMap<String,Object> resultMap = new HashMap<>();
+		onedayMapper.onedayFile(map);
+		resultMap.put("result", ResMessage.RM_SUCCESS);
+		return resultMap;
+	}
+	
+
+}
