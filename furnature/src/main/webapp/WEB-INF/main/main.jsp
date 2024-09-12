@@ -9,7 +9,8 @@
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
 		<div id="container">            
-            <p class="blind">기본페이지</p>
+            <p class="blind">메인페이지</p>
+			메인화면
 		</div>
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>

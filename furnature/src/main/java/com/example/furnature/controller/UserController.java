@@ -18,18 +18,51 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
+	// 로그인 화면
 	@RequestMapping("/login.do")
-	public String sampleList(Model model) throws Exception{
+	public String login(Model model) throws Exception{
 		return "/user/login";
 	}
 	
-	// 게시글 목록 db
+	// 회원가입 화면
+	@RequestMapping("/join.do")
+	public String join(Model model) throws Exception{
+		return "/user/join";
+	}
+	
+	// 로그인 처리 db
 	@RequestMapping(value = "/user/login.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	//@RequestParam
-	public String searchBoard(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+	public String login(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap = userService.searchUser(map);
+		return new Gson().toJson(resultMap);
+	}
+	
+	// 아이디 중복체크 db
+	@RequestMapping(value = "/user/user-info.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String idCheck(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = userService.searchIdCheck(map);
+		return new Gson().toJson(resultMap);
+	}
+	
+	// 회원가입 db
+	@RequestMapping(value = "/user/join.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String join(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = userService.addId(map);
+		return new Gson().toJson(resultMap);
+	}
+	
+	// 로그아웃 db
+	@RequestMapping(value = "/user/logout.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String logout(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = userService.logout();
 		return new Gson().toJson(resultMap);
 	}
 }
