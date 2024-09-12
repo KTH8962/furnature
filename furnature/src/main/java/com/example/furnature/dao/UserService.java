@@ -11,4 +11,6 @@ public interface UserService {
 	HashMap<String, Object> addId(HashMap<String, Object> map);
 	// 로그아웃
 	HashMap<String, Object> logout();
+	// 문자인증
+	HashMap<String, Object> msg(HashMap<String, Object> map);
 }

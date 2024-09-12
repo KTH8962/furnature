@@ -6,8 +6,8 @@
 	<jsp:include page="/layout/headlink.jsp"></jsp:include>
 </head>
 <body>
+	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
-		<jsp:include page="/layout/header.jsp"></jsp:include>
 		<div id="container">            
             <p class="blind">회원가입 페이지</p>
 			<div class="ip-list">
@@ -96,8 +96,8 @@
 			</div>
 			<div><button type="button" @click="fnJoin">회원가입</button></div>
 		</div>
-		<jsp:include page="/layout/footer.jsp"></jsp:include>
 	</div>
+	<jsp:include page="/layout/footer.jsp"></jsp:include>
 </body>
 </html>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

@@ -12,6 +12,10 @@ import com.example.furnature.model.User;
 
 import jakarta.persistence.PersistenceException;
 import jakarta.servlet.http.HttpSession;
+import net.nurigo.sdk.NurigoApp;
+import net.nurigo.sdk.message.exception.NurigoMessageNotReceivedException;
+import net.nurigo.sdk.message.model.Message;
+import net.nurigo.sdk.message.service.DefaultMessageService;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -57,6 +61,7 @@ public class UserServiceImpl implements UserService{
 		return resultMap;
 	}
 
+	// 아이디 중복 체크
 	@Override
 	public HashMap<String, Object> searchIdCheck(HashMap<String, Object> map) {
 		HashMap <String, Object> resultMap = new HashMap<>();
@@ -82,6 +87,7 @@ public class UserServiceImpl implements UserService{
 		return resultMap;
 	}
 
+	// 회원가인
 	@Override
 	public HashMap<String, Object> addId(HashMap<String, Object> map) {
 		HashMap <String, Object> resultMap = new HashMap<>();
@@ -107,6 +113,7 @@ public class UserServiceImpl implements UserService{
 		return resultMap;
 	}
 
+	// 로그아웃
 	@Override
 	public HashMap<String, Object> logout() {
 		HashMap <String, Object> resultMap = new HashMap<>();
@@ -117,6 +124,42 @@ public class UserServiceImpl implements UserService{
 		} catch (Exception e) {
 			resultMap.put("result", "fail");
 			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+
+	// 랜덤 숫자 6자리 만들기
+	static String ranMsg() {
+		String ran = "";
+		for(int i=0; i < 6; i++) {
+			ran += (int)(Math.random()*10);
+		}
+		return ran;
+	}
+	
+	@Override
+	public HashMap<String, Object> msg(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		DefaultMessageService messageService =  NurigoApp.INSTANCE.initialize("NCSHXQO3OAHZUOMV", "ZDYOZP2QELY0HMJA6VJY7NT0G3BXLDI0", "https://api.coolsms.co.kr");
+		// Message 패키지가 중복될 경우 net.nurigo.sdk.message.model.Message로 치환하여 주세요
+		String msgText = ranMsg();
+		String phoneNum = (String) map.get("phone");
+		Message message = new Message();
+		message.setFrom("01046548947");
+		message.setTo(phoneNum);
+		message.setText("인증번호를 입력해주세요.\n" + msgText);
+
+		try {
+		  // send 메소드로 ArrayList<Message> 객체를 넣어도 동작합니다!
+		  messageService.send(message);
+		  resultMap.put("msg", msgText);
+		  resultMap.put("result", "성공");
+		} catch (NurigoMessageNotReceivedException exception) {
+		  // 발송에 실패한 메시지 목록을 확인할 수 있습니다!
+		  System.out.println(exception.getFailedMessageList());
+		  System.out.println(exception.getMessage());
+		} catch (Exception exception) {
+		  System.out.println(exception.getMessage());
 		}
 		return resultMap;
 	}

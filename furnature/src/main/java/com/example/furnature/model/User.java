@@ -21,4 +21,7 @@ public class User {
 	public String getUserAuth() {
 		return userAuth;
 	}
+	public String getUserPhone() {
+		return userPhone;
+	}
 }
