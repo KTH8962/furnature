@@ -19,6 +19,29 @@ public class ProductController {
 	@Autowired
 	ProductService productService;
 	
+	@RequestMapping("/productDetail/samplesejin.do")
+	public String boardLista(Model model) throws Exception{
+		return "/productDetail/samplesejin";
+	}
+	// 상품 이미지 url 모두 출력
+	@RequestMapping(value = "/productDetail/samplesejin.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	//@RequestParam
+	public String searchImgUrl(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = productService.searchImgUrl(map);
+		return new Gson().toJson(resultMap);
+	}
+	
+	@RequestMapping(value = "/productDetail/productDetail.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	//@RequestParam
+	public String searchProductDetail(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = productService.searchProductDetail(map);
+		return new Gson().toJson(resultMap);
+	}
+	
 	@RequestMapping("/product/product.do")
 	public String product(Model model) throws Exception{
 		return "/product/product";
@@ -42,4 +65,5 @@ public class ProductController {
 		resultMap = productService.cateList(map);
 		return new Gson().toJson(resultMap);
 	}
+  
 }

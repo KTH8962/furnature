@@ -6,8 +6,8 @@
 	<jsp:include page="/layout/headlink.jsp"></jsp:include>
 </head>
 <body>
+	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
-		<jsp:include page="/layout/header.jsp"></jsp:include>
 		<div id="container">            
             <p class="blind">샘플페이지</p>
             <div style="display: flex; align-items: center; flex-direction: column;">
@@ -97,8 +97,8 @@
 				</table>
             </div>
         </div>
-		<jsp:include page="/layout/footer.jsp"></jsp:include>
 	</div>
+	<jsp:include page="/layout/footer.jsp"></jsp:include>
 </body>
 </html>
 <script>

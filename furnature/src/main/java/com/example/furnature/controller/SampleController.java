@@ -22,7 +22,6 @@ public class SampleController {
 	public String boardList(Model model) throws Exception{
 		return "/sample/sample";
 	}
-	
 	// 게시글 목록 db
 	@RequestMapping(value = "/sample/sample.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
