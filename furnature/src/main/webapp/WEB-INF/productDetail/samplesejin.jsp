@@ -6,8 +6,8 @@
 	<jsp:include page="/layout/headlink.jsp"></jsp:include>
 </head>
 <body>
+	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
-		<jsp:include page="/layout/header.jsp"></jsp:include>
 		<div id="container">            
             <p class="blind">샘플페이지</p>
             <div style="display: flex; align-items: center; flex-direction: column;">
@@ -16,60 +16,48 @@
 						<img :src="item.prodcutThumbnail" style="height : 100px; width : 100px;">
 					</template>
 				</div>-->
-					
-				<p style="font-size: 20px; font-weight: bold; margin: 20px;">출력</p>
-				<table>
-					<thead>
-						<tr>
-							<th>사번</th>
-							<th>이름</th>
-							<th>직책</th>
-							<th>사수사번</th>
-							<th>입사일</th>
-							<th>급여</th>
-							<th>보너스</th>
-							<th>부서번호</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr v-for="(item, index) in empList">					
-							<td>{{item.empNo}}</td>
-							<td>{{item.eName}}</td>
-							<td>{{item.job}}</td>
-							<td>{{item.mgr}}</td>
-							<td>{{item.hiredate}}</td>
-							<td>{{item.sal}}</td>
-							<td>{{item.comm}}</td>
-							<td>{{item.deptNo}}</td>
-						</tr>
-					</tbody>
-				</table>
+				<!-- 상세 페이지 썸네일 , 이름 가격 등 정보 출력 -->
+				<div><img :src="productDetail.prodcutThumbnail"></div>
+				<div>{{productDetail.productName}}</div>
+				<div>{{productDetail.productPrice}}</div>
+				<div>{{productDetail.productColor}}</div>
+				<div><select>
+						<option>옵션 선택</option>
+						<option>{{productDetail.productSize1}}</option>					
+						<option>{{productDetail.productSize2}}</option>					
+					</select>
+				</div>
+				<div>
+					<button type="button">구매하기</button>
+					<button type="button">장바구니</button>
+					<button type="button">좋아요버튼?</button>
+				</div>
             </div>
         </div>
-		<jsp:include page="/layout/footer.jsp"></jsp:include>
 	</div>
+	<jsp:include page="/layout/footer.jsp"></jsp:include>
 </body>
 </html>
 <script>
     const app = Vue.createApp({
         data() {
             return {
-				empList : [],
-				urlList : []
+				urlList : [],
+				productDetail : []
             };
         },
         methods: {
-            fnGetList(){
+            fnGetProductDetail(){
 				var self = this;
 				var nparmap = {};
 				$.ajax({
-					url:"/sample/sample.dox",
+					url:"/productDetail/productDetail.dox",
 					dataType:"json",	
 					type : "POST", 
 					data : nparmap,
 					success : function(data) { 
 						console.log(data);
-						self.empList = data.empList;
+						self.productDetail = data.productDetail;
 					}
 				});
             },
@@ -90,7 +78,7 @@
         },
         mounted() {
             var self = this;
-			self.fnGetList();
+			self.fnGetProductDetail();
 			self.fnGetUrlList();
         }
     });

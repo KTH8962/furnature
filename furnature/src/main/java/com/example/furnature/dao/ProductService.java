@@ -7,6 +7,6 @@ public interface ProductService {
 	// 상품 이미지 url 모든 리스트
 	HashMap<String, Object> searchImgUrl(HashMap<String, Object> map);
 	
-	// 클릭한 상품 상세 정보
+	// 상품 클릭시 상품번호 받아서 번호에 맞는 상품정보 가져오기
 	HashMap<String, Object> searchProductDetail(HashMap<String, Object> map);
 }

@@ -24,13 +24,22 @@ public class ProductController {
 		return "/productDetail/samplesejin";
 	}
 	// 상품 이미지 url 모두 출력
-		@RequestMapping(value = "/productDetail/samplesejin.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-		@ResponseBody
-		//@RequestParam
-		public String searchImgUrl(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
-			HashMap<String, Object> resultMap = new HashMap<String, Object>();
-			resultMap = productService.searchImgUrl(map);
-			return new Gson().toJson(resultMap);
-		}
+	@RequestMapping(value = "/productDetail/samplesejin.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	//@RequestParam
+	public String searchImgUrl(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = productService.searchImgUrl(map);
+		return new Gson().toJson(resultMap);
+	}
+	
+	@RequestMapping(value = "/productDetail/productDetail.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	//@RequestParam
+	public String searchProductDetail(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = productService.searchProductDetail(map);
+		return new Gson().toJson(resultMap);
+	}
 	
 }

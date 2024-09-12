@@ -39,7 +39,8 @@ public class ProductServiceImpl implements ProductService{
 		}
 		return resultMap;
 	}
-
+	
+	// 상품 클릭시 상품번호 받아서 번호에 맞는 상품정보 가져오기
 	@Override
 	public HashMap<String, Object> searchProductDetail(HashMap<String, Object> map) {
 		HashMap <String, Object> resultMap = new HashMap<>();
