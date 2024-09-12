@@ -6,8 +6,8 @@
 	<jsp:include page="/layout/headlink.jsp"></jsp:include>
 </head>
 <body>
+	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
-		<jsp:include page="/layout/header.jsp"></jsp:include>
 		<div id="container">            
             <p class="blind">기본페이지</p>
 			<div class="login-wrap">
@@ -23,8 +23,8 @@
 			<a href="idFind.do">아이디 찾기</a>
 			<a href="pwdFind.do">비밀번호 찾기</a>
 		</div>
-		<jsp:include page="/layout/footer.jsp"></jsp:include>
 	</div>
+	<jsp:include page="/layout/footer.jsp"></jsp:include>
 </body>
 </html>
 <script>
@@ -61,4 +61,3 @@
     });
     app.mount('#app');
 </script>
-​
