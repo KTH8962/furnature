@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.furnature.mapper.ProductMapper">
+
+	<!-- 상품 이미지 url 모든 리스트 -->
+	<select id="selectProductImg" parameterType="hashmap" resultType="com.example.furnature.model.Product">
+		SELECT * FROM
+		TBL_PRODUCT_IMG
+	</select>
+	<!-- 전담씨 상품 페이지에서 클릭시 상세페이지에서 상품번호에 맞는 이미지 불러오기 -->
+	<select id="selectProductDetail" parameterType="hashmap" resultType="com.example.furnature.model.Product">
+		SELECT * FROM 
+		TBL_PRODUCT P INNER JOIN TBL_PRODUCT_IMG I 
+		ON P.PRODUCT_NO = I.PRODUCT_NO 
+		WHERE PRODUCT_NO = 1 <!--#{productNo}-->
+	</select>
+</mapper>
