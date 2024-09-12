@@ -56,6 +56,18 @@
                     <button type="button" class="next">다음</button>
                 </div>
 				
+				<p style="font-size: 20px; font-weight: bold; margin: 20px;">타이틀 + 인풋</p>
+				<div class="ip-list">
+                    <div class="tit-box">
+                        <p class="tit">타이틀</p>
+                    </div>
+                    <div class="bot-box">
+                        <div class="ip-box">
+                            <input type="text">
+                        </div>
+                    </div>
+                </div>
+				
 				<p style="font-size: 20px; font-weight: bold; margin: 20px;">출력</p>
 				<table>
 					<thead>

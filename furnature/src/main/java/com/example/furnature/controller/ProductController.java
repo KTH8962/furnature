@@ -42,4 +42,28 @@ public class ProductController {
 		return new Gson().toJson(resultMap);
 	}
 	
+	@RequestMapping("/product/product.do")
+	public String product(Model model) throws Exception{
+		return "/product/product";
+	}
+	
+	//상품 리스트
+	@RequestMapping(value = "/product/productList.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String productlist(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		System.out.println(map);
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = productService.productList(map);
+		return new Gson().toJson(resultMap);
+	}
+	//카테고리 리스트
+	@RequestMapping(value = "/product/cateList.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String catelist(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		System.out.println(map);
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = productService.cateList(map);
+		return new Gson().toJson(resultMap);
+	}
+  
 }

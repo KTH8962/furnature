@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ public class ProductServiceImpl implements ProductService{
 	@Autowired
 	ProductMapper productmapper;
 	
+
 	// 상품 이미지 url 모든 리스트
 	@Override
 	public HashMap<String, Object> searchImgUrl(HashMap<String, Object> map) {
@@ -34,11 +36,24 @@ public class ProductServiceImpl implements ProductService{
 			resultMap.put("result", "fail");
 			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
 		} catch (Exception e) {
+
+	//상품 리스트
+	@Override
+	public HashMap<String, Object> productList(HashMap<String, Object> map) {
+		HashMap <String, Object> resultMap = new HashMap<>();
+		try {
+			List<Product> list = productmapper.productList(map);
+			resultMap.put("productList", list);
+			resultMap.put("result", "scuccess");
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		}catch (Exception e) {
+
 			resultMap.put("result", "fail");
 			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
 		}
 		return resultMap;
 	}
+
 	
 	// 상품 클릭시 상품번호 받아서 번호에 맞는 상품정보 가져오기
 	@Override
@@ -56,6 +71,19 @@ public class ProductServiceImpl implements ProductService{
 			resultMap.put("result", "fail");
 			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
 		} catch (Exception e) {
+
+
+	//카테고리 리스트
+	@Override
+	public HashMap<String, Object> cateList(HashMap<String, Object> map) {
+		HashMap <String, Object> resultMap = new HashMap<>();
+		try {
+			List<Product> list = productmapper.cateList(map);
+			resultMap.put("list", list);
+			resultMap.put("result", "scuccess");
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		}catch (Exception e) {
+
 			resultMap.put("result", "fail");
 			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
 		}
