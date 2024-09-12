@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.furnature.mapper.OnedayMapper">
+	<select id="onedayList" parameterType="hashmap" resultType="com.example.furnature.model.Oneday">
+		select * from tbl_class
+	</select>
+	
+	<select id="onedayDetail" parameterType="hashmap" resultType="com.example.furnature.model.Oneday">
+		select * from tbl_class 
+		where class_no = #{classNo}
+	</select>
+
+	<insert id="onedayPay" parameterType="hashmap">
+		INSERT INTO TBL_PARTICIPANT (PAY_ID, USER_NAME, USER_ID, COUNT, PRICE, PAY_DAY, CLASS_NO) VALUES (#{payId}, #{name}, 'user1', 1, #{price}, SYSDATE, #{classNo})
+	</insert>
+	
+	<insert id="onedayFile" parameterType="hashmap">
+		INSERT INTO TBL_CLASS (CLASS_NO, CLASSS_NAME, PRICE, HEAD_COUNT, CLASS_DATE, START_DAY, END_DAY, FILE_NO, FILE_NAME, EXT_NAME, FILE_PATH, FILE_SIZE)
+		VALUES (CLASS_NO_SEQ.NEXTVAL, #{price}, #{className}, #{headCount}, #{classDate}, #{startDay}, #{endDay}, FILE_NO_SEQ.NEXTVAL, #{fileName}, 'jpg', #{filePath}, #{fileSize})
+	</insert>
+	
+</mapper>	
