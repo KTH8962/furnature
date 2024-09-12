@@ -513,7 +513,9 @@ table tr th, table tr td {
 }
 
 .ip-chk-txt {
-	gap: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 .ip-chk-txt label {
 	font-size: 14px;
@@ -550,9 +552,6 @@ table tr th, table tr td {
 	background-image: url("../images/ico/ico_radio1_2.png");
 }
 
-.ip-ra-txt {
-	gap: 10px;
-}
 .ip-ra-txt label {
 	font-size: 14px;
 	font-Weight: 700;
@@ -568,6 +567,36 @@ table tr th, table tr td {
 .ip-ra-txt input[type=radio]:checked + label {
 	background-image: url("../images/ico/ico_radio1_2.png");
 	color: var(--color-contrasty2);
+}
+
+.ip-list .tit-box {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+}
+.ip-list .tit-box .tit {
+	font-size: 14px;
+	font-Weight: 800;
+	color: var(--color-contrastyA);
+}
+.ip-list .bot-box {
+	margin-top: 15px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	position: relative;
+	width: 100%;
+}
+.ip-list .bot-box .ip-ul .bot-box {
+	padding: 0px 16px;
+	margin: 0;
+}
+.ip-list .ip-box.ip-ico-box input {
+	padding-top: 0px;
+	padding-right: 82px;
+	padding-bottom: 0px;
+	padding-left: 16px;
 }
 
 .tab-default {
@@ -622,8 +651,8 @@ table tr th, table tr td {
 }
 .pagenation button {
 	background: center/auto no-repeat;
-	width: 40px;
-	height: 40px;
+	width: 34px;
+	height: 34px;
 	transform: all 0.2s;
 	border-radius: 4px;
 }
