@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService{
 		return resultMap;
 	}
 
-	// 회원가인
+	// 회원가입
 	@Override
 	public HashMap<String, Object> addId(HashMap<String, Object> map) {
 		HashMap <String, Object> resultMap = new HashMap<>();
@@ -160,6 +160,36 @@ public class UserServiceImpl implements UserService{
 		  System.out.println(exception.getMessage());
 		} catch (Exception exception) {
 		  System.out.println(exception.getMessage());
+		}
+		return resultMap;
+	}
+
+	@Override
+	public HashMap<String, Object> findInfo(HashMap<String, Object> map) {
+		HashMap <String, Object> resultMap = new HashMap<>();
+		try {
+			User id = userMapper.findInfo(map);
+			if(id == null) {
+				resultMap.put("result", "fail");
+				resultMap.put("message", "입력하신 정보에 해당하는 아이디가 없습니다.");
+			} else {
+				if(map.get("id") == null) {					
+					resultMap.put("findInfo", id.getUserId());
+				} else {
+					resultMap.put("findInfo", id.getUserPwd());
+				}
+				resultMap.put("result", "success");
+				resultMap.put("message", "아이디 찾기에 성공하였습니다.");
+			}
+		} catch (DataAccessException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+		} catch (PersistenceException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
 		}
 		return resultMap;
 	}
