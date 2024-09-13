@@ -49,13 +49,13 @@
     const app = Vue.createApp({
         data() {
             return {
-				name : "김철수",
-				phone : "01089622170",
+				name : "",
+				phone : "",
 				msgText : "",
 				msgSubmit : "",
-				msgTime : true,
+				msgTime : false,
 				timer : "",
-				findInfo : true,
+				findInfo : false,
 				findShow : false,
 				id : ""
             };

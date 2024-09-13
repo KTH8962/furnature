@@ -59,14 +59,14 @@
     const app = Vue.createApp({
         data() {
             return {
-				id : "user2",
-				name : "김철수",
-				phone : "01089622170",
+				id : "",
+				name : "",
+				phone : "",
 				msgText : "",
 				msgSubmit : "",
-				msgTime : true,
+				msgTime : false,
 				timer : "",
-				findInfo : true,
+				findInfo : false,
 				findShow : false,
 				pwd : ""
             };

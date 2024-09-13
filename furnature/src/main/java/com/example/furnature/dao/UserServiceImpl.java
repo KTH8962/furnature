@@ -164,6 +164,7 @@ public class UserServiceImpl implements UserService{
 		return resultMap;
 	}
 
+	// 아이디 찾기 / 비밀번호 찾기
 	@Override
 	public HashMap<String, Object> findInfo(HashMap<String, Object> map) {
 		HashMap <String, Object> resultMap = new HashMap<>();
@@ -175,11 +176,12 @@ public class UserServiceImpl implements UserService{
 			} else {
 				if(map.get("id") == null) {					
 					resultMap.put("findInfo", id.getUserId());
+					resultMap.put("message", "아이디 찾기에 성공하였습니다.");
 				} else {
 					resultMap.put("findInfo", id.getUserPwd());
+					resultMap.put("message", "비밀번호 찾기에 성공하였습니다.");
 				}
 				resultMap.put("result", "success");
-				resultMap.put("message", "아이디 찾기에 성공하였습니다.");
 			}
 		} catch (DataAccessException e) {
 			resultMap.put("result", "fail");
