@@ -13,6 +13,16 @@
 			<div class="login-wrap">
 				<div class="ip-list">
 	                <div class="tit-box">
+	                    <p class="tit">아이디</p>
+	                </div>
+	                <div class="bot-box">
+	                    <div class="ip-box">
+	                        <input type="text" placeholder="가입하신 이름을 입력해주세요" v-model="id">
+	                    </div>
+	                </div>
+	            </div>
+				<div class="ip-list">
+	                <div class="tit-box">
 	                    <p class="tit">이름</p>
 	                </div>
 	                <div class="bot-box">
@@ -37,8 +47,8 @@
 					<button type="button" @click="fnSubmit">인증하기</button>
 					<span class="time"></span>
 				</div>				
-				<button @click="fnFind" v-if="findInfo">아이디찾기</button>
-				<div v-if="findShow">{{id}}</div>
+				<button @click="fnFind" v-if="findInfo">비밀번호찾기</button>
+				<div v-if="findShow">{{pwd}}</div>
 			</div>
 		</div>
 	</div>
@@ -49,6 +59,7 @@
     const app = Vue.createApp({
         data() {
             return {
+				id : "",
 				name : "",
 				phone : "",
 				msgText : "",
@@ -57,7 +68,7 @@
 				timer : "",
 				findInfo : false,
 				findShow : false,
-				id : ""
+				pwd : ""
             };
         },
         methods: {
@@ -113,7 +124,7 @@
 			},
 			fnFind(){
 				var self = this;
-				var nparmap = {name: self.name, phone: self.phone};
+				var nparmap = {id: self.id, name: self.name, phone: self.phone};
 				$.ajax({
 					url:"/user/findInfo.dox",
 					dataType:"json",	
@@ -123,7 +134,7 @@
 						console.log(data);
 						if(data.result == "success"){
 							self.findShow = true;
-							self.id = data.findInfo;
+							self.pwd = data.findInfo;
 						} else {
 							self.findShow = false;
 							alert(data.message);

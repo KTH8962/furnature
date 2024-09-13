@@ -36,6 +36,12 @@ public class UserController {
 		return "/user/idFind";
 	}
 	
+	// 비밀번호 찾기 화면
+	@RequestMapping("/pwdFind.do")
+	public String pwdFind(Model model) throws Exception{
+		return "/user/pwdFind";
+	}
+	
 	// 로그인 처리 db
 	@RequestMapping(value = "/user/login.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
@@ -78,6 +84,15 @@ public class UserController {
 	public String msg(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap = userService.msg(map);
+		return new Gson().toJson(resultMap);
+	}
+	
+	// 아이디 찾기 / 비밀번호 찾기
+	@RequestMapping(value = "/user/findInfo.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String idFind(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = userService.findInfo(map);
 		return new Gson().toJson(resultMap);
 	}
 }
