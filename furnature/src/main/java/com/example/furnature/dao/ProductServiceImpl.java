@@ -47,7 +47,10 @@ public class ProductServiceImpl implements ProductService{
 		HashMap <String, Object> resultMap = new HashMap<>();
 		try {
 			List<Product> list = productmapper.productList(map);
+			int count = productmapper.productCnt(map);
+			System.out.println("@@@@@@@@@@@@@@@@@"+count);
 			resultMap.put("productList", list);
+			resultMap.put("count", count);
 			resultMap.put("result", "scuccess");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (Exception e) {

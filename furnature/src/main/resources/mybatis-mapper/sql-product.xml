@@ -4,28 +4,68 @@
 
 <mapper namespace="com.example.furnature.mapper.ProductMapper">
 
+	<!--상품 리스트-->	
+	<select id="productList" parameterType="hashmap" resultType="com.example.furnature.model.Product">
+		SELECT *
+	    FROM TBL_PRODUCT P
+	    INNER JOIN TBL_PRODUCT_CATE PC ON P.PRODUCT_CATE1 = PC.CATE_NO
+	    INNER JOIN TBL_PRODUCT_IMG PI ON P.PRODUCT_NO = PI.PRODUCT_NO
+	    WHERE 1=1
+	    <if test="keyword != null and keyword !=''">
+	        AND P.PRODUCT_NAME LIKE '%' ||  #{keyword} || '%'
+	    </if>
+	    <if test="width != null and width != ''">
+	        AND P.PRODUCT_WIDTH BETWEEN #{width}-100 AND #{width}+100
+	    </if>
+	    <if test="depth != null and depth != ''">
+	        AND P.PRODUCT_LENGTH BETWEEN #{depth}-100 AND #{depth}+100
+	    </if>
+	    <if test="height != null and height != ''">
+	        AND P.PRODUCT_HEIGHT BETWEEN #{height}-100 AND #{height}+100
+	    </if>
+	    <if test="cateNum != null and cateNum != ''">
+	        AND (P.PRODUCT_CATE1 = #{cateNum} OR P.PRODUCT_CATE2 = #{cateNum})
+	    </if>
+	    OFFSET #{startIndex} ROWS FETCH FIRST #{outputNumber} ROWS ONLY
+	</select>
+	
+	<!--상품 카운트-->
+	<select id="productCnt" parameterType="hashmap" resultType="int">
+		SELECT COUNT(*) AS CNT 
+		FROM TBL_PRODUCT P
+		INNER JOIN TBL_PRODUCT_CATE PC ON P.PRODUCT_CATE1 = PC.CATE_NO
+		INNER JOIN TBL_PRODUCT_IMG PI ON P.PRODUCT_NO = PI.PRODUCT_NO
+		WHERE 1=1
+		 <if test="keyword != null and keyword !=''">
+	        AND P.PRODUCT_NAME LIKE '%' ||  #{keyword} || '%'
+	     </if>
+		 <if test="width != null and width != ''">
+	        AND P.PRODUCT_WIDTH BETWEEN #{width}-100 AND #{width}+100
+	    </if>
+	    <if test="depth != null and depth != ''">
+	        AND P.PRODUCT_LENGTH BETWEEN #{depth}-100 AND #{depth}+100
+	    </if>
+	    <if test="height != null and height != ''">
+	        AND P.PRODUCT_HEIGHT BETWEEN #{height}-100 AND #{height}+100
+	    </if>
+	     <if test="cateNum != null and cateNum != ''">
+	        AND (P.PRODUCT_CATE1 = #{cateNum} OR P.PRODUCT_CATE2 = #{cateNum})
+	    </if>
+	</select>	
 	<!-- 상품 이미지 url 모든 리스트 -->
 	<select id="selectProductImg" parameterType="hashmap" resultType="com.example.furnature.model.Product">
 		SELECT * FROM
 		TBL_PRODUCT_IMG
 	</select>
 	
-	<!-- 전담씨 상품 페이지에서 클릭시 상세페이지에서 상품번호에 맞는 이미지 불러오기 -->
+	<!-- 상품 페이지에서 클릭시 상세페이지에서 상품번호에 맞는 이미지 불러오기 -->
 	<select id="selectProductDetail" parameterType="hashmap" resultType="com.example.furnature.model.Product">
 		SELECT * FROM 
 		TBL_PRODUCT P INNER JOIN TBL_PRODUCT_IMG I 
 		ON P.PRODUCT_NO = I.PRODUCT_NO 
-		WHERE P.PRODUCT_NO = 1 <!--#{productNo}-->
+		WHERE P.PRODUCT_NO = #{productNo}
 	</select>
 
-	<!--상품 리스트-->	
-	<select id="productList" parameterType="hashmap" resultType="com.example.furnature.model.Product">
-		SELECT *
-		FROM TBL_PRODUCT P
-		INNER JOIN TBL_PRODUCT_CATE PC ON P.PRODUCT_CATE1 = PC.CATE_NO
-		INNER JOIN TBL_PRODUCT_IMG PI ON P.PRODUCT_NO = PI.PRODUCT_NO
-		WHERE 1=1
-	</select>
 	
 	<!--카테고리 리스트-->
 	<select id="cateList" parameterType="hashmap" resultType="com.example.furnature.model.Product">
