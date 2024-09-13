@@ -9,12 +9,7 @@
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
 		<div id="container">            
-			<ul style="margin : 20px;">
-				<li><a>전체</a></li>
-				<li><a>공지사항</a></li>
-				<li><a>자유게시판</a></li>
-				<li><a>질문게시판</a></li>
-			</ul>
+			
 			<div style="margin : 20px;"> 
 				<select style="margin-right : 5px;">
 					<option value="all">:: 전체 ::</option>
@@ -29,16 +24,14 @@
 					<th>게시글번호</th>
 					<th>제목</th>
 					<th>작성자</th>
-					<th>조회수</th>
 					<th>작성일</th>
 					<th>삭제</th>
 				</tr>
 				<tr v-for="item in list">
 					<td>{{item.boardNo}}</td>
-					<td>{{item.title}}</td>
+					<td>{{item.boardTitle}}</td>
 					<td>{{item.userName}}</td>
-					<td>{{item.hit}}</td>
-					<td>{{item.fCdateTime}}</td>
+					<td>{{item.cdateTime}}</td>
 					<td>
 						<!--<template v-if="sessionEmail == item.email || sessionStatus == 'A'">-->
 							<button>삭제</button>
@@ -46,9 +39,8 @@
 						<!--</template>-->
 				</tr>	
 			</table>
-			
 			<div>
-				<button>글쓰기</button>
+				<button @click="fnInsert()">글쓰기</button>
 			</div>
 		</div>
 	</div>
@@ -81,6 +73,10 @@
 					}
 				});
 	        },
+			fnInsert(){
+				//location.href = "board-insert.do";
+				$.pageChange("board-insert.do",{});
+			},
         },
         mounted() {
             var self = this;
