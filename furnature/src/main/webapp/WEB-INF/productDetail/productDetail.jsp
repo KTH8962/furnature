@@ -38,9 +38,18 @@
 					</select>
 				</div>
 				<div><!-- 사이즈 선택 후 목록 출력-->
-						<template v-if="sizeSelect != '' ||sizeSelect == '0'">
-							{{productDetail.productName}} {{sizeSelect}}번 사이즈 {{addPrice}}원
+						<!--<template v-if="selectedSize != '' ||selectedSize == '0'">-->
+						<template v-for="(item,index) in selectedSize">
+							<div>
+								{{productDetail.productName}} {{ item.size }}번 사이즈
+								<button type="button" @click="fnUp(index)">+</button>
+								<input type="text" v-model="item.count">
+								<button type="button" @click="fnDown(index)">-</button>
+								{{(item.price * item.count).toLocaleString()}}원
+								<!--toLocaleString() >> 숫자를 천단위에 , 넣어서 출력해주는 함수-->
+							</div>
 						</template>
+						<div>총 합계: {{ totalPrice }}원</div>
 				</div>
 				<div><!-- 구매/ 커스텀 등 버튼 구현 -->
 					<button type="button" @click="fnPay">구매하기</button>
@@ -79,14 +88,25 @@
     const app = Vue.createApp({
         data() {
             return {
-				urlList : [],
-				productDetail : [],
-				sizeList : [],
-				sizeSelect : "",
-				addPrice :	"",
-				productNo : '${productNo}' //전담 연동
+				urlList : [],		//모든 이미지 url 리스트 (사용안하는 샘플 fnGetUrlList 사용하는 변수)
+				productDetail : [],	// 상품 번호에 맞는 상품의 상세정보
+				sizeList : [],		// 현재 상품의 상품 각 사이즈를 리스트에 담아 관리
+				sizeSelect : "",	// select v-model 사용하기 위한 변수
+				addPrice :	"",		// 사이즈에 가격 넣기위한 변수
+				productNo : '${productNo}', //상품페이지 에서 클릭한 상품번호 받아오는 변수
+				selectedSize : []	// 선택된 select 변수로 저장하기위한 리스트
             };
         },
+		computed: {
+			//주문목록 총 가격
+		    totalPrice() {
+				var self = this;
+				//self.selectedSize.reduce(...) -> selectedSize 배열을 순회해서 total에 누적값 넣어줌
+		        return self.selectedSize.reduce((total, item) => {
+		            return total + (item.price * item.count);
+		        }, 0).toLocaleString();
+		    }
+		},
         methods: {
             fnGetProductDetail(){
 				var self = this;
@@ -100,18 +120,17 @@
 						console.log(data);
 						self.productDetail = data.productDetail;
 						
-						if(data.productDetail.productSize1 != null){
-							self.sizeList = [data.productDetail.productSize1]
-							if(data.productDetail.productSize2 != null){
-								self.sizeList = [data.productDetail.productSize1, data.productDetail.productSize2]
-							}if(data.productDetail.productSize3 != null){
-								self.sizeList = [data.productDetail.productSize1, data.productDetail.productSize2, data.productDetail.productSize3]
-							}
-						}
+						//상품번호에 맞는 사이즈를 리스트 안에 담아주기
+						self.sizeList = [
+						     data.productDetail.productSize1,
+						     data.productDetail.productSize2,
+						     data.productDetail.productSize3
+						 ].filter(size => size != null); // null 값을 제외하고 필터링
 						console.log(self.sizeList);
 					}
 				});
             },
+			// 모든 이미지 출력 함수 (사용 안하는 샘플입니다.)
 			fnGetUrlList(){
 				var self = this;
 				var nparmap = {};
@@ -126,18 +145,37 @@
 					}
 				});
           	},
+			// 커스텀 버튼
 			fnCustom(){
 				confirm('커스텀 하시겠습니까?');
 			},
+			// 결제 버튼
 			fnPay(productNo){
 				<!--$.pageChange("pay.do",{productNo : productNo});-->
 			},
+			// 장바구니 버튼
 			fnBasket(productNo){
 				<!--$.pageChange("basket.do",{productNo: productNo});-->
 			},
+			// 사이즈 선택 
 			fnSelectSize(){
 				var self = this;
+				var isDuplicate = false;	// 중복 체크 확인 변수
+				// selectedSize 배열 중복 체크
+				for (var i = 0; i < self.selectedSize.length; i++) {
+				    if (self.selectedSize[i].size === self.sizeSelect) {
+				        isDuplicate = true;	//중복시 true로 변경
+				        break; // 중복 발견시 종료
+				    }
+				}
+				// 중복시 알림창
+				if (isDuplicate) {
+				    alert('이미 선택된 사이즈입니다.');
+				    self.sizeSelect = '';
+				    return;
+				}
 				
+				// 사이즈 선택시 상세정보에 sizeList 리스트에 담아둔 사이즈를 인덱스 값에 따라 가격 추가 
 				if (self.sizeSelect === 0) {
 				    self.addPrice = parseInt(self.productDetail.productPrice, 10); // 문자열을 숫자로 변환
 				} else if (self.sizeSelect === 1) {
@@ -145,9 +183,34 @@
 				} else if (self.sizeSelect === 2) {
 				    self.addPrice = parseInt(self.productDetail.productPrice, 10) + 40000;
 				}
-				console.log(self.sizeSelect);
-				console.log(self.addPrice);
 				
+				 if (self.sizeSelect !== '') {
+				            self.selectedSize.push({
+				                size: self.sizeSelect,
+				                price: self.addPrice,
+								count : 1
+				            });
+				}
+				
+				self.sizeSelect = '';
+				console.log(self.sizeSelect);
+				console.log(self.selectedSize);
+			},
+			//수량 - 버튼
+			fnUp(index){
+				var self=this;
+				self.selectedSize[index].count ++;
+				console.log(self.totalPrice);
+			},
+			// 수량 + 버튼
+			fnDown(index){
+				var self=this;
+				self.selectedSize[index].count --;
+				if(self.selectedSize[index].count <1){
+					alert('수량은 1개 이상 !');
+					self.selectedSize[index].count = 1;
+				}
+					console.log(self.totalPrice);
 			}
         },
         mounted() {
