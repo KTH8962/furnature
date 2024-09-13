@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.furnature.mapper.ManageMapper">
+	
+	<!--상품등록-->
+	<select id="enrollProduct" parameterType="hashmap" resultType="com.example.furnature.model.Manage">
+		INSERT INTO TBL_PRODUCT(
+			PRODUCT_NO,
+			PRODUCT_NAME,
+			PRODUCT_WIDTH,
+			PRODUCT_LENGTH,
+			PRODUCT_HEIGHT,
+			PRODUCT_PRICE,
+			PRODUCT_COLOR,
+			PRODUCT_SIZE1,
+			PRODUCT_SIZE2,
+			PRODUCT_SIZE3,
+			PRODUCT_CUSTOM,
+			PRODUCT_CATE1,
+			PRODUCT_CATE2,
+			PRODUCT_CDATETIME,
+			PRODUCT_UDATETIME)
+			VALUES(PRODUCT_NO_SEQ.NEXTVAL,#{productName},#{productWidth},#{productLength},#{productHeight},#{productPrice},
+			#{productColor},#{productSize1},#{productSize2},#{productSize3},#{productCustom},#{productCate1},#{productCate2},
+			SYSDATE,SYSDATE)
+	</select>
+</mapper>
