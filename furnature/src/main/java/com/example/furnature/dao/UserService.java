@@ -13,4 +13,6 @@ public interface UserService {
 	HashMap<String, Object> logout();
 	// 문자인증
 	HashMap<String, Object> msg(HashMap<String, Object> map);
+	// 아이디 찾기
+	HashMap<String, Object> findInfo(HashMap<String, Object> map);
 }

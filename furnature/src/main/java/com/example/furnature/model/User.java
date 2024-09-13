@@ -24,4 +24,7 @@ public class User {
 	public String getUserPhone() {
 		return userPhone;
 	}
+	public String getUserPwd() {
+		return userPwd;
+	}
 }
