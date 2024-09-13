@@ -9,5 +9,9 @@ import com.example.furnature.model.Board;
 
 @Mapper
 public interface BoardMapper {
+	// 게시글 조회
 	List<Board> selectBoardList(HashMap<String, Object> map);
+	
+	// 게시글 등록
+	void insertBoard(HashMap<String, Object> map);
 }

@@ -4,15 +4,13 @@ import lombok.Data;
 
 @Data
 public class Board {
-	private String qnaNo;
-	private String qnaTitle;
-	private String qnaContents;
+	private String boardNo;
+	private String boardTitle;
+	private String boardContents;
 	private String userId;
 	private String userName;
-	private String qnaCategpsy;
-	private String isNotice;
-	private String qnaCdateTime;
-	private String qnaUdateTime;
-	private String qnaYn;
-	private String qnaFavorite;
+	private String boardCategpsy;
+	private String boardNotice;
+	private String cdateTime;
+	private String udateTime;
 }

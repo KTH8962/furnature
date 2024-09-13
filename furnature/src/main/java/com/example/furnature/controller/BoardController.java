@@ -22,7 +22,12 @@ public class BoardController {
 	public String boardList(Model model) throws Exception{
 		return "/board/board-list";
 	}
-	
+	// 게시글 작성
+	@RequestMapping("/board-insert.do") 
+    public String boardInsert(Model model) throws Exception{
+
+        return "/board/board-insert";
+	    }
 	// 게시글 목록 db
 	@RequestMapping(value = "/board-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
@@ -30,6 +35,16 @@ public class BoardController {
 	public String searchBoard(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap = boardService.searchBoardList(map);
+		return new Gson().toJson(resultMap);
+	}
+	
+	@RequestMapping(value = "/board-add.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String board_add(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap 
+			= new HashMap<String, Object>();
+		resultMap = boardService.addBoard(map);
+		
 		return new Gson().toJson(resultMap);
 	}
 }
