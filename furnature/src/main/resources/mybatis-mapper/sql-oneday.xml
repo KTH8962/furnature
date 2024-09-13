@@ -4,12 +4,16 @@
 
 <mapper namespace="com.example.furnature.mapper.OnedayMapper">
 	<select id="onedayList" parameterType="hashmap" resultType="com.example.furnature.model.Oneday">
-		select * from tbl_class
+		SELECT * FROM TBL_CLASS C
+		INNER JOIN TBL_ONEDAYFILE O
+		ON C.CLASS_NO = O.CLASS_NO
 	</select>
 	
 	<select id="onedayDetail" parameterType="hashmap" resultType="com.example.furnature.model.Oneday">
-		select * from tbl_class 
-		where class_no = #{classNo}
+		SELECT * FROM TBL_CLASS C
+		INNER JOIN TBL_ONEDAYFILE O
+		ON C.CLASS_NO = O.CLASS_NO
+		WHERE C.CLASS_NO = #{classNo}
 	</select>
 
 	<insert id="onedayPay" parameterType="hashmap">
@@ -17,13 +21,13 @@
 	</insert>
 	
 	<insert id="onedayReg" parameterType="hashmap">
-		INSERT INTO TBL_CLASS (CLASS_NO, CLASS_NAME, PRICE, HEAD_COUNT, CLASS_DATE, START_DAY, END_DAY, FILE_PATH)
-		VALUES (CLASS_NO_SEQ.NEXTVAL, #(className}, #{price}, #{headCount}, #{classDate}, #{startDay}, #{endDay}, #{filePath})
+		INSERT INTO TBL_CLASS (CLASS_NO, CLASS_NAME, PRICE, HEAD_COUNT, CLASS_DATE, START_DAY, END_DAY)
+		VALUES (CLASS_NO_SEQ.NEXTVAL, #{className}, #{price}, #{headCount}, #{classDate}, #{startDay}, #{endDay})
 	</insert>
 	
 	<insert id="onedayFile" parameterType="hashmap">
-		INSERT INTO TBL_ONEDAYFILE (FILE_NAME, FILE_PATH, FILE_SIZE, EXT_NAME, FILE_NO)
-		VALUES (#{fileName}, #{filePath}, #{fileSize}, #{extName}, FILE_NO_SEQ.NEXTVAL)
+		INSERT INTO TBL_ONEDAYFILE (FILE_NAME, FILE_PATH, FILE_SIZE, EXT_NAME, FILE_NO, CLASS_NO)
+		VALUES (#{fileName}, #{filePath}, #{fileSize}, #{extName}, FILE_NO_SEQ.NEXTVAL, CLASS_NO_SEQ.NEXTVAL)
 	</insert>
 	
 </mapper>	

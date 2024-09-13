@@ -9,12 +9,16 @@
 </head>
 <body>
 	<jsp:include page="/layout/header.jsp"></jsp:include>
-	<div id="app">
-		
-		<p class="tit">클래스명</p>
-        <div class="ip-box">
-           <input type="text" placeholder="클래스명" v-model="className">
-        </div>
+	<div id="app">	
+		<div class="ip-list">
+            <div class="tit-box">
+                <p class="tit">클래스명</p>
+            </div>
+            <div class="bot-box">
+                <div class="ip-box">
+                    <input type="text" placeholder="클래스명" v-model="className">
+                </div>
+            </div>
         </div>
 		<p class="tit">수업일자</p>
 		<div class="ip-box">
@@ -36,7 +40,11 @@
 		<div class="ip-box">
 		   <input type="date" placeholder="모집마감일" v-model="endDay">
 		</div>
-		<p class="tit">파일업로드</p>
+		<p class="tit">썸네일업로드</p>
+		<div class="ip-box">
+		   <input type="file" @change="fnThumbUpload">
+		</div>
+		<p class="tit">본문파일업로드</p>
 		<div class="ip-box">
 		   <input type="file" multiple @change="fnFileUpload">
 		</div>
@@ -49,22 +57,29 @@
 	const app = Vue.createApp({
 	        data() {
 	            return {
+					classNo : '${classNo}',
 	                className: "",
 	                classDate: "",
 	                headCount: "",
 	                price: "",
 	                startDay: "",
 	                endDay: "",
-	                files: []
+	                files: [],
+					thumb : {}
 	            };
 	        },
 	        methods: {
 				fnFileUpload(event) {
-					this.files = event.target.files;
+					this.files = Array.from(event.target.files);
 				},
-				fnSave (){
+				fnThumbUpload(event){
+					this.file = event.target.file;
+				}
+				
+				fnSave(){
 					var self = this;
 					var nparam = {
+						classNo : self.classNo,
 						className : self.className, 
 						classDate : self.classDate,
 						headCount : self.headCount,
@@ -79,12 +94,13 @@
 						data : nparam,
 						success : function(data) { 
 							var classNo = data.classNo;
-							console.log(classNo);
-							if (self.file) {
-								console.log(self.file);
+							console.log(self.classNo);
+							if (self.files) {
 							  const formData = new FormData();
-							  formData.append('file1', self.file);
-							  formData.append('boardNo', boardNo);
+							  self.files.forEach((file,index)=>{
+								formData.append('file'+index, files)
+							  })
+							  formData.append('classNo', self.classNo);
 							  $.ajax({
 								url: '/oneday/oneday-file.dox',
 								type: 'POST',
@@ -99,12 +115,27 @@
 								}
 							  });
 							}
+							 if(self.thumb){
+								const formData = new FormData();
+								formData.append('thumb', self.thumb);
+								formData.append('classNo', self.classNo);
+								$.ajax({
+									url: '/oneday/oneday-thumb.dox',
+									type : 'POST',
+									data : formData,
+									processData : false,
+									contentType : false,
+									success: function(){
+										console.log('업로드 성공!');
+									}
+								})
+							 }
 						}
 					});
 				}
-				},
-		mounted() {
-			var self = this;
+			 	},
+			mounted() {
+				var self = this;
             }
         });
 	    app.mount('#app');

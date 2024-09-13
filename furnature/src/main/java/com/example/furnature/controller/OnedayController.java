@@ -3,6 +3,7 @@ package com.example.furnature.controller;
 import java.io.File;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -77,39 +78,37 @@ public class OnedayController {
 	}
 	
 	@RequestMapping(value = "/oneday/oneday-file.dox")
-    public String result(@RequestParam("file1") MultipartFile multi, @RequestParam("classNo") int idx, HttpServletRequest request,HttpServletResponse response, Model model)
+    public String result(@RequestParam Map<String, MultipartFile> files, @RequestParam("classNo") int idx, HttpServletRequest request,HttpServletResponse response, Model model)
     {
         String url = null;
         String path=System.getProperty("user.dir");
         try {
- 
-            //String uploadpath = request.getServletContext().getRealPath(path);
-            String uploadpath = path;
-            String originFilename = multi.getOriginalFilename();
-            String extName = originFilename.substring(originFilename.lastIndexOf("."),originFilename.length());
-            long size = multi.getSize();
-            String saveFileName = genSaveFileName(extName);
-         
-            System.out.println("Working Directory = " + path + "\\src\\webapp\\img");
+        	
+        	for (Map.Entry<String, MultipartFile> entry : files.entrySet()) {
+                MultipartFile multi = entry.getValue();
+                String originFilename = multi.getOriginalFilename();
+                String extName = originFilename.substring(originFilename.lastIndexOf("."), originFilename.length());
+                long size = multi.getSize();
+                String saveFileName = genSaveFileName(extName);
+                
             if(!multi.isEmpty()){
-                File file = new File(path + "\\src\\main\\webapp\\img", saveFileName);
+                File file = new File(path + "\\src\\main\\webapp\\uploadImages\\oneday\\thumb", saveFileName);
                 multi.transferTo(file);
-                System.out.println("file check:"+file);
+        
                 HashMap<String, Object> map = new HashMap<String, Object>();
                 map.put("fileName", saveFileName);
-                map.put("path", "../img/" + saveFileName);
-                map.put("idx", idx);
-                map.put("fileOrgName", originFilename);
+                map.put("filePath", "../uploadImages/oneday/thumb/" + saveFileName);
                 map.put("extName", extName);
-                map.put("size", size);
+                map.put("fileSize", size);
                 onedayService.onedayFile(map);
                 // insert 쿼리 실행         
                 
-                model.addAttribute("filename", multi.getOriginalFilename());
-                model.addAttribute("uploadPath", file.getAbsolutePath());
-                
+                model.addAttribute("fileName", multi.getOriginalFilename());
+                model.addAttribute("filePath", file.getAbsolutePath());
+            } 
+        	}
                 return "redirect:oneday-file.do";
-            }
+           
         }catch(Exception e) {
             System.out.println(e);
         }
