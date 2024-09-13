@@ -147,7 +147,7 @@
 				self.fnGetProductList(1);
 			},
 			fnPorductDetail(productNo){
-				$.pageChange("/productDetail/samplesejin.do",{productNo : productNo});
+				$.pageChange("/productDetail/productDetail.do",{productNo : productNo});
 			}
         },
         mounted() {

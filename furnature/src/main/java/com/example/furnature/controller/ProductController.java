@@ -22,10 +22,10 @@ public class ProductController {
 	ProductService productService;
 	
 	//전담연동
-	@RequestMapping("/productDetail/samplesejin.do")
+	@RequestMapping("/productDetail/productDetail.do")
 	 public String boardLista(HttpServletRequest request,Model model,@RequestParam HashMap<String, Object> map) throws Exception{
         request.setAttribute("productNo", map.get("productNo"));
-		return "/productDetail/samplesejin";
+		return "/productDetail/productDetail";
     }
 	
 	// 상품 이미지 url 모두 출력
