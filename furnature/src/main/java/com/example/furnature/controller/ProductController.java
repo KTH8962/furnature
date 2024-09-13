@@ -21,7 +21,13 @@ public class ProductController {
 	@Autowired
 	ProductService productService;
 	
-	//전담연동
+	// 상품 구매 페이지
+	@RequestMapping("/productDetail/pay.do")
+	public String boardLista(Model model) throws Exception{
+		return "/productDetail/pay";
+	}
+
+	//상품 상세정보 페이지
 	@RequestMapping("/productDetail/productDetail.do")
 	 public String boardLista(HttpServletRequest request,Model model,@RequestParam HashMap<String, Object> map) throws Exception{
         request.setAttribute("productNo", map.get("productNo"));
@@ -37,7 +43,7 @@ public class ProductController {
 		resultMap = productService.searchImgUrl(map);
 		return new Gson().toJson(resultMap);
 	}
-	
+	// 상품 상세 정보
 	@RequestMapping(value = "/productDetail/productDetail.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	//@RequestParam
@@ -61,6 +67,7 @@ public class ProductController {
 		resultMap = productService.productList(map);
 		return new Gson().toJson(resultMap);
 	}
+	
 	//카테고리 리스트
 	@RequestMapping(value = "/product/cateList.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
