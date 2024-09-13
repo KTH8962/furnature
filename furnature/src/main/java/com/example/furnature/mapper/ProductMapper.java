@@ -18,6 +18,10 @@ public interface ProductMapper {
 
 	//상품 리스트
 	List<Product> productList(HashMap<String, Object> map);
+	
+	//상품 카운트
+	int productCnt(HashMap<String,Object> map);
+	
 	//카테고리 리스트
 	List<Product> cateList(HashMap<String, Object> map);
 

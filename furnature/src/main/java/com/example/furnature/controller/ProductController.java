@@ -14,21 +14,26 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.furnature.dao.ProductService;
 import com.google.gson.Gson;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @Controller
 public class ProductController {
 	@Autowired
 	ProductService productService;
 	
-	//상품 상세정보 페이지
-	@RequestMapping("/productDetail/productDetail.do")
-	public String productDetail(Model model) throws Exception{
-		return "/productDetail/productDetail";
-	}
 	// 상품 구매 페이지
 	@RequestMapping("/productDetail/pay.do")
 	public String boardLista(Model model) throws Exception{
 		return "/productDetail/pay";
 	}
+
+	//상품 상세정보 페이지
+	@RequestMapping("/productDetail/productDetail.do")
+	 public String boardLista(HttpServletRequest request,Model model,@RequestParam HashMap<String, Object> map) throws Exception{
+        request.setAttribute("productNo", map.get("productNo"));
+		return "/productDetail/productDetail";
+    }
+	
 	// 상품 이미지 url 모두 출력
 	@RequestMapping(value = "/productDetail/samplesejin.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
@@ -62,6 +67,7 @@ public class ProductController {
 		resultMap = productService.productList(map);
 		return new Gson().toJson(resultMap);
 	}
+	
 	//카테고리 리스트
 	@RequestMapping(value = "/product/cateList.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody

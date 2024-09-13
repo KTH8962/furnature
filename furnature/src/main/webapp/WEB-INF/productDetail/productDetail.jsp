@@ -24,13 +24,23 @@
 				<div>
 					<select v-model="sizeSelect" @change="fnSelectSize">
 						<option value="">사이즈 선택</option>
-						<option v-for="(item,index) in sizeList" :value="index">{{index}},{{item}}</option>					
+						<option v-for="(item,index) in sizeList" :value="index">
+							<template v-if="index=='0'">
+							{{item}}
+							</template>
+							<template v-if="index=='1'">
+								{{item}} : + 20000 원
+							</template>
+							<template v-if="index=='2'">
+								{{item}} : + 40000 원
+							</template>
+						</option>					
 					</select>
 				</div>
 				<div><!-- 사이즈 선택 후 목록 출력-->
-					<!--<template>
-						{{addPrice}}
-					</template>-->
+						<template v-if="sizeSelect != '' ||sizeSelect == '0'">
+							{{productDetail.productName}} {{sizeSelect}}번 사이즈 {{addPrice}}원
+						</template>
 				</div>
 				<div><!-- 구매/ 커스텀 등 버튼 구현 -->
 					<button type="button" @click="fnPay">구매하기</button>
@@ -73,13 +83,14 @@
 				productDetail : [],
 				sizeList : [],
 				sizeSelect : "",
-				addPrice :""
+				addPrice :	"",
+				productNo : '${productNo}' //전담 연동
             };
         },
         methods: {
             fnGetProductDetail(){
 				var self = this;
-				var nparmap = {};
+				var nparmap = {productNo : self.productNo};
 				$.ajax({
 					url:"/productDetail/productDetail.dox",
 					dataType:"json",	
@@ -122,16 +133,17 @@
 				<!--$.pageChange("pay.do",{productNo : productNo});-->
 			},
 			fnBasket(productNo){
-				<!--$.pageChange(basket.do",{productNo: productNo});-->
+				<!--$.pageChange("basket.do",{productNo: productNo});-->
 			},
 			fnSelectSize(){
 				var self = this;
-				if(self.sizeSelect==0){
-					self.addPrice = self.productDetail.productPrice; 
-				}else if(self.sizeSelect==1){
-					self.addPrice = self.productDetail.productPrice +20000;
-				}else if(self.sizeSelect==2){
-					self.addPrice = self.productDetail.productPrice + 40000;
+				
+				if (self.sizeSelect === 0) {
+				    self.addPrice = parseInt(self.productDetail.productPrice, 10); // 문자열을 숫자로 변환
+				} else if (self.sizeSelect === 1) {
+				    self.addPrice = parseInt(self.productDetail.productPrice, 10) + 20000;
+				} else if (self.sizeSelect === 2) {
+				    self.addPrice = parseInt(self.productDetail.productPrice, 10) + 40000;
 				}
 				console.log(self.sizeSelect);
 				console.log(self.addPrice);
