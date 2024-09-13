@@ -43,13 +43,15 @@
         data() {
             return {
 				urlList : [],
-				productDetail : []
+				productDetail : [],
+				productNo : '${productNo}' //전담 연동
             };
         },
         methods: {
             fnGetProductDetail(){
 				var self = this;
-				var nparmap = {};
+				//전담 연동
+				var nparmap = {productNo : self.productNo};
 				$.ajax({
 					url:"/productDetail/productDetail.dox",
 					dataType:"json",	
