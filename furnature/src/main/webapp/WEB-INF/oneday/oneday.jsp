@@ -6,19 +6,21 @@
 	<jsp:include page="/layout/headlink.jsp"></jsp:include>
 	<style>
 		img{
-			width:600px;
+			width:300px;
 		}
 	</style>	
 </head>
 <body>
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
-		<div v-for = "item in list">
-			<div>{{item.className}}</div> 
-			<div>{{item.classDate}}</div> 
-			<div>{{item.price}}</div> 
-			<div>{{item.classNo}}</div>
-			<div><a href="#" @click="fnChange(item.classNo)"><img :src="item.filePath"></a></div>
+		<div style="display:flex;">
+			<div v-for = "item in list">
+				<div>{{item.className}}</div> 
+				<div>{{item.classDate}}</div> 
+				<div>{{item.price}}</div> 
+				<div>{{item.classNo}}</div>
+				<div><a href="#" @click="fnChange(item.classNo)"><img :src="item.filePath"></a></div>
+			</div>
 		</div>
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
