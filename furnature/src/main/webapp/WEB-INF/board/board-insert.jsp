@@ -3,23 +3,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<jsp:include page="/layout/menu.jsp"></jsp:include>
-	<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-	<title>view 기본 세팅 파일</title>
-</head>
-<head>
 	<jsp:include page="/layout/headlink.jsp"></jsp:include>
+
+	<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+	<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 </head>
 <body>
 	<jsp:include page="/layout/header.jsp"></jsp:include>
-
 	<div id="app">
 		<table>
 			<tr>
 				<th>제목</th>
-				<td><input id="boardTitle" v-model="boardTitle"></td>
+				<td><input id="title" v-model="title"></td>
 			</tr>
 			<tr>
 				<th>내용</th>
@@ -28,8 +23,8 @@
 		</table>
 		<button id="btn" @click="fnSave">저장</button>
 	</div>
-
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
+
 </body>
 </html>
 <script>
@@ -83,4 +78,3 @@
     });
     app.mount('#app');
 </script>
-​
