@@ -55,11 +55,28 @@ public class OnedayServiceImpl implements OnedayService{
 	}
 	
 	@Override
-	public HashMap<String, Object> onedayFile(HashMap<String, Object> map) {
+	public HashMap<String, Object> onedayThumb(HashMap<String, Object> map) {
 		HashMap<String,Object> resultMap = new HashMap<>();
-		onedayMapper.onedayFile(map);
+		System.out.println("!!!!!"+map);
+		onedayMapper.onedayThumb(map);
+	
 		resultMap.put("result", ResMessage.RM_SUCCESS);
 		return resultMap;
+	}
+
+	@Override
+	public HashMap<String, Object> classNo(HashMap<String, Object> map) {
+		HashMap<String,Object> resultMap = new HashMap<>();
+		int classNo = onedayMapper.classNo(map);
+		resultMap.put("classNo", classNo);
+		resultMap.put("result", ResMessage.RM_SUCCESS);
+		return resultMap;
+	}
+
+	@Override
+	public HashMap<String, Object> onedayFile(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

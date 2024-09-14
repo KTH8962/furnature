@@ -38,12 +38,13 @@ public class OnedayController {
 		
        return "/oneday/oneday-join";
    }
-
-	@RequestMapping("/oneday/oneday-file.do")
+	
+	@RequestMapping("/oneday/oneday-register.do")
 	 public String onedayFile(Model model) throws Exception{
 
-       return "/oneday/oneday-file";
-   }
+     return "/oneday/oneday-register";
+ }
+	
 	
 	@RequestMapping(value = "/oneday/oneday-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
@@ -77,42 +78,48 @@ public class OnedayController {
 		return new Gson().toJson(resultMap);
 	}
 	
-	@RequestMapping(value = "/oneday/oneday-file.dox")
-    public String result(@RequestParam Map<String, MultipartFile> files, @RequestParam("classNo") int idx, HttpServletRequest request,HttpServletResponse response, Model model)
+	@RequestMapping(value = "/oneday/oneday-thumb.dox")
+	 public String result(@RequestParam("thumb") MultipartFile multi, @RequestParam("classNo") int classNo, HttpServletRequest request,HttpServletResponse response, Model model)
     {
         String url = null;
         String path=System.getProperty("user.dir");
         try {
-        	
-        	for (Map.Entry<String, MultipartFile> entry : files.entrySet()) {
-                MultipartFile multi = entry.getValue();
-                String originFilename = multi.getOriginalFilename();
-                String extName = originFilename.substring(originFilename.lastIndexOf("."), originFilename.length());
-                long size = multi.getSize();
-                String saveFileName = genSaveFileName(extName);
-                
+ 
+            //String uploadpath = request.getServletContext().getRealPath(path);
+            String uploadpath = path;
+            String originFilename = multi.getOriginalFilename();
+            String extName = originFilename.substring(originFilename.lastIndexOf("."),originFilename.length());
+            long size = multi.getSize();
+            String saveFileName = genSaveFileName(extName);
+       
             if(!multi.isEmpty()){
                 File file = new File(path + "\\src\\main\\webapp\\uploadImages\\oneday\\thumb", saveFileName);
                 multi.transferTo(file);
-        
+ 
+                if (file.exists()) {
+                    System.out.println("File uploaded successfully!");
+                } else {
+                    System.out.println("!!!!!File upload failed.");
+                }
+                System.out.println("file check:"+file);
                 HashMap<String, Object> map = new HashMap<String, Object>();
                 map.put("fileName", saveFileName);
                 map.put("filePath", "../uploadImages/oneday/thumb/" + saveFileName);
                 map.put("extName", extName);
-                map.put("fileSize", size);
-                onedayService.onedayFile(map);
+                map.put("size", size);
+                map.put("classNo", classNo);
+                onedayService.onedayThumb(map);
                 // insert 쿼리 실행         
                 
                 model.addAttribute("fileName", multi.getOriginalFilename());
                 model.addAttribute("filePath", file.getAbsolutePath());
-            } 
-        	}
-                return "redirect:oneday-file.do";
-           
+                
+                return "redirect:oneday/oneday.do";
+            }
         }catch(Exception e) {
             System.out.println(e);
         }
-        return "redirect:oneday-file.do";
+        return "redirect:oneday/oneday.do";
     }
     
     // 현재 시간을 기준으로 파일 이름 생성
@@ -131,4 +138,13 @@ public class OnedayController {
         
         return fileName;
     }
+    
+    @RequestMapping(value = "/oneday/oneday-classNo.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String classNo(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = onedayService.classNo(map);
+		return new Gson().toJson(resultMap);
+	}
+	
 } 
