@@ -86,7 +86,7 @@ public class OnedayController {
         try {
  
             //String uploadpath = request.getServletContext().getRealPath(path);
-            String uploadpath = path;
+            String filePath = path;
             String originFilename = multi.getOriginalFilename();
             String extName = originFilename.substring(originFilename.lastIndexOf("."),originFilename.length());
             long size = multi.getSize();
@@ -96,30 +96,26 @@ public class OnedayController {
                 File file = new File(path + "\\src\\main\\webapp\\uploadImages\\oneday\\thumb", saveFileName);
                 multi.transferTo(file);
  
-                if (file.exists()) {
-                    System.out.println("File uploaded successfully!");
-                } else {
-                    System.out.println("!!!!!File upload failed.");
-                }
                 System.out.println("file check:"+file);
                 HashMap<String, Object> map = new HashMap<String, Object>();
                 map.put("fileName", saveFileName);
                 map.put("filePath", "../uploadImages/oneday/thumb/" + saveFileName);
+                map.put("fileSize", size);
                 map.put("extName", extName);
-                map.put("size", size);
                 map.put("classNo", classNo);
                 onedayService.onedayThumb(map);
+                System.out.println("!!!!!!!!"+map);
                 // insert 쿼리 실행         
                 
-                model.addAttribute("fileName", multi.getOriginalFilename());
-                model.addAttribute("filePath", file.getAbsolutePath());
+//                model.addAttribute("fileName", multi.getOriginalFilename());
+//                model.addAttribute("filePath", file.getAbsolutePath());
                 
                 return "redirect:oneday/oneday.do";
             }
         }catch(Exception e) {
             System.out.println(e);
         }
-        return "redirect:oneday/oneday.do";
+        return "redirect:/oneday/oneday.do";
     }
     
     // 현재 시간을 기준으로 파일 이름 생성

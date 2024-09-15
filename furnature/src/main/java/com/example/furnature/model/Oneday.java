@@ -1,6 +1,7 @@
 package com.example.furnature.model;
 import lombok.Data;
 
+@Data
 public class Oneday {
 
 	private String userId;
@@ -18,5 +19,6 @@ public class Oneday {
 	private String extName;
 	private String filePath;
 	private String fileSize;
+	private String orgName;
 	
 }

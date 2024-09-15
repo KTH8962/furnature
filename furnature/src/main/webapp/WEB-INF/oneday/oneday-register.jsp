@@ -110,7 +110,7 @@
 							 if(self.thumb){
 								const formData = new FormData();
 								formData.append('thumb', self.thumb);
-								formData.append('classNo', classNo);
+								formData.append('classNo', self.classNo);
 								$.ajax({
 									url: '/oneday/oneday-thumb.dox',
 									type : 'POST',
@@ -120,6 +120,7 @@
 									success: function(){
 										console.log('업로드 성공!');
 										console.log(self.classNo);
+										location.href="/oneday/oneday.do"
 									}
 								})
 							 }
