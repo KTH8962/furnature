@@ -18,6 +18,10 @@ public interface OnedayMapper {
 	
 	void onedayReg(HashMap<String,Object> map);
 	
+	void onedayThumb(HashMap<String,Object> map);
+	
 	void onedayFile(HashMap<String,Object> map);
+	
+	int classNo(HashMap<String,Object> map);
 
 }
