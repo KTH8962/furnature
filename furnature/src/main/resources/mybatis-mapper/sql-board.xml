@@ -7,14 +7,15 @@
 	<!--게시판 조회-->
 	<select id="selectBoardList" parameterType="hashmap" resultType="com.example.furnature.model.Board">
 		SELECT *
-		FROM TBL_BOARD
-		ORDER BY CDATETIME DESC, BOARD_NO DESC
+		FROM TBL_BOARD B
+		<!--INNER JOIN TBL_USER U ON B.USER_ID = U.USER_ID
+		ORDER BY CDATETIME DESC, BOARD_NO DESC-->
 	</select>
 	
 	<!--게시글 등록-->
 	<insert id="insertBoard" parameterType="hashmap">
 		INSERT INTO TBL_BOARD(BOARD_NO, BOARD_TITLE, BOARD_CONTENTS, USER_ID, CDATETIME, UDATETIME) 
-		VALUES(BOARD_SEQ.NEXTVAL, #{boardTitle}, #{boardContents}, 'test1', SYSDATE, SYSDATE)
+		VALUES(BOARD_SEQ.NEXTVAL, #{boardTitle}, #{boardContents}, #{userName}, SYSDATE, SYSDATE)
 	</insert>
 	
 	<!--게시글 삭제-->

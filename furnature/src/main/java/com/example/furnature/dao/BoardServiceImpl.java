@@ -46,7 +46,7 @@ public class BoardServiceImpl implements BoardService{
 		HashMap<String, Object> resultMap =
 				new HashMap<String, Object>();
 		try {
-			boardMapper.insertBoard(map);
+			boardMapper.insertBoard(map); System.out.println(map);
 			resultMap.put("result", "success");
 			resultMap.put("message", "등록되었습니다.");
 		} catch (Exception e) {
