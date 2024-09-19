@@ -9,8 +9,9 @@
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
 		<div id="container">            
-            <p class="blind">기본페이지</p>
+            <p class="blind">이벤트 페이지</p>
 			<h2 class="sub-tit">경매 리스트</h2>
+			<a href="/event/eventRegister.do">이벤트등록 임시버튼</a>
 			
 			<h2 class="sub-tit">룰렛?</h2>
 		</div>

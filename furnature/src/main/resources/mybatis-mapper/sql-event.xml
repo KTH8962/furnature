@@ -3,8 +3,31 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.furnature.mapper.EventMapper">
+	<insert id="insertAuction" parameterType="hashmap" useGeneratedKeys="true" keyProperty="auctionNo" keyColumn="AUCTION_NO">
+		INSERT INTO TBL_AUCTION
+		VALUES (AUCTION_SEQ.NEXTVAL, #{title}, #{price}, #{id}, TO_DATE(#{startDay}, 'YYYY-MM-DD HH24:MI:SS'), TO_DATE(#{endDay}, 'YYYY-MM-DD HH24:MI:SS'), SYSDATE, SYSDATE, #{contents}, 'test')
+	</insert>
+	
+	<insert id="insertAuctionImg" parameterType="hashmap">
+		INSERT INTO TBL_AUCTION_IMG
+		VALUES (AUCTION_IMG_SEQ.NEXTVAL, #{auctionNo}, #{auctuonImgName}, #{auctuonImgOrgName}, #{auctionImgSize}, #{auctionImgPath})
+	</insert>
+	
+	<update id="updataAuctionPath" parameterType="hashmap">
+		UPDATE TBL_AUCTION
+		SET AUCTION_CONTENTS_IMG_PATH = #{auctionContentsImgPath}
+		WHERE AUCTION_NO = #{auctionNo}
+	</update>
+	
+	<select id="selectAuction" parameterType="hashmap" resultType="com.example.furnature.model.Event">
+		SELECT *
+		FROM TBL_AUCTION
+		WHERE AUCTION_NO = #{actionNo}
+	</select>
+	
 	<select id="selectUser" parameterType="hashmap" resultType="com.example.furnature.model.Event">
 		SELECT *
 		FROM TBL_USER
 	</select>
+	
 </mapper>
