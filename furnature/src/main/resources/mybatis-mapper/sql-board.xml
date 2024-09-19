@@ -21,16 +21,16 @@
 		FROM TBL_BOARD B
 		INNER JOIN TBL_USER U ON B.USER_ID = U.USER_ID
 		LEFT JOIN (
-    	SELECT BOARD_NO, COUNT(BOARDNO) AS CNT
-    	FROM TBL_COMMENT
+    	SELECT BOARD_NO, COUNT(BOARD_NO) AS CNT
+    	FROM TBL_BOARD_RE
     	GROUP BY BOARD_NO
 		) C ON B.BOARD_NO = C.BOARD_NO
 		WHERE 1=1
-		<if test="category != '' and category != null">
+		<!--<if test="category != '' and category != null">
 			AND BOARD_CATEGORY = #{category}
 		</if>
 		<if test="searchOption == 'all'">
-			AND (TITLE LIKE '%' || #{keyword} || '%'
+			AND (BOARD_TITLE LIKE '%' || #{keyword} || '%'
 			OR USER_NAME LIKE '%' || #{keyword} || '%')
 		</if>
 		<if test="searchOption == 'title'">
@@ -40,7 +40,27 @@
 			AND USER_NAME LIKE '%' || #{keyword} || '%'
 		</if>
 		ORDER BY CDATETIME DESC, B.BOARD_NO DESC
-		OFFSET #{startIndex} ROWS FETCH FIRST #{outputNumber} ROWS ONLY
+		OFFSET #{startIndex} ROWS FETCH FIRST #{outputNumber} ROWS ONLY-->
+	</select>
+	
+	<select id="selectBoardListCnt" parameterType="hashmap" resultType="int">
+		SELECT COUNT(*) AS CNT
+		FROM TBL_BOARD B
+		INNER JOIN TBL_USER U ON B.USER_ID = U.USER_ID
+		WHERE 1=1
+		<if test="category != '' and category != null">
+			AND BOARD_CATEGORY = #{category}
+		</if>
+		<if test="searchOption == 'all'">
+			AND (BOARD_TITLE LIKE '%' || #{keyword} || '%'
+			OR USER_NAME LIKE '%' || #{keyword} || '%')
+		</if>
+		<if test="searchOption == 'title'">
+			AND BOARD_TITLE LIKE '%' || #{keyword} || '%'
+		</if>
+		<if test="searchOption == 'name'">
+			AND USER_NAME LIKE '%' || #{keyword} || '%'
+		</if>
 	</select>
 	
 	<!--게시글 등록-->

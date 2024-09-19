@@ -5,7 +5,7 @@
 <mapper namespace="com.example.furnature.mapper.ManageMapper">
 	
 	<!--상품등록-->
-	<select id="enrollProduct" parameterType="hashmap" resultType="com.example.furnature.model.Manage">
+	<insert id="enrollProduct" parameterType="hashmap" useGeneratedKeys="true" keyProperty="productNo" keyColumn="PRODUCT_NO">
 		INSERT INTO TBL_PRODUCT(
 			PRODUCT_NO,
 			PRODUCT_NAME,
@@ -25,5 +25,12 @@
 			VALUES(PRODUCT_NO_SEQ.NEXTVAL,#{productName},#{productWidth},#{productLength},#{productHeight},#{productPrice},
 			#{productColor},#{productSize1},#{productSize2},#{productSize3},#{productCustom},#{productCate1},#{productCate2},
 			SYSDATE,SYSDATE)
-	</select>
+	</insert>
+	
+	<!--상품 썸네일,상품설명 첨부파일 등록-->
+	<insert id="attachProduct" parameterType="hashmap">
+		INSERT INTO
+		TBL_PRODUCT_IMG
+		VALUES(#{productNo},#{productThumbnail},#{productDetail1})
+	</insert>
 </mapper>

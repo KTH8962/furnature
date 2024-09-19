@@ -12,5 +12,7 @@ public interface ProductService {
 	HashMap<String, Object> productList(HashMap<String, Object> map);
 	//카테고리 리스트
 	HashMap<String, Object> cateList(HashMap<String, Object> map);
-
+	
+	//상품 결제
+	HashMap<String, Object> productOrder(HashMap<String, Object> map);
 }

@@ -24,5 +24,8 @@ public interface ProductMapper {
 	
 	//카테고리 리스트
 	List<Product> cateList(HashMap<String, Object> map);
+	
+	//상품 결제
+	void productOrder(HashMap<String, Object> map);
 
 }

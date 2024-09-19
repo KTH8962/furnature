@@ -23,13 +23,17 @@ public class ProductController {
 	
 	// 상품 구매 페이지
 	@RequestMapping("/productDetail/pay.do")
-	public String boardLista(Model model) throws Exception{
+	public String productPay(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception{
+		request.setAttribute("productNo", map.get("productNo"));
+		request.setAttribute("totalPrice", map.get("totalPrice"));
+		request.setAttribute("selectedSize", map.get("selectedSize"));
+		System.out.println("Con@@@@@@@@@@"+map);
 		return "/productDetail/pay";
 	}
 
 	//상품 상세정보 페이지
 	@RequestMapping("/productDetail/productDetail.do")
-	 public String boardLista(HttpServletRequest request,Model model,@RequestParam HashMap<String, Object> map) throws Exception{
+	 public String searchProductDetail(HttpServletRequest request,Model model,@RequestParam HashMap<String, Object> map) throws Exception{
         request.setAttribute("productNo", map.get("productNo"));
 		return "/productDetail/productDetail";
     }
@@ -77,5 +81,24 @@ public class ProductController {
 		resultMap = productService.cateList(map);
 		return new Gson().toJson(resultMap);
 	}
+	// 상품 구매
+	@RequestMapping(value = "/productDetail/pay.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	//@RequestParam
+	public String productPay(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = productService.searchImgUrl(map);
+		return new Gson().toJson(resultMap);
+	}
+	// 상품 결제
+		@RequestMapping(value = "/productDetail/productOrder.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+		@ResponseBody
+		//@RequestParam
+		public String productOrder(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+			HashMap<String, Object> resultMap = new HashMap<String, Object>();
+			System.out.println("CONTROLLLLLLLLLLLL PAY"+map);
+			resultMap = productService.productOrder(map);
+			return new Gson().toJson(resultMap);
+		}
   
 }

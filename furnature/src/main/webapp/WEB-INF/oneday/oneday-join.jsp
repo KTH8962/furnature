@@ -4,7 +4,7 @@
 <html>
 <head>
 	<jsp:include page="/layout/headlink.jsp"></jsp:include>
-	<script src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+	<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 
 	<style>
 		img{

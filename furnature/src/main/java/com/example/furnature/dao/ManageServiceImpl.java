@@ -24,6 +24,7 @@ public class ManageServiceImpl implements ManageService{
 		try {
 			System.out.println("################################"+map);
 			manageMapper.enrollProduct(map);
+			resultMap.put("productNo",map.get("productNo"));
 			resultMap.put("result", "scuccess");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		}catch (Exception e) {
