@@ -5,16 +5,67 @@
 <mapper namespace="com.example.furnature.mapper.BoardMapper">
 	
 	<!--게시판 조회-->
-	<select id="selectBoardList" parameterType="hashmap" resultType="com.example.furnature.model.Board">
+	<!--<select id="selectBoardList" parameterType="hashmap" resultType="com.example.furnature.model.Board">
 		SELECT *
 		FROM TBL_BOARD B
-		<!--INNER JOIN TBL_USER U ON B.USER_ID = U.USER_ID
-		ORDER BY CDATETIME DESC, BOARD_NO DESC-->
+		INNER JOIN TBL_USER U ON B.USER_ID = U.USER_ID
+		ORDER BY CDATETIME DESC, BOARD_NO DESC
+	</select>-->
+	
+	<select id="selectBoardList" parameterType="hashmap" resultType="com.example.furnature.model.Board">
+		SELECT B.*,U.*,NVL(CNT, 0) AS CNT,
+		CASE
+	    WHEN TO_CHAR(B.CDATETIME, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD') THEN TO_CHAR(CDATETIME, 'HH24:MI:SS')
+	    ELSE TO_CHAR(B.CDATETIME, 'YYYY-MM-DD')
+	  	END AS F_CDATETIME	
+		FROM TBL_BOARD B
+		INNER JOIN TBL_USER U ON B.USER_ID = U.USER_ID
+		LEFT JOIN (
+    	SELECT BOARD_NO, COUNT(BOARD_NO) AS CNT
+    	FROM TBL_BOARD_RE
+    	GROUP BY BOARD_NO
+		) C ON B.BOARD_NO = C.BOARD_NO
+		WHERE 1=1
+		<!--<if test="category != '' and category != null">
+			AND BOARD_CATEGORY = #{category}
+		</if>
+		<if test="searchOption == 'all'">
+			AND (BOARD_TITLE LIKE '%' || #{keyword} || '%'
+			OR USER_NAME LIKE '%' || #{keyword} || '%')
+		</if>
+		<if test="searchOption == 'title'">
+			AND BOARD_TITLE LIKE '%' || #{keyword} || '%'
+		</if>
+		<if test="searchOption == 'name'">
+			AND USER_NAME LIKE '%' || #{keyword} || '%'
+		</if>
+		ORDER BY CDATETIME DESC, B.BOARD_NO DESC
+		OFFSET #{startIndex} ROWS FETCH FIRST #{outputNumber} ROWS ONLY-->
+	</select>
+	
+	<select id="selectBoardListCnt" parameterType="hashmap" resultType="int">
+		SELECT COUNT(*) AS CNT
+		FROM TBL_BOARD B
+		INNER JOIN TBL_USER U ON B.USER_ID = U.USER_ID
+		WHERE 1=1
+		<if test="category != '' and category != null">
+			AND BOARD_CATEGORY = #{category}
+		</if>
+		<if test="searchOption == 'all'">
+			AND (BOARD_TITLE LIKE '%' || #{keyword} || '%'
+			OR USER_NAME LIKE '%' || #{keyword} || '%')
+		</if>
+		<if test="searchOption == 'title'">
+			AND BOARD_TITLE LIKE '%' || #{keyword} || '%'
+		</if>
+		<if test="searchOption == 'name'">
+			AND USER_NAME LIKE '%' || #{keyword} || '%'
+		</if>
 	</select>
 	
 	<!--게시글 등록-->
 	<insert id="insertBoard" parameterType="hashmap">
-		INSERT INTO TBL_BOARD(BOARD_NO, BOARD_TITLE, BOARD_CONTENTS, USER_ID, CDATETIME, UDATETIME) 
+		INSERT INTO TBL_BOARD(BOARD_NO, BOARD_TITLE, BOARD_CONTENTS, USER_NAME, CDATETIME, UDATETIME) 
 		VALUES(BOARD_SEQ.NEXTVAL, #{boardTitle}, #{boardContents}, #{userName}, SYSDATE, SYSDATE)
 	</insert>
 	
@@ -22,6 +73,6 @@
 	<delete id="deleteBoard" parameterType="hashmap">
 		DELETE 
 		FROM TBL_BOARD
-		WHERE BOARDNO = #{boardNo}
+		WHERE BOARD_NO = #{boardNo}
 	</delete>
 </mapper>

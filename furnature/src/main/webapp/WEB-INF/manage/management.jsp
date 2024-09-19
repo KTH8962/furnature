@@ -64,15 +64,21 @@
 			<br>
 			카테고리2
 			<div class="ip-ra-txt">
-                <input type="radio" name="category2" v-model=productCate2 value="1" id="r82"><label for="t82">거실</label>
+                <input type="radio" name="category2" v-model=productCate2 value="1" id="r82"><label for="r82">거실</label>
                 <input type="radio" name="category2" v-model=productCate2 value="2" id="r92"><label for="r92">욕실</label>
                 <input type="radio" name="category2" v-model=productCate2 value="3" id="r102"><label for="r102">주방</label>
                 <input type="radio" name="category2" v-model=productCate2 value="4" id="r112"><label for="r112">침실</label>
                 <input type="radio" name="category2" v-model=productCate2 value="5" id="r122"><label for="r122">오피스</label>
             </div>
+			<div>
+				*썸네일
+				<input type="file" accept=".gif,.jpg,.png" @change="fnFileChange($event, 'thumbnail')">
+			</div>
+			<div>
+				*상품설명
+				<input type="file" accept=".gif,.jpg,.png" @change="fnFileChange($event, 'description')">
+			</div>
 			<button @click="fnEnrollProduct">상품등록</button>
-
-		
 		</div>
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
@@ -93,10 +99,19 @@
 				productSize3 : "",
 				productCustom : "",
 				productCate1 : "",
-				productCate2 : ""
+				productCate2 : "",
+				thumbnailFile: null,
+                descriptionFile: null
             };
         },
         methods: {
+			fnFileChange(event,type) {
+				if (type === 'thumbnail') {
+                    this.thumbnailFile = event.target.files[0];
+                } else if (type === 'description') {
+                    this.descriptionFile = event.target.files[0];
+                }
+			},
             fnEnrollProduct(){
 				var self = this;
 				if(self.productName == ""){
@@ -111,11 +126,20 @@
 				}else if(self.productCustom==""){
 					alert("커스텀 유무를 선택해주세요");
 					return;
+				}else if(self.productCate1 == self.productCate2){
+					alert("각각다른 카테고리를 선택해주세요");
+					return;
 				}else if (self.productCate1 == ""|| self.productCate2==""){
 					alert("카테고리를 선택해주세요");
 					return;
 				}else if(self.productSize1==""){
 					alert("사이즈를 입력해주세요");
+					return;
+				}else if(self.thumbnailFile == null){
+					alert("썸네일 이미지를 첨부해주세요");
+					return;
+				}else if(self.descriptionFile == null){
+					alert("상품설명 이미지를 첨부해주세요");
 					return;
 				}
 				var nparmap = {
@@ -138,9 +162,28 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-						if(data.result=="success"){
-							alert("상품등록이 정상적으로 등록 되었습니다.");
-						}
+						var productNo = data.productNo
+						  const formData = new FormData();
+						  if (self.thumbnailFile) {
+                              formData.append('thumbnailFile', self.thumbnailFile);
+                          }
+                          if (self.descriptionFile) {
+                              formData.append('descriptionFile', self.descriptionFile);
+                          }
+						  formData.append('productNo', productNo);
+						  $.ajax({
+							url: '/fileUpload.dox',
+							type: 'POST',
+							data: formData,
+							processData: false,  
+							contentType: false,  
+							success: function() {
+							  console.log('업로드 성공!');
+							},
+							error: function(jqXHR, textStatus, errorThrown) {
+							  console.error('업로드 실패!', textStatus, errorThrown);
+							}
+					  });
 					}
 				});
             },

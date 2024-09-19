@@ -9,5 +9,15 @@ import com.example.furnature.model.Event;
 
 @Mapper
 public interface EventMapper {
-	List<Event> selectEmpList(HashMap<String, Object> map);
+	// 경매 등록
+	void insertAuction(HashMap<String, Object> map);
+	
+	// 썸네일 등록
+	void insertAuctionImg(HashMap<String, Object> map);
+	
+	// 경매 상세 이미지 경로 등록
+	void updataAuctionPath(HashMap<String, Object> map);
+
+	
+	List<Event> selectAuction(HashMap<String, Object> map);
 }
