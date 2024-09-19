@@ -9,7 +9,12 @@
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
 		<div id="container">            
-			
+			<ul style="margin : 20px;">
+				<li><a href="#" @click="fnCategory('')">전체</a></li>
+				<li><a href="#" @click="fnCategory('1')">공지사항</a></li>
+				<li><a href="#" @click="fnCategory('2')">자유게시판</a></li>
+				<li><a href="#" @click="fnCategory('3')">질문게시판</a></li>
+			</ul>
 			<div style="margin : 20px;"> 
 				<select style="margin-right : 5px;">
 					<option value="all">:: 전체 ::</option>
@@ -35,10 +40,11 @@
 					<td>{{item.userName}}</td>
 					<td>{{item.cdateTime}}</td>
 					<td>
-						<template v-if="sessionId == item.userId || sessionStatus == 'A'">
-							<button @click="fnRemove(item.boardNo)">삭제</button></td>
+									<!--|| sessionStatus == 'A'	-->
+						<template v-if="sessionId == item.userId ">
+							<button @click="fnRemove(item.boardNo)">삭제</button>
 						</template>
-					
+					</td>
 				</tr>	
 			</table>
 			<div>
@@ -56,6 +62,7 @@
             return {
 				list : [],
 				keyword : "",
+				category: "",
 				sessionEmail : '${sessionEmail}',
 				sessionStatus : '${sessionStatus}',	
 
@@ -66,6 +73,7 @@
 				var self = this;
 				var nparmap = {
 					keyword : self.keyword,
+					category: self.category
 				};
 				$.ajax({
 					url:"board-list.dox",
@@ -92,6 +100,10 @@
 					}
 				});
 			},
+			fnCategory(category) {
+                this.category = category;  // 선택한 카테고리 ID를 설정
+                this.fnGetList();  // 리스트를 다시 불러옴
+            },
 			fnInsert(){
 				//location.href = "board-insert.do";
 				$.pageChange("board-insert.do",{});
