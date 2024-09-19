@@ -68,10 +68,8 @@
 					</ul>
 				</div>
 				<div>	<!--제품 상세정보 이미지 영역-->
-<!--					<img :src="productDetail.productDetail1" alt="제품상세정보1">
-					<img :src="productDetail.productDetail2" alt="제품상세정보2">
-					<img :src="productDetail.productDetail3" alt="제품상세정보3">
-					<img :src="productDetail.productDetail4" alt="제품상세정보4">	-->
+     			<img :src="productDetail.productDetail1" alt="제품상세정보1">
+					
 				</div>
 				<div><!--배송교환정보 영역-->
 				</div>

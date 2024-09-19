@@ -14,7 +14,7 @@
 		<table>
 			<tr>
 				<th>제목</th>
-				<td><input id="title" v-model="title"></td>
+				<td><input id="title" v-model="boardTitle"></td>
 			</tr>
 			<tr>
 				<th>내용</th>
@@ -33,13 +33,15 @@
             return {
 				boardTitle : "",
 				boardContents : "",
-				sessionId : '${sessionId}'
+				sessionId : '${sessionId}',
+				
             };
         },
         methods: {
 			fnSave (){
 				var self = this;
-				var nparam = {boardTitle : self.boardTitle, boardContents : self.boardContents, userId : self.sessionId};
+				var nparam = {boardTitle : self.boardTitle, boardContents : self.boardContents, userId : self.sessionId, userName : self.sessionId};
+				console.log(self.boardTitle)
 				$.ajax({
 					url:"board-add.dox",
 					dataType:"json",	
@@ -48,7 +50,7 @@
 					success : function(data) { 
 						alert(data.message);
 						if(data.result == "success"){
-							location.href = "board-list.do"
+							 location.href = "board/board.do"
 						}
 					}
 				});
@@ -72,7 +74,7 @@
 
 	        // 에디터 내용이 변경될 때마다 Vue 데이터를 업데이트
 	        quill.on('text-change', function() {
-	            self.contents = quill.root.innerHTML;
+	            self.boardContents = quill.root.innerHTML;
 	        });
         }
     });
