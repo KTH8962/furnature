@@ -10,6 +10,7 @@
 	<div id="app">
 		<div id="container">            
             <p class="blind">샘플페이지</p>
+			세션: {{sessionId}}
             <div style="display: flex; align-items: center; flex-direction: column;">
 				<!--<div>	DB저장된 모든 썸네일 출력
 					<template v-for="item in urlList">
@@ -94,7 +95,9 @@
 				sizeSelect : "",	// select v-model 사용하기 위한 변수
 				addPrice :	"",		// 사이즈에 가격 넣기위한 변수
 				productNo : '${productNo}', //상품페이지 에서 클릭한 상품번호 받아오는 변수
-				selectedSize : []	// 선택된 select 변수로 저장하기위한 리스트
+				selectedSize : [],	// 선택된 select 변수로 저장하기위한 리스트
+				sessionId: "${sessionId}",
+				sessionAuth: "${sessionAuth}"
             };
         },
 		computed: {
@@ -150,8 +153,20 @@
 				confirm('커스텀 하시겠습니까?');
 			},
 			// 결제 버튼
-			fnPay(productNo){
-				<!--$.pageChange("pay.do",{productNo : productNo});-->
+			fnPay(){
+				var self = this;
+				if(self.sessionId == null || self.sessionId == ''){
+					alert('로그인 후 구매 가능합니다.');
+					window.location.reload();
+				}else{
+					if(self.selectedSize == null || self.selectedSize ==''){
+						alert('선택된 상품이 없습니다.');
+						console.log("???"+self.selectedSize);
+					}else{
+						$.pageChange("pay.do",{productNo : self.productNo , totalPrice : self.totalPrice , selectedSize : self.selectedSize});
+					}
+					
+				}
 			},
 			// 장바구니 버튼
 			fnBasket(productNo){
