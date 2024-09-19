@@ -23,7 +23,7 @@
 		<div>수업일자 : {{detail.classDate}}</div>
 		<div>수강료 : {{detail.price}}</div>
 		<div class="onedayJoinForm">
-			신청자 이름 : <input type="text" v-model="participantName">
+			신청자 이름 : <input type="text" v-model="name">
 		</div>
 		<div><button @click="fnOnedayJoin">수강신청</button></div>
     </div>
@@ -43,8 +43,7 @@
 				   name : "",
 				   count : "",
 				   price : "",
-				   payId : "",
-				   participantName : ""
+				   payId : ""
 				
                 };
             },
@@ -105,7 +104,7 @@
 	
 				fnSave(rsp) {
 				    var self = this;
-				    var nparmap = { name : rsp.name, price : rsp.paid_amount, payId : rsp.merchant_uid, classNo:self.classNo, userId:self.userId};
+				    var nparmap = { name : self.name, price : rsp.paid_amount, payId : rsp.merchant_uid, classNo:self.classNo, userId:self.userId};
 				    $.ajax({
 				        url: "/oneday/oneday-pay.dox",
 				        dataType: "json",
