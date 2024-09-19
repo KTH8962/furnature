@@ -18,6 +18,29 @@ public class EventServiceImpl implements EventService{
 	@Autowired
 	EventMapper eventMapper;
 
+	// 경매 리스트 불러오기
+	@Override
+	public HashMap<String, Object> searchAuctionList() {
+		HashMap <String, Object> resultMap = new HashMap<>();
+		try {
+			List<Event> auctionList =  eventMapper.selectAuctionList();
+			System.out.println(auctionList);
+			resultMap.put("auctionList", auctionList);
+			resultMap.put("result", "scuccess");
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (DataAccessException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+		} catch (PersistenceException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+	
 	// 경매 등록
 	@Override
 	public HashMap<String, Object> addAuction(HashMap<String, Object> map) {

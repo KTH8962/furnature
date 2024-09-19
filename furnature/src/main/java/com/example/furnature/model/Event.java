@@ -14,10 +14,10 @@ public class Event {
 	private String auctionUdatetime;
 	private String auctionContents;
 	private String auctionContentsImgPath;
-	private String auctuonImgName;
-	private String auctuonImgOrgName;
-	private String auctuonImgPath;
-	private String auctuonImgSize;
+	private String auctionImgName;
+	private String auctionImgOrgName;
+	private String auctionImgPath;
+	private String auctionImgSize;
 	
 	public int getAuctionNo() {
 		return auctionNo;

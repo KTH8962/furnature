@@ -3,6 +3,8 @@ package com.example.furnature.dao;
 import java.util.HashMap;
 
 public interface EventService {
+	// 경매 리스트 불러오기
+	HashMap<String, Object> searchAuctionList();
 	// 경매 등록
 	HashMap<String, Object> addAuction(HashMap<String, Object> map);
 	// 경매 썸네일 등록

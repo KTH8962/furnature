@@ -136,7 +136,7 @@
 				self.endDay = self.endDay.replace("T"," ");
 				var nparmap = {title: self.title, price: self.price, id: self.sessionId, startDay: self.startDay, endDay: self.endDay, contents: self. contents};
 				$.ajax({
-					url:"/event/event-register.dox",
+					url:"/event/auction-register.dox",
 					dataType:"json",	
 					type : "POST", 
 					data : nparmap,
@@ -156,10 +156,11 @@
 								processData: false,  
 								contentType: false,  
 								success: function(data) {
-								  console.log('업로드 성공!');
+									console.log('업로드 성공!');
+									$.pageChange("/event/event.do",{});
 								},
 								error: function(jqXHR, textStatus, errorThrown) {
-								  console.error('업로드 실패!', textStatus, errorThrown);
+									console.error('업로드 실패!', textStatus, errorThrown);
 								}
 						   });
 						}
