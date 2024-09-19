@@ -8,4 +8,17 @@
 		FROM TBL_USER
 		WHERE USER_ID = #{sessionId}
 	</select>
+	
+	<select id="onedayInfo" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
+		SELECT *
+		FROM TBL_PARTICIPANT P
+		INNER JOIN TBL_CLASS C
+		ON P.CLASS_NO = C.CLASS_NO
+		WHERE P.USER_ID = #{sessionId}
+	</select>
+	
+	<delete id="onedayCancel" parameterType="hashmap">
+		DELETE FROM TBL_PARTICIPANT
+		WHERE CLASS_NO = #{classNo} AND USER_ID = #{sessionId}
+	</delete>
 </mapper>

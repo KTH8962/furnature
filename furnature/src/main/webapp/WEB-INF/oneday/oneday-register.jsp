@@ -69,7 +69,8 @@
 				      this.className = this.className.replace(/[^A-Za-z가-힣 ]+/g, '');
 				    },
 				validatePrice(){
-					this.price = this.price.replace(/[^0~9]/g, '');
+					this.price = this.price.replace(/[^0-9]/, '');
+					
 				},
 				fnClassNo(){
 					var self = this;
