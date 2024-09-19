@@ -53,16 +53,7 @@ public class OnedayServiceImpl implements OnedayService{
 		resultMap.put("result", ResMessage.RM_SUCCESS);
 		return resultMap;
 	}
-	
-	@Override
-	public HashMap<String, Object> onedayThumb(HashMap<String, Object> map) {
-		HashMap<String,Object> resultMap = new HashMap<>();
-		System.out.println("!!!!!"+map);
-		onedayMapper.onedayThumb(map);
-	
-		resultMap.put("result", ResMessage.RM_SUCCESS);
-		return resultMap;
-	}
+
 
 	@Override
 	public HashMap<String, Object> classNo(HashMap<String, Object> map) {
@@ -75,8 +66,12 @@ public class OnedayServiceImpl implements OnedayService{
 
 	@Override
 	public HashMap<String, Object> onedayFile(HashMap<String, Object> map) {
-		// TODO Auto-generated method stub
-		return null;
+		HashMap<String,Object> resultMap = new HashMap<>();
+		System.out.println("!!!!!"+map);
+		onedayMapper.onedayFile(map);
+	
+		resultMap.put("result", ResMessage.RM_SUCCESS);
+		return resultMap;
 	}
 	
 

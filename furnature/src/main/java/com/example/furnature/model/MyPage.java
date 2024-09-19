@@ -14,4 +14,17 @@ public class MyPage {
 	private String userAuth;
 	private String eventRoul;
 	private String eventCheck;
+	
+	//원데이클래스
+	private String classNo;
+	private String joinDate;
+	private String count;
+	private String className;
+	private String price;
+	private String headCount;
+	private String classDate;
+	private String startDay;
+	private String endDay;
+	private String payDay;
+	private String payId;
 }

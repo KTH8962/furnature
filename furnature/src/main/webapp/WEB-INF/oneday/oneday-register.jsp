@@ -17,7 +17,7 @@
 			</div>
 			<p class="tit">클래스명</p>
 			<div class="ip-box">
-			   <input type="text" placeholder="클래스명" v-model="className">
+			   <input type="text" v-model="className" @input="validateClassName">
 			</div>
 			<p class="tit">수업일자</p>
 			<div class="ip-box">
@@ -29,7 +29,7 @@
 			</div>
 			<p class="tit">수강료</p>
 			<div class="ip-box">
-			   <input type="text" v-model="price">
+			   <input type="text" v-model="price" @input="validatePrice">
 			</div>
 			<p class="tit">모집시작일</p>
 			<div class="ip-box">
@@ -39,14 +39,11 @@
 			<div class="ip-box">
 			   <input type="date" v-model="endDay">
 			</div>
-			<p class="tit">썸네일업로드</p>
+			<p class="tit">파일업로드</p>
 			<div class="ip-box">
-			   <input type="file" @change="fnThumbUpload">
+			   <input type="file" multiple @change="fnFileUpload">
+			   <span v-if="file.length > 0">파일{{file.length}}개</span>
 			</div>
-			<!--<p class="tit">본문파일업로드</p>
-			<div class="ip-box">
-			   <input type="file" @change="fnFileUpload">
-			</div>-->
 			<div><button @click="fnSave">저장</button></div>
 		</div>
 	</div>
@@ -64,12 +61,17 @@
 	                price: "",
 	                startDay: "",
 	                endDay: "",
-					thumb : "",
-					file : ""
+					file : []
 	            };
 	        },
 	        methods: {
-				
+				validateClassName() {
+				      this.className = this.className.replace(/[^A-Za-z가-힣 ]+/g, '');
+				    },
+				validatePrice(){
+					this.price = this.price.replace(/[^0-9]/, '');
+					
+				},
 				fnClassNo(){
 					var self = this;
 					var nparam = {}
@@ -85,8 +87,8 @@
 					});	
 				},
 				
-				fnThumbUpload(event){
-					this.thumb = event.target.files[0];
+				fnFileUpload(event){
+					this.file = event.target.files; 
 				},
 				
 				fnSave(){
@@ -100,19 +102,37 @@
 						startDay : self.startDay,
 						endDay : self.endDay				
 					};
+					var startDay = new Date(self.startDay);
+					var endDay = new Date(self.endDay);
+					var classDate = new Date(self.classDate);
+					if(startDay>endDay){
+						alert("모집시작일이 모집마감일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
+						return;
+					}
+					if(classDate<startDay){
+						alert("모집시작일이 수업일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
+						return;
+					}
+					
+					if(!self.classNo || !self.className || !self.classDate || !self.headCount || !self.price || !self.startDay || !self.endDay) {
+					        alert("빈칸을 채워주세요.");
+					        return;
+					    }
+					
 					$.ajax({
 						url:"/oneday/oneday-register.dox",
 						dataType:"json",	
 						type : "POST", 
 						data : nparam,
 						success : function(data) {
-							var classNo = data.classNo;
-							 if(self.thumb){
+							var classNo = data.classNo;	 
+							 if(self.file.length!==0){
 								const formData = new FormData();
-								formData.append('thumb', self.thumb);
-								formData.append('classNo', self.classNo);
+								for(var i=0; i<self.file.length; i++){
+									formData.append('file', self.file[i]);
+								} 	formData.append('classNo', self.classNo);
 								$.ajax({
-									url: '/oneday/oneday-thumb.dox',
+									url: '/oneday/oneday-file.dox',
 									type : 'POST',
 									data : formData,
 									processData : false,
