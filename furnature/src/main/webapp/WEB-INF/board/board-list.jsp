@@ -8,24 +8,31 @@
 <body>
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
-		<div id="container">            
-			<ul style="margin : 20px;">
+		<div id="container">
+			<ul>
 				<li><a href="#" @click="fnCategory('')">전체</a></li>
 				<li><a href="#" @click="fnCategory('1')">공지사항</a></li>
 				<li><a href="#" @click="fnCategory('2')">자유게시판</a></li>
 				<li><a href="#" @click="fnCategory('3')">질문게시판</a></li>
 			</ul>
-			<div style="margin : 20px;"> 
-				<select style="margin-right : 5px;">
+			<div> 
+				<select v-model="searchOption">
 					<option value="all">:: 전체 ::</option>
 					<option value="title">제목</option>
 					<option value="name">작성자</option>
 				</select>
 				<div class="ip-box">
-	                <input type="text" placeholder="검색어" v-model="keyword">
+	                <input placeholder="검색어" v-model="keyword">
 	            </div>
-				<button @click="fnGetList()">검색</button>
+				<button @click="fnGetList(1)">검색</button>
 			</div>
+			<div>
+				<select v-model="selectSize" @change="fnGetList(1)">
+					<option value="5">5개씩</option>
+					<option value="10">10개씩</option>
+					<option value="15">15개씩</option>
+				</select>
+			</div> 
 			<table>
 				<tr>
 					<th>게시글번호</th>
@@ -38,7 +45,7 @@
 					<td>{{item.boardNo}}</td>
 					<td>{{item.boardTitle}}</td>
 					<td>{{item.userName}}</td>
-					<td>{{item.cdateTime}}</td>
+					<td>{{item.fCdateTime}}</td>
 					<td>
 									<!--|| sessionStatus == 'A'	-->
 						<template v-if="sessionId == item.userId ">
@@ -50,6 +57,21 @@
 			<div>
 				<button @click="fnInsert()">글쓰기</button>
 			</div>
+			<div class="pagination">
+			    <button v-if="currentPage > 1"
+				@click=""	
+				>이전</button>
+			    <button v-for="page in totalPages" 
+				:class="{active: page == currentPage}"
+				@click="fnGetList(page)"
+				>
+					 {{ page }}
+			    </button>
+			    <button v-if="currentPage < totalPages"
+				@click="nextButton()"
+				>다음</button>
+			</div>
+			
 		</div>
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
@@ -62,18 +84,28 @@
             return {
 				list : [],
 				keyword : "",
+				searchOption : "all",
 				category: "",
-				sessionEmail : '${sessionEmail}',
-				sessionStatus : '${sessionStatus}',	
-
+				sessionId : '${sessionId}',
+				currentPage: 1,      
+				pageSize: 5,        
+				totalPages: 1,
+				selectSize : 5,
             };
         },
         methods: {
-			fnGetList(){
+			fnGetList(page){
 				var self = this;
+				self.pageSize = self.selectSize;
+				self.currentPage = page;
+				var startIndex = (page-1) * self.pageSize;
+				var outputNumber = self.pageSize;
 				var nparmap = {
 					keyword : self.keyword,
-					category: self.category
+					searchOption : self.searchOption,
+					category: self.category,
+					startIndex : startIndex,
+					outputNumber : outputNumber,
 				};
 				$.ajax({
 					url:"board-list.dox",
@@ -83,6 +115,7 @@
 					success : function(data) { 
 						console.log(data);
 						self.list = data.list;
+						self.totalPages = Math.ceil(data.count / self.pageSize);
 					}
 				});
 	        },
@@ -101,17 +134,30 @@
 				});
 			},
 			fnCategory(category) {
-                this.category = category;  // 선택한 카테고리 ID를 설정
+                this.category = category;  // 선택한 카테고리 설정
                 this.fnGetList();  // 리스트를 다시 불러옴
             },
 			fnInsert(){
 				//location.href = "board-insert.do";
 				$.pageChange("board-insert.do",{});
 			},
+			nextButton(){
+				var self = this;
+				$.ajax({
+					url:"board-list.dox",
+					dataType:"json",	
+					type : "POST", 
+					data : nparmap,
+					success : function(data) { 
+						self.list = data.list;
+						self.currentPage= Mach.add(currentPage +1);
+					}
+				});
+			},
         },
         mounted() {
             var self = this;
-			self.fnGetList();
+			self.fnGetList(1);
         }
     });
     app.mount('#app');

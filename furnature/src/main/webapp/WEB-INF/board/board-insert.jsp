@@ -35,7 +35,6 @@
 				boardContents : "",
 				sessionId : '${sessionId}',
 				
-				
             };
         },
         methods: {
@@ -51,7 +50,7 @@
 					success : function(data) { 
 						alert(data.message);
 						if(data.result == "success"){
-							 location.href = "board-list.do"
+							 location.href = "board/board.do"
 						}
 					}
 				});

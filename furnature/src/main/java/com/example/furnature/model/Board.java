@@ -13,4 +13,11 @@ public class Board {
 	private String boardNotice;
 	private String cdateTime;
 	private String udateTime;
+	
+	private String userEmail;
+	
+	private String boardReNo;
+	
+	private String fCdateTime;
+	private String cnt;
 }
