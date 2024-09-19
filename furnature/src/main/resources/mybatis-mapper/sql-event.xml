@@ -10,7 +10,7 @@
 	
 	<insert id="insertAuctionImg" parameterType="hashmap">
 		INSERT INTO TBL_AUCTION_IMG
-		VALUES (AUCTION_IMG_SEQ.NEXTVAL, #{auctionNo}, #{auctuonImgName}, #{auctuonImgOrgName}, #{auctionImgSize}, #{auctionImgPath})
+		VALUES (AUCTION_IMG_SEQ.NEXTVAL, #{auctionNo}, #{auctionImgName}, #{auctionImgOrgName}, #{auctionImgSize}, #{auctionImgPath})
 	</insert>
 	
 	<update id="updataAuctionPath" parameterType="hashmap">
@@ -19,10 +19,21 @@
 		WHERE AUCTION_NO = #{auctionNo}
 	</update>
 	
-	<select id="selectAuction" parameterType="hashmap" resultType="com.example.furnature.model.Event">
-		SELECT *
-		FROM TBL_AUCTION
-		WHERE AUCTION_NO = #{actionNo}
+	<select id="selectAuctionList" parameterType="hashmap" resultType="com.example.furnature.model.Event">
+		SELECT A.*, I.AUCTION_IMG_PATH
+		FROM TBL_AUCTION A
+		INNER JOIN (
+		    SELECT AUCTION_IMG_PATH, AUCTION_NO
+		    FROM (
+		        SELECT ROW_NUMBER() OVER (PARTITION BY AUCTION_NO ORDER BY AUCTION_NO) RN, AUCTION_IMG_PATH, AUCTION_NO
+		        FROM TBL_AUCTION_IMG
+		        ORDER BY AUCTION_NO DESC
+		    ) 
+		    WHERE RN = 1
+		    OFFSET 0 ROWS FETCH NEXT 4 ROWS ONLY
+		) I ON A.AUCTION_NO = I.AUCTION_NO
+		ORDER BY A.AUCTION_NO DESC 
+		OFFSET 0 ROWS FETCH NEXT 4 ROWS ONLY
 	</select>
 	
 	<select id="selectUser" parameterType="hashmap" resultType="com.example.furnature.model.Event">

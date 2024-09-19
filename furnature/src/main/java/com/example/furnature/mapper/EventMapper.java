@@ -9,6 +9,9 @@ import com.example.furnature.model.Event;
 
 @Mapper
 public interface EventMapper {
+	// 경매 리스트 불러오기
+	List<Event> selectAuctionList();
+	
 	// 경매 등록
 	void insertAuction(HashMap<String, Object> map);
 	
@@ -18,6 +21,4 @@ public interface EventMapper {
 	// 경매 상세 이미지 경로 등록
 	void updataAuctionPath(HashMap<String, Object> map);
 
-	
-	List<Event> selectAuction(HashMap<String, Object> map);
 }

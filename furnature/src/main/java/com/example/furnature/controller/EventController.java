@@ -36,8 +36,18 @@ public class EventController {
 		return "/event/eventRegister";
 	}
 	
+	// 경매 조회 db
+	@RequestMapping(value = "/event/auction-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	//@RequestParam
+	public String auctionList(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = eventService.searchAuctionList();
+		return new Gson().toJson(resultMap);
+	}
+	
 	// 경매 등록 db
-	@RequestMapping(value = "/event/event-register.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/event/auction-register.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	//@RequestParam
 	public String auctionRegister(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
@@ -46,6 +56,7 @@ public class EventController {
 		return new Gson().toJson(resultMap);
 	}
 	
+	// 경매 관련 이미지 등록 db
 	@RequestMapping(value = "/event/thumbUpload.dox")
     public String thumbFile(@RequestParam("thumbFile") MultipartFile[] thumbFile, @RequestParam("contentsFile") MultipartFile contentsFile, @RequestParam("auctionNo") int auctionNo, HttpServletRequest request,HttpServletResponse response, Model model)
     {
@@ -66,10 +77,10 @@ public class EventController {
 	                
 	                HashMap<String, Object> map = new HashMap<String, Object>();
 	                map.put("auctionNo", auctionNo);
-	                map.put("auctuonImgName", saveFileName);
-	                map.put("auctuonImgOrgName",originFilename);
-	                map.put("auctuonImgPath", "/uploadImages/event/thumb" + saveFileName);
-	                map.put("auctuonImgSize", size);
+	                map.put("auctionImgName", saveFileName);
+	                map.put("auctionImgOrgName",originFilename);
+	                map.put("auctionImgPath", "../../uploadImages/event/thumb/" + saveFileName);
+	                map.put("auctionImgSize", size);
 	                //map.put("fileExt", extName);
 	                
 	                // insert 쿼리 실행
@@ -89,7 +100,7 @@ public class EventController {
                 
                 HashMap<String, Object> map = new HashMap<String, Object>();
                 map.put("auctionNo", auctionNo);
-                map.put("auctionContentsImgPath", "/uploadImages/event" + saveFileName);
+                map.put("auctionContentsImgPath", "../../uploadImages/event/" + saveFileName);
                 
                 // insert 쿼리 실행
                 eventService.editAuctionPath(map);
@@ -105,45 +116,6 @@ public class EventController {
         return "redirect:event.do";
     }
 	
-	@RequestMapping(value = "/event/contentsUpload.dox")
-    public String contentsFile(@RequestParam("contentsFile") MultipartFile contentsFile, @RequestParam("auctionNo") int auctionNo, HttpServletRequest request,HttpServletResponse response, Model model)
-    {
-		System.out.println(contentsFile);
-        String url = null;
-        String path=System.getProperty("user.dir");
-        try {
-        	String uploadpath = path + "\\src\\main\\webapp\\uploadImages\\event";
-        	String originFilename = contentsFile.getOriginalFilename();
-        	String extName = originFilename.substring(originFilename.lastIndexOf("."));
-        	long size = contentsFile.getSize();
-        	String saveFileName = genSaveFileName(extName);
-        	
-    		if(!contentsFile.isEmpty()){
-    			File serverFile = new File(uploadpath, saveFileName);
-    			contentsFile.transferTo(serverFile);
-                
-                HashMap<String, Object> map = new HashMap<String, Object>();
-                map.put("auctionNo", auctionNo);
-                map.put("fileName", saveFileName);
-                map.put("fileOrgName",originFilename);
-                map.put("filePath", "/uploadImages/event/thumb" + saveFileName);
-                map.put("fileSize", size);
-                map.put("fileExt", extName);
-                
-                // insert 쿼리 실행
-                //eventService.addBoardFile(map);
-                
-                model.addAttribute("filename", contentsFile.getOriginalFilename());
-                model.addAttribute("uploadPath", serverFile.getAbsolutePath());	                
-            }
-        	model.addAttribute("message", "파일 업로드가 완료되었습니다.");
-        	return "redirect:event.do";
-        }catch(Exception e) {
-            System.out.println(e);
-        }
-        return "redirect:event.do";
-    }
-    
     // 현재 시간을 기준으로 파일 이름 생성
     private String genSaveFileName(String extName) {
         String fileName = "";
