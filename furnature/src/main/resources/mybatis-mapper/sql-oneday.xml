@@ -4,9 +4,13 @@
 
 <mapper namespace="com.example.furnature.mapper.OnedayMapper">
 	<select id="onedayList" parameterType="hashmap" resultType="com.example.furnature.model.Oneday">
-		SELECT * FROM TBL_CLASS C
+		SELECT C.*, O.* FROM TBL_CLASS C
 		INNER JOIN TBL_ONEDAYFILE O
 		ON C.CLASS_NO = O.CLASS_NO
+		WHERE O.FILE_NO = (
+	    SELECT MIN(FILE_NO) 
+	    FROM TBL_ONEDAYFILE 
+	    WHERE CLASS_NO = C.CLASS_NO)
 	</select>
 	
 	<select id="onedayDetail" parameterType="hashmap" resultType="com.example.furnature.model.Oneday">
@@ -25,7 +29,7 @@
 		VALUES (#{classNo}, #{className}, #{price}, #{headCount}, #{classDate}, #{startDay}, #{endDay})
 	</insert>
 	
-	<insert id="onedayThumb" parameterType="hashmap">
+	<insert id="onedayFile" parameterType="hashmap">
 		INSERT INTO TBL_ONEDAYFILE (FILE_NAME, FILE_PATH, FILE_SIZE, EXT_NAME, CLASS_NO, FILE_NO)
 		VALUES (#{fileName}, #{filePath}, #{fileSize}, #{extName}, #{classNo}, FILE_NO_SEQ.NEXTVAL)
 	</insert>
