@@ -46,14 +46,30 @@ public class BoardServiceImpl implements BoardService{
 		HashMap<String, Object> resultMap =
 				new HashMap<String, Object>();
 		try {
-			boardMapper.insertBoard(map);
+			boardMapper.insertBoard(map); System.out.println(map);
 			resultMap.put("result", "success");
-			resultMap.put("message", ResMessage.RM_SUCCESS);
+			resultMap.put("message", "등록되었습니다.");
 		} catch (Exception e) {
 			// TODO: handle exception
 			resultMap.put("result", "fail");
 			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
 		}
+		return resultMap;
+	}
+	
+	@Override
+	public HashMap<String, Object> removeBoard(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> resultMap =
+				new HashMap<String, Object>();
+		try {
+			boardMapper.deleteBoard(map);
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		
 		return resultMap;
 	}
 }

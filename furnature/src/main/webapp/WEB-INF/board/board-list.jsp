@@ -16,7 +16,9 @@
 					<option value="title">제목</option>
 					<option value="name">작성자</option>
 				</select>
-				<input placeholder="검색어" v-model="keyword">
+				<div class="ip-box">
+	                <input type="text" placeholder="검색어" v-model="keyword">
+	            </div>
 				<button @click="fnGetList()">검색</button>
 			</div>
 			<table>
@@ -33,10 +35,10 @@
 					<td>{{item.userName}}</td>
 					<td>{{item.cdateTime}}</td>
 					<td>
-						<!--<template v-if="sessionEmail == item.email || sessionStatus == 'A'">-->
-							<button>삭제</button>
-					</td>
-						<!--</template>-->
+						<template v-if="sessionId == item.userId || sessionStatus == 'A'">
+							<button @click="fnRemove(item.boardNo)">삭제</button></td>
+						</template>
+					
 				</tr>	
 			</table>
 			<div>
@@ -45,6 +47,7 @@
 		</div>
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
+
 </body>
 </html>
 <script>
@@ -53,6 +56,8 @@
             return {
 				list : [],
 				keyword : "",
+				sessionEmail : '${sessionEmail}',
+				sessionStatus : '${sessionStatus}',	
 
             };
         },
@@ -73,6 +78,20 @@
 					}
 				});
 	        },
+			fnRemove(num) {
+				var self = this;
+				var nparmap = {boardNo : num};
+				$.ajax({
+					url:"board-remove.dox",
+					dataType:"json",	
+					type : "POST", 
+					data : nparmap,
+					success : function(data) { 
+						alert(data.message);
+						self.fnGetList();
+					}
+				});
+			},
 			fnInsert(){
 				//location.href = "board-insert.do";
 				$.pageChange("board-insert.do",{});

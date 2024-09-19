@@ -10,6 +10,12 @@ public interface OnedayService {
 	
 	HashMap<String,Object> onedayDetail(HashMap<String,Object> map);
 	
+	HashMap<String,Object> onedayReg(HashMap<String,Object> map);
+	
+	HashMap<String,Object> onedayThumb(HashMap<String,Object> map);
+	
 	HashMap<String,Object> onedayFile(HashMap<String,Object> map);
+	
+	HashMap<String,Object> classNo(HashMap<String,Object> map);
 	
 }	
