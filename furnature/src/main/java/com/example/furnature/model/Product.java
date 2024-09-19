@@ -35,5 +35,8 @@ public class Product {
 	private String productDetail2; //상품 상세이미지2 URL
 	private String productDetail3; //상품 상세이미지3 URL
 	private String productDetail4; //상품 상세이미지4 URL
-
+	
+	//주문
+	private String orderNo;
+	private String orderPrice;
 }

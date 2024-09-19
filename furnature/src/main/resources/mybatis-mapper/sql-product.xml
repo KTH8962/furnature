@@ -72,4 +72,10 @@
 		SELECT *
 		FROM TBL_PRODUCT_CATE
 	</select>
+	
+	<!-- 상품 결제 데이터_  마이페이지에서 구매내역 보려면 구매 사이즈나 개수도 넘겨줘야함-->
+	<select id="productOrder" parameterType="hashmap" resultType="com.example.furnature.model.Product">
+		INSERT INTO TBL_PRODUCT_ORDER (ORDER_NO, PRODUCT_NO, USER_ID, ORDER_PRICE) 
+		VALUES (#{orderNo}, #{productNo}, #{userId}, #{orderPrice})
+	</select>
 </mapper>
