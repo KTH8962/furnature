@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.furnature.dao.BoardService;
 import com.google.gson.Gson;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @Controller
 public class BoardController {
 	@Autowired
@@ -28,8 +30,14 @@ public class BoardController {
 
         return "/board/board-insert";
     }
+	// 게시글 상세보기
+	@RequestMapping("/board/board-view.do") 
+    public String boardView(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception{
+		request.setAttribute("boardNo", map.get("boardNo"));
+        return "/board/board-view";
+    }
 	
-	// 게시글 목록 db
+	// 게시글 목록 
 	@RequestMapping(value = "/board/board-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String searchBoard(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
@@ -54,6 +62,26 @@ public class BoardController {
 		HashMap<String, Object> resultMap 
 			= new HashMap<String, Object>();
 		resultMap = boardService.removeBoard(map);
+		
+		return new Gson().toJson(resultMap);
+	}
+	// 게시글 상세보기
+	@RequestMapping(value = "/board/board-view.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String board_view(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap 
+			= new HashMap<String, Object>();
+		resultMap = boardService.searchBoardInfo(map);
+		
+		return new Gson().toJson(resultMap);
+	}
+	// 게시글 상세보기 삭제
+	@RequestMapping(value = "/board/view-delete.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String view_delete(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap 
+		= new HashMap<String, Object>();
+		resultMap = boardService.deleteContents(map);
 		
 		return new Gson().toJson(resultMap);
 	}

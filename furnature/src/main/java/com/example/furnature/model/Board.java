@@ -9,7 +9,7 @@ public class Board {
 	private String boardContents;
 	private String userId;
 	private String userName;
-	private String boardCategpsy;
+	private String boardCategory;
 	private String boardNotice;
 	private String cdateTime;
 	private String udateTime;
@@ -20,4 +20,5 @@ public class Board {
 	
 	private String fCdateTime;
 	private String cnt;
+	private String maskedUserId;
 }

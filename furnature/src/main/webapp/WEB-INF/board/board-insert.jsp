@@ -40,17 +40,17 @@
         methods: {
 			fnSave (){
 				var self = this;
-				var nparam = {boardTitle : self.boardTitle, boardContents : self.boardContents, userId : self.sessionId, userName : self.sessionId};
+				var nparam = {boardTitle : self.boardTitle, boardContents : self.boardContents, userId : self.sessionId};
 				console.log(self.boardTitle)
 				$.ajax({
 					url:"board-add.dox",
-					dataType:"json",	
+					dataType:"json",
 					type : "POST", 
 					data : nparam,
 					success : function(data) { 
 						alert(data.message);
 						if(data.result == "success"){
-							 location.href = "board/board.do"
+							 location.href = "board.do"
 						}
 					}
 				});

@@ -43,39 +43,42 @@
 				</tr>
 				<tr v-for="item in list">
 					<td>{{item.boardNo}}</td>
-					<td>{{item.boardTitle}}</td>
-					<td>{{item.userName}}</td>
+					<td><a href="#" @click="fnView(item.boardNo)">{{item.boardTitle}}</a></td>
+					<td>{{item.maskedUserId}}</td>
 					<td>{{item.fCdateTime}}</td>
 					<td>
-									<!--|| sessionStatus == 'A'	-->
-						<template v-if="sessionId == item.userId ">
+						<div v-if="sessionId == item.userId || sessionAuth == '2'">
 							<button @click="fnRemove(item.boardNo)">삭제</button>
-						</template>
+						</div>
 					</td>
 				</tr>	
 			</table>
 			<div>
 				<button @click="fnInsert()">글쓰기</button>
 			</div>
+			<!--<template v-if="sessionId == item.userId ">
+				<button @click="fnRemove(item.boardNo)">공지사항 글쓰기</button>
+			</template>-->
+			
 			<div class="pagination">
-			    <button v-if="currentPage > 1"
+			    <!--<button v-if="currentPage > 1"
 				@click=""	
-				>이전</button>
+				>이전</button>-->
 			    <button v-for="page in totalPages" 
 				:class="{active: page == currentPage}"
 				@click="fnGetList(page)"
 				>
 					 {{ page }}
 			    </button>
-			    <button v-if="currentPage < totalPages"
+			    <!--<button v-if="currentPage < totalPages"
 				@click="nextButton()"
-				>다음</button>
+				>다음</button>-->
 			</div>
 			
 		</div>
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
-
+	
 </body>
 </html>
 <script>
@@ -87,6 +90,7 @@
 				searchOption : "all",
 				category: "",
 				sessionId : '${sessionId}',
+				sessionAuth : '${sessionAuth}',
 				currentPage: 1,      
 				pageSize: 5,        
 				totalPages: 1,
@@ -134,12 +138,15 @@
 				});
 			},
 			fnCategory(category) {
-                this.category = category;  // 선택한 카테고리 설정
-                this.fnGetList();  // 리스트를 다시 불러옴
+				var self = this;
+                self.category = category;
+                self.fnGetList();
             },
 			fnInsert(){
-				//location.href = "board-insert.do";
 				$.pageChange("board-insert.do",{});
+			},
+			fnView(boardNo){
+				$.pageChange("board-view.do", {boardNo : boardNo});
 			},
 			nextButton(){
 				var self = this;
