@@ -25,8 +25,8 @@
 	</insert>
 	
 	<insert id="onedayReg" parameterType="hashmap">
-		INSERT INTO TBL_CLASS (CLASS_NO, CLASS_NAME, PRICE, HEAD_COUNT, CLASS_DATE, START_DAY, END_DAY)
-		VALUES (#{classNo}, #{className}, #{price}, #{headCount}, #{classDate}, #{startDay}, #{endDay})
+		INSERT INTO TBL_CLASS (CLASS_NO, CLASS_NAME, PRICE, NUMBER_LIMIT, CLASS_DATE, START_DAY, END_DAY)
+		VALUES (#{classNo}, #{className}, #{price}, #{numberLimit}, #{classDate}, #{startDay}, #{endDay})
 	</insert>
 	
 	<insert id="onedayFile" parameterType="hashmap">
@@ -37,6 +37,32 @@
 	<select id="classNo" parameterType="hashmap" resultType="int">
 		SELECT MAX(CLASS_NO) +1 FROM TBL_CLASS
 	</select>
+	
+	<select id="numberLimit" parameterType="hashmap" resultType="Integer">
+		SELECT 
+		    CASE 
+		        WHEN COUNT(P.CLASS_NO) = C.NUMBER_LIMIT THEN 1 
+		        ELSE 0 
+		    END AS result
+		FROM TBL_PARTICIPANT P
+		INNER JOIN TBL_CLASS C ON P.CLASS_NO = C.CLASS_NO
+		WHERE P.CLASS_NO = #{classNo}
+		GROUP BY C.CLASS_NO, C.NUMBER_LIMIT
+	</select>
 
+	<update id="onedayUpdate" parameterType="hashmap">
+		UPDATE TBL_CLASS 
+			SET 
+			    CLASS_NO = #{classNo}, 
+			    CLASS_NAME = #{className}, 
+			    PRICE = #{price}, 
+			    NUMBER_LIMIT = #{numberLimit}, 
+			    CLASS_DATE = TO_DATE(#{classDate}, 'YYYY-MM-DD HH24:MI:SS'),
+			    START_DAY = TO_DATE(#{startDay}, 'YYYY-MM-DD HH24:MI:SS'), 
+			    END_DAY = TO_DATE(#{endDay}, 'YYYY-MM-DD HH24:MI:SS')
+			WHERE 
+			    CLASS_NO = #{classNo}  
+
+	</update>
 	
 </mapper>	

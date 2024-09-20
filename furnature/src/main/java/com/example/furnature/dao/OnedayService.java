@@ -16,4 +16,7 @@ public interface OnedayService {
 	
 	HashMap<String,Object> classNo(HashMap<String,Object> map);
 	
+	HashMap<String,Object> numberLimit(HashMap<String,Object> map);
+	
+	HashMap<String,Object> onedayUpdate(HashMap<String,Object> map);
 }	

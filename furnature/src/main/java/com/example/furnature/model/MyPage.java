@@ -21,7 +21,7 @@ public class MyPage {
 	private String count;
 	private String className;
 	private String price;
-	private String headCount;
+	private String numberLimit;
 	private String classDate;
 	private String startDay;
 	private String endDay;

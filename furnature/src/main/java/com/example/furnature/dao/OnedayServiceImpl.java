@@ -73,6 +73,25 @@ public class OnedayServiceImpl implements OnedayService{
 		resultMap.put("result", ResMessage.RM_SUCCESS);
 		return resultMap;
 	}
+
+	@Override
+	public HashMap<String, Object> numberLimit(HashMap<String, Object> map) {
+		HashMap<String,Object> resultMap = new HashMap<>();
+		Integer numberLimit = onedayMapper.numberLimit(map);
+		System.out.println("!!!!!"+numberLimit);
+		resultMap.put("numberLimit", numberLimit);
+		resultMap.put("result", ResMessage.RM_SUCCESS);
+		return resultMap;
+	}
+
+	@Override
+	public HashMap<String, Object> onedayUpdate(HashMap<String, Object> map) {
+		HashMap<String,Object> resultMap = new HashMap<>();
+		onedayMapper.onedayUpdate(map);
+		resultMap.put("result", ResMessage.RM_SUCCESS);
+		return resultMap;
+	}
+
 	
 
 }
