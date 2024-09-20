@@ -22,7 +22,7 @@
 					<option value="name">작성자</option>
 				</select>
 				<div class="ip-box">
-	                <input placeholder="검색어" v-model="keyword">
+	                <input type="text" placeholder="검색어" v-model="keyword">
 	            </div>
 				<button @click="fnGetList(1)">검색</button>
 			</div>
@@ -60,11 +60,11 @@
 				<button @click="fnRemove(item.boardNo)">공지사항 글쓰기</button>
 			</template>-->
 			
-			<div class="pagination">
+			<div class="pagenation">
 			    <!--<button v-if="currentPage > 1"
 				@click=""	
 				>이전</button>-->
-			    <button v-for="page in totalPages" 
+			    <button class="num" v-for="page in totalPages" 
 				:class="{active: page == currentPage}"
 				@click="fnGetList(page)"
 				>
