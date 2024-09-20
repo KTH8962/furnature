@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.furnature.mapper.DesignMapper">
+	<insert id="insertDesign" parameterType="hashmap" useGeneratedKeys="true" keyProperty="designNo" keyColumn="DESIGN_NO">
+		INSERT INTO
+		TBL_DESIGN(DESIGN_NO,USER_ID,DESIGN_TITLE,DESIGN_CONTENTS,DESIGN_CHOICE,DESIGN_CDATETIME)
+		VALUES(DESIGN_NO_SEQ.NEXTVAL,#{userId},#{designTitle},#{designContents},'N',SYSDATE)
+	</insert>
+	
+	<insert id="insertDesignFile" parameterType="hashmap">
+		INSERT INTO
+		TBL_DESIGN(DESIGN_IMG_PATH,DESIGN_IMG_NAME)
+		VALUES(#{filePath},#{fileName})
+		WHERE DESIGN_NO = #{designNo}
+	</insert>
+	
+</mapper>

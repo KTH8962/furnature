@@ -26,6 +26,7 @@
 	    <if test="cateNum != null and cateNum != ''">
 	        AND (P.PRODUCT_CATE1 = #{cateNum} OR P.PRODUCT_CATE2 = #{cateNum})
 	    </if>
+	    ORDER BY P.PRODUCT_NO
 	    OFFSET #{startIndex} ROWS FETCH FIRST #{outputNumber} ROWS ONLY
 	</select>
 	
