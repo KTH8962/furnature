@@ -20,4 +20,9 @@ public interface BoardMapper {
 	
 	// 게시글 전체보기
 	int selectBoardListCnt(HashMap<String, Object> map);
+	
+	// 게시글 상세보기
+	Board selectBoardInfo(HashMap<String, Object> map);
+	
+	void deleteContents(HashMap<String, Object> map);
 }
