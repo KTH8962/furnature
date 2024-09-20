@@ -39,4 +39,11 @@ public class Product {
 	//주문
 	private String orderNo;
 	private String orderPrice;
+	
+	//리뷰
+	private String reviewNo;
+	private String reviewRating;
+	private String reviewLike;
+	private String reviewTitle;
+	private String reviewContents;
 }

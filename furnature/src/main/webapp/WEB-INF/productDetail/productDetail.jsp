@@ -60,6 +60,7 @@
 					<button type="button" @click="fnCustom">커스텀 버튼</button>
 				</div>
 				<div><!-- 상세정보 이미지 출력 전에 띄울 버튼?-->
+					<div>이동할때 쓸 A태그==========================</div>
 					<ul>
 						<a href="#"><li>상세정보</li></a>
 						<a href="#"><li>배송교환정보</li></a>
@@ -74,8 +75,26 @@
 				<div><!--배송교환정보 영역-->
 				</div>
 				<div><!--관련추천상품 4개정도 뿌리기-->
+					<div>관련 추천 상품 목록 만들어야함 ==========================</div>
 				</div>
 				<div id="review"> <!-- 제품 리뷰 영역 5개 정도씩 보이게, 페이징처리 추천순 최신순 별점순 ?-->
+					<div>리뷰======================================<button type="button">리뷰작성</div>
+					<div>리뷰목록</div>
+					<div>
+						<div>평점 평균 {{averageRating}}</div>
+					</div>
+					<div><!-- 보고있는 페이지의 상품번호와 맞는 리뷰 목록들 출력-->
+						<template v-for="item in reviewList">
+							<div v-if="item.productNo==productDetail.productNo">
+								<div>리뷰넘버(시퀀스번호) : {{item.reviewNo}}</div>
+								<div>리뷰 제목 : {{item.reviewTitle}}</div>
+								<div>리뷰 내용 :{{item.reviewContents}}</div>
+								<div>평점 : {{item.reviewRating}}</div>
+							</div> <br>
+						</template>
+					</div>
+					<!--보고있는 페이지의 상품번호와 맞는 리뷰 없을때-->
+					<div v-if="reviewList == null || reviewList.length  === 0">등록된 리뷰가 없습니다.</div>
 				</div>
             </div>
         </div>
@@ -95,7 +114,8 @@
 				productNo : '${productNo}', //상품페이지 에서 클릭한 상품번호 받아오는 변수
 				selectedSize : [],	// 선택된 select 변수로 저장하기위한 리스트
 				sessionId: "${sessionId}",
-				sessionAuth: "${sessionAuth}"
+				sessionAuth: "${sessionAuth}",
+				reviewList : []
             };
         },
 		computed: {
@@ -103,10 +123,22 @@
 		    totalPrice() {
 				var self = this;
 				//self.selectedSize.reduce(...) -> selectedSize 배열을 순회해서 total에 누적값 넣어줌
+				//for문 사용하지 않아도 됨
 		        return self.selectedSize.reduce((total, item) => {
 		            return total + (item.price * item.count);
 		        }, 0).toLocaleString();
-		    }
+		    },
+			averageRating(){
+				var self = this;
+				if(self.reviewList.length===0){ // 등록된 리뷰가 없을때 0 리턴.
+					return 0;
+				}	
+				// 총가격 구할때 사용한 같은 방식 sum에 0으로 초기화 시켜준 후 reviewList의 인덱스값(item) 만큼 sum + ~~ 해줌
+				var totalRating = self.reviewList.reduce((sum, item) => { 
+				            return sum + parseFloat(item.reviewRating); //문자열이라 parseFloat 형식 변환해주고 더하기
+				        }, 0);
+				return (totalRating / self.reviewList.length).toString().slice(0, 3);
+			},
 		},
         methods: {
             fnGetProductDetail(){
@@ -141,7 +173,6 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) { 
-						console.log(data);
 						self.urlList = data.urlList;
 					}
 				});
@@ -161,6 +192,14 @@
 						alert('선택된 상품이 없습니다.');
 						console.log("???"+self.selectedSize);
 					}else{
+						
+						for(var i=0; i<self.selectedSize.length;i++){	//선택 순서에 따라 담긴 list에 맞는 사이즈로 변경 
+							for(var j=0; j<self.sizeList.length;j++){
+								if(self.selectedSize[i].size==j){
+									self.selectedSize[i].size = self.sizeList[j];
+								}
+							}
+						}
 						$.pageChange("pay.do",{productNo : self.productNo , totalPrice : self.totalPrice , selectedSize : self.selectedSize});
 					}
 					
@@ -224,12 +263,27 @@
 					self.selectedSize[index].count = 1;
 				}
 					console.log(self.totalPrice);
-			}
+			},
+			fnGetReviewList(){
+				var self = this;
+				var nparmap = {productNo : self.productNo};
+				$.ajax({
+					url:"/productDetail/productReview.dox",
+					dataType:"json",
+					type : "POST", 
+					data : nparmap,
+					success : function(data) { 
+						console.log(data);
+						self.reviewList = data.reviewList;
+					}
+				});
+	      	}
         },
         mounted() {
             var self = this;
 			self.fnGetProductDetail();
 			self.fnGetUrlList();
+			self.fnGetReviewList();
         }
     });
     app.mount('#app');

@@ -2,6 +2,7 @@ package com.example.furnature.controller;
 
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.furnature.dao.ProductService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -91,14 +94,29 @@ public class ProductController {
 		return new Gson().toJson(resultMap);
 	}
 	// 상품 결제
-		@RequestMapping(value = "/productDetail/productOrder.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-		@ResponseBody
-		//@RequestParam
-		public String productOrder(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
-			HashMap<String, Object> resultMap = new HashMap<String, Object>();
-			System.out.println("CONTROLLLLLLLLLLLL PAY"+map);
-			resultMap = productService.productOrder(map);
-			return new Gson().toJson(resultMap);
-		}
+	@RequestMapping(value = "/productDetail/productOrder.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	//@RequestParam
+	public String productOrder(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		String json = map.get("orderList").toString(); 
+		ObjectMapper mapper = new ObjectMapper();
+		List<Object> list = mapper.readValue(json, new TypeReference<List<Object>>(){});
+		
+		map.put("list", list);
+		
+		System.out.println("CONTROLLLLLLLLLLLL PAY"+map);
+		resultMap = productService.productOrder(map);
+		return new Gson().toJson(resultMap);
+	}
+	//상품 리뷰 리스트
+	@RequestMapping(value = "/productDetail/productReview.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	//@RequestParam
+	public String productReview(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = productService.productReview(map);
+		return new Gson().toJson(resultMap);
+	}
   
 }

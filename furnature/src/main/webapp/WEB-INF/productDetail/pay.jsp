@@ -17,8 +17,7 @@
 				<div>주문상품</div>
 				<div>썸네일</div>
 				<div>상품명 : {{productDetail.productName}}</div>
-				<div><template v-for="item in selectedSize">사이즈별 수량 판매가 배송비? 최종구매가 : {{item}}</template></div>
-				
+				<div><template v-for="item in selectedSize">사이즈 {{item.size}} 수량 {{item.count}} 판매가 {{ (item.price*1).toLocaleString() }} <br> </template>총 구매가격 : {{totalPrice}}</div>
 			</div>
 			<div>
 				<div>주문자정보 확인</div>
@@ -178,6 +177,7 @@
 			},
 			fnOrder() {
 				var self = this;
+				var orderList = JSON.stringify(self.selectedSize);
 			  IMP.request_pay({
 			    pg: "html5_inicis.INIpayTest",
 			    pay_method: "card",
@@ -195,7 +195,7 @@
 					   msg += '거래ID : ' + rsp.merchant_uid;
 					   msg += '결제금액 : ' + rsp.paid_amount;
                      	
-						var nparmap = {impUid : rsp.imp_uid, orderNo : rsp.merchant_uid, orderPrice : rsp.paid_amount, userId : self.info.userId ,productNo : self.productNo};
+						var nparmap = {impUid : rsp.imp_uid, orderNo : rsp.merchant_uid, orderPrice : rsp.paid_amount, userId : self.info.userId ,productNo : self.productNo, orderList : orderList};
 						$.ajax({
 							url:"/productDetail/productOrder.dox",
 							dataType:"json",	
@@ -206,9 +206,14 @@
 						});
                    } else { //결제 실패
                        var msg = '결제를 실패하였습니다.';
+					   console.log(rsp.merchant_uid);
+					   console.log(self.info.userId);
+					   console.log(self.productNo);
+					   console.log(self.selectedSize);
+					   
                    }
                    alert(msg);
-				   //document.location.href="/product/product.do";
+				   document.location.href="/product/product.do";
                });
 			},
         },

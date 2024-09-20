@@ -15,4 +15,7 @@ public interface ProductService {
 	
 	//상품 결제
 	HashMap<String, Object> productOrder(HashMap<String, Object> map);
+	
+	//상품 리뷰
+	HashMap<String, Object> productReview(HashMap<String, Object> map);
 }
