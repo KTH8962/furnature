@@ -25,7 +25,9 @@
 		<div class="onedayJoinForm">
 			신청자 이름 : <input type="text" v-model="name">
 		</div>
-		<div><button @click="fnOnedayJoin">수강신청</button></div>
+		<div><button @click="fnOnedayJoin" :disabled="isLimit">수강신청</button></div>
+		
+		<button v-if="isAdmin" @click="fnUpdate(detail.classNo)">수정</button>
     </div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
 </body>
@@ -37,14 +39,17 @@
     const app = Vue.createApp({
             data() {
                 return {
-                   classNo : '${classNo}',
+                   classNo : "${classNo}",
 				   detail : {},
-				   userId : "user1",
+				   userId : "${sessionId}",
 				   name : "",
 				   count : "",
 				   price : "",
-				   payId : ""
-				
+				   payId : "",
+				   numberLimit : "",
+				   isLimit : false,
+				   isAdmin : false,
+				   sessionAuth: "${sessionAuth}"
                 };
             },
             methods: {
@@ -74,13 +79,31 @@
 					if(self.name==''){
 						alert("이름을 입력해주세요");
 						return;
-					}		
-					var payConfirm = confirm("결제하시겠습니까?");
-					if(payConfirm){
-						self.fnPay();						
-					}else{
-						alert("결제를 취소하셨습니다");
-					}	
+					}
+					var nparmap = {classNo:self.classNo};
+					$.ajax({
+						url : "/oneday/oneday-numberLimit.dox",
+						dataType : "json",
+						type : "POST",
+						data : nparmap,
+						success : function(data){
+							self.numberLimit = data.numberLimit;
+							console.log(self.numberLimit);
+							if(self.numberLimit=='1'){
+								self.isLimit = true;
+								alert("모집인원을 초과했습니다.")
+								return;
+							}else if(self.numberLimit=='0' || self.numberLimit==null){
+								self.isLimit = false;
+								var payConfirm = confirm("결제하시겠습니까?");
+								if(payConfirm){
+									self.fnPay();						
+								}else{
+									alert("결제를 취소하셨습니다");
+								}	
+							}
+						}							
+					})				
 			   },
 				fnPay() {
 				    var self = this;
@@ -104,7 +127,7 @@
 	
 				fnSave(rsp) {
 				    var self = this;
-				    var nparmap = { name : self.name, price : rsp.paid_amount, payId : rsp.merchant_uid, classNo:self.classNo, userId:self.userId};
+				    var nparmap = {name : self.name, price : rsp.paid_amount, payId : rsp.merchant_uid, classNo:self.classNo, userId:self.userId};
 				    $.ajax({
 				        url: "/oneday/oneday-pay.dox",
 				        dataType: "json",
@@ -118,11 +141,20 @@
 	                        }
 				        }
 				    }); 
+				},
+				
+				fnUpdate(classNo){
+					var self = this;						
+					$.pageChange("/oneday/oneday-update.do", {classNo:self.classNo});
 				}
-	        },
+	 
+			},
             mounted() {
 				var self = this;
 				self.fnDetail(self.classNo);
+				if (self.sessionAuth === "2") {
+				       self.isAdmin = true;
+				   }
             }
         });
         app.mount('#app');

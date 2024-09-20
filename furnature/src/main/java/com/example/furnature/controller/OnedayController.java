@@ -35,15 +35,20 @@ public class OnedayController {
 	@RequestMapping("/oneday/oneday-join.do")
 	 public String onedayJoin(HttpServletRequest request, Model model, @RequestParam HashMap<String,Object> map) throws Exception{
 		request.setAttribute("classNo", map.get("classNo"));
-		
        return "/oneday/oneday-join";
    }
 	
 	@RequestMapping("/oneday/oneday-register.do")
 	 public String onedayFile(Model model) throws Exception{
 
-     return "/oneday/oneday-register";
+		return "/oneday/oneday-register";
  }
+	
+	@RequestMapping("/oneday/oneday-update.do")
+	 public String update(HttpServletRequest request, Model model, @RequestParam HashMap<String,Object> map) throws Exception{
+		request.setAttribute("classNo", map.get("classNo"));
+		return "/oneday/oneday-update";	
+}
 	
 	
 	@RequestMapping(value = "/oneday/oneday-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
@@ -142,6 +147,22 @@ public class OnedayController {
 	public String classNo(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap = onedayService.classNo(map);
+		return new Gson().toJson(resultMap);
+	}
+    
+    @RequestMapping(value = "/oneday/oneday-numberLimit.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+  	@ResponseBody
+  	public String numberLimit(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+  		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+  		resultMap = onedayService.numberLimit(map);
+  		return new Gson().toJson(resultMap);
+  	}
+    
+    @RequestMapping(value = "/oneday/oneday-update.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String onedayUpdate(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = onedayService.onedayUpdate(map);
 		return new Gson().toJson(resultMap);
 	}
 	

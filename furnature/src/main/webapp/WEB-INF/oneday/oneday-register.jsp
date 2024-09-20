@@ -10,42 +10,95 @@
 <body>
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">	
+		
 		<div class="ip-list">
-	        <p class="tit">클래스번호</p>
-			<div class="ip-box">
-			   <p>{{classNo}}</p>
-			</div>
-			<p class="tit">클래스명</p>
-			<div class="ip-box">
-			   <input type="text" v-model="className" @input="validateClassName">
-			</div>
-			<p class="tit">수업일자</p>
-			<div class="ip-box">
-			   <input type="date" v-model="classDate">
-			</div>
-			<p class="tit">수강인원</p>
-			<div class="ip-box">
-			   <input type="number" v-model="headCount">
-			</div>
-			<p class="tit">수강료</p>
-			<div class="ip-box">
-			   <input type="text" v-model="price" @input="validatePrice">
-			</div>
-			<p class="tit">모집시작일</p>
-			<div class="ip-box">
-			   <input type="date" v-model="startDay">
-			</div>
-			<p class="tit">모집마감일</p>
-			<div class="ip-box">
-			   <input type="date" v-model="endDay">
-			</div>
-			<p class="tit">파일업로드</p>
+		    <div class="tit-box">
+		        <p class="tit">클래스번호</p>
+		    </div>
+		    <div class="bot-box">
+		        <div class="ip-box">
+		            <p>{{classNo}}</p>
+		        </div>
+		    </div>
+		</div>
+		
+		<div class="ip-list">
+		    <div class="tit-box">
+		        <p class="tit">클래스명</p>
+		    </div>
+		    <div class="bot-box">
+		        <div class="ip-box">
+		            <input type="text" v-model="className" @input="validateClassName">
+		        </div>
+		    </div>
+		</div>
+		
+		<div class="ip-list">
+		    <div class="tit-box">
+		        <p class="tit">수업일자</p>
+		    </div>
+		    <div class="bot-box">
+		        <div class="ip-box">
+		            <input type="datetime-local" v-model="classDate">
+		        </div>
+		    </div>
+		</div>
+		
+		<div class="ip-list">
+		    <div class="tit-box">
+		        <p class="tit">수강인원</p>
+		    </div>
+		    <div class="bot-box">
+		        <div class="ip-box">
+		            <input type="number" v-model="numberLimit">
+		        </div>
+		    </div>
+		</div>
+		
+		<div class="ip-list">
+		    <div class="tit-box">
+		        <p class="tit">수강료</p>
+		    </div>
+		    <div class="bot-box">
+		        <div class="ip-box">
+		           <input type="text" v-model="price" @input="validatePrice">
+		        </div>
+		    </div>
+		</div>
+		
+		<div class="ip-list">
+		    <div class="tit-box">
+		        <p class="tit">모집시작일</p>
+		    </div>
+		    <div class="bot-box">
+		        <div class="ip-box">
+		           <input type="datetime-local" v-model="startDay">
+		        </div>
+		    </div>
+		</div>
+		
+		<div class="ip-list">
+		    <div class="tit-box">
+		        <p class="tit">모집마감일</p>
+		    </div>
+		    <div class="bot-box">
+		        <div class="ip-box">
+		           <input type="datetime-local" v-model="endDay">
+		        </div>
+		    </div>
+		</div>
+		
+		<div class="ip-list">
+		    <div class="tit-box">
+		        <p class="tit">파일업로드</p>
+		    </div>
 			<div class="ip-box">
 			   <input type="file" multiple @change="fnFileUpload">
 			   <span v-if="file.length > 0">파일{{file.length}}개</span>
 			</div>
-			<div><button @click="fnSave">저장</button></div>
+			<div><button @click="fnSave">저장</button></div>			
 		</div>
+		
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
 </body>
@@ -57,7 +110,7 @@
 					classNo : "",
 	                className: "",
 	                classDate: "",
-	                headCount: "",
+	                numberLimit : "",
 	                price: "",
 	                startDay: "",
 	                endDay: "",
@@ -97,7 +150,7 @@
 						classNo : self.classNo,
 						className : self.className, 
 						classDate : self.classDate,
-						headCount : self.headCount,
+						numberLimit : self.numberLimit,
 						price : self.price,
 						startDay : self.startDay,
 						endDay : self.endDay				
@@ -114,7 +167,7 @@
 						return;
 					}
 					
-					if(!self.classNo || !self.className || !self.classDate || !self.headCount || !self.price || !self.startDay || !self.endDay) {
+					if(!self.classNo || !self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay) {
 					        alert("빈칸을 채워주세요.");
 					        return;
 					    }

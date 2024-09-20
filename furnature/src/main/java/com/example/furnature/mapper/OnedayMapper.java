@@ -21,5 +21,10 @@ public interface OnedayMapper {
 	void onedayFile(HashMap<String,Object> map);
 	
 	int classNo(HashMap<String,Object> map);
+	
+	Integer numberLimit(HashMap<String,Object> map);
+	
+	void onedayUpdate(HashMap<String,Object> map);
+	
 
 }

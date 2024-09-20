@@ -116,8 +116,7 @@
 		  <artifactId>sdk</artifactId>
 		  <version>4.2.7</version>
 		</dependency>
-	
-		
+
 		
 		<!-- Log4j2 dependencies -->
 		<dependency>
