@@ -26,7 +26,7 @@ public class EventServiceImpl implements EventService{
 			List<Event> auctionList =  eventMapper.selectAuctionList();
 			System.out.println(auctionList);
 			resultMap.put("auctionList", auctionList);
-			resultMap.put("result", "scuccess");
+			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {
 			resultMap.put("result", "fail");
@@ -41,14 +41,19 @@ public class EventServiceImpl implements EventService{
 		return resultMap;
 	}
 	
-	// 경매 등록
+	// 경매 등록 + 수정
 	@Override
 	public HashMap<String, Object> addAuction(HashMap<String, Object> map) {
 		HashMap <String, Object> resultMap = new HashMap<>();
 		try {
-			eventMapper.insertAuction(map);
-			resultMap.put("auctionNo", map.get("auctionNo"));
-			resultMap.put("result", "scuccess");
+			String auctionNo = (String) map.get("auctionNo");
+			if(auctionNo == "" || auctionNo.isEmpty()) {
+				eventMapper.insertAuction(map);
+				resultMap.put("auctionNo", map.get("auctionNo"));
+			} else {
+				eventMapper.updateAuction(map);
+			}
+			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {
 			resultMap.put("result", "fail");
@@ -70,7 +75,7 @@ public class EventServiceImpl implements EventService{
 		try {
 			System.out.println(map);
 			eventMapper.insertAuctionImg(map);
-			resultMap.put("result", "scuccess");
+			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {
 			resultMap.put("result", "fail");
@@ -91,7 +96,7 @@ public class EventServiceImpl implements EventService{
 		HashMap <String, Object> resultMap = new HashMap<>();
 		try {
 			eventMapper.updataAuctionPath(map);
-			resultMap.put("result", "scuccess");
+			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {
 			resultMap.put("result", "fail");
@@ -106,15 +111,59 @@ public class EventServiceImpl implements EventService{
 		return resultMap;
 	}
 	
-	
+	// 경매 상세 페이지 조회
 	@Override
-	public HashMap<String, Object> searchSampleList(HashMap<String, Object> map) {
-		// TODO Auto-generated method stub
+	public HashMap<String, Object> searchAuctionDetail(HashMap<String, Object> map) {
 		HashMap <String, Object> resultMap = new HashMap<>();
 		try {
-			//List<Sample> event = eventMapper;
-			resultMap.put("result", "scuccess");
+			List<Event> detailList = eventMapper.selectDetail(map);
+			resultMap.put("detailList", detailList);
+			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (DataAccessException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+		} catch (PersistenceException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+
+	// 경매 수정 - 정보 불러오기
+	@Override
+	public HashMap<String, Object> searchEditInfo(HashMap<String, Object> map) {
+		HashMap <String, Object> resultMap = new HashMap<>();
+		try {
+			Event editInfo = eventMapper.selectEditInfo(map);
+			resultMap.put("editInfo", editInfo);
+			resultMap.put("result", "success");
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (DataAccessException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+		} catch (PersistenceException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+
+	// 경매 삭제 + 경매 썸네일 리스트 삭제
+	@Override
+	public HashMap<String, Object> removeAuction(HashMap<String, Object> map) {
+		HashMap <String, Object> resultMap = new HashMap<>();
+		try {
+			eventMapper.deleteAuctionImg(map);
+			eventMapper.deleteAuction(map);
+			resultMap.put("result", "success");
+			resultMap.put("message", "이미지 삭제를 " + ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {
 			resultMap.put("result", "fail");
 			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);

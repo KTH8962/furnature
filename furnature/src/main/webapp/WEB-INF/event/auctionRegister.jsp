@@ -30,26 +30,28 @@
 			        </div>
 			    </div>
 			</div>
-			<div class="ip-list">
-			    <div class="tit-box">
-			        <p class="tit">경매 썸네일 이미지</p>
-			    </div>
-			    <div class="bot-box">
-			        <div class="ip-box">
-			            <input type="file" multiple @change="fnFileChange($event, 'thumbFile')">
-			        </div>
-			    </div>
-			</div>
-			<div class="ip-list">
-			    <div class="tit-box">
-			        <p class="tit">경매 상세 이미지</p>
-			    </div>
-			    <div class="bot-box">
-			        <div class="ip-box">
-			            <input type="file" @change="fnFileChange($event, 'contentsFile')">
-			        </div>
-			    </div>
-			</div>
+			<template v-if="auctionNo == ''">
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">경매 썸네일 이미지</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+							<input type="file" multiple @change="fnFileChange($event, 'thumbFile')">
+						</div>
+					</div>
+				</div>
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">경매 상세 이미지</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+							<input type="file" @change="fnFileChange($event, 'contentsFile')">
+						</div>
+					</div>
+				</div>
+			</template>
 			<div class="ip-list">
 			    <div class="tit-box">
 			        <p class="tit">경매 상세 설명</p>
@@ -90,15 +92,15 @@
     const app = Vue.createApp({
         data() {
             return {
-				title : "경매제목",
-				price : 2000,
+				title : "",
+				price : "",
 				thumbFile : [],
 				contentsFile : "",
-				contents : "123",
-				startDay : "2024-09-23T12:25",
-				endDay : "2024-09-28T12:25",
-				//sessionId : '${sessionId}'
-				sessionId : 'admin'
+				contents : "",
+				startDay : "",
+				endDay : "",
+				sessionId : "${sessionId}",
+				auctionNo : "${auctionNo}",
             };
         },
         methods: {
@@ -119,8 +121,6 @@
 					return false;
 				} else if (self.compare2(check, self.price, "시작가는 숫자만 입력해주세요.")) {
 					return false;
-				} else if (self.compare(self.thumbFile, "경매 썸네일 이미지 파일을 등록해주세요.")) {
-					return false;
 				} else if (self.compare(self.startDay, "시작일을 입력해주세요.")) {
 					return false;
 				} else if (self.compare(self.endDay, "종료일을 입력해주세요.")) {
@@ -132,9 +132,20 @@
 					alert("종료일 시작일 보다 늦은 일자로 선택해주세요");
 					return false;
 				} 
+				//if(self.auctionNo != '') {} 
+				if(self.auctionNo == '') {
+					 if (self.compare(self.thumbFile, "경매 썸네일 이미지 파일을 등록해주세요.")) {
+						return false;
+					} else if (self.compare(self.contentsFile, "경매 상세 이미지 파일을 등록해주세요.")) {
+						return false;
+					} 
+				}
+
 				self.startDay = self.startDay.replace("T"," ");
+				//self.startDay = self.startDay + ":00";
 				self.endDay = self.endDay.replace("T"," ");
-				var nparmap = {title: self.title, price: self.price, id: self.sessionId, startDay: self.startDay, endDay: self.endDay, contents: self. contents};
+				//self.endDay = self.endDay + ":00";
+				var nparmap = {title: self.title, price: self.price, id: self.sessionId, startDay: self.startDay, endDay: self.endDay, contents: self. contents, auctionNo: self.auctionNo};
 				$.ajax({
 					url:"/event/auction-register.dox",
 					dataType:"json",	
@@ -142,27 +153,31 @@
 					data : nparmap,
 					success : function(data) {
 						var auctionNo = data.auctionNo;
-						if (self.thumbFile) {
-							const formData = new FormData();
-							for (var i = 0; i < self.thumbFile.length; i++) {
-	                        	formData.append('thumbFile', self.thumbFile[i]);
-	                   		}
-							formData.append('contentsFile', self.contentsFile);
-							formData.append('auctionNo', auctionNo);
-						  	$.ajax({
-								url: '/event/thumbUpload.dox',
-								type: 'POST',
-								data: formData,
-								processData: false,  
-								contentType: false,  
-								success: function(data) {
-									console.log('업로드 성공!');
-									$.pageChange("/event/event.do",{});
-								},
-								error: function(jqXHR, textStatus, errorThrown) {
-									console.error('업로드 실패!', textStatus, errorThrown);
-								}
-						   });
+						if(self.auctionNo == ''){
+							if (self.thumbFile) {
+								const formData = new FormData();
+								for (var i = 0; i < self.thumbFile.length; i++) {
+									formData.append('thumbFile', self.thumbFile[i]);
+								   }
+								formData.append('contentsFile', self.contentsFile);
+								formData.append('auctionNo', auctionNo);
+								  $.ajax({
+									url: '/event/thumbUpload.dox',
+									type: 'POST',
+									data: formData,
+									processData: false,  
+									contentType: false,  
+									success: function(data) {
+										console.log('업로드 성공!');
+										$.pageChange("/event/event.do",{});
+									},
+									error: function(jqXHR, textStatus, errorThrown) {
+										console.error('업로드 실패!', textStatus, errorThrown);
+									}
+							   });
+							}
+						} else {
+							$.pageChange("/event/auctionDetail.do",{auctionNo: self.auctionNo});
 						}
 					}
 				});
@@ -188,10 +203,31 @@
 				} else if (targeting == "contentsFile") {
 					self.contentsFile = event.target.files[0];
 				}
+			},
+			fnGetInfo() {
+				var self = this;
+				if(self.auctionNo != '') {
+					var nparmap = {auctionNo: self.auctionNo};
+					$.ajax({
+					url:"/event/auction-edit.dox",
+					dataType:"json",	
+					type : "POST", 
+					data : nparmap,
+					success : function(data) {
+						self.title = data.editInfo.auctionTitle;
+						self.price = data.editInfo.auctionPrice;
+						self.infoPrice = data.editInfo.auctionPrice;
+						self.contents = data.editInfo.auctionContents;
+						self.startDay = data.editInfo.startDay;
+						self.endDay = data.editInfo.endDay;
+					}
+				});
+				}
 			}
         },
         mounted() {
             var self = this;
+			self.fnGetInfo();
         }
     });
     app.mount('#app');		

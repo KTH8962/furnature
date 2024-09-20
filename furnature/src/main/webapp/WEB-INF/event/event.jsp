@@ -17,13 +17,13 @@
 						<img :src="item.auctionImgPath" :alt="item.auctionTitle + '이미지'">
 						<span>{{item.auctionNo}}</span><br>
 						<span>{{item.auctionTitle}}</span><br>
-						<span>{{item.auctionPrice}}</span><br>
+						<span>{{item.auctionPriceCurrent}}</span><br>
 						<span>{{item.startDay}}</span><br>
 						<span>{{item.endDay}}</span>
 					</a>
 				</li>
 			</ul>
-			<a href="/event/eventRegister.do">이벤트등록 임시버튼</a>
+			<a href="/event/auctionRegister.do">경매등록 임시버튼</a>
 			
 			<h2 class="sub-tit">룰렛?</h2>
 		</div>
@@ -54,7 +54,7 @@
 				});
             },
 			fnDeatil(auctionNo) {
-				console.log(auctionNo);
+				$.pageChange("auctionDetail.do",{auctionNo: auctionNo});
 			}
         },
         mounted() {

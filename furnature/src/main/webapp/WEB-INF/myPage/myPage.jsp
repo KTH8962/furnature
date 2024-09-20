@@ -37,6 +37,14 @@
 					        <p>{{info.userName}}</p>
 					    </div>
 					</div>
+					<div class="ip-list" v-if="sessionId != 'admin'">
+					    <div class="tit-box">
+					        <p class="tit">마일리지</p>
+					    </div>
+					    <div class="bot-box">
+					        <p>{{info.mileagePrice}}</p>
+					    </div>
+					</div>
 					<div class="ip-list">
 					    <div class="tit-box">
 					        <p class="tit">주소</p>
@@ -116,6 +124,7 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
+						console.log(data);
 						self.info = data.info;
 					}
 				});
