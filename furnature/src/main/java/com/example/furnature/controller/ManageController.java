@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.furnature.dao.ManageService;
+import com.example.furnature.dao.ProductService;
 import com.example.furnature.mapper.ManageMapper;
 import com.google.gson.Gson;
 
@@ -27,13 +28,59 @@ public class ManageController {
 	 ManageService manageService;
 	 @Autowired
 	 ManageMapper manageMapper;
+	 @Autowired
+	 ProductService productService;
 
 	//상품등록
 	@RequestMapping("/manage/management.do")
 	public String product(Model model) throws Exception{
 		return "/manage/management";
 	}
+	//상품관리
+	@RequestMapping("/manage/productmanage.do")
+	public String productmanage(Model model) throws Exception{
+		return "/manage/manage-product";
+	}
+	//상품수정
+	@RequestMapping("/manage/productUpdate.do")
+	 public String productUpdate(HttpServletRequest request,Model model,@RequestParam HashMap<String, Object> map) throws Exception{
+        request.setAttribute("productNo", map.get("productNo"));
+		return "/manage/manage-productUpdate";
+	}
 
+	
+	//상품관리
+	@RequestMapping(value = "/manage/productManage.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String productmanage(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = productService.productList(map);
+		return new Gson().toJson(resultMap);
+	}
+	//상품수정목록
+	@RequestMapping(value = "/manage/productUpdateList.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String productUpdateList(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = manageService.productUpdateList(map);
+		return new Gson().toJson(resultMap);
+	}
+	//상품수정
+	@RequestMapping(value = "/manage/manageProductUpdate.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String productUpdate(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = manageService.productUpdate(map);
+		return new Gson().toJson(resultMap);
+	}
+	//상품삭제
+	@RequestMapping(value = "/manage/productDelete.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String productdelete(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = manageService.productDelete(map);
+		return new Gson().toJson(resultMap);
+	}
 	
 	//상품등록
 	@RequestMapping(value = "/manage/manageProduct.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
@@ -74,7 +121,7 @@ public class ManageController {
             }
             
 	            manageMapper.attachProduct(map);
-                return "redirect:product/product.do";
+              
             
         
         }catch(Exception e) {

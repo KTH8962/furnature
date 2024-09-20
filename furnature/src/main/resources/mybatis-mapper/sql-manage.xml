@@ -33,4 +33,40 @@
 		TBL_PRODUCT_IMG
 		VALUES(#{productNo},#{productThumbnail},#{productDetail1})
 	</insert>
+	<!--상품삭제-->
+	<delete id="productDelete" parameterType="hashmap">
+		DELETE
+		FROM TBL_PRODUCT
+		WHERE PRODUCT_NO = #{productNo}
+	</delete>
+	<!--첨부파일삭제-->
+	<delete id="productAttachDelete" parameterType="hashmap">
+		DELETE
+		FROM TBL_PRODUCT_IMG
+		WHERE PRODUCT_NO = #{productNo}
+	</delete>
+	
+	<select id="productUpdateList" parameterType="hashmap" resultType="com.example.furnature.model.Manage">
+		SELECT *
+		FROM TBL_PRODUCT P
+		WHERE PRODUCT_NO = #{productNo}
+	</select>
+	<update id="productUpdate" parameterType="hashmap">
+		UPDATE TBL_PRODUCT
+		SET
+		PRODUCT_NAME = #{productName},
+		PRODUCT_WIDTH = #{productWidth},
+		PRODUCT_LENGTH = #{productLength},
+		PRODUCT_HEIGHT = #{productHeight},
+		PRODUCT_PRICE = #{productPrice},
+		PRODUCT_COLOR = #{productColor},
+		PRODUCT_SIZE1 = #{productSize1},
+		PRODUCT_SIZE2 = #{productSize2},
+		PRODUCT_SIZE3 = #{productSize3},
+		PRODUCT_CUSTOM = #{productCustom},
+		PRODUCT_CATE1 = #{productCate1},
+		PRODUCT_CATE2 = #{productCate2},
+		PRODUCT_UDATETIME = SYSDATE
+		WHERE PRODUCT_NO = #{productNo}
+	</update>
 </mapper>
