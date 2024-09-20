@@ -5,8 +5,17 @@
 <mapper namespace="com.example.furnature.mapper.MyPageMapper">
 	<select id="selectUser" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
 		SELECT *
-		FROM TBL_USER
-		WHERE USER_ID = #{sessionId}
+		FROM TBL_USER U
+		<if test="sessionId != 'admin'">
+		INNER JOIN (
+		    SELECT USER_ID,
+			    SUM(CASE WHEN MILEAGE_STATUS = '적립' THEN MILEAGE_PRICE
+			        WHEN MILEAGE_STATUS = '사용' THEN -MILEAGE_PRICE END) MILEAGE_PRICE
+			FROM TBL_MILEAGE
+			GROUP BY USER_ID
+		) M ON U.USER_ID = M.USER_ID
+		</if>
+		WHERE U.USER_ID = #{sessionId}
 	</select>
 	
 	<select id="onedayInfo" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">

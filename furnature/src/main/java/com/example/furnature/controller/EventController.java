@@ -1,6 +1,7 @@
 package com.example.furnature.controller;
 
 import java.io.File;
+import java.net.URLDecoder;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.furnature.constants.ResMessage;
 import com.example.furnature.dao.EventService;
 import com.google.gson.Gson;
 
@@ -31,9 +33,17 @@ public class EventController {
 	}
 	
 	// 경매 등록 페이지
-	@RequestMapping("/event/eventRegister.do")
-	public String eventInsert(Model model) throws Exception{
-		return "/event/eventRegister";
+	@RequestMapping("/event/auctionRegister.do")
+	public String eventInsert(Model model, HttpServletRequest request, @RequestParam HashMap<String, Object> map) throws Exception{
+		request.setAttribute("auctionNo", map.get("auctionNo"));
+		return "/event/auctionRegister";
+	}
+	
+	// 경매 상세 페이지
+	@RequestMapping("/event/auctionDetail.do")
+	public String eventDetail(Model model, HttpServletRequest request, @RequestParam HashMap<String, Object> map) throws Exception{
+		request.setAttribute("auctionNo", map.get("auctionNo"));
+		return "/event/auctionDetail";
 	}
 	
 	// 경매 조회 db
@@ -43,6 +53,26 @@ public class EventController {
 	public String auctionList(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap = eventService.searchAuctionList();
+		return new Gson().toJson(resultMap);
+	}
+	
+	// 경매 상세 페이지 조회 db
+	@RequestMapping(value = "/event/auction-detail.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	//@RequestParam
+	public String auctionDetail(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = eventService.searchAuctionDetail(map);
+		return new Gson().toJson(resultMap);
+	}
+	
+	// 경매 수정 페이지 조회 db
+	@RequestMapping(value = "/event/auction-edit.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	//@RequestParam
+	public String auctionEdit(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = eventService.searchEditInfo(map);
 		return new Gson().toJson(resultMap);
 	}
 	
@@ -56,11 +86,45 @@ public class EventController {
 		return new Gson().toJson(resultMap);
 	}
 	
+	// 경매 삭제 db
+	@RequestMapping(value = "/event/auction-remove.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	//@RequestParam
+	public String auctionRemove(Model model, @RequestParam("auctionTumb") String[] thumbList, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		//resultMap = eventService.addAuction(map);
+		
+		try {
+			String path=System.getProperty("user.dir");
+			String uploadpath = path + "\\src\\main\\webapp\\uploadImages\\event\\";
+			
+			System.out.println(map);
+			for(String thumb : thumbList) {
+				File file = new File(uploadpath + "thumb\\" + thumb);
+				file.delete();
+			}
+			
+			String detailName = map.get("auctionDetail").toString(); 
+			if(detailName != "" || !detailName.isEmpty()) { 
+				File file = new File(uploadpath + detailName);
+				file.delete(); 
+			}
+			 
+			map.remove("auctionTumb");
+			map.remove("auctionDetail");
+			System.out.println(map);
+			resultMap = eventService.removeAuction(map);
+			resultMap.put("file", ResMessage.RM_REMOVE);
+		} catch (Exception e) {
+			resultMap.put("file", ResMessage.RM_FAIL);
+		}
+		return new Gson().toJson(resultMap);
+	}
+	
 	// 경매 관련 이미지 등록 db
 	@RequestMapping(value = "/event/thumbUpload.dox")
     public String thumbFile(@RequestParam("thumbFile") MultipartFile[] thumbFile, @RequestParam("contentsFile") MultipartFile contentsFile, @RequestParam("auctionNo") int auctionNo, HttpServletRequest request,HttpServletResponse response, Model model)
     {
-        String url = null;
         String path=System.getProperty("user.dir");
         try {
         	String uploadpath = path + "\\src\\main\\webapp\\uploadImages\\event";
@@ -93,7 +157,6 @@ public class EventController {
     		if(!contentsFile.isEmpty()){
     			String originFilename = contentsFile.getOriginalFilename();
     			String extName = originFilename.substring(originFilename.lastIndexOf("."));
-    			long size = contentsFile.getSize();
     			String saveFileName = genSaveFileName(extName);
     			File serverFile = new File(uploadpath, saveFileName);
     			contentsFile.transferTo(serverFile);
@@ -101,6 +164,7 @@ public class EventController {
                 HashMap<String, Object> map = new HashMap<String, Object>();
                 map.put("auctionNo", auctionNo);
                 map.put("auctionContentsImgPath", "../../uploadImages/event/" + saveFileName);
+                map.put("auctionContentsImgName", saveFileName);
                 
                 // insert 쿼리 실행
                 eventService.editAuctionPath(map);

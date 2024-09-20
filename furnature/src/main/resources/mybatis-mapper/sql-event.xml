@@ -5,8 +5,19 @@
 <mapper namespace="com.example.furnature.mapper.EventMapper">
 	<insert id="insertAuction" parameterType="hashmap" useGeneratedKeys="true" keyProperty="auctionNo" keyColumn="AUCTION_NO">
 		INSERT INTO TBL_AUCTION
-		VALUES (AUCTION_SEQ.NEXTVAL, #{title}, #{price}, #{id}, TO_DATE(#{startDay}, 'YYYY-MM-DD HH24:MI:SS'), TO_DATE(#{endDay}, 'YYYY-MM-DD HH24:MI:SS'), SYSDATE, SYSDATE, #{contents}, 'test')
+		VALUES (AUCTION_SEQ.NEXTVAL, #{title}, #{price}, #{price}, #{id}, TO_DATE(#{startDay}, 'YYYY-MM-DD HH24:MI'), TO_DATE(#{endDay}, 'YYYY-MM-DD HH24:MI'), SYSDATE, SYSDATE, #{contents}, ' ', ' ')
 	</insert>
+	
+	<update id="updateAuction" parameterType="hashmap">
+		UPDATE TBL_AUCTION
+		SET AUCTION_TITLE = #{title},
+			AUCTION_PRICE = #{price},
+			AUCTION_CONTENTS = #{contents},
+			START_DAY = TO_DATE(#{startDay}, 'YYYY-MM-DD HH24:MI:SS'),
+			END_DAY = TO_DATE(#{endDay}, 'YYYY-MM-DD HH24:MI:SS'),
+			AUCTION_UDATETIME = SYSDATE
+		WHERE AUCTION_NO = #{auctionNo}
+	</update>
 	
 	<insert id="insertAuctionImg" parameterType="hashmap">
 		INSERT INTO TBL_AUCTION_IMG
@@ -27,18 +38,36 @@
 		    FROM (
 		        SELECT ROW_NUMBER() OVER (PARTITION BY AUCTION_NO ORDER BY AUCTION_NO) RN, AUCTION_IMG_PATH, AUCTION_NO
 		        FROM TBL_AUCTION_IMG
-		        ORDER BY AUCTION_NO DESC
 		    ) 
 		    WHERE RN = 1
-		    OFFSET 0 ROWS FETCH NEXT 4 ROWS ONLY
 		) I ON A.AUCTION_NO = I.AUCTION_NO
 		ORDER BY A.AUCTION_NO DESC 
-		OFFSET 0 ROWS FETCH NEXT 4 ROWS ONLY
+	</select>
+		<!--OFFSET 0 ROWS FETCH NEXT 4 ROWS ONLY-->
+	
+	<select id="selectDetail" parameterType="hashmap" resultType="com.example.furnature.model.Event">
+		SELECT *
+		FROM TBL_AUCTION A
+		INNER JOIN TBL_AUCTION_IMG IMG ON A.AUCTION_NO = IMG.AUCTION_NO
+		WHERE A.AUCTION_NO = #{auctionNo}
 	</select>
 	
-	<select id="selectUser" parameterType="hashmap" resultType="com.example.furnature.model.Event">
+	<select id="selectEditInfo" parameterType="hashmap" resultType="com.example.furnature.model.Event">
 		SELECT *
-		FROM TBL_USER
+		FROM TBL_AUCTION 
+		WHERE AUCTION_NO = #{auctionNo}
 	</select>
+	
+	<delete id="deleteAuction" parameterType="hashmap">
+		DELETE
+		FROM TBL_AUCTION
+		WHERE AUCTION_NO = #{auctionNo}
+	</delete>
+	
+	<delete id="deleteAuctionImg" parameterType="hashmap">
+		DELETE
+		FROM TBL_AUCTION_IMG
+		WHERE AUCTION_NO = #{auctionNo}
+	</delete>
 	
 </mapper>

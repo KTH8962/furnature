@@ -15,10 +15,24 @@ public interface EventMapper {
 	// 경매 등록
 	void insertAuction(HashMap<String, Object> map);
 	
+	// 경매 수정
+	void updateAuction(HashMap<String, Object> map);
+	
 	// 썸네일 등록
 	void insertAuctionImg(HashMap<String, Object> map);
 	
 	// 경매 상세 이미지 경로 등록
 	void updataAuctionPath(HashMap<String, Object> map);
+	
+	// 경매 상세페이지 리스트 불러오기
+	List<Event> selectDetail(HashMap<String, Object> map);
 
+	// 경매 수정 - 정보 불러오기
+	Event selectEditInfo(HashMap<String, Object> map);
+	
+	// 경매 삭제
+	void deleteAuction(HashMap<String, Object> map);
+	
+	// 경매 썸네일 리스트 삭제
+	int deleteAuctionImg(HashMap<String, Object> map);
 }
