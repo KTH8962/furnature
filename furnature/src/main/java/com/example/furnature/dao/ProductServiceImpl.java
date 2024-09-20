@@ -101,9 +101,26 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public HashMap<String, Object> productOrder(HashMap<String, Object> map) {
 		HashMap <String, Object> resultMap = new HashMap<>();
+		List<HashMap<String, Object>> orderList = (List<HashMap<String, Object>>) map.get("list");
+		HashMap <String, Object> orderMap = new HashMap<>();
+	
+		
 		System.out.println("SERVICECCSSSSSSSS"+map);
 		try {
-			productmapper.productOrder(map);
+			
+			for(int i=0 ;i<orderList.size();i++) {
+				orderMap.put("orderNo", map.get("orderNo"));
+				orderMap.put("productNo", map.get("productNo"));
+				orderMap.put("orderPrice", map.get("orderPrice"));
+				orderMap.put("userId", map.get("userId"));
+				orderMap.put("orderSize", map.get("orderSize"));
+				orderMap.put("orderCount", map.get("orderCount"));
+				orderMap.put("orderSize", orderList.get(i).get("size")); // orderSize는 size로 수정
+				orderMap.put("orderCount", orderList.get(i).get("count")); // count 가져오기
+				orderMap.put("sizePrice", orderList.get(i).get("price")); // price 가져오기
+				//System.out.println("SERVICECCSSSSSSSS newMapppppppp"+orderMap);
+				productmapper.productOrder(orderMap);
+			}
 			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {
@@ -118,6 +135,24 @@ public class ProductServiceImpl implements ProductService{
 		}
 		return resultMap;
 	}
-	
-	
+	@Override
+	public HashMap<String, Object> productReview(HashMap<String, Object> map) {
+		HashMap <String, Object> resultMap = new HashMap<>();
+		try {
+			List<Product> reviewList = productmapper.productReview(map);
+			resultMap.put("reviewList", reviewList);
+			resultMap.put("result", "success");
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (DataAccessException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+		} catch (PersistenceException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
 }

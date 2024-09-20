@@ -27,5 +27,8 @@ public interface ProductMapper {
 	
 	//상품 결제
 	void productOrder(HashMap<String, Object> map);
+	
+	//리뷰 목록
+	List<Product> productReview(HashMap<String, Object> map);
 
 }
