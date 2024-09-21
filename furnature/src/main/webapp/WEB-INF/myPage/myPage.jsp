@@ -12,13 +12,7 @@
             <p class="blind">마이페이지 - 내정보</p>
 			<div class="myPage-wrap">
 				<div class="myPage-snb-wrap">
-					<nav class="myPage-snb">
-						<ul>
-							<li><a href="/myPage/myPage.do">마이페이지</a></li>
-							<li><a href="javascript:void(0);">추가페이지들</a></li>
-							<li><a href="/myPage/oneday.do">원데이클래스</a></li>
-						</ul>
-					</nav>
+					<jsp:include page="/layout/myPageSnb.jsp"></jsp:include>
 				</div>
 				<div class="myPage myPage-info">
 					<div class="ip-list">

@@ -176,4 +176,26 @@ public class EventServiceImpl implements EventService{
 		}
 		return resultMap;
 	}
+
+	// 경매 입찰하기
+	@Override
+	public HashMap<String, Object> addAuctionBidding(HashMap<String, Object> map) {
+		HashMap <String, Object> resultMap = new HashMap<>();
+		try {
+			eventMapper.insertAuctionBidding(map);
+			eventMapper.updateAuctionPrice(map);
+			resultMap.put("result", "success");
+			resultMap.put("message", "입찰 " + ResMessage.RM_SUCCESS);
+		} catch (DataAccessException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+		} catch (PersistenceException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
 }

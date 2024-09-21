@@ -86,6 +86,16 @@ public class EventController {
 		return new Gson().toJson(resultMap);
 	}
 	
+	// 경매 입찰 db
+	@RequestMapping(value = "/event/auction-bidding.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	//@RequestParam
+	public String auctionBidding(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = eventService.addAuctionBidding(map);
+		return new Gson().toJson(resultMap);
+	}
+	
 	// 경매 삭제 db
 	@RequestMapping(value = "/event/auction-remove.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody

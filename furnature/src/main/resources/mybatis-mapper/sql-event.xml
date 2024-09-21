@@ -68,6 +68,23 @@
 		DELETE
 		FROM TBL_AUCTION_IMG
 		WHERE AUCTION_NO = #{auctionNo}
-	</delete>
+	</delete>	
+	
+	<insert id="insertAuctionBidding" parameterType="hashmap">
+		INSERT INTO TBL_AUCTION_BIDDING
+		VALUES(AUCTION_BIDDING_SEQ.NEXTVAL, #{auctionNo}, #{sessionId}, #{biddingPrice}, SYSDATE)
+	</insert>
+	
+	<select id="selectMaxPrice" parameterType="hashmap" resultType="com.example.furnature.model.Event">
+		SELECT MAX(AUCTION_BIDDING_PRICE)
+		FROM TBL_AUCTION_BIDDING
+		WHERE AUCTION_NO = #{auctionNo}
+	</select>
+	
+	<update id="updateAuctionPrice" parameterType="hashmap">
+		UPDATE TBL_AUCTION
+		SET AUCTION_PRICE_CURRENT = #{biddingPrice}
+		WHERE AUCTION_NO = #{auctionNo}
+	</update>
 	
 </mapper>
