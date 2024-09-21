@@ -18,11 +18,10 @@ import com.google.gson.Gson;
 public class MyPageController {
     @Autowired
     MyPageService myPageService;
-
  
-
+    // 마이페이지
     @RequestMapping("/myPage/myPage.do")
-    public String boardList(Model model) throws Exception{
+    public String myPage(Model model) throws Exception{
         return "/myPage/myPage";
     }
 
@@ -30,7 +29,14 @@ public class MyPageController {
     public String onedayInfo(Model model) throws Exception{
         return "/myPage/myPage-oneday";
     }
+    
+    // 마이페이지
+    @RequestMapping("/myPage/bidding.do")
+    public String bidding(Model model) throws Exception{
+        return "/myPage/myPage-bidding";
+    }
 
+    // 마이페이지 리스트 db
     @RequestMapping(value = "/myPage/myPage.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String searchBoard(Model model, @RequestParam HashMap<String, Object> map) throws Exception {

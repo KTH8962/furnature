@@ -35,4 +35,10 @@ public interface EventMapper {
 	
 	// 경매 썸네일 리스트 삭제
 	int deleteAuctionImg(HashMap<String, Object> map);
+	
+	// 경매 입찰하기
+	void insertAuctionBidding(HashMap<String, Object> map);
+	
+	// 현재 입찰가 변경하기
+	void updateAuctionPrice(HashMap<String, Object> map);
 }

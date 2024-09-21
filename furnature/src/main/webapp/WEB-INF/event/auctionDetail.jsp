@@ -19,6 +19,17 @@
 					<img :src="item" :alt="detailInfo.auctionTitle + ' 썸네일이미지' + (index+1)">
 				</div>
 			</div>
+			<div class="ip-list">
+			    <div class="tit-box">
+			        <p class="tit">입찰</p>
+			    </div>
+			    <div class="bot-box">
+			        <div class="ip-box ip-ico-box">
+			            <input type="text" placeholder="입찰 금액을 입력해주세요" v-model="biddingPrice">
+						<button type="button" @click="fnBidding">입찰</button>
+			        </div>
+			    </div>
+			</div>
 			<div>경매 번호 : {{detailInfo.auctionNo}}</div>
 			<div>제목 : {{detailInfo.auctionTitle}}</div>
 			<div>시작 금액 : {{detailInfo.auctionPrice}}</div>
@@ -36,11 +47,13 @@
     const app = Vue.createApp({
         data() {
             return {
+				sessionId : "${sessionId}",
 				sessionAuth : "${sessionAuth}",
 				auctionNo : "${auctionNo}",
 				detailImgList : [],
 				detailImgListPath : [], 
-				detailInfo : {}
+				detailInfo : {},
+				biddingPrice : ""
             };
         },
         methods: {
@@ -68,7 +81,6 @@
 			fnRemove(auctionNo) {
 				if(!confirm("삭제하시겠습니까?")) return;
 				var self = this;
-				console.log(self.detailImgList);
 				var imgList = JSON.stringify(self.detailImgList);
 				var nparmap = {auctionNo: self.auctionNo, auctionTumb: self.detailImgList, auctionDetail: self.detailInfo.auctionContentsImgName};
 				$.ajax({
@@ -84,6 +96,36 @@
 						}
 					}
 				});
+			},
+			fnBidding(){
+				var self = this;
+				if(self.sessionId != "") {
+					//if(!confirm("입찰하시겠습니까?")) return;
+					if(self.biddingPrice <= self.detailInfo.auctionPriceCurrent) {
+						alert("현재 입찰가보다 큰 금액이어야 입찰에 가능합니다.");
+						return;
+					}
+					var nparmap = {auctionNo: self.auctionNo, sessionId: self.sessionId, biddingPrice: self.biddingPrice};
+					$.ajax({
+						url:"/event/auction-bidding.dox",
+						dataType:"json",	
+						type : "POST", 
+						data : nparmap,
+						success : function(data) {
+							console.log(data);
+							if(data.result == "success") {
+								self.detailImgList = [];
+								self.detailImgListPath = []; 
+								self.detailInfo = {};
+								self.fnAuctionDetail();
+							} else {
+								//alert(data.file);
+							}
+						}
+					});
+				} else {
+					alert("로그인 후 입찰이 가능합니다.");
+				}
 			}
         },
         mounted() {

@@ -17,4 +17,6 @@ public interface EventService {
 	HashMap<String, Object> searchEditInfo(HashMap<String, Object> map);
 	// 경매 삭제 + 경매 썸네일 리스트 삭제
 	HashMap<String, Object> removeAuction(HashMap<String, Object> map);
+	// 경매 입찰하기
+	HashMap<String, Object> addAuctionBidding(HashMap<String, Object> map);
 }
