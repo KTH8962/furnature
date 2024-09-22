@@ -3,8 +3,8 @@
 <nav class="myPage-snb">
 	<ul>
 		<li><a href="/myPage/myPage.do">마이페이지</a></li>
-		<li><a href="/myPage/bidding.do">경매입찰리스트</a></li>
 		<li><a href="/myPage/oneday.do">원데이클래스</a></li>
+		<li><a href="/myPage/bidding.do">경매입찰리스트</a></li>
 		<li><a href="javascript:void(0);">추가페이지들</a></li>
 	</ul>
 </nav>

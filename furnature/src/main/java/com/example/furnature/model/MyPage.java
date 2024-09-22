@@ -28,4 +28,22 @@ public class MyPage {
 	private String endDay;
 	private String payDay;
 	private String payId;
+	
+	// 이벤트 - 경매
+	private String auctionBiddingNo;
+	private String auctionNo;
+	private String auctionBiddingPrice;
+	private String auctionBiddingDate;
+	private String maxBidding;
+	private String auctionTitle;
+	private String auctionPrice;
+	
+	public String getAuctionBiddingPrice() {
+		return auctionBiddingPrice;
+	}
+
+	public String getAuctionPrice() {
+		return auctionPrice;
+	}	
+	
 }
