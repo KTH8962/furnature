@@ -11,7 +11,6 @@ import com.example.furnature.constants.ResMessage;
 import com.example.furnature.mapper.MyPageMapper;
 import com.example.furnature.model.MyPage;
 
-
 import jakarta.persistence.PersistenceException;
 
 @Service
@@ -19,7 +18,7 @@ public class MyPageServiceImpl implements MyPageService {
     @Autowired
     MyPageMapper myPageMapper;
 
-
+    // 내정보 조회
     @Override
     public HashMap<String, Object> searchUser(HashMap<String, Object> map) {
         HashMap<String, Object> resultMap = new HashMap<>();
@@ -61,6 +60,63 @@ public class MyPageServiceImpl implements MyPageService {
         }
         return resultMap;
     }
+
+    // 경매 입찰 리스트 조회
+	@Override
+	public HashMap<String, Object> searchBiddingList(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<>();
+        try {
+            List<MyPage> biddingList = myPageMapper.selectBiddingList(map);
+            resultMap.put("biddingList", biddingList);
+            resultMap.put("result", "success");
+            resultMap.put("message", ResMessage.RM_SUCCESS);
+        } catch (DataAccessException e) {
+            resultMap.put("result", "fail");
+            resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+        } catch (PersistenceException e) {
+            resultMap.put("result", "fail");
+            resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+        } catch (Exception e) {
+            resultMap.put("result", "fail");
+            resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+        }
+        return resultMap;
+	}
+
+	// 경매 입찰 취소
+	@Override
+	public HashMap<String, Object> cancelBidding(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<>();
+        try {
+        	Integer cancel = myPageMapper.deleteBidding(map);
+            if(cancel > 0) {
+            	MyPage maxPrice = myPageMapper.selectMaxPrice(map);
+            	String biddingPrice;
+            	if(maxPrice != null) {
+            		biddingPrice = maxPrice.getAuctionBiddingPrice();
+            	} else {
+            		MyPage startPrice = myPageMapper.selectPrice(map);
+            		System.out.println(startPrice);
+            		biddingPrice = startPrice.getAuctionPrice();
+            		System.out.println(biddingPrice);
+            	}
+            	map.put("biddingPrice", biddingPrice);
+            	myPageMapper.updateAuctionPrice(map);
+            }
+            resultMap.put("result", "success");
+            resultMap.put("message", "입찰취소를 " + ResMessage.RM_SUCCESS);
+        } catch (DataAccessException e) {
+            resultMap.put("result", "fail");
+            resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+        } catch (PersistenceException e) {
+            resultMap.put("result", "fail");
+            resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+        } catch (Exception e) {
+            resultMap.put("result", "fail");
+            resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+        }
+        return resultMap;
+	}
 
 }
 

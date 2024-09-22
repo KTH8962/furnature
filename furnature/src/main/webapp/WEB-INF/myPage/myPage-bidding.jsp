@@ -15,7 +15,13 @@
 					<jsp:include page="/layout/myPageSnb.jsp"></jsp:include>
 				</div>
 				<div class="myPage myPage-info">
-					입찰리스트
+					<div v-for="item in biddingList">
+						<div>경매 제목 : {{item.auctionTitle}}</div>
+						<div>경매 번호 : {{item.auctionNo}}</div>
+						<div>입찰 금액 : {{item.maxBidding}}</div>
+						<div>입찰 일자 : {{item.auctionBiddingDate}}</div>
+						<div><button type="button" @click="fnCancel(item.auctionNo)">입찰 취소</button></div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -28,7 +34,7 @@
         data() {
             return {
 				sessionId : '${sessionId}',
-				info : {}
+				biddingList : [],
             };
         },
         methods: {
@@ -36,16 +42,33 @@
 				var self = this;
 				var nparmap = {sessionId: self.sessionId};
 				$.ajax({
-					url:"/myPage/bidding.dox",
+					url:"/myPage/bidding-list.dox",
 					dataType:"json",	
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
 						console.log(data);
-						self.info = data.info;
+						self.biddingList = data.biddingList;
 					}
 				});
             },
+			fnCancel(auctionNo){
+				if(!confirm("입찰을 취소 하시겠습니까?")) return;
+				var self = this;
+				var nparmap = {auctionNo: auctionNo, sessionId: self.sessionId};
+				$.ajax({
+					url:"/myPage/bidding-cancel.dox",
+					dataType:"json",	
+					type : "POST", 
+					data : nparmap,
+					success : function(data) {
+						if(data.result =="success") {
+							self.fnGetList();
+							alert(data.message);
+						}
+					}
+				});
+			}
         },
         mounted() {
             var self = this;

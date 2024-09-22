@@ -30,4 +30,39 @@
 		DELETE FROM TBL_PARTICIPANT
 		WHERE CLASS_NO = #{classNo} AND USER_ID = #{sessionId}
 	</delete>
+	
+	<select id="selectBiddingList" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
+		SELECT MAX_BIDDING, B.AUCTION_NO, B.AUCTION_BIDDING_DATE, AUCTION_TITLE
+		FROM TBL_AUCTION_BIDDING B
+		INNER JOIN (
+		            SELECT MAX(AUCTION_BIDDING_PRICE) as MAX_BIDDING, AUCTION_NO, USER_ID
+		            FROM TBL_AUCTION_BIDDING
+		            GROUP BY AUCTION_NO, USER_ID
+		) M ON B.AUCTION_BIDDING_PRICE = M.MAX_BIDDING
+		INNER JOIN TBL_AUCTION A ON B.AUCTION_NO = A.AUCTION_NO
+		WHERE B.USER_ID = #{sessionId}
+	</select>
+	
+	<delete id="deleteBidding" parameterType="hashmap">
+		DELETE FROM TBL_AUCTION_BIDDING
+		WHERE AUCTION_NO = #{auctionNo} AND USER_ID = #{sessionId}
+	</delete>
+	
+	<select id="selectMaxPrice" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
+		SELECT MAX(AUCTION_BIDDING_PRICE) AUCTION_BIDDING_PRICE
+		FROM TBL_AUCTION_BIDDING
+		WHERE AUCTION_NO = #{auctionNo}
+	</select>
+	
+	<update id="updateAuctionPrice" parameterType="hashmap">
+		UPDATE TBL_AUCTION
+		SET AUCTION_PRICE_CURRENT = #{biddingPrice}
+		WHERE AUCTION_NO = #{auctionNo}
+	</update>
+	
+	<select id="selectPrice" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
+		SELECT *
+		FROM TBL_AUCTION
+		WHERE AUCTION_NO = #{auctionNo}
+	</select>
 </mapper>

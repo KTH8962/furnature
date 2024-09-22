@@ -30,7 +30,7 @@ public class MyPageController {
         return "/myPage/myPage-oneday";
     }
     
-    // 마이페이지
+    // 경매 입찰 리스트 조회 페이지
     @RequestMapping("/myPage/bidding.do")
     public String bidding(Model model) throws Exception{
         return "/myPage/myPage-bidding";
@@ -40,9 +40,9 @@ public class MyPageController {
     @RequestMapping(value = "/myPage/myPage.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String searchBoard(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
-        HashMap<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap = myPageService.searchUser(map);
-        return new Gson().toJson(resultMap);
+    	HashMap<String, Object> resultMap = new HashMap<String, Object>();
+    	resultMap = myPageService.searchUser(map);
+    	return new Gson().toJson(resultMap);
     }
 
     @RequestMapping(value = "/myPage/oneday-info.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
@@ -53,6 +53,23 @@ public class MyPageController {
         return new Gson().toJson(resultMap);
     }
 
+    // 경매 입찰 리스트 조회 db
+    @RequestMapping(value = "/myPage/bidding-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String searchBidding(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+    	HashMap<String, Object> resultMap = new HashMap<String, Object>();
+    	resultMap = myPageService.searchBiddingList(map);
+    	return new Gson().toJson(resultMap);
+    }
+    
+    // 경매 입찰 취소 db
+    @RequestMapping(value = "/myPage/bidding-cancel.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String cancelBidding(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+    	HashMap<String, Object> resultMap = new HashMap<String, Object>();
+    	resultMap = myPageService.cancelBidding(map);
+    	return new Gson().toJson(resultMap);
+    }
 
 
 }

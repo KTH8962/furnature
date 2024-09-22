@@ -5,7 +5,7 @@
 <mapper namespace="com.example.furnature.mapper.EventMapper">
 	<insert id="insertAuction" parameterType="hashmap" useGeneratedKeys="true" keyProperty="auctionNo" keyColumn="AUCTION_NO">
 		INSERT INTO TBL_AUCTION
-		VALUES (AUCTION_SEQ.NEXTVAL, #{title}, #{price}, #{price}, #{id}, TO_DATE(#{startDay}, 'YYYY-MM-DD HH24:MI'), TO_DATE(#{endDay}, 'YYYY-MM-DD HH24:MI'), SYSDATE, SYSDATE, #{contents}, ' ', ' ')
+		VALUES (AUCTION_SEQ.NEXTVAL, #{title}, #{price}, #{price}, #{id}, TO_DATE(#{startDay}, 'YYYY-MM-DD HH24:MI'), TO_DATE(#{endDay}, 'YYYY-MM-DD HH24:MI'), SYSDATE, SYSDATE, #{contents}, '', '','N')
 	</insert>
 	
 	<update id="updateAuction" parameterType="hashmap">
@@ -26,7 +26,8 @@
 	
 	<update id="updataAuctionPath" parameterType="hashmap">
 		UPDATE TBL_AUCTION
-		SET AUCTION_CONTENTS_IMG_PATH = #{auctionContentsImgPath}
+		SET AUCTION_CONTENTS_IMG_PATH = #{auctionContentsImgPath},
+			AUCTION_CONTENTS_IMG_NAME = #{auctionContentsImgName}
 		WHERE AUCTION_NO = #{auctionNo}
 	</update>
 	
@@ -75,11 +76,11 @@
 		VALUES(AUCTION_BIDDING_SEQ.NEXTVAL, #{auctionNo}, #{sessionId}, #{biddingPrice}, SYSDATE)
 	</insert>
 	
-	<select id="selectMaxPrice" parameterType="hashmap" resultType="com.example.furnature.model.Event">
+	<!--<select id="selectMaxPrice" parameterType="hashmap" resultType="com.example.furnature.model.Event">
 		SELECT MAX(AUCTION_BIDDING_PRICE)
 		FROM TBL_AUCTION_BIDDING
 		WHERE AUCTION_NO = #{auctionNo}
-	</select>
+	</select>-->
 	
 	<update id="updateAuctionPrice" parameterType="hashmap">
 		UPDATE TBL_AUCTION
