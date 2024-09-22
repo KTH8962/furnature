@@ -24,10 +24,18 @@
 			        <p class="tit">입찰</p>
 			    </div>
 			    <div class="bot-box">
-			        <div class="ip-box ip-ico-box">
-			            <input type="text" placeholder="입찰 금액을 입력해주세요" v-model="biddingPrice">
-						<button type="button" @click="fnBidding">입찰</button>
-			        </div>
+					<template v-if="detailInfo.auctionStatus == 'F'">
+						<div>경매 시작 전 입니다.</div>
+					</template>
+					<template v-else-if="detailInfo.auctionStatus == 'I'">
+						<div class="ip-box ip-ico-box">
+							<input type="text" placeholder="입찰 금액을 입력해주세요" v-model="biddingPrice">
+							<button type="button" @click="fnBidding">입찰</button>
+						</div>
+					</template>
+					<template v-else-if="detailInfo.auctionStatus == 'E'">
+						<div>종료 된 경매입니다.</div>
+					</template>
 			    </div>
 			</div>
 			<div>경매 번호 : {{detailInfo.auctionNo}}</div>

@@ -19,7 +19,12 @@
 						<span>{{item.auctionTitle}}</span><br>
 						<span>{{item.auctionPriceCurrent}}</span><br>
 						<span>{{item.startDay}}</span><br>
-						<span>{{item.endDay}}</span>
+						<span>{{item.endDay}}</span><br>
+						<span>
+							<template v-if="item.auctionStatus == 'F'">경매 예정</template>
+							<template v-else-if="item.auctionStatus == 'I'">경매 진행중</template>
+							<template v-else>경매 종료</template>
+						</span>
 					</a>
 				</li>
 			</ul>
@@ -35,10 +40,52 @@
     const app = Vue.createApp({
         data() {
             return {
+				statusInfo: [],
 				auctionList: [],
             };
         },
         methods: {
+			fnStatus(){
+				var self = this;
+				var nparmap = {};
+				$.ajax({
+					url:"/event/auction-status.dox",
+					dataType:"json",	
+					type : "POST", 
+					data : nparmap,
+					success : function(data) {
+						console.log(data);
+						for(var status of data.statusList) {
+							var state;
+							if(status.startDay < 0) {
+								state = "I";
+								if(status.endDay < 0) {
+									state = "E";
+								}
+							} else {
+								state = "F";
+							}
+							self.statusInfo.push({"status": state, "auctionNo": status.auctionNo});
+						}
+						if(data.result == "success") {
+							var status = JSON.stringify(self.statusInfo);
+							var sparmap = {statusInfo: status};
+							$.ajax({
+								url:"/event/auction-setting.dox",
+								dataType:"json",
+								type:"POST",
+								data:sparmap,
+								success : function(data) {
+									console.log(data);
+									if(data.result == "success") {
+										self.fnAuctionList();
+									}
+								}
+							});
+						}
+					}
+				});
+			},
             fnAuctionList(){
 				var self = this;
 				var nparmap = {};
@@ -48,7 +95,7 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-						console.log(data);
+						//console.log(data);
 						self.auctionList = data.auctionList;
 					}
 				});
@@ -59,7 +106,7 @@
         },
         mounted() {
             var self = this;
-			self.fnAuctionList();
+			self.fnStatus();
         }
     });
     app.mount('#app');

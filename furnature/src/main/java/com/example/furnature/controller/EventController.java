@@ -1,9 +1,9 @@
 package com.example.furnature.controller;
 
 import java.io.File;
-import java.net.URLDecoder;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.furnature.constants.ResMessage;
 import com.example.furnature.dao.EventService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,6 +46,30 @@ public class EventController {
 	public String eventDetail(Model model, HttpServletRequest request, @RequestParam HashMap<String, Object> map) throws Exception{
 		request.setAttribute("auctionNo", map.get("auctionNo"));
 		return "/event/auctionDetail";
+	}
+	
+	// 경매 상태 조회 db
+	@RequestMapping(value = "/event/auction-status.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	//@RequestParam
+	public String auctionStatus(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = eventService.searchAuctionStatus();
+		return new Gson().toJson(resultMap);
+	}
+	
+	// 경매 상태 업데이트 db
+	@RequestMapping(value = "/event/auction-setting.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	//@RequestParam
+	public String setStatus(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		String json = map.get("statusInfo").toString(); 
+		ObjectMapper mapper = new ObjectMapper();
+		List<Object> statusInfo = mapper.readValue(json, new TypeReference<List<Object>>(){});
+		map.put("statusInfo", statusInfo);
+		resultMap = eventService.setAuctionStatus(map);
+		return new Gson().toJson(resultMap);
 	}
 	
 	// 경매 조회 db

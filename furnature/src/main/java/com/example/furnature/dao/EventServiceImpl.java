@@ -18,13 +18,55 @@ public class EventServiceImpl implements EventService{
 	@Autowired
 	EventMapper eventMapper;
 
+	// 경매 상태 불러오기
+	@Override
+	public HashMap<String, Object> searchAuctionStatus() {
+		HashMap <String, Object> resultMap = new HashMap<>();
+		try {
+			List<Event> statusList =  eventMapper.selectAuctionStatus();
+			resultMap.put("statusList", statusList);
+			resultMap.put("result", "success");
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (DataAccessException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+		} catch (PersistenceException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+	
+	// 경매 상태 저장하기
+	@Override
+	public HashMap<String, Object> setAuctionStatus(HashMap<String, Object> map) {
+		HashMap <String, Object> resultMap = new HashMap<>();
+		try {
+			eventMapper.updateStatus(map);
+			resultMap.put("result", "success");
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (DataAccessException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+		} catch (PersistenceException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+	
 	// 경매 리스트 불러오기
 	@Override
 	public HashMap<String, Object> searchAuctionList() {
 		HashMap <String, Object> resultMap = new HashMap<>();
 		try {
 			List<Event> auctionList =  eventMapper.selectAuctionList();
-			System.out.println(auctionList);
 			resultMap.put("auctionList", auctionList);
 			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
