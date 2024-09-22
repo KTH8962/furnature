@@ -9,6 +9,12 @@ import com.example.furnature.model.Event;
 
 @Mapper
 public interface EventMapper {
+	// 경매 상태 불러오기
+	List<Event> selectAuctionStatus();
+	
+	// 경매 상태 저장하기
+	void updateStatus(HashMap<String, Object> map);
+	
 	// 경매 리스트 불러오기
 	List<Event> selectAuctionList();
 	

@@ -3,6 +3,27 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.furnature.mapper.EventMapper">
+	<select id="selectAuctionStatus" parameterType="hashmap" resultType="com.example.furnature.model.Event">
+		SELECT ROUND(START_DAY - (SYSDATE + INTERVAL '9' HOUR), 16) START_DAY, ROUND(END_DAY - (SYSDATE + INTERVAL '9' HOUR), 16) END_DAY, AUCTION_NO
+		FROM TBL_AUCTION
+		ORDER BY AUCTION_NO DESC
+	</select>
+	
+	<update id="updateStatus" parameterType="hashmap">		 
+		UPDATE TBL_AUCTION
+	    SET AUCTION_STATUS = CASE AUCTION_NO
+	        <foreach collection="statusInfo" item="item" separator=" ">
+	            WHEN #{item.auctionNo} THEN #{item.status}
+	        </foreach>
+	        ELSE AUCTION_STATUS
+	    END
+	    WHERE AUCTION_NO IN (
+	        <foreach collection="statusInfo" item="item" separator=",">
+	            #{item.auctionNo}
+	        </foreach>
+	    )
+	</update>
+	
 	<insert id="insertAuction" parameterType="hashmap" useGeneratedKeys="true" keyProperty="auctionNo" keyColumn="AUCTION_NO">
 		INSERT INTO TBL_AUCTION
 		VALUES (AUCTION_SEQ.NEXTVAL, #{title}, #{price}, #{price}, #{id}, TO_DATE(#{startDay}, 'YYYY-MM-DD HH24:MI'), TO_DATE(#{endDay}, 'YYYY-MM-DD HH24:MI'), SYSDATE, SYSDATE, #{contents}, '', '','N')
@@ -29,7 +50,7 @@
 		SET AUCTION_CONTENTS_IMG_PATH = #{auctionContentsImgPath},
 			AUCTION_CONTENTS_IMG_NAME = #{auctionContentsImgName}
 		WHERE AUCTION_NO = #{auctionNo}
-	</update>
+	</update>	
 	
 	<select id="selectAuctionList" parameterType="hashmap" resultType="com.example.furnature.model.Event">
 		SELECT A.*, I.AUCTION_IMG_PATH

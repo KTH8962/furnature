@@ -88,7 +88,7 @@ public class MyPageServiceImpl implements MyPageService {
 	public HashMap<String, Object> cancelBidding(HashMap<String, Object> map) {
 		HashMap<String, Object> resultMap = new HashMap<>();
         try {
-        	Integer cancel = myPageMapper.deleteBidding(map);
+        	int cancel = myPageMapper.deleteBidding(map);
             if(cancel > 0) {
             	MyPage maxPrice = myPageMapper.selectMaxPrice(map);
             	String biddingPrice;

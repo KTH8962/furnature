@@ -16,6 +16,7 @@ public class Event {
 	private String auctionContents;
 	private String auctionContentsImgName;
 	private String auctionContentsImgPath;
+	private String auctionStatus;
 	
 	private String auctionImgName;
 	private String auctionImgOrgName;
