@@ -85,4 +85,9 @@
 		FROM TBL_BOARD
 		WHERE BOARD_NO = #{boardNo}
 	</select>
+	<update id="updateContents" parameterType="hashmap">
+		UPDATE board
+		SET board_title = #{boardTitle}, board_contents = #{boardContents}
+		WHERE board_no = #{boardNo};
+	</update>
 </mapper>
