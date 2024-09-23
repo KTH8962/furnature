@@ -122,4 +122,10 @@
 		SET COMMENT_CONTENT = #{content}, UDATETIME = SYSDATE
 		WHERE COMMENT_NO = #{commentNo}
 	</update>-->
+  
+	<update id="updateContents" parameterType="hashmap">
+		UPDATE board
+		SET board_title = #{boardTitle}, board_contents = #{boardContents}
+		WHERE board_no = #{boardNo};
+	</update>
 </mapper>

@@ -22,10 +22,12 @@
 		<div>모집 종료일 : {{detail.endDay}}</div>
 		<div>수업일자 : {{detail.classDate}}</div>
 		<div>수강료 : {{detail.price}}</div>
-		<div class="onedayJoinForm">
+		<div class="onedayJoinForm" v-if="message=='' && numberLimit===0">
 			신청자 이름 : <input type="text" v-model="name">
 		</div>
-		<div><button @click="fnOnedayJoin" :disabled="isLimit">수강신청</button></div>
+		<div v-if="message">{{message}}</div>
+		<div v-if="message2">{{message2}}</div>
+		<div v-if="message=='' && numberLimit===0"><button @click="fnOnedayJoin">수강신청</button></div>
 		
 		<button v-if="isAdmin" @click="fnUpdate(detail.classNo)">수정</button>
     </div>
@@ -47,9 +49,12 @@
 				   price : "",
 				   payId : "",
 				   numberLimit : "",
-				   isLimit : false,
 				   isAdmin : false,
-				   sessionAuth: "${sessionAuth}"
+				   sessionAuth: "${sessionAuth}",
+				   endDay : "",
+				   today : new Date(),
+				   message : "",
+				   message2 : ""
                 };
             },
             methods: {
@@ -65,7 +70,33 @@
 					success : function(data){
 						self.detail = data.onedayDetail;
 						self.price = self.detail.price;
-						console.log(data);	
+						self.endDay = self.detail.endDay;
+						var endDay = new Date(self.endDay);
+						var today = new Date()
+						console.log(endDay);
+						console.log(today);
+						if(endDay<today){
+							self.message = "모집일자가 지났습니다.";
+						}else{
+							self.message = "";
+						}
+						var nparmap = {classNo:self.classNo};
+						$.ajax({
+							url : "/oneday/oneday-numberLimit.dox",
+							dataType : "json",
+							type : "POST",
+							data : nparmap,
+							success : function(data){
+								self.numberLimit = data.numberLimit;
+								if(self.numberLimit=='1'){
+									self.message2 = "모집 인원이 초과되었습니다.";
+									return;
+								}else{
+									self.message2 = "";
+								}
+							}							
+						})
+						
 					}
 					
 				})
@@ -73,7 +104,7 @@
 			   fnOnedayJoin(){
 					var self = this;
 					if(self.userId==''){
-						alert("수강 신청은 로그인 후 가능합니다")
+						alert("수강 신청은 로그인 후 가능합니다");
 						return;
 					}	
 					if(self.name==''){
@@ -88,20 +119,12 @@
 						data : nparmap,
 						success : function(data){
 							self.numberLimit = data.numberLimit;
-							console.log(self.numberLimit);
-							if(self.numberLimit=='1'){
-								self.isLimit = true;
-								alert("모집인원을 초과했습니다.")
-								return;
-							}else if(self.numberLimit=='0' || self.numberLimit==null){
-								self.isLimit = false;
-								var payConfirm = confirm("결제하시겠습니까?");
-								if(payConfirm){
-									self.fnPay();						
-								}else{
-									alert("결제를 취소하셨습니다");
-								}	
-							}
+							var payConfirm = confirm("결제하시겠습니까?");
+							if(payConfirm){
+								self.fnPay();						
+							}else{
+								alert("결제를 취소하셨습니다");
+							}	
 						}							
 					})				
 			   },

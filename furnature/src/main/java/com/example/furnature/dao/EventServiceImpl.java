@@ -17,35 +17,21 @@ import jakarta.persistence.PersistenceException;
 public class EventServiceImpl implements EventService{
 	@Autowired
 	EventMapper eventMapper;
-
-	// 경매 상태 불러오기
-	@Override
-	public HashMap<String, Object> searchAuctionStatus() {
-		HashMap <String, Object> resultMap = new HashMap<>();
-		try {
-			List<Event> statusList =  eventMapper.selectAuctionStatus();
-			resultMap.put("statusList", statusList);
-			resultMap.put("result", "success");
-			resultMap.put("message", ResMessage.RM_SUCCESS);
-		} catch (DataAccessException e) {
-			resultMap.put("result", "fail");
-			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
-		} catch (PersistenceException e) {
-			resultMap.put("result", "fail");
-			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
-		} catch (Exception e) {
-			resultMap.put("result", "fail");
-			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
-		}
-		return resultMap;
-	}
 	
-	// 경매 상태 저장하기
+	// 룰렛 상태 불러오기 + 룰렛 상태 변경 + 마일리지 포인트 적립
 	@Override
-	public HashMap<String, Object> setAuctionStatus(HashMap<String, Object> map) {
+	public HashMap<String, Object> searchRoulette(HashMap<String, Object> map) {
 		HashMap <String, Object> resultMap = new HashMap<>();
 		try {
-			eventMapper.updateStatus(map);
+			if(map.get("roulette") == null) {				
+				Event roulette =  eventMapper.selectRoulette(map);
+				resultMap.put("roulette", roulette);
+			} else {
+				eventMapper.updateRoulette(map);
+				if(map.get("mileage")!= null) {
+					eventMapper.insertMileage(map);
+				}
+			}
 			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {

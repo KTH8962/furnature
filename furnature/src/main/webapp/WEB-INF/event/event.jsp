@@ -9,7 +9,18 @@
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
 		<div id="container">            
-            <p class="blind">이벤트 페이지</p>
+            <p class="blind">이벤트 페이지</p>			
+			<h2 class="sub-tit">룰렛</h2>
+			<div class="roulette-wrap">
+				<div class="roulette-box">
+					<div class="roulette-img" ref="roulImgBox">
+						<img src="/assets/images/roulette_img.png" alt="룰렛 이미지" ref="roulImg">
+					</div>
+					<div class="roulette-arrow">룰렛 화살표</div>
+					<button type="button" class="roulette-btn" @click="fnRouletteBtn" ref="roulBtn">START!</button>
+				</div>
+			</div>
+
 			<h2 class="sub-tit">경매 리스트</h2>
 			<ul class="auction-list" style="display:flex;">
 				<li v-for="item in auctionList">
@@ -30,7 +41,6 @@
 			</ul>
 			<a href="/event/auctionRegister.do">경매등록 임시버튼</a>
 			
-			<h2 class="sub-tit">룰렛?</h2>
 		</div>
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
@@ -40,52 +50,12 @@
     const app = Vue.createApp({
         data() {
             return {
+				sessionId: "${sessionId}",
 				statusInfo: [],
 				auctionList: [],
             };
         },
         methods: {
-			fnStatus(){
-				var self = this;
-				var nparmap = {};
-				$.ajax({
-					url:"/event/auction-status.dox",
-					dataType:"json",	
-					type : "POST", 
-					data : nparmap,
-					success : function(data) {
-						console.log(data);
-						for(var status of data.statusList) {
-							var state;
-							if(status.startDay < 0) {
-								state = "I";
-								if(status.endDay < 0) {
-									state = "E";
-								}
-							} else {
-								state = "F";
-							}
-							self.statusInfo.push({"status": state, "auctionNo": status.auctionNo});
-						}
-						if(data.result == "success") {
-							var status = JSON.stringify(self.statusInfo);
-							var sparmap = {statusInfo: status};
-							$.ajax({
-								url:"/event/auction-setting.dox",
-								dataType:"json",
-								type:"POST",
-								data:sparmap,
-								success : function(data) {
-									console.log(data);
-									if(data.result == "success") {
-										self.fnAuctionList();
-									}
-								}
-							});
-						}
-					}
-				});
-			},
             fnAuctionList(){
 				var self = this;
 				var nparmap = {};
@@ -102,11 +72,76 @@
             },
 			fnDeatil(auctionNo) {
 				$.pageChange("auctionDetail.do",{auctionNo: auctionNo});
+			},
+			fnRouletteBtn(){
+				var self = this;
+				if(self.sessionId != "") {
+					var self = this;
+					var nparmap = {sessionId: self.sessionId};
+					$.ajax({
+						url:"/event/auction-roulette.dox",
+						dataType:"json",	
+						type : "POST", 
+						data : nparmap,
+						success : function(data) {
+							//console.log(data);
+							if(data.roulette.eventRoul == "Y") {
+								self.fnRoulette();
+							} else{
+								alert("오늘은 이미 참여하셨습니다.");
+							}
+						}
+					});
+				} else {
+					alert("로그인 후 이용이 가능합니다.");
+				}
+			},
+			fnRoulette() {
+				var self = this;
+				var ranNum = Math.round(Math.random() * 5) + 1;
+				var num = 0;
+				var rouletteRotate = setInterval(() => {
+					num++;
+					self.$refs.roulImgBox.style.transform = "rotate(" + 360 * num + "deg)";
+					if(num == 20) {
+						clearInterval(rouletteRotate);
+						self.$refs.roulImg.style.transform = "rotate(" + 60 * ranNum + "deg)";
+					}
+				},50);
+				var point;
+				var alerting = setTimeout(() => {
+					switch(ranNum) {
+						case 2:
+							alert("50포인트 당첨!");
+							point = 50;
+						break;
+						case 4:
+							alert("10포인트 당첨!");
+							point = 10;
+						break;
+						case 6:
+							alert("100포인트 당첨!");
+							point = 100;
+						break;
+						default:
+							alert("꽝! 내일 다시 도전해주세요");
+					}
+					var nparmap = {sessionId: self.sessionId, roulette: "N", mileage: point};
+					$.ajax({
+						url:"/event/auction-roulette.dox",
+						dataType:"json",	
+						type : "POST", 
+						data : nparmap,
+						success : function(data) {
+							console.log(data);
+						}
+					});
+				},2800);
 			}
         },
         mounted() {
             var self = this;
-			self.fnStatus();
+			self.fnAuctionList();
         }
     });
     app.mount('#app');

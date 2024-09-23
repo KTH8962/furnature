@@ -32,13 +32,13 @@
 	</delete>
 	
 	<select id="selectBiddingList" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
-		SELECT MAX_BIDDING, B.AUCTION_NO, B.AUCTION_BIDDING_DATE, AUCTION_TITLE
+		SELECT MY_BIDDING, B.AUCTION_NO, B.AUCTION_BIDDING_DATE, AUCTION_TITLE, A.AUCTION_PRICE_CURRENT, A.AUCTION_STATUS
 		FROM TBL_AUCTION_BIDDING B
 		INNER JOIN (
-		            SELECT MAX(AUCTION_BIDDING_PRICE) as MAX_BIDDING, AUCTION_NO, USER_ID
+		            SELECT MAX(AUCTION_BIDDING_PRICE) as MY_BIDDING, AUCTION_NO, USER_ID
 		            FROM TBL_AUCTION_BIDDING
 		            GROUP BY AUCTION_NO, USER_ID
-		) M ON B.AUCTION_BIDDING_PRICE = M.MAX_BIDDING
+		) M ON B.AUCTION_BIDDING_PRICE = M.MY_BIDDING
 		INNER JOIN TBL_AUCTION A ON B.AUCTION_NO = A.AUCTION_NO
 		WHERE B.USER_ID = #{sessionId}
 	</select>
@@ -64,5 +64,22 @@
 		SELECT *
 		FROM TBL_AUCTION
 		WHERE AUCTION_NO = #{auctionNo}
+	</select>
+	<select id="selectDelivery" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
+	SELECT 
+	ORDER_NO,
+	USER_ID,
+    SUM(ORDER_COUNT) AS ORDER_COUNT,
+    ORDER_CATE,
+    CATE_NAME
+	FROM 
+	    TBL_PRODUCT_ORDER P
+	    INNER JOIN TBL_DELIVERY_CATE C ON P.DELIVERY_CATE = C.CATE_NO
+	    WHERE USER_ID = #{userId}
+	GROUP BY 
+	    ORDER_NO, 
+	    USER_ID,
+	    ORDER_CATE,
+	    CATE_NAME
 	</select>
 </mapper>

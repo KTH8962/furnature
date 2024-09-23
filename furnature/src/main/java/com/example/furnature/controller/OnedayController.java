@@ -26,31 +26,34 @@ public class OnedayController {
 	@Autowired
 	OnedayService onedayService;
 	
+	//원데이클래스 목록출력
 	@RequestMapping("/oneday/oneday.do")
 	 public String onedayList(Model model) throws Exception{
 
         return "/oneday/oneday";
     }
 	
+	//원데이클래스 수강신청
 	@RequestMapping("/oneday/oneday-join.do")
 	 public String onedayJoin(HttpServletRequest request, Model model, @RequestParam HashMap<String,Object> map) throws Exception{
 		request.setAttribute("classNo", map.get("classNo"));
        return "/oneday/oneday-join";
    }
 	
+	//원데이클래스 등록(관리자)
 	@RequestMapping("/oneday/oneday-register.do")
 	 public String onedayFile(Model model) throws Exception{
 
 		return "/oneday/oneday-register";
  }
-	
+	//원데이클래스 수정(관리자)
 	@RequestMapping("/oneday/oneday-update.do")
 	 public String update(HttpServletRequest request, Model model, @RequestParam HashMap<String,Object> map) throws Exception{
 		request.setAttribute("classNo", map.get("classNo"));
 		return "/oneday/oneday-update";	
 }
 	
-	
+	//원데이클래스 목록출력
 	@RequestMapping(value = "/oneday/oneday-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String onedayList(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
@@ -59,6 +62,7 @@ public class OnedayController {
 		return new Gson().toJson(resultMap);
 	}
 	
+	//원데이클래스 상세내역(각 클래스 정보 개별 출력)
 	@RequestMapping(value = "/oneday/oneday-detail.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String onedayDetail(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
@@ -67,6 +71,7 @@ public class OnedayController {
 		return new Gson().toJson(resultMap);
 	}
 	
+	//원데이클래스 결제(고객)
 	@RequestMapping(value = "/oneday/oneday-pay.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String onedayPay(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception {
@@ -75,6 +80,7 @@ public class OnedayController {
 		return new Gson().toJson(resultMap);
 	}
 	
+	//원데이클래스 등록(관리자)
 	@RequestMapping(value = "/oneday/oneday-register.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String onedayReg(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception {
@@ -83,6 +89,7 @@ public class OnedayController {
 		return new Gson().toJson(resultMap);
 	}
 	
+	//원데이클래스 파일등록(관리자)
 	@RequestMapping(value = "/oneday/oneday-file.dox")
 	 public String result(@RequestParam("file") MultipartFile[] multi, @RequestParam("classNo") int classNo, HttpServletRequest request,HttpServletResponse response, Model model)
     {
@@ -142,6 +149,7 @@ public class OnedayController {
         return fileName;
     }
     
+    //원데이클래스 등록시 자동으로 클래스번호 가져오기(시퀀스)
     @RequestMapping(value = "/oneday/oneday-classNo.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String classNo(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception {
@@ -150,6 +158,7 @@ public class OnedayController {
 		return new Gson().toJson(resultMap);
 	}
     
+    //원데이클래스 인원초과 여부 확인
     @RequestMapping(value = "/oneday/oneday-numberLimit.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
   	@ResponseBody
   	public String numberLimit(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception {
@@ -158,6 +167,7 @@ public class OnedayController {
   		return new Gson().toJson(resultMap);
   	}
     
+    //원데이클래스 수정(관리자)
     @RequestMapping(value = "/oneday/oneday-update.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String onedayUpdate(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception {
