@@ -38,6 +38,20 @@ public class MyPage {
 	private String auctionTitle;
 	private String auctionPrice;
 	
+	//배송
+	private String payNo;
+	private String orderNo;
+	private String productNo;
+	private String orderPrice;
+	private String orderSize;
+	private String orderCount;
+	private String productPrice;
+	private String oderDate;
+	private String orderCate;
+	private String deliveryCate;
+	private String cateNo;
+	private String cateName;
+	
 	public String getAuctionBiddingPrice() {
 		return auctionBiddingPrice;
 	}

@@ -28,4 +28,7 @@ public interface MyPageMapper {
 	
 	// 현재 입찰가 변경하기
 	void updateAuctionPrice(HashMap<String, Object> map);
+	
+	//배송조회
+	List<MyPage> selectDelivery(HashMap<String, Object> map);
 }

@@ -148,6 +148,16 @@
 			},
 			fnPorductDetail(productNo){
 				$.pageChange("/productDetail/productDetail.do",{productNo : productNo});
+			},
+			fnBeforPage(){
+				var self = this;
+				self.currentPage = self.currentPage - 1;
+				self.fnGetProductList(self.currentPage);
+			},
+			fnNextPage(){
+				var self = this;
+				self.currentPage = self.currentPage + 1;
+				self.fnGetProductList(self.currentPage);
 			}
         },
         mounted() {

@@ -58,12 +58,12 @@
 					data : nparmap,
 					success : function(data) {
 						console.log(data.designNo);
-						var designNo = data.designNO;
+						var designNo = data.designNo;
 						if(self.file){
 							console.log(data.designNo);
 						  const formData = new FormData();
 						  formData.append('file1', self.file);
-						  formData.append('designNo', self.designNo);
+						  formData.append('designNo', designNo);
 						  $.ajax({
 							url: '/design/designFile.dox',
 							type: 'POST',
@@ -71,7 +71,8 @@
 							processData: false,  
 							contentType: false,  
 							success: function() {
-							  console.log('업로드 성공!');
+							  alert("게시글을 등록하였습니다.");
+							  location.href="/design/design.do"
 							},
 							error: function(jqXHR, textStatus, errorThrown) {
 							  console.error('업로드 실패!', textStatus, errorThrown);

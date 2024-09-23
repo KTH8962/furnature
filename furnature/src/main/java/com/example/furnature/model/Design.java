@@ -12,4 +12,6 @@ public class Design {
 	private String designImgName;
 	private String designChoice;
 	private String designCdateTime;
+	private String count;
+	private String likeNo;
 }
