@@ -34,9 +34,11 @@ public class MyPage {
 	private String auctionNo;
 	private String auctionBiddingPrice;
 	private String auctionBiddingDate;
-	private String maxBidding;
+	private String myBidding;
 	private String auctionTitle;
 	private String auctionPrice;
+	private String auctionPriceCurrent;
+	private String auctionStatus;
 	
 	public String getAuctionBiddingPrice() {
 		return auctionBiddingPrice;
