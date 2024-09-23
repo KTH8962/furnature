@@ -48,6 +48,16 @@ public class EventController {
 		return "/event/auctionDetail";
 	}
 		
+	// 룰렛 조회 db
+	@RequestMapping(value = "/event/auction-roulette.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	//@RequestParam
+	public String searchRoulette(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = eventService.searchRoulette(map);
+		return new Gson().toJson(resultMap);
+	}
+		
 	// 경매 조회 db
 	@RequestMapping(value = "/event/auction-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody

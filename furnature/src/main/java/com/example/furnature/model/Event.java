@@ -4,10 +4,10 @@ import lombok.Data;
 
 @Data
 public class Event {
-	private int auctionNo;
+	private String auctionNo;
 	private String auctionTitle;
-	private int auctionPrice;
-	private int auctionPriceCurrent;
+	private String auctionPrice;
+	private String auctionPriceCurrent;
 	private String userId;
 	private String startDay;
 	private String endDay;
@@ -22,6 +22,8 @@ public class Event {
 	private String auctionImgOrgName;
 	private String auctionImgPath;
 	private String auctionImgSize;
+	
+	private String eventRoul;
 	
 	public int getAuctionNo() {
 		return auctionNo;

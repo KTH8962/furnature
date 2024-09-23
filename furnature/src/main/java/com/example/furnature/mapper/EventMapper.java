@@ -8,7 +8,16 @@ import org.apache.ibatis.annotations.Mapper;
 import com.example.furnature.model.Event;
 
 @Mapper
-public interface EventMapper {	
+public interface EventMapper {
+	// 룰렛 상태 불러오기
+	Event selectRoulette(HashMap<String, Object> map);
+	
+	// 룰렛 상태 변경
+	void updateRoulette(HashMap<String, Object> map);
+	
+	// 마일리지 적립
+	void insertMileage(HashMap<String, Object> map);
+	
 	// 경매 리스트 불러오기
 	List<Event> selectAuctionList();
 	
