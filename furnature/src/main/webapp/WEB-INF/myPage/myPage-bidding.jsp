@@ -18,9 +18,25 @@
 					<div v-for="item in biddingList">
 						<div>경매 제목 : {{item.auctionTitle}}</div>
 						<div>경매 번호 : {{item.auctionNo}}</div>
-						<div>입찰 금액 : {{item.maxBidding}}</div>
+						<div>최고 입찰 금액 : {{item.auctionPriceCurrent}}</div>
+						<div>내 입찰 금액 : {{item.myBidding}}</div>
 						<div>입찰 일자 : {{item.auctionBiddingDate}}</div>
-						<div><button type="button" @click="fnCancel(item.auctionNo)">입찰 취소</button></div>
+						<div>
+							<template v-if="item.auctionStatus == 'E'">
+								<template v-if="item.auctionPriceCurrent == item.myBidding">
+									최고 입찰 금액으로 입찰되었습니다. <br>
+									제품 구매를 진행해 주세요.
+									<button type="button" @click="">구매하기</button>
+								</template>
+								<template v-else>
+									최고 입찰 금액 이용자에게 입찰되었습니다. <br>
+									다른 경매에도 많은 참여해주세요.
+								</template>
+							</template>
+							<template v-else>
+								<button type="button" @click="fnCancel(item.auctionNo)">입찰 취소</button>
+							</template>
+						</div>
 					</div>
 				</div>
 			</div>
