@@ -12,4 +12,6 @@ public interface MyPageService {
     HashMap<String, Object> searchBiddingList(HashMap<String, Object> map);
     // 경매 입찰 취소
     HashMap<String, Object> cancelBidding(HashMap<String, Object> map);
+    // 배송 조회
+    HashMap<String, Object> selectDelivery(HashMap<String, Object> map);
 }

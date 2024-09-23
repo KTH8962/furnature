@@ -65,4 +65,21 @@
 		FROM TBL_AUCTION
 		WHERE AUCTION_NO = #{auctionNo}
 	</select>
+	<select id="selectDelivery" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
+	SELECT 
+	ORDER_NO,
+	USER_ID,
+    SUM(ORDER_COUNT) AS ORDER_COUNT,
+    ORDER_CATE,
+    CATE_NAME
+	FROM 
+	    TBL_PRODUCT_ORDER P
+	    INNER JOIN TBL_DELIVERY_CATE C ON P.DELIVERY_CATE = C.CATE_NO
+	    WHERE USER_ID = #{userId}
+	GROUP BY 
+	    ORDER_NO, 
+	    USER_ID,
+	    ORDER_CATE,
+	    CATE_NAME
+	</select>
 </mapper>
