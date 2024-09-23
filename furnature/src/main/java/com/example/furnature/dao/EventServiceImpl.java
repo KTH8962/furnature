@@ -18,6 +18,35 @@ public class EventServiceImpl implements EventService{
 	@Autowired
 	EventMapper eventMapper;
 	
+	// 룰렛 상태 불러오기 + 룰렛 상태 변경 + 마일리지 포인트 적립
+	@Override
+	public HashMap<String, Object> searchRoulette(HashMap<String, Object> map) {
+		HashMap <String, Object> resultMap = new HashMap<>();
+		try {
+			if(map.get("roulette") == null) {				
+				Event roulette =  eventMapper.selectRoulette(map);
+				resultMap.put("roulette", roulette);
+			} else {
+				eventMapper.updateRoulette(map);
+				if(map.get("mileage")!= null) {
+					eventMapper.insertMileage(map);
+				}
+			}
+			resultMap.put("result", "success");
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (DataAccessException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+		} catch (PersistenceException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+	
 	// 경매 리스트 불러오기
 	@Override
 	public HashMap<String, Object> searchAuctionList() {

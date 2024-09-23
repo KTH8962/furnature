@@ -3,6 +3,23 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.furnature.mapper.EventMapper">
+	<select id="selectRoulette" parameterType="hashmap" resultType="com.example.furnature.model.Event">
+		SELECT EVENT_ROUL
+		FROM TBL_USER
+		WHERE USER_ID = #{sessionId}
+	</select>
+	
+	<update id="updateRoulette" parameterType="hashmap">
+		UPDATE TBL_USER
+		SET EVENT_ROUL = #{roulette}
+		WHERE USER_ID = #{sessionId}
+	</update>
+	
+	<insert id="insertMileage" parameterType="hashmap">
+		INSERT INTO TBL_MILEAGE
+		VALUES(MILEAGE_SEQ.NEXTVAL, #{sessionId}, '룰렛이벤트', #{mileage}, '적립', SYSDATE + INTERVAL '9' HOUR)
+	</insert>
+	
 	<select id="selectAuctionStatus" parameterType="hashmap" resultType="com.example.furnature.model.Event">
 		SELECT ROUND(START_DAY - (SYSDATE + INTERVAL '9' HOUR), 16) START_DAY, ROUND(END_DAY - (SYSDATE + INTERVAL '9' HOUR), 16) END_DAY, AUCTION_NO
 		FROM TBL_AUCTION
@@ -96,12 +113,6 @@
 		INSERT INTO TBL_AUCTION_BIDDING
 		VALUES(AUCTION_BIDDING_SEQ.NEXTVAL, #{auctionNo}, #{sessionId}, #{biddingPrice}, SYSDATE)
 	</insert>
-	
-	<!--<select id="selectMaxPrice" parameterType="hashmap" resultType="com.example.furnature.model.Event">
-		SELECT MAX(AUCTION_BIDDING_PRICE)
-		FROM TBL_AUCTION_BIDDING
-		WHERE AUCTION_NO = #{auctionNo}
-	</select>-->
 	
 	<update id="updateAuctionPrice" parameterType="hashmap">
 		UPDATE TBL_AUCTION
