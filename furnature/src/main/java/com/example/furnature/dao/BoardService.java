@@ -15,5 +15,12 @@ public interface BoardService {
 	// 게시글 상세보기
 	HashMap<String,Object> searchBoardInfo(HashMap<String,Object> map);
 	
+	// 상세보기중 삭제
 	HashMap<String,Object> deleteContents(HashMap<String,Object> map);
+	
+	// 게시글 수정
+	HashMap<String,Object> updateContents(HashMap<String,Object> map);
+
+	// 게시글 등록
+	HashMap<String,Object> addComments(HashMap<String,Object> map);
 }

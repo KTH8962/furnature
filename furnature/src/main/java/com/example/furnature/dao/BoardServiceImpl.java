@@ -24,7 +24,6 @@ public class BoardServiceImpl implements BoardService{
 		HashMap <String, Object> resultMap = new HashMap<>();
 		try {
 			List<Board> list = boardMapper.selectBoardList(map);
-			System.out.println("######################################"+map);
 			int count = boardMapper.selectBoardListCnt(map);
 			resultMap.put("list", list);
 			resultMap.put("count", count);
@@ -108,6 +107,49 @@ public class BoardServiceImpl implements BoardService{
 		try {
 			boardMapper.deleteContents(map);
 			resultMap.put("message", ResMessage.RM_REMOVE);
+		} catch (DataAccessException e) {
+			System.out.println(map);
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+		} catch (PersistenceException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+	@Override
+	public HashMap<String, Object> updateContents(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> resultMap =
+				new HashMap<String, Object>();
+		try {
+			boardMapper.updateContents(map);
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (DataAccessException e) {
+			System.out.println(map);
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+		} catch (PersistenceException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+	@Override
+	public HashMap<String, Object> addComments(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> resultMap =
+				new HashMap<String, Object>();
+		try {
+			boardMapper.insertComments(map);
+			resultMap.put("result", "success");
+			resultMap.put("message", ResMessage.RM_SUBMIT);
 		} catch (DataAccessException e) {
 			System.out.println(map);
 			resultMap.put("result", "fail");
