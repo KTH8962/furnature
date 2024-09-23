@@ -47,31 +47,7 @@ public class EventController {
 		request.setAttribute("auctionNo", map.get("auctionNo"));
 		return "/event/auctionDetail";
 	}
-	
-	// 경매 상태 조회 db
-	@RequestMapping(value = "/event/auction-status.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	@ResponseBody
-	//@RequestParam
-	public String auctionStatus(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap = eventService.searchAuctionStatus();
-		return new Gson().toJson(resultMap);
-	}
-	
-	// 경매 상태 업데이트 db
-	@RequestMapping(value = "/event/auction-setting.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	@ResponseBody
-	//@RequestParam
-	public String setStatus(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		String json = map.get("statusInfo").toString(); 
-		ObjectMapper mapper = new ObjectMapper();
-		List<Object> statusInfo = mapper.readValue(json, new TypeReference<List<Object>>(){});
-		map.put("statusInfo", statusInfo);
-		resultMap = eventService.setAuctionStatus(map);
-		return new Gson().toJson(resultMap);
-	}
-	
+		
 	// 경매 조회 db
 	@RequestMapping(value = "/event/auction-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
