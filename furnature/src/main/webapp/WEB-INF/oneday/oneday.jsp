@@ -14,7 +14,9 @@
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
 		<div style="display:flex;">
-			<div v-for = "item in list">
+			<div v-for = "item in list" :key="item.classNo">
+				<div v-if="item.message=='모집 중' && item.numberLimit===0">모집 중</div>
+				<div v-if="item.message=='모집 종료' || item.numberLimit===1">모집 종료</div>
 				<div>{{item.className}}</div> 
 				<div>{{item.classDate}}</div> 
 				<div>{{item.price}}</div> 
@@ -31,7 +33,10 @@
         data() {
             return {
 				classNo : "",
-				list : []
+				list : [],
+				message : "",
+				endDay : "",
+				numberLimit : ""
             };
         },
         methods: {
@@ -45,9 +50,32 @@
 					data : nparmap,
 					success : function(data){
 						self.list = data.onedayList;
-						console.log(data);
+						for(var i=0; i<self.list.length; i++){
+						   var endDay = new Date(self.list[i].endDay);
+						   var today = new Date();
+						   if(endDay < today) {
+						       self.list[i].message = "모집 종료";
+						   }else{
+							   self.list[i].message = "모집 중";
+						   }
+						   self.fnCheckNumberLimit(self.list[i].classNo, i);		
+						}
 					}
 					
+				})
+			},
+			fnCheckNumberLimit(classNo, index) {
+				var self = this;
+				var nparmap = { classNo: classNo };	
+				$.ajax({
+					url: "/oneday/oneday-numberLimit.dox",
+					dataType: "json",
+					type: "POST",
+					data: nparmap,
+					success: function(data) {
+						self.list[index].numberLimit = data.numberLimit;	
+						console.log(self.list[index].numberLimit);
+					}
 				})
 			},
 			fnChange(classNo){
