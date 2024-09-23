@@ -15,19 +15,6 @@
 		    내용 : <textarea v-model="info.boardContents"></textarea><br>
 		    <button @click="fnUpdate(info.boardNo)">수정 완료</button>
 		    <button @click="isEditing = false">취소</button>
-			제목 : <input type="text" v-model="info.boardTitle"><br>
-			내용 : <textarea v-model="info.boardContents"></textarea><br>
-			<button @click="fnUpdate(info.boardNo)">수정 완료</button>
-			<button @click="isEditing = false">취소</button>
-		</div>
-		<div v-else>
-			제목 : {{info.boardTitle}}<br>
-			내용 : <div v-html="info.boardContents"></div>
-			작성자 : <span>{{info.userId}}</span>
-			<div v-if="sessionId == info.userId || sessionAuth == '2'">
-				<button @click="isEditing = true">수정</button>
-				<button @click="fnDelete(info.boardNo)">삭제</button>
-			</div>
 		</div>
 		<div v-else>
 		    제목 : {{info.boardTitle}}<br>
@@ -49,6 +36,7 @@
 		</div>
 
 		<!-- 댓글 목록 -->
+		<!--v-if="comments.length > 0"-->
 		<div>
 		    댓글
 		    <ul>
@@ -151,7 +139,6 @@
 	                }
 	            });
 			},
-			}
         },
         mounted() {
 			var self = this;
