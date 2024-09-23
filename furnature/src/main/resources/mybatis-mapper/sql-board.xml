@@ -18,7 +18,7 @@
 	    LEFT JOIN (
 	    SELECT 
 	    BOARD_NO, COUNT(BOARD_NO) AS CNT
-	    FROM TBL_BOARD_RE
+	    FROM TBL_COMMENT
 	    GROUP BY BOARD_NO
 	    ) C ON B.BOARD_NO = C.BOARD_NO
 	    WHERE 1=1
@@ -35,7 +35,9 @@
 		<if test="searchOption == 'name'">
 			AND U.USER_ID LIKE '%' || #{keyword} || '%'
 		</if>
-		ORDER BY CDATETIME DESC, B.BOARD_NO DESC
+		ORDER BY 
+		CASE WHEN NOTICE_YN = 'Y' THEN 0 ELSE 1 END,
+		CDATETIME DESC, B.BOARD_NO DESC
 		OFFSET #{startIndex} ROWS FETCH FIRST #{outputNumber} ROWS ONLY
 	</select>
 	
@@ -61,8 +63,8 @@
 	
 	<!--게시글 등록-->
 	<insert id="insertBoard" parameterType="hashmap">
-		INSERT INTO TBL_BOARD(BOARD_NO, BOARD_TITLE, BOARD_CONTENTS, USER_ID, CDATETIME, UDATETIME) 
-		VALUES(BOARD_SEQ.NEXTVAL, #{boardTitle}, #{boardContents}, #{userId}, SYSDATE, SYSDATE)
+		INSERT INTO TBL_BOARD(BOARD_NO, BOARD_TITLE, BOARD_CONTENTS, USER_ID, NOTICE_YN, CDATETIME, UDATETIME) 
+		VALUES(BOARD_SEQ.NEXTVAL, #{boardTitle}, #{boardContents}, #{userId}, #{noticeYn}, SYSDATE, SYSDATE)
 	</insert>
 	
 	<!--게시글 삭제-->
@@ -85,6 +87,42 @@
 		FROM TBL_BOARD
 		WHERE BOARD_NO = #{boardNo}
 	</select>
+	
+	<!--게시글 수정-->
+	<update id="updateContents" parameterType="hashmap">
+		UPDATE TBL_BOARD
+		SET BOARD_TITLE = #{boardTitle}, BOARD_CONTENTS = #{boardContents}
+		WHERE BOARD_NO = #{boardNo}
+	</update>
+	
+	<!--댓글 조회-->
+	<select id="selectCommentList" parameterType="hashmap" resultType="com.example.furnature.model.Board">
+		SELECT C.COMMENT_NO, C.BOARD_NO, C.USER_ID, C.COMMENT_CONTENT, 
+        TO_CHAR(C.CDATETIME, 'YYYY-MM-DD HH24:MI:SS') AS CDATETIME
+		FROM TBL_COMMENT C
+		WHERE C.BOARD_NO = #{boardNo}
+		ORDER BY C.CDATETIME ASC;
+	</select>
+	
+	<!--댓글 추가-->
+	<insert id="insertComments" parameterType="hashmap">
+		INSERT INTO TBL_COMMENT (COMMENT_NO, BOARD_NO, USER_ID, COMMENT_CONTENT, CDATETIME, UDATETIME)
+		VALUES (COMMENT_SEQ.NEXTVAL, #{boardNo}, #{userId}, #{content}, SYSDATE, SYSDATE)
+	</insert>
+	
+	<!--댓글 삭제-->
+	<!--<delete id="deleteComments" parameterType="hashmap">
+		DELETE FROM TBL_COMMENT
+		WHERE COMMENT_NO = #{commentNo}
+	</delete>-->
+	
+	<!--댓글 수정-->
+	<!--<update id="updateComments" parameterType="hashmap">
+		UPDATE TBL_COMMENT
+		SET COMMENT_CONTENT = #{content}, UDATETIME = SYSDATE
+		WHERE COMMENT_NO = #{commentNo}
+	</update>-->
+  
 	<update id="updateContents" parameterType="hashmap">
 		UPDATE board
 		SET board_title = #{boardTitle}, board_contents = #{boardContents}

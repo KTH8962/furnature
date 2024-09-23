@@ -10,9 +10,9 @@
 	<div id="app">
 		<div id="container">
 			<ul>
-				<li><a href="#" @click="fnCategory('')">전체</a></li>
+				<!--<li><a href="#" @click="fnCategory('')">전체</a></li>
 				<li><a href="#" @click="fnCategory('1')">공지사항</a></li>
-				<li><a href="#" @click="fnCategory('2')">자유게시판</a></li>
+				<li><a href="#" @click="fnCategory('2')">자유게시판</a></li>-->
 				<li><a href="#" @click="fnCategory('3')">질문게시판</a></li>
 			</ul>
 			<div> 
@@ -34,31 +34,35 @@
 				</select>
 			</div> 
 			<table>
-				<tr>
-					<th>게시글번호</th>
-					<th>제목</th>
-					<th>작성자</th>
-					<th>작성일</th>
-					<th>삭제</th>
-				</tr>
-				<tr v-for="item in list">
-					<td>{{item.boardNo}}</td>
-					<td><a href="#" @click="fnView(item.boardNo)">{{item.boardTitle}}</a></td>
-					<td>{{item.maskedUserId}}</td>
-					<td>{{item.fCdateTime}}</td>
-					<td>
-						<div v-if="sessionId == item.userId || sessionAuth == '2'">
-							<button @click="fnRemove(item.boardNo)">삭제</button>
-						</div>
+				<thead>
+					<tr>
+						<th>게시글번호</th>
+						<th>제목</th>
+						<th>작성자</th>
+						<th>작성일</th>
+						<th>삭제</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(item, index) in list">
+						<td>{{item.boardNo}}</td>
+						<td><a href="#" @click="fnView(item.boardNo)">{{item.boardTitle}} [{{item.cnt}}]</a></td>
+						<td>{{item.maskedUserId}}</td>
+						<td>{{item.fCdateTime}}</td>
+						<td>
+							<div v-if="sessionId == item.userId || sessionAuth == '2'">
+								<button @click="fnRemove(item.boardNo)">삭제</button>
+							</div>
 					</td>
+				</tbody>
 				</tr>	
 			</table>
 			<div>
 				<button @click="fnInsert()">글쓰기</button>
 			</div>
-			<!--<template v-if="sessionId == item.userId ">
-				<button @click="fnRemove(item.boardNo)">공지사항 글쓰기</button>
-			</template>-->
+			<div v-if="sessionAuth == '2'">
+				<button @click="">공지사항 글쓰기</button>
+			</div>
 			
 			<div class="pagenation">
 			    <!--<button v-if="currentPage > 1"

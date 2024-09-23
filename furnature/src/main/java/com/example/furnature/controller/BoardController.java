@@ -55,6 +55,16 @@ public class BoardController {
 		
 		return new Gson().toJson(resultMap);
 	}
+	// 댓글 작성
+	@RequestMapping(value = "/board/add-comment.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String Commnets_add(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap 
+			= new HashMap<String, Object>();
+		resultMap = boardService.addComments(map);
+		
+		return new Gson().toJson(resultMap);
+	}
 	// 게시글 삭제
 	@RequestMapping(value = "/board/board-remove.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
@@ -82,6 +92,16 @@ public class BoardController {
 		HashMap<String, Object> resultMap 
 		= new HashMap<String, Object>();
 		resultMap = boardService.deleteContents(map);
+		
+		return new Gson().toJson(resultMap);
+	}
+	// 게시글 수정
+	@RequestMapping(value = "/board/view-update.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String view_update(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap 
+		= new HashMap<String, Object>();
+		resultMap = boardService.updateContents(map);
 		
 		return new Gson().toJson(resultMap);
 	}

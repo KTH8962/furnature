@@ -21,4 +21,8 @@ public class Board {
 	private String fCdateTime;
 	private String cnt;
 	private String maskedUserId;
+	
+	private String commentNo;
+	private String commentContent;
+	
 }
