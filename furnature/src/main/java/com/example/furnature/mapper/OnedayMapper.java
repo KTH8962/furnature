@@ -13,6 +13,9 @@ public interface OnedayMapper {
 	//원데이클래스 목록 출력
 	List<Oneday> onedayList(HashMap<String,Object> map);
 	
+	//원데이클래스 목록 갯수
+	int totalCount(HashMap<String,Object> map);
+	
 	//원데이클래스 결제
 	void onedayPay(HashMap<String,Object> map);
 	

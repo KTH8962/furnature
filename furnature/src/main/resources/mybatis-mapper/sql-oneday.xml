@@ -3,15 +3,24 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.furnature.mapper.OnedayMapper">
+
 	<!--원데이클래스 목록 출력-->
 	<select id="onedayList" parameterType="hashmap" resultType="com.example.furnature.model.Oneday">
-		SELECT C.*, O.* FROM TBL_CLASS C
+		SELECT C.*, O.* 
+		FROM TBL_CLASS C
 		INNER JOIN TBL_ONEDAYFILE O
 		ON C.CLASS_NO = O.CLASS_NO
 		WHERE O.FILE_NO = (
 	    SELECT MIN(FILE_NO) 
 	    FROM TBL_ONEDAYFILE 
 	    WHERE CLASS_NO = C.CLASS_NO)
+	    ORDER BY O.CLASS_NO ASC OFFSET #{startIndex} ROWS FETCH FIRST #{outputNumber} ROWS ONLY
+	</select>
+	
+	<!--원데이클래스 개시글 수 조회-->
+	<select id="totalCount" parameterType="hashmap" resultType="int"> 
+		SELECT COUNT(CLASS_NO) AS TOTAL 
+		FROM TBL_CLASS
 	</select>
 	
 	<!--원데이클래스 개별 상세정보 출력-->
@@ -24,18 +33,22 @@
 
 	<!--원데이클래스 결제정보-->
 	<insert id="onedayPay" parameterType="hashmap">
-		INSERT INTO TBL_PARTICIPANT (PAY_ID, USER_NAME, USER_ID, COUNT, PRICE, PAY_DAY, CLASS_NO) VALUES (#{payId}, #{name}, 'user1', 1, #{price}, SYSDATE, #{classNo})
+		INSERT INTO TBL_PARTICIPANT 
+		(PAY_ID, USER_NAME, USER_ID, COUNT, PRICE, PAY_DAY, CLASS_NO) 
+		VALUES (#{payId}, #{name}, 'user1', 1, #{price}, SYSDATE, #{classNo})
 	</insert>
 	
 	<!--원데이클래스 등록(관리자)-->
 	<insert id="onedayReg" parameterType="hashmap">
-		INSERT INTO TBL_CLASS (CLASS_NO, CLASS_NAME, PRICE, NUMBER_LIMIT, CLASS_DATE, START_DAY, END_DAY)
+		INSERT INTO TBL_CLASS 
+		(CLASS_NO, CLASS_NAME, PRICE, NUMBER_LIMIT, CLASS_DATE, START_DAY, END_DAY)
 		VALUES (#{classNo}, #{className}, #{price}, #{numberLimit}, #{classDate}, #{startDay}, #{endDay})
 	</insert>
 	
 	<!--원데이클래스 등록시 파일업로드-->
 	<insert id="onedayFile" parameterType="hashmap">
-		INSERT INTO TBL_ONEDAYFILE (FILE_NAME, FILE_PATH, FILE_SIZE, EXT_NAME, CLASS_NO, FILE_NO)
+		INSERT INTO TBL_ONEDAYFILE 
+		(FILE_NAME, FILE_PATH, FILE_SIZE, EXT_NAME, CLASS_NO, FILE_NO)
 		VALUES (#{fileName}, #{filePath}, #{fileSize}, #{extName}, #{classNo}, FILE_NO_SEQ.NEXTVAL)
 	</insert>
 	

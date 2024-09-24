@@ -25,7 +25,9 @@ public class OnedayServiceImpl implements OnedayService{
 		HashMap<String,Object> resultMap = new HashMap<>();
 		try {
 			List<Oneday> onedayList = onedayMapper.onedayList(map);
+			int totalCount = onedayMapper.totalCount(map);
 			resultMap.put("onedayList", onedayList);
+			resultMap.put("totalCount", totalCount);
 			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		}

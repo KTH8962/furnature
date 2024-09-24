@@ -133,7 +133,7 @@
 				    IMP.request_pay({
 						pg: "html5_inicis",
 					    pay_method: "card",
-						merchant_uid: 'order_' + new Date().getTime(),
+						merchant_uid: 'oneday' + new Date().getTime(),
 					    name: self.detail.className,
 					    amount: self.price,
 					    buyer_tel: "010-0000-0000",
