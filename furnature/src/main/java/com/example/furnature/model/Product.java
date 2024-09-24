@@ -32,13 +32,11 @@ public class Product {
 	//상품 이미지 테이블
 	private String productThumbnail; //상품 썸네일 이미지 URL
 	private String productDetail1; //상품 상세이미지1 URL
-	private String productDetail2; //상품 상세이미지2 URL
-	private String productDetail3; //상품 상세이미지3 URL
-	private String productDetail4; //상품 상세이미지4 URL
 	
 	//주문
 	private String orderNo;
 	private String orderPrice;
+	private String mileagePrice;
 	
 	//리뷰
 	private String reviewNo;
@@ -46,4 +44,5 @@ public class Product {
 	private String reviewLike;
 	private String reviewTitle;
 	private String reviewContents;
+	private String reviewImgPath;
 }

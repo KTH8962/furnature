@@ -80,6 +80,7 @@ public class ProductServiceImpl implements ProductService{
 			resultMap.put("result", "fail");
 			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
 		}
+		
 		return resultMap;
 	}
 
@@ -98,12 +99,13 @@ public class ProductServiceImpl implements ProductService{
 		}
 		return resultMap;
 	}
+	
+	//상품 결제정보 DB넘기기
 	@Override
 	public HashMap<String, Object> productOrder(HashMap<String, Object> map) {
 		HashMap <String, Object> resultMap = new HashMap<>();
 		List<HashMap<String, Object>> orderList = (List<HashMap<String, Object>>) map.get("list");
 		HashMap <String, Object> orderMap = new HashMap<>();
-	
 		
 		System.out.println("SERVICECCSSSSSSSS"+map);
 		try {
@@ -135,6 +137,7 @@ public class ProductServiceImpl implements ProductService{
 		}
 		return resultMap;
 	}
+	//리뷰 목록
 	@Override
 	public HashMap<String, Object> productReview(HashMap<String, Object> map) {
 		HashMap <String, Object> resultMap = new HashMap<>();
@@ -155,4 +158,22 @@ public class ProductServiceImpl implements ProductService{
 		}
 		return resultMap;
 	}
+	//리뷰작성
+	@Override
+	public HashMap<String, Object> insertReview(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			productmapper.reviewInsert(map);
+			resultMap.put("reviewNo",map.get("reviewNo"));
+			System.out.println("serviceSSSSSSSS"+map);
+			System.out.println("serviceSSSSSSSS"+resultMap);
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		
+		return resultMap;
+	}
+	
 }

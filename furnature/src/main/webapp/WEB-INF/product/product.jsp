@@ -108,7 +108,7 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-						self.cateList = data.list;							
+						self.cateList = data.list;
 						
 					}
 				});

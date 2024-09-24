@@ -1,6 +1,8 @@
 package com.example.furnature.controller;
 
 
+import java.io.File;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,19 +13,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.furnature.dao.ProductService;
+import com.example.furnature.mapper.ProductMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class ProductController {
 	@Autowired
 	ProductService productService;
 	
+	@Autowired
+	ProductMapper productMapper;
 	// 상품 구매 페이지
 	@RequestMapping("/productDetail/pay.do")
 	public String productPay(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception{
@@ -105,7 +112,7 @@ public class ProductController {
 		
 		map.put("list", list);
 		
-		System.out.println("CONTROLLLLLLLLLLLL PAY"+map);
+		System.out.println("CONTROLLLLLLLLLLLL ORDER !! PAY"+map);
 		resultMap = productService.productOrder(map);
 		return new Gson().toJson(resultMap);
 	}
@@ -118,5 +125,65 @@ public class ProductController {
 		resultMap = productService.productReview(map);
 		return new Gson().toJson(resultMap);
 	}
+	//리뷰 작성 페이지
+	@RequestMapping("/productDetail/reviewInsert.do")
+	 public String reviewInsert(HttpServletRequest request,Model model,@RequestParam HashMap<String, Object> map) throws Exception{
+        request.setAttribute("productNo", map.get("productNo"));
+		return "/productDetail/reviewInsert";
+    }
+	//리뷰 작성
+	@RequestMapping(value = "/productDetail/reviewInsert.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String reviewInsert(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = productService.insertReview(map);
+		return new Gson().toJson(resultMap);
+	}
+	//리뷰 이미지첨부
+	@RequestMapping("/productDetail/reviewImgFile.dox")
+    public String result(@RequestParam("file1") MultipartFile multi, @RequestParam("reviewNo") int reviewNo, HttpServletRequest request,HttpServletResponse response, Model model)
+    {
+        String path=System.getProperty("user.dir");
+        try {
+            String originFilename = multi.getOriginalFilename();
+            String extName = originFilename.substring(originFilename.lastIndexOf("."),originFilename.length());
+            String saveFileName = SaveFileName(extName);
+            if(!multi.isEmpty()){
+                File file = new File(path + "\\src\\main\\webapp\\uploadImages\\productReview", saveFileName);
+                multi.transferTo(file);
+                HashMap<String, Object> map = new HashMap<String, Object>();
+                map.put("fileName", saveFileName);
+                map.put("filePath", "../uploadImages/productReview/" + saveFileName);
+                map.put("reviewNo", reviewNo);
+                
+                // insert 쿼리 실행
+                productMapper.insertReviewImg(map);
+                
+                model.addAttribute("filename", multi.getOriginalFilename());
+                model.addAttribute("uploadPath", file.getAbsolutePath());
+                
+            } 
+        }catch(Exception e) {
+            System.out.println(e);
+        }
+        return "redirect:reviewInsert.do";
+    }
+	
+	//시간기준 파일생성
+	   private String SaveFileName(String extName) {
+	        String fileName = "";
+	        
+	        Calendar calendar = Calendar.getInstance();
+	        fileName += calendar.get(Calendar.YEAR);
+	        fileName += calendar.get(Calendar.MONTH);
+	        fileName += calendar.get(Calendar.DATE);
+	        fileName += calendar.get(Calendar.HOUR);
+	        fileName += calendar.get(Calendar.MINUTE);
+	        fileName += calendar.get(Calendar.SECOND);
+	        fileName += calendar.get(Calendar.MILLISECOND);
+	        fileName += extName;
+	        
+	        return fileName;
+	    }
   
 }

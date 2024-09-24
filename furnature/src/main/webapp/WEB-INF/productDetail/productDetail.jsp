@@ -78,7 +78,7 @@
 					<div>관련 추천 상품 목록 만들어야함 ==========================</div>
 				</div>
 				<div id="review"> <!-- 제품 리뷰 영역 5개 정도씩 보이게, 페이징처리 추천순 최신순 별점순 ?-->
-					<div>리뷰======================================<button type="button">리뷰작성</div>
+					<div>리뷰======================================<button type="button" @click="fnReviewInsert">리뷰작성</div>
 					<div>리뷰목록</div>
 					<div>
 						<div>평점 평균 {{averageRating}}</div>
@@ -87,6 +87,7 @@
 						<template v-for="item in reviewList">
 							<div v-if="item.productNo==productDetail.productNo">
 								<div>리뷰넘버(시퀀스번호) : {{item.reviewNo}}</div>
+								<div v-if="item.reviewImgPath != null">리뷰사진 <img :src="item.reviewImgPath" style= "width : 300px ; height : 300px"></div>
 								<div>리뷰 제목 : {{item.reviewTitle}}</div>
 								<div>리뷰 내용 :{{item.reviewContents}}</div>
 								<div>평점 : {{item.reviewRating}}</div>
@@ -264,6 +265,7 @@
 				}
 					console.log(self.totalPrice);
 			},
+			//리뷰 목록 출력
 			fnGetReviewList(){
 				var self = this;
 				var nparmap = {productNo : self.productNo};
@@ -277,7 +279,15 @@
 						self.reviewList = data.reviewList;
 					}
 				});
-	      	}
+	      	},
+			//리뷰 작성
+			fnReviewInsert(){
+				var self = this;
+				var url = '/productDetail/reviewInsert.do?productNo=' + encodeURIComponent(self.productNo);
+				var option = 'width = 700 , height = 600, scrollbars = yes, left = 550, top = 200'; 
+				window.open(url,'review',option);
+				//location.href='/productDetail/reviewInsert.do?productNo='+ encodeURIComponent(self.productNo);
+			}
         },
         mounted() {
             var self = this;
