@@ -100,6 +100,18 @@
 	
 	<insert id="saveMileage" parameterType="hashmap">
 		INSERT INTO TBL_MILEAGE
-		VALUES(MILEAGE_SEQ.NEXTVAL, #{sessionId}, '상품구매', #{mileage}, '적립', SYSDATE)
+		VALUES(MILEAGE_SEQ.NEXTVAL, #{userId}, '상품구매', #{mileage}, '적립', SYSDATE)
 	</insert>
+	
+	<!--
+		유저별 총 마일리지 계산 쿼리 적립일땐 + / 사용일땐 -
+		SELECT U.USER_ID, SUM(CASE 
+                  WHEN M.MILEAGE_STATUS = '적립' THEN M.MILEAGE_PRICE
+                  WHEN M.MILEAGE_STATUS = '사용' THEN -M.MILEAGE_PRICE
+                  ELSE 0
+                  END) AS TOTAL_MILEAGE
+		FROM TBL_USER U INNER JOIN TBL_MILEAGE M ON U.USER_ID = M.USER_ID
+		GROUP BY U.USER_ID;
+
+	-->
 </mapper>

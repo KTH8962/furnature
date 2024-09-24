@@ -6,16 +6,21 @@
 <jsp:include page="/layout/headlink.jsp"></jsp:include>
 </head>
 <body>
-<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
 		<div id="container">            
-			<div>제목<input type="text" placeholder="제목" v-model="reviewTitle"></div>
+			<!--<div>제목<input type="text" placeholder="제목" v-model="reviewTitle"></div>-->
+			<select>
+				<option>아주좋아요★★★★★</option>
+				<option>맘에들어요★★★★☆</option>
+				<option>좋아요★★★☆☆</option>
+				<option>그저그래요★★☆☆☆</option>
+				<option>별로에요★☆☆☆☆</option>
+			</select>
 			<div>내용<textarea v-model="reviewContents"></textarea></div>
 			<div>사진첨부<input type="file" accept=".gif,.jpg,.png" @change="fnReviewAttach"></div>
 			<button @click="fnReviewInsert">리뷰등록</button>
 		</div>
 	</div>
-<jsp:include page="/layout/footer.jsp"></jsp:include>
 </body>
 </html>
 <script>

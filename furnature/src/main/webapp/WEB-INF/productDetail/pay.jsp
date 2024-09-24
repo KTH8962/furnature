@@ -11,13 +11,11 @@
 	<div id="app">
 		<div id="container">            
             <p class="blind">기본페이지</p>
-			{{productDetail.prodcutThumbnail}}
-			{{productDetail.productDetail1}}
 			<div>
 				<div>주문상품</div>
-				<!--<div><img :src="list.designImgPath" style= "width : 500px ; height : 500px"></div>-->
+				<div><img :src="productDetail.productThumbnail" style="height : 300px; width : 300px;"></div>
 				<div>상품명 : {{productDetail.productName}}</div>
-				<div><template v-for="item in selectedSize">사이즈 {{item.size}} 수량 {{item.count}} 판매가 {{ (item.price*1).toLocaleString() }} <br> </template>총 구매가격 : {{totalPrice}}</div>
+				<div><template v-for="item in selectedSize">사이즈 {{item.size}} 수량 {{item.count}} 판매가 {{ (item.price*1).toLocaleString() }} <br> </template>총 구매가격 : {{parseInt(totalPrice).toLocaleString()}}</div>
 			</div>
 			<div>
 				<div>주문자정보 확인</div>
@@ -182,7 +180,7 @@
 					self.name = self.info.userName;
 					self.phone = self.info.userPhone;
 					self.address = self.info.userAddr;
-					self.postcode ='123456';
+					self.postcode =self.info.userZipCode;
 				}else{
 					self.name = "";
 					self.phone = "";
@@ -229,13 +227,15 @@
 					   
                    }
                    alert(msg);
-				   document.location.href="/product/product.do";
+				   location.reload();
                });
 			},
 			fnPoint(){
 				var self=this;
 				if(self.totalPrice<=self.myPoint){
 					self.pointPay = self.totalPrice;
+				}else{
+					self.pointPay = self.myPoint;
 				}
 			},
 			fnPointLimit(){

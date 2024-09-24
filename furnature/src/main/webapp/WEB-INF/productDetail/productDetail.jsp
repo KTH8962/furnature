@@ -20,7 +20,7 @@
 				<!-- 상세 페이지 썸네일 , 이름, 가격, 사이즈 등 정보 출력 -->
 				<div><img :src="productDetail.productThumbnail" alt="썸네일"></div>
 				<div>{{productDetail.productName}}</div>
-				<div>{{productDetail.productPrice}}</div>
+				<div>{{parseInt(productDetail.productPrice).toLocaleString()}}</div>
 				<div>{{productDetail.productColor}}</div>
 				<div>
 					<select v-model="sizeSelect" @change="fnSelectSize">
@@ -87,10 +87,18 @@
 						<template v-for="item in reviewList">
 							<div v-if="item.productNo==productDetail.productNo">
 								<div>리뷰넘버(시퀀스번호) : {{item.reviewNo}}</div>
-								<div v-if="item.reviewImgPath != null">리뷰사진 <img :src="item.reviewImgPath" style= "width : 300px ; height : 300px"></div>
+								<div v-if="item.reviewImgPath != null">리뷰사진 <img :src="item.reviewImgPath" style= "width : 250px ; height : 250px"></div>
 								<div>리뷰 제목 : {{item.reviewTitle}}</div>
 								<div>리뷰 내용 :{{item.reviewContents}}</div>
-								<div>평점 : {{item.reviewRating}}</div>
+								<div>평점 : <template>{{item.reviewRating}}</template>
+								<div>평점 : 
+								    <template v-if="item.reviewRating">
+								        <span v-for="star in 5" :key="star" style="color: gold;">
+								            {{ star <= item.reviewRating ? '★' : '☆' }}
+								        </span>
+								    </template>
+								</div>
+								</div>
 							</div> <br>
 						</template>
 					</div>

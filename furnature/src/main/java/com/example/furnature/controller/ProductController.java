@@ -111,6 +111,8 @@ public class ProductController {
 		List<Object> list = mapper.readValue(json, new TypeReference<List<Object>>(){});
 		
 		map.put("list", list);
+		//마일리지 적립
+		productMapper.saveMileage(map);
 		
 		System.out.println("CONTROLLLLLLLLLLLL ORDER !! PAY"+map);
 		resultMap = productService.productOrder(map);

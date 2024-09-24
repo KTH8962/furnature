@@ -15,6 +15,7 @@ public class MyPage {
 	private String eventRoul;
 	private String eventCheck;
 	private String mileagePrice;
+	private String userZipCode;
 	
 	//원데이클래스
 	private String classNo;
