@@ -83,8 +83,9 @@
 	
 	<!--게시글 상세보기-->
 	<select id="selectBoardInfo" parameterType="hashmap" resultType="com.example.furnature.model.Board">
-		SELECT *
-		FROM TBL_BOARD
+		SELECT B.*,
+		RPAD(SUBSTR(USER_ID, 1, 3), LENGTH(USER_ID), '*') AS MASKED_USER_ID
+		FROM TBL_BOARD B
 		WHERE BOARD_NO = #{boardNo}
 	</select>
 	
@@ -95,26 +96,40 @@
 		WHERE BOARD_NO = #{boardNo}
 	</update>
 	
+	<!--댓글 수정-->
+	<update id="updateComment" parameterType="hashmap">
+		UPDATE TBL_COMMENT
+		SET COMMENT_CONTENTS = #{commentContents}
+		WHERE COMMENT_NO = #{commentNo}
+	</update>
+	
 	<!--댓글 조회-->
 	<select id="selectCommentList" parameterType="hashmap" resultType="com.example.furnature.model.Board">
-		SELECT C.COMMENT_NO, C.BOARD_NO, C.USER_ID, C.COMMENT_CONTENT, 
-        TO_CHAR(C.CDATETIME, 'YYYY-MM-DD HH24:MI:SS') AS CDATETIME
+		SELECT C.*,U.*,
+		CASE
+	    WHEN TO_CHAR(C.CDATETIME, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD') 
+	    THEN TO_CHAR(CDATETIME, 'HH24:MI:SS')
+	    ELSE TO_CHAR(C.CDATETIME, 'YYYY-MM-DD')
+	    END AS F_CDATETIME,
+	    RPAD(SUBSTR(U.USER_ID, 1, 3), LENGTH(U.USER_ID), '*') AS MASKED_USER_ID
 		FROM TBL_COMMENT C
-		WHERE C.BOARD_NO = #{boardNo}
-		ORDER BY C.CDATETIME ASC;
+		INNER JOIN TBL_USER U ON C.USER_ID = U.USER_ID
+		WHERE BOARD_NO = #{boardNo}
+        ORDER BY CDATETIME DESC, C.BOARD_NO DESC
 	</select>
 	
 	<!--댓글 추가-->
-	<insert id="insertComments" parameterType="hashmap">
-		INSERT INTO TBL_COMMENT (COMMENT_NO, BOARD_NO, USER_ID, COMMENT_CONTENT, CDATETIME, UDATETIME)
-		VALUES (COMMENT_SEQ.NEXTVAL, #{boardNo}, #{userId}, #{content}, SYSDATE, SYSDATE)
+	<insert id="insertComment" parameterType="hashmap">
+		INSERT INTO TBL_COMMENT (COMMENT_NO, BOARD_NO, USER_ID, COMMENT_CONTENTS, CDATETIME, UDATETIME)
+		VALUES (COMMENT_SEQ.NEXTVAL, #{boardNo}, #{userId}, #{contents}, SYSDATE, SYSDATE)
 	</insert>
 	
 	<!--댓글 삭제-->
-	<!--<delete id="deleteComments" parameterType="hashmap">
-		DELETE FROM TBL_COMMENT
+	<delete id="deleteComments" parameterType="hashmap">
+		DELETE 
+		FROM TBL_COMMENT
 		WHERE COMMENT_NO = #{commentNo}
-	</delete>-->
+	</delete>
 	
 	<!--댓글 수정-->
 	<!--<update id="updateComments" parameterType="hashmap">

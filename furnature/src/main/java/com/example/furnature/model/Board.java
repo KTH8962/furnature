@@ -23,6 +23,6 @@ public class Board {
 	private String maskedUserId;
 	
 	private String commentNo;
-	private String commentContent;
+	private String commentContents;
 	
 }
