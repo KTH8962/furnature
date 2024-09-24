@@ -43,7 +43,7 @@
 	
 	<insert id="insertAuction" parameterType="hashmap" useGeneratedKeys="true" keyProperty="auctionNo" keyColumn="AUCTION_NO">
 		INSERT INTO TBL_AUCTION
-		VALUES (AUCTION_SEQ.NEXTVAL, #{title}, #{price}, #{price}, #{id}, TO_DATE(#{startDay}, 'YYYY-MM-DD HH24:MI'), TO_DATE(#{endDay}, 'YYYY-MM-DD HH24:MI'), SYSDATE, SYSDATE, #{contents}, '', '','N')
+		VALUES (AUCTION_SEQ.NEXTVAL, #{title}, #{price}, #{price}, #{id}, TO_DATE(#{startDay}, 'YYYY-MM-DD HH24:MI'), TO_DATE(#{endDay}, 'YYYY-MM-DD HH24:MI'), (SYSDATE + INTERVAL '9' HOUR), (SYSDATE + INTERVAL '9' HOUR), #{contents}, '', '', #{status})
 	</insert>
 	
 	<update id="updateAuction" parameterType="hashmap">
@@ -53,7 +53,8 @@
 			AUCTION_CONTENTS = #{contents},
 			START_DAY = TO_DATE(#{startDay}, 'YYYY-MM-DD HH24:MI:SS'),
 			END_DAY = TO_DATE(#{endDay}, 'YYYY-MM-DD HH24:MI:SS'),
-			AUCTION_UDATETIME = SYSDATE
+			AUCTION_UDATETIME = (SYSDATE + INTERVAL '9' HOUR),
+			AUCTION_STATUS = #{status}
 		WHERE AUCTION_NO = #{auctionNo}
 	</update>
 	
@@ -111,7 +112,7 @@
 	
 	<insert id="insertAuctionBidding" parameterType="hashmap">
 		INSERT INTO TBL_AUCTION_BIDDING
-		VALUES(AUCTION_BIDDING_SEQ.NEXTVAL, #{auctionNo}, #{sessionId}, #{biddingPrice}, SYSDATE)
+		VALUES(AUCTION_BIDDING_SEQ.NEXTVAL, #{auctionNo}, #{sessionId}, #{biddingPrice}, (SYSDATE + INTERVAL '9' HOUR))
 	</insert>
 	
 	<update id="updateAuctionPrice" parameterType="hashmap">

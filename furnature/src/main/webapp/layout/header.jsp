@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <div id="header">
 	<div class="header-wrap">
-		<div class="logo-wrap" style="margin-right:10px;"><a href="/main.do">메인</a></div>
+		<h1 class="h-logo"><a href="/main.do">메인로고</a></h1>
 		<nav class="nav">
 			<ul>
 				<li><a href="/product/product.do">가구구매</a></li>
@@ -17,6 +17,9 @@
 					<li><a href="/login.do">로그인</a></li>
 					<li><a href="/join.do">회원가입</a></li>
 				</template>
+                <template v-if="sessionId == 'admin'">
+                    <li><a href="/admin.do">관리자 페이지</a></li>
+                </template>
 			</ul>
 		</nav>
 	</div>

@@ -99,6 +99,7 @@
 				contents : "",
 				startDay : "",
 				endDay : "",
+				status : "",
 				sessionId : "${sessionId}",
 				auctionNo : "${auctionNo}",
             };
@@ -112,8 +113,14 @@
 				var year = time.getFullYear();
 				var month = String(time.getMonth()+1).padStart(2, "0");
 				var day = String(time.getDate()).padStart(2, "0");
+				var hour = String(time.getHours()).padStart(2, "0");
+				var minutes = String(time.getMinutes()).padStart(2, "0");
 				var today = year + "-" + month + "-" + day + "T00:00";
+				var todayFull = year + "-" + month + "-" + day + "T" + hour + ":" + minutes;
 
+				if(self.startDay.indexOf("T")<0) {
+					self.startDay = self.startDay.replace(" ","T");
+				}
 				
 				if(self.compare(self.title, "경매 제목을 입력해주세요.")){
 					return false;
@@ -126,13 +133,13 @@
 				} else if (self.compare(self.endDay, "종료일을 입력해주세요.")) {
 					return false;
 				} else if (today > self.startDay) {
-					alert("시작일은 오늘 일자보다 늦은 일자 및 시간으로 선택해주세요");
+					alert("시작일은 오늘 일자보다 늦은 일자로 선택해주세요");
 					return false;
 				} else if (self.startDay >= self.endDay) {
 					alert("종료일 시작일 보다 늦은 일자로 선택해주세요");
 					return false;
 				} 
-				//if(self.auctionNo != '') {} 
+				
 				if(self.auctionNo == '') {
 					 if (self.compare(self.thumbFile, "경매 썸네일 이미지 파일을 등록해주세요.")) {
 						return false;
@@ -140,12 +147,16 @@
 						return false;
 					} 
 				}
-
+				
+				if(self.startDay <= todayFull) {
+					self.status = "I";
+				} else {
+					self.status = "F";
+				}
+				
 				self.startDay = self.startDay.replace("T"," ");
-				//self.startDay = self.startDay + ":00";
 				self.endDay = self.endDay.replace("T"," ");
-				//self.endDay = self.endDay + ":00";
-				var nparmap = {title: self.title, price: self.price, id: self.sessionId, startDay: self.startDay, endDay: self.endDay, contents: self. contents, auctionNo: self.auctionNo};
+				var nparmap = {title: self.title, price: self.price, id: self.sessionId, startDay: self.startDay, endDay: self.endDay, contents: self. contents, auctionNo: self.auctionNo, status: self.status};
 				$.ajax({
 					url:"/event/auction-register.dox",
 					dataType:"json",	
