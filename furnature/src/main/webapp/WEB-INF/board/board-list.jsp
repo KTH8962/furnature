@@ -53,9 +53,9 @@
 							<div v-if="sessionId == item.userId || sessionAuth == '2'">
 								<button @click="fnRemove(item.boardNo)">삭제</button>
 							</div>
-					</td>
+						</td>
+					</tr>	
 				</tbody>
-				</tr>	
 			</table>
 			<div>
 				<button @click="fnInsert()">글쓰기</button>

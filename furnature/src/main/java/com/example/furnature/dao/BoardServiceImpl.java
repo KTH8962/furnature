@@ -3,6 +3,8 @@ package com.example.furnature.dao;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.xml.stream.events.Comment;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,8 @@ import jakarta.persistence.PersistenceException;
 public class BoardServiceImpl implements BoardService{
 	@Autowired
 	BoardMapper boardMapper;
-
+	
+	// 게시판 목록
 	@Override
 	public HashMap<String, Object> searchBoardList(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
@@ -42,6 +45,7 @@ public class BoardServiceImpl implements BoardService{
 		return resultMap;
 	}
 
+	// 게시판 글쓰기
 	@Override
 	public HashMap<String, Object> addBoard(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
@@ -59,6 +63,7 @@ public class BoardServiceImpl implements BoardService{
 		return resultMap;
 	}
 	
+	// 게시판 삭제
 	@Override
 	public HashMap<String, Object> removeBoard(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
@@ -75,6 +80,7 @@ public class BoardServiceImpl implements BoardService{
 		return resultMap;
 	}
 	
+	// 게시글 상세보기
 	@Override
 	public HashMap<String, Object> searchBoardInfo(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
@@ -82,6 +88,8 @@ public class BoardServiceImpl implements BoardService{
 				new HashMap<String, Object>();
 		try {
 			Board board = boardMapper.selectBoardInfo(map);
+			List<Comment> commentList = boardMapper.selectCommentList(map);
+			resultMap.put("comment", commentList);
 			resultMap.put("info", board);
 			resultMap.put("result", "scuccess");
 			resultMap.put("message", "검색되었습니다.");
@@ -99,6 +107,7 @@ public class BoardServiceImpl implements BoardService{
 		return resultMap;
 	}
 	
+	// 상세보기중 삭제
 	@Override
 	public HashMap<String, Object> deleteContents(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
@@ -120,6 +129,31 @@ public class BoardServiceImpl implements BoardService{
 		}
 		return resultMap;
 	}
+	
+	// 댓글 삭제
+	@Override
+	public HashMap<String, Object> removeComment(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> resultMap =
+				new HashMap<String, Object>();
+		try {
+			boardMapper.deleteComments(map);
+			resultMap.put("message", ResMessage.RM_REMOVE);
+		} catch (DataAccessException e) {
+			System.out.println(map);
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+		} catch (PersistenceException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+	
+	// 게시글 수정
 	@Override
 	public HashMap<String, Object> updateContents(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
@@ -127,6 +161,29 @@ public class BoardServiceImpl implements BoardService{
 				new HashMap<String, Object>();
 		try {
 			boardMapper.updateContents(map);
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+			System.out.println(map);
+		} catch (DataAccessException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+		} catch (PersistenceException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+	
+	// 댓글 수정
+	@Override
+	public HashMap<String, Object> updateComment(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> resultMap =
+				new HashMap<String, Object>();
+		try {
+			boardMapper.updateComment(map);
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {
 			System.out.println(map);
@@ -141,13 +198,15 @@ public class BoardServiceImpl implements BoardService{
 		}
 		return resultMap;
 	}
+	
+	// 댓글 쓰기
 	@Override
-	public HashMap<String, Object> addComments(HashMap<String, Object> map) {
+	public HashMap<String, Object> addComment(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> resultMap =
 				new HashMap<String, Object>();
 		try {
-			boardMapper.insertComments(map);
+			boardMapper.insertComment(map);
 			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUBMIT);
 		} catch (DataAccessException e) {
