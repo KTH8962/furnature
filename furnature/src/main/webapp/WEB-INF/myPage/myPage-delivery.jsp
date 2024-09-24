@@ -16,21 +16,31 @@
                 </div>
                 <div class="myPage myPage-delivery" style="width:100%">
                     <div>배송정보</div>
+					{{sessionId}}
 					<div v-if="!list || list.length === 0">
 					    구매 목록이 없습니다.
 					</div>
 					<div v-for="item in list">
 						<div v-if="item.orderCate =='상품'">
-						<div>상품구매 목록</div>
-						{{item.userId}}님이 구매하신 총 {{item.orderCount}}개의 상품이
-						{{item.cateName}}입니다. 주문번호는 {{item.orderNo}} 입니다.						
+							<div>상품구매 목록</div>
+							상품이름 구매수량 주문번호 배달현황
+							<div>
+	 							<a href="#" @click="fnProDetail(item.productNo)"><img :src="item.productThumbnail" style= "width : 200px ; height : 200px">
+								{{item.productName}}</a> {{item.orderCount}}개 {{item.orderNo}}	{{item.cateName}}						
+							</div>					
 						</div>		
-						<div v-if="item.orderCate =='경매'">
-						<div>경매목록</div>
-						{{item.userId}}님이 구매하신 총 {{item.orderCount}}개의 상품이
-						{{item.cateName}}입니다. 주문번호는 {{item.orderNo}} 입니다.						
-						</div>
                    </div>
+				   <div v-for="item in list">
+						<div v-if="item.orderCate =='경매'">
+							<div>경매구매 목록</div>
+							상품이름 구매수량 주문번호 배달현황
+							<div>
+	 							<a href="#" @click="fnProDetail(item.productNo)"><img :src="item.productThumbnail" style= "width : 200px ; height : 200px">
+								{{item.productName}}</a> {{item.orderCount}}개 {{item.orderNo}}	{{item.cateName}}						
+							</div>						
+						</div>
+				   </div>
+				</div>   
             </div>
         </div>    
     </div>
@@ -42,6 +52,7 @@
         data() {
             return {
                 sessionId: '${sessionId}',
+				productNo : "",
                 list: []
             };
         },
@@ -61,7 +72,10 @@
                         self.list = data.list;
                     }
                 });
-            }
+            },
+			fnProDetail(productNo){
+				$.pageChange("/productDetail/productDetail.do",{productNo : productNo});
+			}
       
         },
         mounted() {
