@@ -104,10 +104,10 @@ public class ManageController {
                 String originFilename = thumbnailFile.getOriginalFilename();
                 String extName = originFilename.substring(originFilename.lastIndexOf("."));
                 String saveFileName = genSaveFileName(extName);
-                File thumbnailFileToSave = new File(path + "\\src\\main\\webapp\\images", saveFileName);
+                File thumbnailFileToSave = new File(path + "\\src\\main\\webapp\\uploadImages\\product", saveFileName);
                 thumbnailFile.transferTo(thumbnailFileToSave);
                 map.put("productNo", productNo);
-                map.put("productThumbnail", "../images/" + saveFileName);
+                map.put("productThumbnail", "../uploadImages/product" + saveFileName);
             }
 
             // 설명 파일 처리
