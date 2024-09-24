@@ -5,7 +5,8 @@ import java.util.HashMap;
 public interface MyPageService {
     // 내정보 조회
     HashMap<String, Object> searchUser(HashMap<String, Object> map);
-    
+    // 내정보 수정
+    HashMap<String, Object> editUser(HashMap<String, Object> map);
     // 원데이 정보 조회
     HashMap<String, Object> onedayInfo(HashMap<String, Object> map);
     // 경매 입찰 리스트 조회
@@ -14,4 +15,6 @@ public interface MyPageService {
     HashMap<String, Object> cancelBidding(HashMap<String, Object> map);
     // 배송 조회
     HashMap<String, Object> selectDelivery(HashMap<String, Object> map);
+    // 마일리지 조회
+    HashMap<String, Object> searchMileageList(HashMap<String, Object> map);
 }

@@ -36,10 +36,16 @@ public class MyPageController {
         return "/myPage/myPage-bidding";
     }
     
-    // 경매 입찰 리스트 조회 페이지
+    // 배송 조회 페이지
     @RequestMapping("/myPage/delivery.do")
     public String delivery(Model model) throws Exception{
     	return "/myPage/myPage-delivery";
+    }
+    
+    // 마일리지 리스트 조회 페이지
+    @RequestMapping("/myPage/mileage.do")
+    public String mileage(Model model) throws Exception{
+    	return "/myPage/myPage-mileage";
     }
 
     // 마이페이지 리스트 db
@@ -57,7 +63,7 @@ public class MyPageController {
     public String editUser(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
     	HashMap<String, Object> resultMap = new HashMap<String, Object>();
     	System.out.println(map);
-    	//resultMap = myPageService.searchUser(map);
+    	resultMap = myPageService.editUser(map);
     	return new Gson().toJson(resultMap);
     }
 
@@ -93,6 +99,15 @@ public class MyPageController {
     public String mypageDelivery(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
     	HashMap<String, Object> resultMap = new HashMap<String, Object>();
     	resultMap = myPageService.selectDelivery(map);
+    	return new Gson().toJson(resultMap);
+    }
+    
+    // 배송 조회
+    @RequestMapping(value = "/myPage/mileage-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String mypageMileage(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+    	HashMap<String, Object> resultMap = new HashMap<String, Object>();
+    	resultMap = myPageService.searchMileageList(map);
     	return new Gson().toJson(resultMap);
     }
 

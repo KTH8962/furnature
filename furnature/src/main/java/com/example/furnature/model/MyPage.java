@@ -14,9 +14,9 @@ public class MyPage {
 	private String userAuth;
 	private String eventRoul;
 	private String eventCheck;
-	private String mileagePrice;
+	private String mileageTotal;
 	
-	//원데이클래스
+	// 원데이클래스
 	private String classNo;
 	private String joinDate;
 	private String count;
@@ -40,7 +40,7 @@ public class MyPage {
 	private String auctionPriceCurrent;
 	private String auctionStatus;
 	
-	//배송
+	// 배송
 	private String payNo;
 	private String orderNo;
 	private String productNo;
@@ -55,6 +55,12 @@ public class MyPage {
 	private String cateName;
 	private String productThumbnail;
 	private String productName;
+	
+	// 마일리지
+	private String mileageNo;
+	private String mileageName;
+	private String mileagePrice;
+	private String mileageStatus;
 	
 	public String getAuctionBiddingPrice() {
 		return auctionBiddingPrice;
