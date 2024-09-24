@@ -18,4 +18,7 @@ public interface ProductService {
 	
 	//상품 리뷰
 	HashMap<String, Object> productReview(HashMap<String, Object> map);
+	
+	//상품 리뷰 작성
+	HashMap<String, Object> insertReview(HashMap<String, Object> map);
 }

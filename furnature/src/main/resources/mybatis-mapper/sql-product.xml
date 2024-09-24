@@ -76,12 +76,30 @@
 	
 	<!-- 상품 결제 데이터 인서트 -->
 	<insert id="productOrder" parameterType="hashmap">
-        INSERT INTO TBL_PRODUCT_ORDER (PAY_NO, ORDER_NO, PRODUCT_NO, USER_ID, ORDER_PRICE, ORDER_SIZE, ORDER_COUNT, PRODUCT_PRICE)
-        VALUES (PAY_NO_SEQ.NEXTVAL, #{orderNo}, #{productNo}, #{userId}, #{orderPrice}, #{orderSize}, #{orderCount}, #{sizePrice})
+        INSERT INTO TBL_PRODUCT_ORDER (PAY_NO, ORDER_NO, PRODUCT_NO, USER_ID, ORDER_PRICE, ORDER_SIZE, ORDER_COUNT, PRODUCT_PRICE, ORDER_CATE, DELIVERY_CATE)
+        VALUES (PAY_NO_SEQ.NEXTVAL, #{orderNo}, #{productNo}, #{userId}, #{orderPrice}, #{orderSize}, #{orderCount}, #{sizePrice}, '상품', 1)
 	</insert>
-	
+	<!--리뷰 리스트-->
 	<select id="productReview" parameterType="hashmap" resultType="com.example.furnature.model.Product">
 		SELECT * FROM 
 		TBL_PRODUCT_REVIEW WHERE PRODUCT_NO = #{productNo}
 	</select>
+	
+	<!--리뷰 작성-->
+	<insert id="reviewInsert" parameterType="hashmap" useGeneratedKeys="true" keyProperty="reviewNo" keyColumn="REVIEW_NO">
+		INSERT INTO TBL_PRODUCT_REVIEW (REVIEW_NO, REVIEW_TITLE, REVIEW_CONTENTS, USER_ID, PRODUCT_NO, CDATETIME, UDATETIME,REVIEW_RATING)
+		VALUES (TBL_PRODUCT_REVIEW_NO_SEQ.NEXTVAL, #{reviewTitle}, #{reviewContents}, #{userId}, #{productNo}, SYSDATE, SYSDATE, 1)
+	</insert>
+	
+	<!--리뷰 이미지 추가-->
+	<update id="insertReviewImg" parameterType="hashmap">
+		UPDATE TBL_PRODUCT_REVIEW
+		SET REVIEW_IMG_PATH = #{filePath}, REVIEW_IMG_NAME = #{fileName}
+		WHERE REVIEW_NO = #{reviewNo}
+	</update>
+	
+	<insert id="saveMileage" parameterType="hashmap">
+		INSERT INTO TBL_MILEAGE
+		VALUES(MILEAGE_SEQ.NEXTVAL, #{sessionId}, '상품구매', #{mileage}, '적립', SYSDATE)
+	</insert>
 </mapper>

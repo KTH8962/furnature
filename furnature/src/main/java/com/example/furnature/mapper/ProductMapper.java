@@ -30,5 +30,14 @@ public interface ProductMapper {
 	
 	//리뷰 목록
 	List<Product> productReview(HashMap<String, Object> map);
+	
+	//리뷰 작성
+	void reviewInsert(HashMap<String, Object> map);
+	
+	//리뷰 이미지 첨부
+	void insertReviewImg(HashMap<String, Object> map);
+	
+	//상품구매 마일리지 적립
+	void saveMileage(HashMap<String, Object> map);
 
 }

@@ -11,11 +11,11 @@
 	<div id="app">
 		<div id="container">            
             <p class="blind">기본페이지</p>
-			{{sessionId}}
-			{{info}}
+			{{productDetail.prodcutThumbnail}}
+			{{productDetail.productDetail1}}
 			<div>
 				<div>주문상품</div>
-				<div>썸네일</div>
+				<!--<div><img :src="list.designImgPath" style= "width : 500px ; height : 500px"></div>-->
 				<div>상품명 : {{productDetail.productName}}</div>
 				<div><template v-for="item in selectedSize">사이즈 {{item.size}} 수량 {{item.count}} 판매가 {{ (item.price*1).toLocaleString() }} <br> </template>총 구매가격 : {{totalPrice}}</div>
 			</div>
@@ -46,8 +46,10 @@
 			<div>
 				<div>결제정보</div>
 				<div>총 상품 금액 : {{totalPrice}}</div>
-				<div>포인트</div>
-				<div>총 할인금액 / 사용포인트 :</div>
+				<div>보유 포인트 : {{myPoint}}</div>
+				<div>사용 포인트 : <input type="text" placeholder="0" v-model="pointPay" @change="fnPointLimit">원
+					<button type="button" @click="fnPoint">전액사용</button>
+				</div>
 				<div>최종 결제 금액 : {{totalPrice}}</div>
 			</div>
 			<div>
@@ -58,7 +60,8 @@
 			</div>
 			
 			<div>
-				<div>최종 결제 금액 : </div>
+				<div>최종 결제 금액 : {{payPrice}} </div>
+				<div>구매시 적립 마일리지 : {{mileage}}</div>
 				<div>결제수단 ??</div>
 				<div>
 					<button type="button" @click="fnOrder">결제하기</button>
@@ -80,7 +83,7 @@
             return {
 				productNo : '${productNo}',
 				productDetail : [], //상품상세정보
-				totalPrice : '${totalPrice}',
+				totalPrice: parseFloat('${totalPrice}'.replace(/[^0-9.-]+/g,"")) || 0, // 문자열로 받아와서 숫자로 변화ㄴ
 				selectedSize : '${selectedSize}',
 				sizeList : [],
 				detailAddress : "",
@@ -92,9 +95,22 @@
 				name : "",
 				phone : "",
 				postcode : "",
-				deliveryInfo : ""
+				deliveryInfo : "",
+				myPoint : 100000,
+				pointPay : 0,
             };
         },
+		computed: {
+			//주문목록 총 가격
+		    payPrice() {
+				var self = this;
+		       	return Math.max(this.totalPrice - this.pointPay, 0); // 음수일 경우도 무조건 0 으로 출력
+		    },
+			mileage(){
+						var self = this;
+						return parseInt(self.payPrice * 0.05);
+					}
+		},
         methods: {
 			fnGetProductDetail(){
 						var self = this;
@@ -119,7 +135,7 @@
 								if (typeof self.selectedSize === 'string') {
 								    self.selectedSize = JSON.parse(self.selectedSize);
 								}
-								
+								console.log(data)
 								console.log(self.sizeList);
 								console.log(self.selectedSize);
 							}
@@ -181,7 +197,7 @@
 			  IMP.request_pay({
 			    pg: "html5_inicis.INIpayTest",
 			    pay_method: "card",
-			    merchant_uid: "order" + new Date().getTime(), //주문번호
+			    merchant_uid: "product" + new Date().getTime(), //주문번호
 			    name: self.productDetail.productName,	//상품명
 			    amount: 100,	//가격
 			  //  buyer_name: self.name,	//구매자 이름
@@ -195,7 +211,7 @@
 					   msg += '거래ID : ' + rsp.merchant_uid;
 					   msg += '결제금액 : ' + rsp.paid_amount;
                      	
-						var nparmap = {impUid : rsp.imp_uid, orderNo : rsp.merchant_uid, orderPrice : rsp.paid_amount, userId : self.info.userId ,productNo : self.productNo, orderList : orderList};
+						var nparmap = {impUid : rsp.imp_uid, orderNo : rsp.merchant_uid, orderPrice : rsp.paid_amount, userId : self.info.userId ,productNo : self.productNo, orderList : orderList, mileage : self.mileage};
 						$.ajax({
 							url:"/productDetail/productOrder.dox",
 							dataType:"json",	
@@ -216,6 +232,27 @@
 				   document.location.href="/product/product.do";
                });
 			},
+			fnPoint(){
+				var self=this;
+				if(self.totalPrice<=self.myPoint){
+					self.pointPay = self.totalPrice;
+				}
+			},
+			fnPointLimit(){
+				var self=this;
+				if(self.pointPay>self.myPoint){
+					alert('보유 금액 이상은 사용 불가능 합니다.');
+					if(self.totalPrice<=self.myPoint){
+						self.pointPay = self.totalPrice;
+					}else{
+						self.pointPay = self.myPoint;						
+					}
+				}
+				if(self.totalPrice<self.pointPay){
+					alert('사용 포인트가 구매가격을 넘었습니다.');
+						self.pointPay = self.totalPrice;
+				}
+			}
         },
         mounted() {
             var self = this;

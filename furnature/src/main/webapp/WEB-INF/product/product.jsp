@@ -35,7 +35,7 @@
 			<!--상품 리스트출력 -->
 			<div style="display:flex; flex-wrap:wrap;">
 				<div v-for="item in productList">
-					<div><a href="#" @click="fnPorductDetail(item.productNo)"><img :src="item.prodcutThumbnail" style="width:150px; height : 150px;"></a></div>
+					<div><a href="#" @click="fnPorductDetail(item.productNo)"><img :src="item.productThumbnail" style="width:150px; height : 150px;"></a></div>
 					{{item.productName}}
 					<div>{{item.productPrice}}</div>
 				</div>
@@ -108,7 +108,7 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-						self.cateList = data.list;							
+						self.cateList = data.list;
 						
 					}
 				});
