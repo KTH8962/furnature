@@ -45,9 +45,19 @@ public class MyPageController {
     // 마이페이지 리스트 db
     @RequestMapping(value = "/myPage/myPage.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String searchBoard(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+    public String searchUser(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
     	HashMap<String, Object> resultMap = new HashMap<String, Object>();
     	resultMap = myPageService.searchUser(map);
+    	return new Gson().toJson(resultMap);
+    }
+    
+    // 마이페이지 정보 수정 db
+    @RequestMapping(value = "/myPage/myPage-edit.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String editUser(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+    	HashMap<String, Object> resultMap = new HashMap<String, Object>();
+    	System.out.println(map);
+    	//resultMap = myPageService.searchUser(map);
     	return new Gson().toJson(resultMap);
     }
 
