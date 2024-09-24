@@ -19,7 +19,7 @@
 		<div v-else>
 		    제목 : {{info.boardTitle}}<br>
 		    내용 : <div v-html="info.boardContents"></div>
-		    작성자 : <span>{{info.maskedUserId}}</span>
+		    작성자 : <span>{{info.userName}}</span>
 		    <div v-if="sessionId == info.userId || sessionAuth == '2'">
 		        <button @click="isEditing = true">수정</button>
 		        <button @click="fnDelete(info.boardNo)">삭제</button>
@@ -37,7 +37,7 @@
 		    댓글
 		    <ul>
 		        <li v-for="comment in comment" :key="comment.commentNo">
-		            {{ comment.maskedUserId }}: {{ comment.commentContents }} <br>
+		            {{ comment.userName }}: {{ comment.commentContents }} <br>
 					{{ comment.fCdateTime }}
 					<div v-if="sessionId == comment.userId || sessionAuth == '2'">
 				        <div v-if="editingCommentNos.includes(comment.commentNo)">

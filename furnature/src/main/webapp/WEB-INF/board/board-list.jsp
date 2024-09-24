@@ -9,13 +9,14 @@
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
 		<div id="container">
-			<ul>
-				<!--<li><a href="#" @click="fnCategory('')">전체</a></li>
+			<!--<ul>
+				<li><a href="#" @click="fnCategory('')">전체</a></li>
 				<li><a href="#" @click="fnCategory('1')">공지사항</a></li>
-				<li><a href="#" @click="fnCategory('2')">자유게시판</a></li>-->
+				<li><a href="#" @click="fnCategory('2')">자유게시판</a></li>
 				<li><a href="#" @click="fnCategory('3')">질문게시판</a></li>
-			</ul>
-			<div> 
+			</ul>-->
+			<div>질문게시판</div>
+			<div>
 				<select v-model="searchOption">
 					<option value="all">:: 전체 ::</option>
 					<option value="title">제목</option>
@@ -47,7 +48,7 @@
 					<tr v-for="(item, index) in list">
 						<td>{{item.boardNo}}</td>
 						<td><a href="#" @click="fnView(item.boardNo)">{{item.boardTitle}} [{{item.cnt}}]</a></td>
-						<td>{{item.maskedUserId}}</td>
+						<td>{{item.userName}}</td>
 						<td>{{item.fCdateTime}}</td>
 						<td>
 							<div v-if="sessionId == item.userId || sessionAuth == '2'">
@@ -59,9 +60,6 @@
 			</table>
 			<div>
 				<button @click="fnInsert()">글쓰기</button>
-			</div>
-			<div v-if="sessionAuth == '2'">
-				<button @click="">공지사항 글쓰기</button>
 			</div>
 			
 			<div class="pagenation">
@@ -121,7 +119,7 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) { 
-						console.log(data);
+						console.log(data.list);
 						self.list = data.list;
 						self.totalPages = Math.ceil(data.count / self.pageSize);
 					}
@@ -137,7 +135,7 @@
 					data : nparmap,
 					success : function(data) { 
 						alert(data.message);
-						self.fnGetList();
+						self.fnGetList(page);
 					}
 				});
 			},
