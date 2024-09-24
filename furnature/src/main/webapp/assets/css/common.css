@@ -276,11 +276,47 @@ body {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
+	padding: 0px 30px;
 	height: 70px;
+}
+#header .header-wrap .h-logo {
+	margin-right: 30px;
+}
+#header .header-wrap .h-logo a {
+	font-size: 0px;
+	background: center/auto no-repeat;
+	display: block;
+	width: 99px;
+	height: 18px;
+	background-image: url("../images/h_logo.png");
 }
 #header .header-wrap .nav ul {
 	display: flex;
 	gap: 20px;
+}
+#header .header-wrap .nav ul a {
+	font-size: 16px;
+	font-Weight: 500;
+	position: relative;
+	transition: all 0.2s;
+}
+#header .header-wrap .nav ul a::after {
+	position: absolute;
+	top: calc(100% + 2px);
+	right: 50%;
+	display: block;
+	content: "";
+	width: 0;
+	height: 2px;
+	background-color: #E0A969;
+	transition: all 0.2s;
+}
+#header .header-wrap .nav ul a:hover {
+	color: #E0A969;
+}
+#header .header-wrap .nav ul a:hover::after {
+	right: 0;
+	width: 100%;
 }
 
 /** //header **/
@@ -291,7 +327,15 @@ body {
 	margin-bottom: 0px;
 	margin-left: 0px;
 	border-top: 1px solid var(--color-contrastyE0);
-	height: 200px;
+	height: 180px;
+	background-color: var(--color-contrastyF5);
+}
+#footer .footer-wrap {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	height: 100%;
 }
 
 /** //footer **/
@@ -663,7 +707,7 @@ button:hover {
 }
 .ip-list .tit-box .tit {
 	font-size: 14px;
-	font-Weight: 800;
+	font-Weight: 700;
 	color: var(--color-contrastyA);
 }
 .ip-list .bot-box {

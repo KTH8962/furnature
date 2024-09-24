@@ -9,17 +9,7 @@
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
 		<div id="container">            
-            <p class="blind">이벤트 페이지</p>			
-			<h2 class="sub-tit">룰렛</h2>
-			<div class="roulette-wrap">
-				<div class="roulette-box">
-					<div class="roulette-img" ref="roulImgBox">
-						<img src="/assets/images/roulette_img.png" alt="룰렛 이미지" ref="roulImg">
-					</div>
-					<div class="roulette-arrow">룰렛 화살표</div>
-					<button type="button" class="roulette-btn" @click="fnRouletteBtn" ref="roulBtn">START!</button>
-				</div>
-			</div>
+            <p class="blind">이벤트 페이지</p>
 
 			<h2 class="sub-tit">경매 리스트</h2>
 			<ul class="auction-list" style="display:flex;">
@@ -40,6 +30,17 @@
 				</li>
 			</ul>
 			<a href="/event/auctionRegister.do">경매등록 임시버튼</a>
+			
+			<h2 class="sub-tit">룰렛</h2>
+			<div class="roulette-wrap">
+				<div class="roulette-box">
+					<div class="roulette-img" ref="roulImgBox">
+						<img src="/assets/images/roulette_img.png" alt="룰렛 이미지" ref="roulImg">
+					</div>
+					<div class="roulette-arrow">룰렛 화살표</div>
+					<button type="button" class="roulette-btn" @click="fnRouletteBtn" ref="roulBtn">START!</button>
+				</div>
+			</div>
 			
 		</div>
 	</div>
@@ -75,7 +76,7 @@
 			},
 			fnRouletteBtn(){
 				var self = this;
-				if(self.sessionId != "") {
+				if(self.sessionId != "" && self.sessionId != 'admin') {
 					var self = this;
 					var nparmap = {sessionId: self.sessionId};
 					$.ajax({
@@ -93,7 +94,11 @@
 						}
 					});
 				} else {
-					alert("로그인 후 이용이 가능합니다.");
+					if(self.sessionId == 'admin') {
+						alert("관리자는 참여 불가합니다.");
+					} else {
+						alert("로그인 후 이용이 가능합니다.");						
+					}
 				}
 			},
 			fnRoulette() {

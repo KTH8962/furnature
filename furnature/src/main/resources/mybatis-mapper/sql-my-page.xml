@@ -4,7 +4,7 @@
 
 <mapper namespace="com.example.furnature.mapper.MyPageMapper">
 	<select id="selectUser" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
-		SELECT *
+		SELECT U.USER_ID, U.USER_ZIP_CODE, U.USER_ADDR, U.USER_PHONE, U.USER_EMAIL, U.USER_NAME, TO_CHAR(U.USER_BIRTH, 'YYYY-MM-DD') USER_BIRTH, U.USER_AUTH, U.EVENT_ROUL, U.EVENT_CHECK<if test="sessionId != 'admin'">, M.MILEAGE_PRICE</if>
 		FROM TBL_USER U
 		<if test="sessionId != 'admin'">
 		INNER JOIN (

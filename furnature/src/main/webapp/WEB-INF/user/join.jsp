@@ -47,7 +47,7 @@
 			    </div>
 			    <div class="bot-box">
 			        <div class="ip-box">
-						<input type="hidden" id="postcode" placeholder="우편번호" readonly="readonly">
+						<input type="hidden" id="postcode" placeholder="우편번호" readonly="readonly" v-model="zipCode">
 						<button type="button" @click="daumPost">주소검색</button><br>
 						<input type="text" id="address" placeholder="주소"  readonly="readonly" v-model="address"><br>
 						<input type="text" id="detailAddress" placeholder="상세주소" v-model="detailAddress" ref="addrRef">
@@ -111,6 +111,7 @@
 				addr: "",
 				address : "",
 				detailAddress : "",
+				zipCode: "",
 				name : "김이름",
 				email : "test@test.com",
 				phone : "01012341234",
@@ -169,7 +170,7 @@
 					}
 					
 					var self = this;
-					var nparmap = {id: self.id, pwd: self.pwd, addr: self.addr, name: self.name, email: self.email, phone: self.phone, birth: self.birth};
+					var nparmap = {id: self.id, pwd: self.pwd, zipCode: self.zipCode, addr: self.addr, name: self.name, email: self.email, phone: self.phone, birth: self.birth};
 					console.log(nparmap);
 					$.ajax({
 						url:"/user/join.dox",
@@ -240,7 +241,7 @@
 			            } else { // 사용자가 지번 주소를 선택했을 경우(J)
 			                addr = data.jibunAddress;
 			            }
-			            document.getElementById('postcode').value = data.zonecode;
+			            self.zipCode = data.zonecode;
 			            self.address = addr;
 			            document.getElementById('detailAddress').focus();
 			        }
