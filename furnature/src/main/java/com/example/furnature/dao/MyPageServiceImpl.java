@@ -39,6 +39,27 @@ public class MyPageServiceImpl implements MyPageService {
         }
         return resultMap;
     }
+    
+    // 내정보 수정
+	@Override
+	public HashMap<String, Object> editUser(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<>();
+        try {
+            myPageMapper.updateUser(map);
+            resultMap.put("result", "success");
+            resultMap.put("message", ResMessage.RM_SUCCESS);
+        } catch (DataAccessException e) {
+            resultMap.put("result", "fail");
+            resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+        } catch (PersistenceException e) {
+            resultMap.put("result", "fail");
+            resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+        } catch (Exception e) {
+            resultMap.put("result", "fail");
+            resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+        }
+        return resultMap;
+	}
 
     @Override
     public HashMap<String, Object> onedayInfo(HashMap<String, Object> map) {
@@ -122,9 +143,7 @@ public class MyPageServiceImpl implements MyPageService {
 	public HashMap<String, Object> selectDelivery(HashMap<String, Object> map) {
 		 HashMap<String, Object> resultMap = new HashMap<>();
 	        try {
-	        	System.out.println("@@@@@@@"+map);
 	        	List<MyPage> list = myPageMapper.selectDelivery(map);
-	        	System.out.println("@@@@@@@list"+list);
 	            resultMap.put("list", list);
 	            resultMap.put("result", "success");
 	            resultMap.put("message", ResMessage.RM_SUCCESS);
@@ -139,6 +158,27 @@ public class MyPageServiceImpl implements MyPageService {
 	            resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
 	        }
 	        return resultMap;
+	}
+
+	@Override
+	public HashMap<String, Object> searchMileageList(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<>();
+        try {
+        	List<MyPage> mileageList = myPageMapper.selectMileageList(map);
+            resultMap.put("mileageList", mileageList);
+            resultMap.put("result", "success");
+            resultMap.put("message", ResMessage.RM_SUCCESS);
+        } catch (DataAccessException e) {
+            resultMap.put("result", "fail");
+            resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+        } catch (PersistenceException e) {
+            resultMap.put("result", "fail");
+            resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+        } catch (Exception e) {
+            resultMap.put("result", "fail");
+            resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+        }
+        return resultMap;
 	}
 
 }

@@ -36,7 +36,7 @@
 					        <p class="tit">마일리지</p>
 					    </div>
 					    <div class="bot-box">
-					        <p>{{info.mileagePrice}}</p>
+					        <p>{{info.mileageTotal}}</p>
 					    </div>
 					</div>
 					<div class="ip-list">
@@ -139,7 +139,6 @@
 				addr: "",
 				phone : "",
 				email : "",
-				addr: "",
 				address : "",
 				detailAddress : "",
 				zipCode: "",
@@ -155,7 +154,7 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-						console.log(data);
+						//console.log(data);
 						self.info = data.info;
 					}
 				});
@@ -177,17 +176,30 @@
 				} else if(email != "" && !self.compare(check1, email, "emailRef","적합하지 않은 이메일 형식입니다")) {
 					return;
 				} else {
-					var nparmap = {sessionId: self.sessionId, addr: self.addr, phone: self.phone, email: self.email};
+					self.addr = `\${self.address} \${self.detailAddress}`;
+					if(self.addr == " "){
+						self.addr = "";
+					}
+					if(!(self.addr == "" && self.phone == "" &&  self.email == "" && self.zipCode == "")) {
+						var nparmap = {sessionId: self.sessionId, addr: self.addr, phone: self.phone, email: self.email, zipCode: self.zipCode};
+						$.ajax({
+							url:"/myPage/myPage-edit.dox",
+							dataType:"json",	
+							type : "POST", 
+							data : nparmap,
+							success : function(data) {
+								//console.log(data);
+								self.fnGetInfo();
+								self.phone = "";
+								self.email = "";
+								self.addr = "";
+								self.address = "";
+								self.detailAddress = "";
+								self.zipCode = "";
+							}
+						});
+					}
 					self.editInfo = false;
-					$.ajax({
-						url:"/myPage/myPage-edit.dox",
-						dataType:"json",	
-						type : "POST", 
-						data : nparmap,
-						success : function(data) {
-							console.log(data);
-						}
-					});
 				}
 			},
 			compare(check, form, name, message) {
