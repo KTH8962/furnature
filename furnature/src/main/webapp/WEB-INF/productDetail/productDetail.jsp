@@ -18,7 +18,7 @@
 					</template>
 				</div>-->
 				<!-- 상세 페이지 썸네일 , 이름, 가격, 사이즈 등 정보 출력 -->
-				<div><img :src="productDetail.prodcutThumbnail" alt="썸네일"></div>
+				<div><img :src="productDetail.productThumbnail" alt="썸네일"></div>
 				<div>{{productDetail.productName}}</div>
 				<div>{{productDetail.productPrice}}</div>
 				<div>{{productDetail.productColor}}</div>

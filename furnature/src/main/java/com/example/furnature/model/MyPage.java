@@ -53,6 +53,8 @@ public class MyPage {
 	private String deliveryCate;
 	private String cateNo;
 	private String cateName;
+	private String productThumbnail;
+	private String productName;
 	
 	public String getAuctionBiddingPrice() {
 		return auctionBiddingPrice;
