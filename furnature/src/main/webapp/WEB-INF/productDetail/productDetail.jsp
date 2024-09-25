@@ -55,7 +55,7 @@
 				<div><!-- 구매/ 커스텀 등 버튼 구현 -->
 					<button type="button" @click="fnPay">구매하기</button>
 					<button type="button" @click="fnBasket">장바구니</button>
-					<button type="button">좋아요 버튼?</button>
+					<!--<button type="button">좋아요 버튼?</button>-->
 					<!-- 커스텀 버튼은 커스텀 가능 물품만 버튼 보이게 하기.-->
 					<button type="button" @click="fnCustom">커스텀 버튼</button>
 				</div>
@@ -78,25 +78,60 @@
 					<div>관련 추천 상품 목록 만들어야함 ==========================</div>
 				</div>
 				<div id="review"> <!-- 제품 리뷰 영역 5개 정도씩 보이게, 페이징처리 추천순 최신순 별점순 ?-->
-					<div>리뷰======================================<button type="button" @click="fnReviewInsert">리뷰작성</div>
+					<div>리뷰======================================<button type="button" @click="fnReviewInsert">리뷰작성하기</div>
+					<div v-if="insertModal">
+						모달 리뷰 작성영역
+						<!-- repeqt는 숫자만큼 '' 안에 문자열을 출력해주는 함수-->
+						<select v-model="reviewRating">
+						    <option v-for="(title, index) in reviewTitle" :key="index" :value="index + 1">
+						        {{ '★'.repeat(index + 1) + '☆'.repeat(5 - (index + 1)) }} - {{ title }}
+						    </option>
+						</select>
+						<div>내용<textarea v-model="reviewContents"></textarea></div>
+						<div>사진첨부<input type="file" accept=".gif,.jpg,.png" @change="fnReviewAttach"></div>
+						<button @click="fnReviewInsertSave">리뷰작성</button>
+						<button @click="fnCancel">취소</button>
+						
+					</div>
 					<div>리뷰목록</div>
 					<div>
-						<div>평점 평균 {{averageRating}}</div>
+						<div>평점 평균<span style="color: gold; font-size: 3em;">★</span> {{averageRating}}</div>
+						<div>추천순</div>
+						<div>최신순</div>
+						<div>별점순</div>
 					</div>
 					<div><!-- 보고있는 페이지의 상품번호와 맞는 리뷰 목록들 출력-->
 						<template v-for="item in reviewList">
 							<div v-if="item.productNo==productDetail.productNo">
-								<div>리뷰넘버(시퀀스번호) : {{item.reviewNo}}</div>
-								<div v-if="item.reviewImgPath != null">리뷰사진 <img :src="item.reviewImgPath" style= "width : 250px ; height : 250px"></div>
-								<div>리뷰 제목 : {{item.reviewTitle}}</div>
-								<div>리뷰 내용 :{{item.reviewContents}}</div>
-								<div>평점 : <template>{{item.reviewRating}}</template>
-								<div>평점 : 
-								    <template v-if="item.reviewRating">
+								<div v-if="item.reviewImgPath != null"><img :src="item.reviewImgPath" style= "width : 250px ; height : 250px"></div>
+								<div>{{item.reviewCdateTime}}</div>
+								<div>
+									{{item.reviewTitle}}
+									<template v-if="item.reviewRating">
 								        <span v-for="star in 5" :key="star" style="color: gold;">
 								            {{ star <= item.reviewRating ? '★' : '☆' }}
 								        </span>
-								    </template>
+								    </template> 
+									<!--평점 :{{item.reviewRating}}-->
+								</div>
+								<div>{{item.reviewContents}}</div>
+								<div v-if="item.userId==sessionId">
+								    <button type="button" @click="fnReviewUpdate(item.reviewNo)">수정</button>
+								    <div v-if="updateModal && updateReviewNo === item.reviewNo">
+								        {{updateReviewNo}}모달 수정영역 {{item.reviewNo}}
+										<!-- repeqt는 숫자만큼 '' 안에 문자열을 출력해주는 함수-->
+								        <select v-model="reviewRating">
+								            <option v-for="(title, index) in reviewTitle" :key="index" :value="index + 1">
+								                {{ '★'.repeat(index + 1) + '☆'.repeat(5 - (index + 1)) }} - {{ title }}
+								            </option>
+								        </select>
+								        <div>내용<textarea v-model="reviewContents"></textarea></div>
+								        <div>사진첨부<input type="file" accept=".gif,.jpg,.png" @change="fnReviewAttach"></div>
+								        <button @click="fnReviewUpdateSave(item.reviewNo)">리뷰수정</button>
+								        <button @click="fnCancel">취소</button>
+								    </div>
+								</div>
+									<button type="button" @click="fnReviewDelete(item.reviewNo)">삭제</button>
 								</div>
 								</div>
 							</div> <br>
@@ -124,7 +159,14 @@
 				selectedSize : [],	// 선택된 select 변수로 저장하기위한 리스트
 				sessionId: "${sessionId}",
 				sessionAuth: "${sessionAuth}",
-				reviewList : []
+				reviewList : [],
+				insertModal : false,
+				updateModal : false,
+				reviewTitle : ['별로에요', '그저그래요', '좋아요', '맘에들어요', '아주좋아요'],	//리뷰제목
+				reviewContents : "",	//리뷰내용
+				reviewRating : 5,	//리뷰평점
+				file : null,
+				updateReviewNo : ""
             };
         },
 		computed: {
@@ -288,13 +330,140 @@
 					}
 				});
 	      	},
-			//리뷰 작성
+			//리뷰 작성 모달버튼
 			fnReviewInsert(){
 				var self = this;
-				var url = '/productDetail/reviewInsert.do?productNo=' + encodeURIComponent(self.productNo);
-				var option = 'width = 700 , height = 600, scrollbars = yes, left = 550, top = 200'; 
-				window.open(url,'review',option);
-				//location.href='/productDetail/reviewInsert.do?productNo='+ encodeURIComponent(self.productNo);
+				if(self.sessionId != ""){
+					var self = this;
+					var url = '/productDetail/reviewInsert.do?productNo=' + encodeURIComponent(self.productNo);
+					var option = 'width = 700 , height = 600, scrollbars = yes, left = 550, top = 200'; 
+					//window.open(url,'review',option);
+					if(confirm('리뷰를 작성하시겠습니까?')){
+						self.insertModal = !self.insertModal;
+					}
+					//location.href='/productDetail/reviewInsert.do?productNo='+ encodeURIComponent(self.productNo);
+				}else{
+					alert('로그인 후 이용해주세요.');
+				}
+			},
+			//리뷰 삭제버튼
+			fnReviewDelete(reviewNo){
+				var self = this;
+				var nparmap = {reviewNo : reviewNo};
+				if (confirm('정말 삭제하시겠습니까?')) {
+					$.ajax({
+						url:"/productDetail/deleteReview.dox",
+						dataType:"json",	
+						type : "POST", 
+						data : nparmap,
+						success : function(data) {
+							self.fnGetProductDetail();
+							alert('리뷰가 삭제되었습니다.')
+							window.location.reload();
+						}
+					});
+				} else {
+				    // 사용자가 "취소"를 클릭한 경우
+				    alert('삭제가 취소되었습니다.');
+				}
+			},
+			//리뷰 수정 모달버튼
+			fnReviewUpdate(reviewNo){
+				var self = this;
+				var self = this;
+				if(confirm('리뷰를 수정하시겠습니까?')){
+					self.reviewContents = "";
+				  	self.updateReviewNo = reviewNo; // 현재 수정할 리뷰 번호 저장
+				  	self.updateModal = true;
+				}else{
+					self.updateModal = false;
+				}
+			},
+			fnReviewAttach(event){
+				this.file = event.target.files[0];
+			},
+			//리뷰작성 모달내 리뷰저장
+			fnReviewInsertSave(){
+			var self = this;
+			var reviewIndex = self.reviewRating - 1; //선택한 셀렉 옵션 인덱스값
+			var nparmap = {
+				reviewTitle : self.reviewTitle[reviewIndex], //컨트롤러에 배열형식으로 넘어가서 인덱스값으로 넘겨주기 
+				reviewContents : self.reviewContents,
+				userId : self.sessionId,
+				productNo : self.productNo,
+				reviewRating : self.reviewRating
+			};
+			$.ajax({
+				url:"/productDetail/reviewInsert.dox",
+				dataType:"json",	
+				type : "POST", 
+				data : nparmap,
+				success : function(data) {
+					console.log(data);
+					console.log(data.reviewNo);
+					var reviewNo = data.reviewNo;
+					if(self.file){
+						console.log(data.reviewNo);
+					  const formData = new FormData();
+					  formData.append('file1', self.file);
+					  formData.append('reviewNo', reviewNo);
+					  $.ajax({
+						url: '/productDetail/reviewImgFile.dox',
+						type: 'POST',
+						data: formData,
+						processData: false,  
+						contentType: false,  
+						success: function() {
+							if(data && data.reviewNo){
+								alert("리뷰가 등록되었습니다.");
+								window.location.reload();
+								self.modal = false;
+							} else{
+								alert("리뷰 등록에 실패했습니다.");
+							}
+						},
+						error: function(jqXHR, textStatus, errorThrown) {
+						  console.error('업로드 실패!', textStatus, errorThrown);
+						}
+					  });
+					}
+				}
+			});
+			},
+			//리뷰 수정모달내 저장버튼
+			fnReviewUpdateSave(reviewNo){
+				var self = this;
+				var reviewIndex = self.reviewRating - 1; //선택한 셀렉 옵션 인덱스값
+				var nparmap = {
+					reviewNo : reviewNo,
+					reviewTitle : self.reviewTitle[reviewIndex], //컨트롤러에 배열형식으로 넘어가서 인덱스값으로 넘겨주기 
+					reviewContents : self.reviewContents,
+					reviewRating : self.reviewRating
+				};
+				if (confirm('정말 수정하시겠습니까?')) {
+					$.ajax({
+						url:"/productDetail/updateReview.dox",
+						dataType:"json",	
+						type : "POST", 
+						data : nparmap,
+						success : function(data) {
+							alert('수정되었습니다.')
+							//self.updateModal = false;
+							//window.location.reload();
+						}
+					});
+				} else {
+				    // 사용자가 "취소"를 클릭한 경우
+				    alert('삭제가 취소되었습니다.');
+				}
+			},
+			//취소 버튼
+			fnCancel(){
+				var self = this;
+				self.updateModal = false;
+				self.insertModal = false;
+				self.contents = "";
+				alert('취소되었습니다.');
 			}
         },
         mounted() {

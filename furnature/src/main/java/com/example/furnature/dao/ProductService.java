@@ -21,4 +21,11 @@ public interface ProductService {
 	
 	//상품 리뷰 작성
 	HashMap<String, Object> insertReview(HashMap<String, Object> map);
+	
+	//리뷰 삭제
+	HashMap<String, Object> deleteReview(HashMap<String, Object> map);
+	//리뷰 수정
+	HashMap<String, Object> updateReview(HashMap<String, Object> map);
+	//리뷰 수정전 내용 불러오기
+	HashMap<String, Object> reviewInfo(HashMap<String, Object> map);
 }
