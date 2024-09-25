@@ -39,5 +39,15 @@ public interface ProductMapper {
 	
 	//상품구매 마일리지 적립
 	void saveMileage(HashMap<String, Object> map);
+	
+	//리뷰 삭제
+	void deleteReview(HashMap<String, Object> map);
+	
+	//리뷰 수정
+	void updateReview(HashMap<String, Object> map);
 
+	
+	//리뷰 수정전 정보 불러오기
+	//Product reviewInfo(HashMap<String, Object> map);
+	
 }

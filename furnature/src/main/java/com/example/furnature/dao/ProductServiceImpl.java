@@ -172,7 +172,48 @@ public class ProductServiceImpl implements ProductService{
 			// TODO: handle exception
 			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
 		}
-		
+		return resultMap;
+	}
+	//리뷰 삭제
+	@Override
+	public HashMap<String, Object> deleteReview(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			productmapper.deleteReview(map);
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+	//리뷰 수정
+	@Override
+	public HashMap<String, Object> updateReview(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		System.out.println("SSSSSSSSSSSSSSSSSSUPDATE"+map);
+		try {
+			productmapper.updateReview(map);
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+
+	//리뷰 수정 전 내용 불러오기
+	@Override
+	public HashMap<String, Object> reviewInfo(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			//Product reviewInfo = productmapper.reviewInfo(map);
+			//resultMap.put("reviewInfo", reviewInfo);
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
 		return resultMap;
 	}
 	

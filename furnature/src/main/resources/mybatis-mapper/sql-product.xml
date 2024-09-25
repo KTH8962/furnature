@@ -87,8 +87,8 @@
 	
 	<!--리뷰 작성-->
 	<insert id="reviewInsert" parameterType="hashmap" useGeneratedKeys="true" keyProperty="reviewNo" keyColumn="REVIEW_NO">
-		INSERT INTO TBL_PRODUCT_REVIEW (REVIEW_NO, REVIEW_TITLE, REVIEW_CONTENTS, USER_ID, PRODUCT_NO, CDATETIME, UDATETIME,REVIEW_RATING)
-		VALUES (TBL_PRODUCT_REVIEW_NO_SEQ.NEXTVAL, #{reviewTitle}, #{reviewContents}, #{userId}, #{productNo}, SYSDATE, SYSDATE, 1)
+		INSERT INTO TBL_PRODUCT_REVIEW (REVIEW_NO, REVIEW_TITLE, REVIEW_CONTENTS, USER_ID, PRODUCT_NO, REVIEW_CDATETIME, REVIEW_UDATETIME,REVIEW_RATING)
+		VALUES (TBL_PRODUCT_REVIEW_NO_SEQ.NEXTVAL, #{reviewTitle}, #{reviewContents}, #{userId}, #{productNo}, SYSDATE, SYSDATE, #{reviewRating})
 	</insert>
 	
 	<!--리뷰 이미지 추가-->
@@ -97,9 +97,38 @@
 		SET REVIEW_IMG_PATH = #{filePath}, REVIEW_IMG_NAME = #{fileName}
 		WHERE REVIEW_NO = #{reviewNo}
 	</update>
-	
+	<!--상품 구매시 마일리지 적립-->
 	<insert id="saveMileage" parameterType="hashmap">
 		INSERT INTO TBL_MILEAGE
-		VALUES(MILEAGE_SEQ.NEXTVAL, #{sessionId}, '상품구매', #{mileage}, '적립', SYSDATE)
+		VALUES(MILEAGE_SEQ.NEXTVAL, #{userId}, '상품구매', #{mileage}, '적립', SYSDATE)
 	</insert>
+	
+	<!--
+		유저별 총 마일리지 계산 쿼리 적립일땐 + / 사용일땐 -
+		SELECT U.USER_ID, SUM(CASE 
+                  WHEN M.MILEAGE_STATUS = '적립' THEN M.MILEAGE_PRICE
+                  WHEN M.MILEAGE_STATUS = '사용' THEN -M.MILEAGE_PRICE
+                  ELSE 0
+                  END) AS TOTAL_MILEAGE
+		FROM TBL_USER U INNER JOIN TBL_MILEAGE M ON U.USER_ID = M.USER_ID
+		GROUP BY U.USER_ID;
+
+	-->
+	<!-- 리뷰 수정시 해당 리뷰 불러오기-->
+	<select id="reviewInfo" parameterType="hashmap" resultType="com.example.furnature.model.Product">
+		SELECT * FROM 
+		TBL_PRODUCT_REVIEW WHERE REVIEW_NO = #{reviewNo}
+	</select>
+	<!-- 리뷰 삭제-->
+	<delete id="deleteReview" parameterType="hashmap">
+		DELETE FROM TBL_PRODUCT_REVIEW 
+		WHERE REVIEW_NO = #{reviewNo}
+	</delete>
+	<!-- 리뷰 수정-->
+	<update id="updateReview" parameterType="hashmap">
+	    UPDATE TBL_PRODUCT_REVIEW 
+	    SET REVIEW_TITLE = #{reviewTitle}, REVIEW_CONTENTS = #{reviewContents}, 
+	    REVIEW_RATING = #{reviewRating}, REVIEW_UDATETIME = SYSDATE 
+	    WHERE REVIEW_NO = #{reviewNo}
+	</update>
 </mapper>

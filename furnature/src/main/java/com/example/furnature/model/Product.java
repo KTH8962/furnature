@@ -1,5 +1,7 @@
 package com.example.furnature.model;
 
+import java.sql.Date;
+
 import lombok.Data;
 
 @Data
@@ -45,4 +47,7 @@ public class Product {
 	private String reviewTitle;
 	private String reviewContents;
 	private String reviewImgPath;
+	private String reviewCdateTime; 
+	private String reviewUdateTime;
+	private String userId;
 }

@@ -111,6 +111,8 @@ public class ProductController {
 		List<Object> list = mapper.readValue(json, new TypeReference<List<Object>>(){});
 		
 		map.put("list", list);
+		//마일리지 적립
+		productMapper.saveMileage(map);
 		
 		System.out.println("CONTROLLLLLLLLLLLL ORDER !! PAY"+map);
 		resultMap = productService.productOrder(map);
@@ -128,7 +130,7 @@ public class ProductController {
 	//리뷰 작성 페이지
 	@RequestMapping("/productDetail/reviewInsert.do")
 	 public String reviewInsert(HttpServletRequest request,Model model,@RequestParam HashMap<String, Object> map) throws Exception{
-        request.setAttribute("productNo", map.get("productNo"));
+		request.setAttribute("productNo", map.get("productNo"));
 		return "/productDetail/reviewInsert";
     }
 	//리뷰 작성
@@ -136,6 +138,7 @@ public class ProductController {
 	@ResponseBody
 	public String reviewInsert(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		System.out.println("CCCCCCCCCCCCCCCCCCCCCC"+map);
 		resultMap = productService.insertReview(map);
 		return new Gson().toJson(resultMap);
 	}
@@ -170,20 +173,55 @@ public class ProductController {
     }
 	
 	//시간기준 파일생성
-	   private String SaveFileName(String extName) {
-	        String fileName = "";
-	        
-	        Calendar calendar = Calendar.getInstance();
-	        fileName += calendar.get(Calendar.YEAR);
-	        fileName += calendar.get(Calendar.MONTH);
-	        fileName += calendar.get(Calendar.DATE);
-	        fileName += calendar.get(Calendar.HOUR);
-	        fileName += calendar.get(Calendar.MINUTE);
-	        fileName += calendar.get(Calendar.SECOND);
-	        fileName += calendar.get(Calendar.MILLISECOND);
-	        fileName += extName;
-	        
-	        return fileName;
-	    }
+   private String SaveFileName(String extName) {
+        String fileName = "";
+        
+        Calendar calendar = Calendar.getInstance();
+        fileName += calendar.get(Calendar.YEAR);
+        fileName += calendar.get(Calendar.MONTH);
+        fileName += calendar.get(Calendar.DATE);
+        fileName += calendar.get(Calendar.HOUR);
+        fileName += calendar.get(Calendar.MINUTE);
+        fileName += calendar.get(Calendar.SECOND);
+        fileName += calendar.get(Calendar.MILLISECOND);
+        fileName += extName;
+        
+        return fileName;
+    }
+   //리뷰 삭제
+   @RequestMapping(value = "/productDetail/deleteReview.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+   @ResponseBody
+   public String deleteReview(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+	   HashMap<String, Object> resultMap = new HashMap<String, Object>();
+	   resultMap = productService.deleteReview(map);
+	   return new Gson().toJson(resultMap);
+   }
+   
+   //리뷰 수정 페이지
+   @RequestMapping("/productDetail/updateReview.do")
+   public String updateReview(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+       // 필요한 데이터 설정
+       request.setAttribute("reviewNo", map.get("reviewNo"));
+       return "productDetail/reviewUpdate"; // 뷰 이름 반환
+   }
+   //리뷰 수정전 내용 불러오기
+   @RequestMapping(value = "/productDetail/reviewInfo.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+   @ResponseBody
+   public String reviewInfo(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+	   HashMap<String, Object> resultMap = new HashMap<String, Object>();
+	   resultMap = productService.reviewInfo(map);
+	   return new Gson().toJson(resultMap);
+   }
+   //리뷰 수정
+   @RequestMapping(value = "/productDetail/updateReview.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+   @ResponseBody
+   public String updateReview(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+	   HashMap<String, Object> resultMap = new HashMap<String, Object>();
+	   resultMap = productService.updateReview(map);
+	   System.out.println("CCCCCCCCCCCCCCCCUPDATE" + map);
+	   return new Gson().toJson(resultMap);
+   }
+   
+	   
   
 }
