@@ -24,15 +24,12 @@
 				<div>{{item.classNo}}</div>
 				<div><a href="#" @click="fnChange(item.classNo)"><img :src="item.filePath"></a></div>
 			</div>
-		</div>
-		
+		</div>		
 		<div>
-			<button v-if="currentPage > 1" @click="fnGetList(currentPage-1)">이전</button>
+			<button @click="fnGetList(currentPage - 1)" :disabled="currentPage <= 1">이전</button>
 		    <button v-for="page in totalPages" :key="page" :class="{active: page == currentPage}"
-			@click="fnGetList(page)">
-		        {{page}}
-		    </button>
-		    <button v-if="currentPage < totalPages" @click="fnGetList(currentPage+1)">다음</button>
+			@click="fnGetList(page)">{{page}}</button>
+		    <button @click="fnGetList(currentPage+1)" :disabled="currentPage >= totalPages">다음</button>
 		</div>
 		
 		<button @click="fnRegister" v-if="isAdmin">클래스 등록</button>
@@ -73,8 +70,9 @@
 					type : "POST",
 					data : nparmap,
 					success : function(data){
+						self.list = [];
 						for(var i=0; i<data.onedayList.length; i++){
-							self.list[i] = data.onedayList[i];
+							self.list.push(data.onedayList[i]);
 						}
 						self.totalCount = data.totalCount;
 						self.totalPages = Math.ceil(self.totalCount / self.pageSize);

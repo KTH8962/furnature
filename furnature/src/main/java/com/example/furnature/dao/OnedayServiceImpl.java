@@ -91,8 +91,8 @@ public class OnedayServiceImpl implements OnedayService{
 	@Override
 	public HashMap<String, Object> onedayReg(HashMap<String, Object> map) {
 		HashMap<String,Object> resultMap = new HashMap<>();
+		onedayMapper.onedayReg(map);
 		try {
-			onedayMapper.onedayReg(map);
 			resultMap.put("classNo", map.get("classNo"));
 			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
