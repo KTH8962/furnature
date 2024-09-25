@@ -7,4 +7,6 @@ public interface AdminService {
 	HashMap<String, Object> searchUserList(HashMap<String, Object> map);
 	// 유저 삭제
 	HashMap<String, Object> removeUserList(HashMap<String, Object> map);
+	// 유저 정보 수정
+	HashMap<String, Object> editUser(HashMap<String, Object> map);
 }

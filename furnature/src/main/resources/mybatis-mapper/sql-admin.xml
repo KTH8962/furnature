@@ -38,4 +38,13 @@
 			 #{item}
 		</foreach>
 	</delete>
+	
+	<update id="updateUser" parameterType="hashmap">
+		UPDATE TBL_USER
+		<set>
+			<if test="phone != null and phone != ''">USER_PHONE = #{phone},</if>
+			<if test="email != null and email != ''">USER_EMAIL = #{email},</if>
+		</set>
+		WHERE USER_ID = #{id}
+	</update>
 </mapper>

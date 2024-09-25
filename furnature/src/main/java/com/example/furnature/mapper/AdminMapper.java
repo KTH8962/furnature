@@ -15,4 +15,6 @@ public interface AdminMapper {
 	Admin selectAllUser(HashMap<String, Object> map);
 	// 유저 삭제
 	void deleteUserList(HashMap<String, Object> map);
+	// 유저 정보 수정
+	void updateUser(HashMap<String, Object> map);
 }
