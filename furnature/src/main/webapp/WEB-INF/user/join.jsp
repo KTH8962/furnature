@@ -220,7 +220,6 @@
             },
 			compare(check, form, name, message) {
 				var self = this;
-				//console.log(check, form, check.test(form))
 			    if(check.test(form)) {
 			        return true;
 			    }
@@ -232,10 +231,6 @@
 				var self = this;
 			    new daum.Postcode({
 			        oncomplete: function(data) {
-			            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
-			            // 예제를 참고하여 다양한 활용법을 확인해 보세요.
-			            
-			            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
 			            if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
 			                addr = data.roadAddress;
 			            } else { // 사용자가 지번 주소를 선택했을 경우(J)
