@@ -212,7 +212,7 @@ public class BoardServiceImpl implements BoardService{
 		} catch (DataAccessException e) {
 			System.out.println(map);
 			resultMap.put("result", "fail");
-			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+			resultMap.put("message", "댓글을 입력해주세요");
 		} catch (PersistenceException e) {
 			resultMap.put("result", "fail");
 			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);

@@ -86,10 +86,12 @@
 			// 댓글 수정
 			commentUpdate(num){
 				var self = this;
+				// num (댓글 번호)로 해당 댓글을 찾음
+				    var comment = self.comment.find(c => c.commentNo === num);
 				var nparmap ={ 
 					commentNo: num,
 					//fCdateTime: self.comment.fCdateTime,
-					commentContents: self.comment.commentContents
+					commentContents: comment.commentContents
 					
 				};
 				$.ajax({
@@ -101,6 +103,8 @@
 						alert(data.message);
 						self.isEditing = false;
 						self.fnGetInfo();
+						location.reload();
+						//$.pageChange("board-view.do");
 					}
 				});
 			},
@@ -188,7 +192,7 @@
 	                    if (data.result == "success") {
 	                        self.commentContents = ""; // 댓글 입력 초기화
 	                        self.fnGetInfo(); // 댓글 목록 갱신
-	                    }
+	                    } 
 	                }
 	            });
 			},

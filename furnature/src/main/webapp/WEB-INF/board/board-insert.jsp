@@ -4,14 +4,10 @@
 <html>
 <head>
 	<jsp:include page="/layout/headlink.jsp"></jsp:include>
-
-	<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-	<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 </head>
 <body>
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
-		
 		<div>
 			<select v-model="searchOption" v-if="sessionAuth == '2'" placeholder="공지여부">
 				<option value="Y">공지사항</option>
@@ -23,8 +19,9 @@
             <input value="N" type="radio" name="r2" id="r22"><label for="r22">일반게시글</label>
         </div>-->
 			<tr>
-				    제목 : <textarea v-model="boardTitle"></textarea><br>
-				    내용 : <textarea v-model="boardContents"></textarea><br>
+			    제목 : <textarea v-model="boardTitle"></textarea><br>
+			    내용 : <textarea v-model="boardContents"></textarea><br>
+				이미지 첨부 : <input type="file" @change="ImageUpload" multiple />
 			</tr>
 		<button id="btn" @click="fnSave">저장</button>
 	</div>
@@ -40,11 +37,11 @@
 				boardContents : "",
 				sessionId : '${sessionId}',
 				sessionAuth : '${sessionAuth}',
-				searchOption: "Y"
-				
+				searchOption: "Y",
             };
         },
         methods: {
+			// 게시글 저장
 			fnSave (){
 				var self = this;
 				var nparam = {
@@ -57,7 +54,7 @@
 				$.ajax({
 					url:"board-add.dox",
 					dataType:"json",
-					type : "POST", 
+					type : "POST",
 					data : nparam,
 					success : function(data) { 
 						alert(data.message);
@@ -70,7 +67,6 @@
         },
         mounted() {
 			var self = this;
-			
         }
     });
     app.mount('#app');

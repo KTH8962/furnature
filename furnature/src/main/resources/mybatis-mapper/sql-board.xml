@@ -132,11 +132,11 @@
 	</delete>
 	
 	<!--댓글 수정-->
-	<!--<update id="updateComments" parameterType="hashmap">
+	<update id="updateComments" parameterType="hashmap">
 		UPDATE TBL_COMMENT
-		SET COMMENT_CONTENT = #{content}, UDATETIME = SYSDATE
+		SET COMMENT_CONTENTS = #{contents}
 		WHERE COMMENT_NO = #{commentNo}
-	</update>-->
+	</update>
   
 	
 </mapper>

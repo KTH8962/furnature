@@ -9,12 +9,6 @@
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
 		<div id="container">
-			<!--<ul>
-				<li><a href="#" @click="fnCategory('')">전체</a></li>
-				<li><a href="#" @click="fnCategory('1')">공지사항</a></li>
-				<li><a href="#" @click="fnCategory('2')">자유게시판</a></li>
-				<li><a href="#" @click="fnCategory('3')">질문게시판</a></li>
-			</ul>-->
 			<div>질문게시판</div>
 			<div>
 				<select v-model="searchOption">
@@ -63,18 +57,18 @@
 			</div>
 			
 			<div class="pagenation">
-			    <!--<button v-if="currentPage > 1"
-				@click=""	
-				>이전</button>-->
+			    <button type="button" class="prev" v-if="currentPage > 1"
+				@click="fnBeforPage()"	
+				>이전</button>
 			    <button class="num" v-for="page in totalPages" 
 				:class="{active: page == currentPage}"
 				@click="fnGetList(page)"
 				>
 					 {{ page }}
 			    </button>
-			    <!--<button v-if="currentPage < totalPages"
-				@click="nextButton()"
-				>다음</button>-->
+			    <button type="button" class="next" v-if="currentPage < totalPages"
+				@click="fnNextPage()"
+				>다음</button>
 			</div>
 			
 		</div>
@@ -135,7 +129,7 @@
 					data : nparmap,
 					success : function(data) { 
 						alert(data.message);
-						self.fnGetList(page);
+						self.fnGetList(1);
 					}
 				});
 			},
@@ -150,19 +144,16 @@
 			fnView(boardNo){
 				$.pageChange("board-view.do", {boardNo : boardNo});
 			},
-			nextButton(){
+			fnBeforPage(){
 				var self = this;
-				$.ajax({
-					url:"board-list.dox",
-					dataType:"json",	
-					type : "POST", 
-					data : nparmap,
-					success : function(data) { 
-						self.list = data.list;
-						self.currentPage= Mach.add(currentPage +1);
-					}
-				});
+				self.currentPage = self.currentPage - 1;
+				self.fnGetProductList(self.currentPage);
 			},
+			fnNextPage(){
+				var self = this;
+				self.currentPage = self.currentPage + 1;
+				self.fnGetProductList(self.currentPage);
+			}
         },
         mounted() {
             var self = this;
