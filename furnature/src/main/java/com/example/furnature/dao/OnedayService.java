@@ -19,9 +19,6 @@ public interface OnedayService {
 	//원데이클래스 등록시 파일 업로드
 	HashMap<String,Object> onedayFile(HashMap<String,Object> map);
 	
-	//원데이클래스 등록시 클래스번호 시퀀스로 가져오기
-	HashMap<String,Object> classNo(HashMap<String,Object> map);
-	
 	//원데이클래스 인원초과 여부 확인
 	HashMap<String,Object> numberLimit(HashMap<String,Object> map);
 	

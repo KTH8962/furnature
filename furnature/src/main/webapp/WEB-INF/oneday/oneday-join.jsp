@@ -15,13 +15,21 @@
 <body>
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
-		<div><img :src="detail.filePath"></div>
-		<div>{{detail.classNo}}</div>
-		<div>{{detail.className}}</div>
-		<div>모집 시작일 : {{detail.startDay}}</div>
-		<div>모집 종료일 : {{detail.endDay}}</div>
-		<div>수업일자 : {{detail.classDate}}</div>
-		<div>수강료 : {{detail.price}}</div>
+		<div class="slider">
+		<div class="slide" v-for="(file, index) in filePath" :key="file" v-show="currentSlide === index">
+           <img :src="file">
+       </div>
+	   </div>
+	   <button @click="prevSlide"><</button>
+	   {{currentSlide+1}}
+	   <button @click="nextSlide">></button>
+		  
+		<div>{{classNo}}</div>
+		<div>{{className}}</div>
+		<div>모집 시작일 : {{startDay}}</div>
+		<div>모집 종료일 : {{endDay}}</div>
+		<div>수업일자 : {{classDate}}</div>
+		<div>수강료 : {{price}}</div>
 		<div class="onedayJoinForm" v-if="message=='' && numberLimit===0">
 			신청자 이름 : <input type="text" v-model="name">
 		</div>
@@ -42,39 +50,68 @@
             data() {
                 return {
                    classNo : "${classNo}",
+				   className : "",
 				   detail : {},
+				   filePath : [],
 				   userId : "${sessionId}",
 				   name : "",
 				   count : "",
 				   price : "",
 				   payId : "",
 				   numberLimit : "",
+				   currentNumber : "",
 				   isAdmin : false,
 				   sessionAuth: "${sessionAuth}",
-				   endDay : "",
 				   today : new Date(),
+				   startDay : "",
+				   endDay : "",
+				   classDate : "",
 				   message : "",
-				   message2 : ""
+				   message2 : "",
+				   currentSlide: 0
                 };
             },
             methods: {
+				nextSlide() {
+				        if (this.currentSlide < this.filePath.length - 1) {
+				            this.currentSlide++;
+				        } else {
+				            this.currentSlide = 0; // 처음으로 돌아가기
+				        }
+				},
+			    prevSlide() {
+			        if (this.currentSlide > 0) {
+			            this.currentSlide--;
+			        } else {
+			            this.currentSlide = this.filePath.length - 1; // 마지막으로 돌아가기
+			        }
+			    },
 				fnDetail(classNo) {
 					var self = this;
 					var nparmap = {classNo:self.classNo};
-					console.log(self.classNo);
 					$.ajax({
 					url : "/oneday/oneday-detail.dox",
 					dataType : "json",
 					type : "POST",
 					data : nparmap,
 					success : function(data){
-						self.detail = data.onedayDetail;
-						self.price = self.detail.price;
-						self.endDay = self.detail.endDay;
-						var endDay = new Date(self.endDay);
+						console.log(data);
+						self.detail = data.onedayDetail; 
+						self.className = data.onedayDetail[0].className;
+						self.startDay = data.onedayDetail[0].startDay;
+						self.endDay = data.onedayDetail[0].endDay;
+						self.classDate = data.onedayDetail[0].classDate;
+						self.price = data.onedayDetail[0].price;
+						
+						self.filePath = [];			
+						self.detail.forEach(item => {
+                           if (item.filePath) {
+                               self.filePath.push(item.filePath); 
+                           }
+                       });
+							
+						var endDay = new Date(self.detail[0].endDay);
 						var today = new Date()
-						console.log(endDay);
-						console.log(today);
 						if(endDay<today){
 							self.message = "모집일자가 지났습니다.";
 						}else{
@@ -87,8 +124,10 @@
 							type : "POST",
 							data : nparmap,
 							success : function(data){
-								self.numberLimit = data.numberLimit;
-								if(self.numberLimit=='1'){
+								console.log(data);
+								self.numberLimit = data.numberLimit.numberLimit;
+								self.currentNumber = data.numberLimit.currentNumber;
+								if(self.numberLimit==self.currentNumber){
 									self.message2 = "모집 인원이 초과되었습니다.";
 									return;
 								}else{
@@ -133,7 +172,7 @@
 				    IMP.request_pay({
 						pg: "html5_inicis",
 					    pay_method: "card",
-						merchant_uid: 'order_' + new Date().getTime(),
+						merchant_uid: 'oneday' + new Date().getTime(),
 					    name: self.detail.className,
 					    amount: self.price,
 					    buyer_tel: "010-0000-0000",
