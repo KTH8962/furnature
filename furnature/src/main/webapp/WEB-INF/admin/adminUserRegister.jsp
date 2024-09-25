@@ -7,7 +7,7 @@
 </head>
 <body>
 	<div id="app" class="admin">
-        <p class="blind">관리자 페이지 - 유저 정보 수정</p>
+        <p class="blind">관리자 페이지 - 유저 정보 등록</p>
         <div id="admin-header">
             <h1 class="a-logo"><a href="/admin.do">관리자 페이지 로고</a></h1>
             <jsp:include page="/layout/adminSnb.jsp"></jsp:include>
@@ -16,7 +16,7 @@
             <div class="contents-top"><a href="/main.do">메인페이지 이동</a></div>
             <div class="contents editor-mode">
                 <div class="contens-tit-wrap">
-                    <h2 class="admin-tit">유저 정보 수정</h2>
+                    <h2 class="admin-tit">유저 정보 등록</h2>
                 </div>
                 <div class="contents-editor">
                     <div class="editor-wrap">
@@ -175,7 +175,7 @@
                     </div>
                 </div>
                 <div class="btn-box">
-                    <button type="button" class="admin-btn">수정</button>
+                    <button type="button" class="admin-btn">등록</button>
                     <button type="button" class="admin-btn">삭제</button>
                 </div>
             </div>
@@ -187,56 +187,25 @@
     const app = Vue.createApp({
         data() {
             return {
-                userList: [],
-                currentPage: 1,
-                pageSize: 11,
-                totalPages: 0,
-                keyword: "",
-                removeList: []
             };
         },
         methods: {
-            fnGetList(page) {
+            fnGetList() {
 				var self = this;
-                var page = (page - 1) * self.pageSize;
-				var nparmap = {currentPage: page, pageSize: self.pageSize, keyword: self.keyword};
+				var nparmap = {};
 				$.ajax({
-					url:"/admin/admin-user.dox",
+					url:"",
 					dataType:"json",	
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
                         //console.log(data);
-                        self.userList = data.userList;
-                        self.totalPages = Math.ceil(data.userAllList.allUser / self.pageSize);
 					}
 				});
             },
-            fnPageChange(item) {
-                var self = this;
-                self.currentPage = item;
-                self.fnGetList(item);
-            },
-            fnRemove() {
-                var self = this;
-                var nparmap = {removeList: self.removeList};
-				$.ajax({
-					url:"/admin/admin-user-remove.dox",
-					dataType:"json",	
-					type : "POST", 
-					data : nparmap,
-					success : function(data) {
-                        console.log(data);
-                        if(data.result == "scuccess") {
-                            self.fnGetList(1);
-                        }
-					}
-				});
-            }
         },
         mounted() {
             var self = this;
-			self.fnGetList(1);
         }
     });
     app.mount('#app');

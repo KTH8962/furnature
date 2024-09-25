@@ -173,7 +173,9 @@
 				
 				if(phone != "" && !self.compare(check2, phone, "phoneRef","전화번호는 숫자만 작성해주세요.")){
 					return;
-				} else if(email != "" && !self.compare(check1, email, "emailRef","적합하지 않은 이메일 형식입니다")) {
+				} else if(phone != "" && self.lengthCheck(phone, 10, "전화번호는 최소 10자리 이상 입력해주세요.")){
+                    return;
+                } else if(email != "" && !self.compare(check1, email, "emailRef","적합하지 않은 이메일 형식입니다")) {
 					return;
 				} else {
 					self.addr = `\${self.address} \${self.detailAddress}`;
@@ -208,9 +210,15 @@
 			        return true;
 			    }
 			    alert(message);
-			    self.$refs[name].focus();
 			    return false;
 			},
+            lengthCheck(id, cnt, message){
+                if(id.length < cnt) {
+                    alert(message);
+                    return true;
+                }
+                return false;
+            },
 			daumPost(){
 				var self = this;
 			    new daum.Postcode({

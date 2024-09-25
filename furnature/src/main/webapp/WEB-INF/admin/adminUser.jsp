@@ -44,6 +44,7 @@
                                 <div class="th">생년월일</div>
                                 <div class="th">회원등급</div>
                                 <div class="th">룰렛 참여 현황</div>
+                                <div class="th">수정</div>
                             </div>
                         </div>
                         <div class="tbody">
@@ -56,18 +57,41 @@
                                 <div class="td">{{item.userId}}</div>
                                 <div class="td">{{item.userName}}</div>
                                 <div class="td">{{item.userAddr}}</div>
-                                <div class="td">{{item.userPhone}}</div>
-                                <div class="td">{{item.userEmail}}</div>
+                                <div class="td">
+                                    <template v-if="num === index">
+                                        <div class="ip-box">
+                                            <input type="text" v-model="phone">
+                                        </div>
+                                    </template>
+                                    <template v-else>{{item.userPhone}}</template>
+                                </div>
+                                <div class="td">
+                                    <template v-if="num === index">
+                                        <div class="ip-box">
+                                            <input type="text" v-model="email">
+                                        </div>
+                                    </template>
+                                    <template v-else>{{item.userEmail}}</template>
+                                </div>
                                 <div class="td">{{item.userBirth}}</div>
-                                <div class="td">{{item.userAuth}}</div>
+                                <div class="td">
+                                    <template v-if="num === index"><button type="button">비밀번호<br>초기화</button></template>
+                                    <template v-else>{{item.userAuth}}</template>
+                                </div>
                                 <div class="td">{{item.eventRoul}}</div>
+                                <div class="td">
+                                    <template v-if="item.userId != 'admin'">
+                                        <button type="button" @click="fnSave(item.userId)" v-if="num === index">저장</button>
+                                        <button type="button" @click="fnEdit(index)" v-else>수정</button>
+                                    </template>
+                                    <template v-else>수정불가</template>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="btn-box">
                     <button type="button" class="admin-btn">등록</button>
-                    <button type="button" class="admin-btn" onclick="location.href='/adminEditor.do'">수정</button>
                     <button type="button" class="admin-btn" @click="fnRemove">삭제</button>
                 </div>
             </div>
@@ -91,7 +115,10 @@
                 pageSize: 11,
                 totalPages: 0,
                 keyword: "",
-                removeList: []
+                removeList: [],
+                num: "",
+                phone: "",
+                email: "",
             };
         },
         methods: {
@@ -115,6 +142,7 @@
                 var self = this;
                 self.currentPage = item;
                 self.fnGetList(item);
+                self.num = "";
             },
             fnRemove() {
                 var self = this;
@@ -131,6 +159,59 @@
                         }
 					}
 				});
+            },
+            fnEdit(index) {
+                var self = this;
+                self.num = index;
+            },
+            fnSave(id) {
+                var self = this;
+                var self = this;
+				var check1 = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // 이메일이 적합한지 검사할 정규식
+				var check2 = /^\d+$/;
+				
+				var phone = self.phone;
+				var email = self.email;
+
+                if(phone != "" && !self.compare(check2, phone, "phoneRef","전화번호는 숫자만 작성해주세요.")){
+                    return;
+				} else if(phone != "" && self.lengthCheck(phone, 10, "전화번호는 최소 10자리 이상 입력해주세요.")){
+                    return;
+                } else if(email != "" && !self.compare(check1, email, "emailRef","적합하지 않은 이메일 형식입니다")) {
+					return;
+				} else {
+                    var nparmap = {id: id, phone: self.phone, email: self.email};
+                    if(!(self.email == "" && self.phone == "")){
+                        $.ajax({
+                            url:"/admin/admin-user-edit.dox",
+                            dataType:"json",	
+                            type : "POST", 
+                            data : nparmap,
+                            success : function(data) {
+                                console.log(data);
+                                self.fnGetList(self.currentPage);
+                            }
+                        });
+                    }
+                    self.num = "";
+                    self.phone = "";
+                    self.email = "";
+                }
+            },
+            compare(check, form, name, message) {
+				var self = this;
+			    if(check.test(form)) {
+			        return true;
+			    }
+			    alert(message);
+			    return false;
+			},
+            lengthCheck(id, cnt, message){
+                if(id.length < cnt) {
+                    alert(message);
+                    return true;
+                }
+                return false;
             }
         },
         mounted() {

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.furnature.dao.AdminService;
 import com.google.gson.Gson;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @Controller
 public class AdminController {
 	@Autowired
@@ -26,10 +28,10 @@ public class AdminController {
 		return "/admin/adminUser";
 	}
 	
-	@RequestMapping("/adminEditor.do")
+	@RequestMapping("/adminRegister.do")
 	public String userEdit(Model model) throws Exception{
 		model.addAttribute("activePage", "admin");
-		return "/admin/adminUserEditor";
+		return "/admin/adminUserRegister";
 	}
 	
 	// 유저 정보 목록 db
@@ -53,6 +55,14 @@ public class AdminController {
 		map.put("removeList", removes);
 		map.remove("removeList[]");
 		resultMap = adminService.removeUserList(map);
+		return new Gson().toJson(resultMap);
+	}
+	@RequestMapping(value = "/admin/admin-user-edit.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String editUser(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		System.out.println(map);
+		resultMap = adminService.editUser(map);
 		return new Gson().toJson(resultMap);
 	}
 }
