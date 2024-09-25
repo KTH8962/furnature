@@ -33,7 +33,7 @@
 			AND BOARD_TITLE LIKE '%' || #{keyword} || '%'
 		</if>
 		<if test="searchOption == 'name'">
-			AND U.USER_ID LIKE '%' || #{keyword} || '%'
+			AND U.USER_NAME LIKE '%' || #{keyword} || '%'
 		</if>
 		ORDER BY 
 		CASE WHEN NOTICE_YN = 'Y' THEN 0 ELSE 1 END,
@@ -51,13 +51,13 @@
 		</if>
 		<if test="searchOption == 'all'">
 			AND (BOARD_TITLE LIKE '%' || #{keyword} || '%'
-			OR U.USER_ID LIKE '%' || #{keyword} || '%')
+			OR U.USER_NAME LIKE '%' || #{keyword} || '%')
 		</if>
 		<if test="searchOption == 'title'">
 			AND BOARD_TITLE LIKE '%' || #{keyword} || '%'
 		</if>
 		<if test="searchOption == 'name'">
-			AND U.USER_ID LIKE '%' || #{keyword} || '%'
+			AND U.USER_NAME LIKE '%' || #{keyword} || '%'
 		</if>
 	</select>
 	
@@ -77,15 +77,15 @@
 	<!--게시글 상세 삭제-->
 	<delete id="deleteContents" parameterType="hashmap">
 		DELETE 
-		FROM TBL_BOARD
+		FROM TBL_BOARD 
 		WHERE BOARD_NO = #{boardNo}
 	</delete>
 	
 	<!--게시글 상세보기-->
 	<select id="selectBoardInfo" parameterType="hashmap" resultType="com.example.furnature.model.Board">
-		SELECT B.*,
-		RPAD(SUBSTR(USER_ID, 1, 3), LENGTH(USER_ID), '*') AS MASKED_USER_ID
+		SELECT *
 		FROM TBL_BOARD B
+        INNER JOIN TBL_USER U ON B.USER_ID = U.USER_ID
 		WHERE BOARD_NO = #{boardNo}
 	</select>
 	
@@ -132,11 +132,11 @@
 	</delete>
 	
 	<!--댓글 수정-->
-	<!--<update id="updateComments" parameterType="hashmap">
+	<update id="updateComments" parameterType="hashmap">
 		UPDATE TBL_COMMENT
-		SET COMMENT_CONTENT = #{content}, UDATETIME = SYSDATE
+		SET COMMENT_CONTENTS = #{contents}
 		WHERE COMMENT_NO = #{commentNo}
-	</update>-->
+	</update>
   
 	
 </mapper>

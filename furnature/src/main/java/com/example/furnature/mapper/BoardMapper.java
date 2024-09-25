@@ -27,7 +27,7 @@ public interface BoardMapper {
 	void updateContents(HashMap<String, Object> map);
 	
 	// 댓글 수정
-	void updateCommnet(HashMap<String, Object> map);
+	void updateComment(HashMap<String, Object> map);
 	
 	// 게시글 전체보기
 	
@@ -43,8 +43,5 @@ public interface BoardMapper {
 
 	// 댓글 삭제
 	void deleteComments(HashMap<String, Object> map);
-	
-	// 댓글 수정
-	void updateComment(HashMap<String, Object> map);
 	
 }
