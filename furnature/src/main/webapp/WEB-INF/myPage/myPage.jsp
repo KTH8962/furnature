@@ -36,7 +36,7 @@
 					        <p class="tit">마일리지</p>
 					    </div>
 					    <div class="bot-box">
-					        <p>{{info.mileagePrice}}</p>
+					        <p>{{info.mileageTotal}}</p>
 					    </div>
 					</div>
 					<div class="ip-list">
@@ -44,7 +44,17 @@
 					        <p class="tit">주소</p>
 					    </div>
 					    <div class="bot-box">
-					        <p>{{info.userAddr}}</p>
+							<template v-if="!editInfo">
+								<p>{{info.userAddr}}</p>
+							</template>
+							<template v-else>
+								<div class="ip-box">
+									<input type="hidden" id="postcode" placeholder="우편번호" readonly="readonly" v-model="zipCode">
+									<button type="button" @click="daumPost">주소검색</button><br>
+									<input type="text" id="address" placeholder="주소"  readonly="readonly" v-model="address"><br>
+									<input type="text" id="detailAddress" placeholder="상세주소" v-model="detailAddress">
+								</div>
+							</template>
 					    </div>
 					</div>
 					<div class="ip-list">
@@ -52,7 +62,14 @@
 					        <p class="tit">핸드폰 번호</p>
 					    </div>
 					    <div class="bot-box">
-					        <p>{{info.userPhone}}</p>
+							<template v-if="!editInfo">
+								<p>{{info.userPhone}}</p>
+							</template>
+							<template v-else>
+								<div class="ip-box">
+									<input type="text" v-model="phone" ref="phoneRef">
+								</div>
+							</template>
 					    </div>
 					</div>
 					<div class="ip-list">
@@ -60,7 +77,14 @@
 					        <p class="tit">이메일</p>
 					    </div>
 					    <div class="bot-box">
-					        <p>{{info.userEmail}}</p>
+							<template v-if="!editInfo">
+								<p>{{info.userEmail}}</p>
+							</template>
+							<template v-else>
+								<div class="ip-box">
+									<input type="text" v-model="email" ref="emailRef">
+								</div>
+							</template>
 					    </div>
 					</div>
 					<div class="ip-list">
@@ -93,6 +117,10 @@
 							</p>
 					    </div>
 					</div>
+					<div>
+						<button type="button" @click="fnEdit" v-if="!editInfo">수정하기</button>
+						<button type="button" @click="fnSave" v-if="editInfo">저장하기</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -100,12 +128,20 @@
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
 </body>
 </html>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
     const app = Vue.createApp({
         data() {
             return {
 				sessionId : '${sessionId}',
-				info : {}
+				info : {},
+				editInfo : false,
+				addr: "",
+				phone : "",
+				email : "",
+				address : "",
+				detailAddress : "",
+				zipCode: "",
             };
         },
         methods: {
@@ -118,11 +154,78 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-						console.log(data);
+						//console.log(data);
 						self.info = data.info;
 					}
 				});
             },
+			fnEdit(){
+				var self = this;
+				self.editInfo = true;
+			},
+			fnSave(){
+				var self = this;
+				var check1 = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // 이메일이 적합한지 검사할 정규식
+				var check2 = /^\d+$/;
+				
+				var phone = self.phone;
+				var email = self.email;
+				
+				if(phone != "" && !self.compare(check2, phone, "phoneRef","전화번호는 숫자만 작성해주세요.")){
+					return;
+				} else if(email != "" && !self.compare(check1, email, "emailRef","적합하지 않은 이메일 형식입니다")) {
+					return;
+				} else {
+					self.addr = `\${self.address} \${self.detailAddress}`;
+					if(self.addr == " "){
+						self.addr = "";
+					}
+					if(!(self.addr == "" && self.phone == "" &&  self.email == "" && self.zipCode == "")) {
+						var nparmap = {sessionId: self.sessionId, addr: self.addr, phone: self.phone, email: self.email, zipCode: self.zipCode};
+						$.ajax({
+							url:"/myPage/myPage-edit.dox",
+							dataType:"json",	
+							type : "POST", 
+							data : nparmap,
+							success : function(data) {
+								//console.log(data);
+								self.fnGetInfo();
+								self.phone = "";
+								self.email = "";
+								self.addr = "";
+								self.address = "";
+								self.detailAddress = "";
+								self.zipCode = "";
+							}
+						});
+					}
+					self.editInfo = false;
+				}
+			},
+			compare(check, form, name, message) {
+				var self = this;
+			    if(check.test(form)) {
+			        return true;
+			    }
+			    alert(message);
+			    self.$refs[name].focus();
+			    return false;
+			},
+			daumPost(){
+				var self = this;
+			    new daum.Postcode({
+			        oncomplete: function(data) {
+			            if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+			                addr = data.roadAddress;
+			            } else { // 사용자가 지번 주소를 선택했을 경우(J)
+			                addr = data.jibunAddress;
+			            }
+			            self.zipCode = data.zonecode;
+			            self.address = addr;
+			            document.getElementById('detailAddress').focus();
+			        }
+			    }).open();
+			}
         },
         mounted() {
             var self = this;

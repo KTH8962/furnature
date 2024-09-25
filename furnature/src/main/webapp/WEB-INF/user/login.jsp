@@ -23,6 +23,11 @@
 			<a href="idFind.do">아이디 찾기</a>
 			<a href="pwdFind.do">비밀번호 찾기</a>
 		</div>
+		<div v-if="test">
+			팝업관련들
+			<button @click="fnClick2">ee</button>
+		</div>
+		<button @click="fnClick">ee</button>
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
 </body>
@@ -32,7 +37,8 @@
         data() {
             return {
 				id : "user1",
-				pwd : "user1"
+				pwd : "user1",
+				test : false
             };
         },
         methods: {
@@ -54,6 +60,12 @@
 					}
 				});
             },
+			fnClick(){
+				this.test= true;
+			}			,
+						fnClick2(){
+							this.test= false;
+						}
         },
         mounted() {
             var self = this;

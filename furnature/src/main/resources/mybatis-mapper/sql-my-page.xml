@@ -4,19 +4,30 @@
 
 <mapper namespace="com.example.furnature.mapper.MyPageMapper">
 	<select id="selectUser" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
-		SELECT U.USER_ID, U.USER_ZIP_CODE, U.USER_ADDR, U.USER_PHONE, U.USER_EMAIL, U.USER_NAME, TO_CHAR(U.USER_BIRTH, 'YYYY-MM-DD') USER_BIRTH, U.USER_AUTH, U.EVENT_ROUL, U.EVENT_CHECK<if test="sessionId != 'admin'">, M.MILEAGE_PRICE</if>
+		SELECT U.USER_ID, U.USER_ZIP_CODE, U.USER_ADDR, U.USER_PHONE, U.USER_EMAIL, U.USER_NAME, TO_CHAR(U.USER_BIRTH, 'YYYY-MM-DD') USER_BIRTH, U.USER_AUTH, U.EVENT_ROUL, U.EVENT_CHECK<if test="sessionId != 'admin'">, NVL(M.MILEAGE_TOTAL, 0) MILEAGE_TOTAL</if>
 		FROM TBL_USER U
 		<if test="sessionId != 'admin'">
-		INNER JOIN (
+		LEFT JOIN (
 		    SELECT USER_ID,
 			    SUM(CASE WHEN MILEAGE_STATUS = '적립' THEN MILEAGE_PRICE
-			        WHEN MILEAGE_STATUS = '사용' THEN -MILEAGE_PRICE END) MILEAGE_PRICE
+			        WHEN MILEAGE_STATUS = '사용' THEN -MILEAGE_PRICE END) MILEAGE_TOTAL
 			FROM TBL_MILEAGE
 			GROUP BY USER_ID
 		) M ON U.USER_ID = M.USER_ID
 		</if>
 		WHERE U.USER_ID = #{sessionId}
 	</select>
+	
+	<update id="updateUser" parameterType="hashmap">
+		UPDATE TBL_USER
+		<set>
+			<if test="zipCode != null and zipCode != ''">USER_ZIP_CODE = #{zipCode},</if>
+			<if test="addr != null and addr != ''">USER_ADDR = #{addr},</if>
+			<if test="phone != null and phone != ''">USER_PHONE = #{phone},</if>
+			<if test="email != null and email != ''">USER_EMAIL = #{email},</if>
+		</set>
+		WHERE USER_ID = #{sessionId}
+	</update>
 	
 	<select id="onedayInfo" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
 		SELECT *
@@ -65,30 +76,45 @@
 		FROM TBL_AUCTION
 		WHERE AUCTION_NO = #{auctionNo}
 	</select>
+	
 	<select id="selectDelivery" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
-	SELECT 
-		ORDER_NO,
-		USER_ID,
-	    SUM(ORDER_COUNT) AS ORDER_COUNT,
-	    ORDER_CATE,
-	    CATE_NAME,
-	    I.PRODUCT_THUMBNAIL,
-	    P2.PRODUCT_NAME,
-	    P.PRODUCT_NO
-	FROM 
-	    TBL_PRODUCT_ORDER P
-	    INNER JOIN TBL_DELIVERY_CATE C ON P.DELIVERY_CATE = C.CATE_NO
-        INNER JOIN TBL_PRODUCT_IMG I ON I.PRODUCT_NO = P.PRODUCT_NO
-        INNER JOIN TBL_PRODUCT P2 ON P2.PRODUCT_NO = P.PRODUCT_NO
-        WHERE USER_ID = #{userId}
-	GROUP BY 
-	    ORDER_NO, 
-	    USER_ID,
-	    ORDER_CATE,
-        ORDER_COUNT,
-        PRODUCT_THUMBNAIL,
-        PRODUCT_NAME,
-        P.PRODUCT_NO,
-	    CATE_NAME
+		SELECT 
+			ORDER_NO,
+			USER_ID,
+		    SUM(ORDER_COUNT) AS ORDER_COUNT,
+		    ORDER_CATE,
+		    CATE_NAME,
+		    I.PRODUCT_THUMBNAIL,
+		    P2.PRODUCT_NAME,
+		    P.PRODUCT_NO
+		FROM 
+		    TBL_PRODUCT_ORDER P
+		    INNER JOIN TBL_DELIVERY_CATE C ON P.DELIVERY_CATE = C.CATE_NO
+	        INNER JOIN TBL_PRODUCT_IMG I ON I.PRODUCT_NO = P.PRODUCT_NO
+	        INNER JOIN TBL_PRODUCT P2 ON P2.PRODUCT_NO = P.PRODUCT_NO
+	        WHERE USER_ID = #{userId}
+		GROUP BY 
+		    ORDER_NO, 
+		    USER_ID,
+		    ORDER_CATE,
+	        ORDER_COUNT,
+	        PRODUCT_THUMBNAIL,
+	        PRODUCT_NAME,
+	        P.PRODUCT_NO,
+		    CATE_NAME
+	</select>
+	
+	<select id="selectMileageList" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
+		SELECT MILEAGE_NAME, MILEAGE_PRICE, MILEAGE_STATUS, NVL(MILEAGE_TOTAL, 0) MILEAGE_TOTAL
+		FROM TBL_MILEAGE M
+		LEFT JOIN (
+		    SELECT USER_ID,
+		        SUM(CASE WHEN MILEAGE_STATUS = '적립' THEN MILEAGE_PRICE
+		            WHEN MILEAGE_STATUS = '사용' THEN -MILEAGE_PRICE END) MILEAGE_TOTAL
+		    FROM TBL_MILEAGE
+		    GROUP BY USER_ID
+		) M2 ON M.USER_ID = M2.USER_ID
+		WHERE M.USER_ID = #{sessionId}
+		ORDER BY MILEAGE_NO DESC
 	</select>
 </mapper>

@@ -120,7 +120,6 @@ public class BoardController {
 	@RequestMapping(value = "/board/comment-update.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String comment_update(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
-		System.out.println("dddd"+map);
 		HashMap<String, Object> resultMap 
 		= new HashMap<String, Object>();
 		resultMap = boardService.updateComment(map);

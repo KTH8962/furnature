@@ -95,7 +95,7 @@
 				IMP.request_pay({
 	                pg: "kakaopay",
 	                pay_method: "card",
-	                merchant_uid: "order_id_" + new Date().getTime(), // 유니크한 주문 ID 생성
+	                merchant_uid: "auction_id_" + new Date().getTime(), // 유니크한 주문 ID 생성
 	                name: title,
 	                amount: myBidding, // 결제 금액
 	                buyer_name: "홍길동",

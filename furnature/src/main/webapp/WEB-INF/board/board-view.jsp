@@ -19,7 +19,7 @@
 		<div v-else>
 		    제목 : {{info.boardTitle}}<br>
 		    내용 : <div v-html="info.boardContents"></div>
-		    작성자 : <span>{{info.maskedUserId}}</span>
+		    작성자 : <span>{{info.userName}}</span>
 		    <div v-if="sessionId == info.userId || sessionAuth == '2'">
 		        <button @click="isEditing = true">수정</button>
 		        <button @click="fnDelete(info.boardNo)">삭제</button>
@@ -37,7 +37,7 @@
 		    댓글
 		    <ul>
 		        <li v-for="comment in comment" :key="comment.commentNo">
-		            {{ comment.maskedUserId }}: {{ comment.commentContents }} <br>
+		            {{ comment.userName }}: {{ comment.commentContents }} <br>
 					{{ comment.fCdateTime }}
 					<div v-if="sessionId == comment.userId || sessionAuth == '2'">
 				        <div v-if="editingCommentNos.includes(comment.commentNo)">
@@ -86,10 +86,12 @@
 			// 댓글 수정
 			commentUpdate(num){
 				var self = this;
+				// num (댓글 번호)로 해당 댓글을 찾음
+				    var comment = self.comment.find(c => c.commentNo === num);
 				var nparmap ={ 
 					commentNo: num,
 					//fCdateTime: self.comment.fCdateTime,
-					commentContents: self.comment.commentContents
+					commentContents: comment.commentContents
 					
 				};
 				$.ajax({
@@ -101,6 +103,8 @@
 						alert(data.message);
 						self.isEditing = false;
 						self.fnGetInfo();
+						location.reload();
+						//$.pageChange("board-view.do");
 					}
 				});
 			},
@@ -188,7 +192,7 @@
 	                    if (data.result == "success") {
 	                        self.commentContents = ""; // 댓글 입력 초기화
 	                        self.fnGetInfo(); // 댓글 목록 갱신
-	                    }
+	                    } 
 	                }
 	            });
 			},
