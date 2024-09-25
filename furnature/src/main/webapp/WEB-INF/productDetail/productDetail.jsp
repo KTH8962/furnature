@@ -102,7 +102,7 @@
 					</div>
 					<div><!-- 보고있는 페이지의 상품번호와 맞는 리뷰 목록들 출력-->
 						<template v-for="item in reviewList">
-							<div v-if="item.productNo==productDetail.productNo">
+							<div v-if="item.productNo==productDetail.productNo">1
 								<div v-if="item.reviewImgPath != null"><img :src="item.reviewImgPath" style= "width : 250px ; height : 250px"></div>
 								<div>{{item.reviewCdateTime}}</div>
 								<div>
@@ -127,14 +127,14 @@
 								        </select>
 								        <div>내용<textarea v-model="reviewContents"></textarea></div>
 								        <div>사진첨부<input type="file" accept=".gif,.jpg,.png" @change="fnReviewAttach"></div>
-								        <button @click="fnReviewUpdateSave(item.reviewNo)">리뷰수정</button>
-								        <button @click="fnCancel">취소</button>
+								        <div>
+											<button @click="fnReviewUpdateSave(item.reviewNo)">수정완료</button>
+								        	<button @click="fnCancel">취소</button>
+										</div>
 								    </div>
+									<div><button type="button" @click="fnReviewDelete(item.reviewNo)">삭제</button></div>
 								</div>
-									<button type="button" @click="fnReviewDelete(item.reviewNo)">삭제</button>
-								</div>
-								</div>
-							</div> <br>
+							</div>
 						</template>
 					</div>
 					<!--보고있는 페이지의 상품번호와 맞는 리뷰 없을때-->
@@ -417,7 +417,7 @@
 							if(data && data.reviewNo){
 								alert("리뷰가 등록되었습니다.");
 								window.location.reload();
-								self.modal = false;
+								self.insertModal = false;
 							} else{
 								alert("리뷰 등록에 실패했습니다.");
 							}
@@ -427,6 +427,8 @@
 						}
 					  });
 					}
+					alert('리뷰가 등록되었습니다.');
+					window.location.reload();
 				}
 			});
 			},
@@ -447,11 +449,38 @@
 						type : "POST", 
 						data : nparmap,
 						success : function(data) {
-							alert('수정되었습니다.')
-							//self.updateModal = false;
-							//window.location.reload();
+							console.log(data);
+							console.log(data.reviewNo);
+							var reviewNo = data.reviewNo;
+							if(self.file){
+								console.log(data.reviewNo);
+							  const formData = new FormData();
+							  formData.append('file1', self.file);
+							  formData.append('reviewNo', reviewNo);
+							  $.ajax({
+								url: '/productDetail/reviewImgFile.dox',
+								type: 'POST',
+								data: formData,
+								processData: false,  
+								contentType: false,  
+								success: function() {
+									if(data && data.reviewNo){
+										alert("리뷰가 수정되었습니다.");
+										window.location.reload();
+										self.updateModal = false;
+									} else{
+										alert("리뷰 수정에 실패했습니다.");
+									}
+								},
+								error: function(jqXHR, textStatus, errorThrown) {
+								  console.error('업로드 실패!', textStatus, errorThrown);
+								}
+							  });
+							}
 						}
 					});
+					window.location.reload();
+					alert("리뷰가 수정되었습니다.");
 				} else {
 				    // 사용자가 "취소"를 클릭한 경우
 				    alert('삭제가 취소되었습니다.');

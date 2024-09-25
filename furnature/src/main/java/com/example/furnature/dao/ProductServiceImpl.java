@@ -191,9 +191,11 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public HashMap<String, Object> updateReview(HashMap<String, Object> map) {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		System.out.println("SSSSSSSSSSSSSSSSSSUPDATE"+map);
 		try {
 			productmapper.updateReview(map);
+			resultMap.put("reviewNo",map.get("reviewNo"));
+			System.out.println("SSSSSSSSSSSSSSSSSSUPDATE"+map);
+			System.out.println("SSSSSSSSSSSSSSSSSSUPDATE"+resultMap);
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (Exception e) {
 			// TODO: handle exception
