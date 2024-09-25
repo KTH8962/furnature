@@ -126,12 +126,12 @@ const app = Vue.createApp({
                 success: function(data) {
                     self.detail = data.onedayDetail;
                     // 각 필드에 detail 데이터를 할당
-                    self.className = self.detail.className;
-                    self.classDate = self.detail.classDate; 
-                    self.numberLimit = Number(self.detail.numberLimit);
-                    self.price = self.detail.price; 
-                    self.startDay = self.detail.startDay; 
-                    self.endDay = self.detail.endDay; 
+                    self.className = data.onedayDetail[0].className;
+                    self.classDate = data.onedayDetail[0].classDate;
+                    self.numberLimit = Number(data.onedayDetail[0].numberLimit);
+                    self.price = data.onedayDetail[0].price;
+                    self.startDay = data.onedayDetail[0].startDay;
+                    self.endDay = data.onedayDetail[0].endDay;
                 }
             });
         },

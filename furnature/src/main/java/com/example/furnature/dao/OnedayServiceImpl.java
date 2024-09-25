@@ -70,7 +70,7 @@ public class OnedayServiceImpl implements OnedayService{
 	public HashMap<String, Object> onedayDetail(HashMap<String, Object> map) {
 		HashMap<String,Object> resultMap = new HashMap<>();
 		try {
-			Oneday onedayDetail = onedayMapper.onedayDetail(map);
+			List<Oneday> onedayDetail = onedayMapper.onedayDetail(map);
 			resultMap.put("onedayDetail", onedayDetail);
 			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
@@ -93,28 +93,7 @@ public class OnedayServiceImpl implements OnedayService{
 		HashMap<String,Object> resultMap = new HashMap<>();
 		try {
 			onedayMapper.onedayReg(map);
-			resultMap.put("result", "success");
-			resultMap.put("message", ResMessage.RM_SUCCESS);
-		} catch (DataAccessException e) {
-			resultMap.put("result", "fail");
-			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
-		} catch (PersistenceException e) {
-			resultMap.put("result", "fail");
-			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
-		} catch (Exception e) {
-			resultMap.put("result", "fail");
-			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
-		}				
-		return resultMap;
-	}
-
-	//원데이클래스 등록시 클래스번호 시퀀스로 가져오기
-	@Override
-	public HashMap<String, Object> classNo(HashMap<String, Object> map) {
-		HashMap<String,Object> resultMap = new HashMap<>();
-		try {
-			int classNo = onedayMapper.classNo(map);
-			resultMap.put("classNo", classNo);
+			resultMap.put("classNo", map.get("classNo"));
 			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {
@@ -156,10 +135,8 @@ public class OnedayServiceImpl implements OnedayService{
 	public HashMap<String, Object> numberLimit(HashMap<String, Object> map) {
 		HashMap<String,Object> resultMap = new HashMap<>();
 		try {
-			Integer numberLimit = onedayMapper.numberLimit(map);
-			if(numberLimit == null) {
-				numberLimit = 0;
-			}
+			Oneday numberLimit = onedayMapper.numberLimit(map);
+			System.out.println(numberLimit);
 			resultMap.put("numberLimit", numberLimit);
 			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
@@ -172,6 +149,7 @@ public class OnedayServiceImpl implements OnedayService{
 		} catch (Exception e) {
 			resultMap.put("result", "fail");
 			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+			e.printStackTrace();
 		}			
 		return resultMap;
 	}

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+			<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -10,17 +10,6 @@
 <body>
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">	
-		
-		<div class="ip-list">
-		    <div class="tit-box">
-		        <p class="tit">클래스번호</p>
-		    </div>
-		    <div class="bot-box">
-		        <div class="ip-box">
-		            <p>{{classNo}}</p>
-		        </div>
-		    </div>
-		</div>
 		
 		<div class="ip-list">
 		    <div class="tit-box">
@@ -125,20 +114,6 @@
 					this.price = this.price.replace(/[^0-9]/, '');
 					
 				},
-				fnClassNo(){
-					var self = this;
-					var nparam = {}
-					$.ajax({
-						url:"/oneday/oneday-classNo.dox",
-						dataType:"json",	
-						type : "POST", 
-						data : nparam,
-						success : function(data) { 
-							console.log(data);
-							self.classNo = data.classNo;
-						}
-					});	
-				},
 				
 				fnFileUpload(event){
 					this.file = event.target.files; 
@@ -147,7 +122,6 @@
 				fnSave(){
 					var self = this;
 					var nparam = {
-						classNo : self.classNo,
 						className : self.className, 
 						classDate : self.classDate,
 						numberLimit : self.numberLimit,
@@ -167,10 +141,10 @@
 						return;
 					}
 					
-					if(!self.classNo || !self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay) {
+					if(!self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay) {
 					        alert("빈칸을 채워주세요.");
 					        return;
-					    }
+					}
 					
 					$.ajax({
 						url:"/oneday/oneday-register.dox",
@@ -179,11 +153,13 @@
 						data : nparam,
 						success : function(data) {
 							var classNo = data.classNo;	 
+							console.log(data);
 							 if(self.file.length!==0){
 								const formData = new FormData();
 								for(var i=0; i<self.file.length; i++){
 									formData.append('file', self.file[i]);
-								} 	formData.append('classNo', self.classNo);
+								} 	formData.append('classNo', classNo);
+								
 								$.ajax({
 									url: '/oneday/oneday-file.dox',
 									type : 'POST',
@@ -203,7 +179,6 @@
 			 	},
 			mounted() {
 				var self = this;
-				self.fnClassNo();
             }
         });
 	    app.mount('#app');

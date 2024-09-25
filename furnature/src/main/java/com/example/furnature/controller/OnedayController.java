@@ -116,7 +116,6 @@ public class OnedayController {
 	                map.put("extName", extName);
 	                map.put("classNo", classNo);
 	                onedayService.onedayFile(map);
-	                System.out.println("!!!!!!!!"+map);
 	                // insert 쿼리 실행         
             }
        
@@ -148,15 +147,6 @@ public class OnedayController {
         
         return fileName;
     }
-    
-    //원데이클래스 등록시 자동으로 클래스번호 가져오기(시퀀스)
-    @RequestMapping(value = "/oneday/oneday-classNo.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	@ResponseBody
-	public String classNo(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception {
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap = onedayService.classNo(map);
-		return new Gson().toJson(resultMap);
-	}
     
     //원데이클래스 인원초과 여부 확인
     @RequestMapping(value = "/oneday/oneday-numberLimit.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")

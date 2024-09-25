@@ -25,10 +25,16 @@
 	
 	<!--원데이클래스 개별 상세정보 출력-->
 	<select id="onedayDetail" parameterType="hashmap" resultType="com.example.furnature.model.Oneday">
-		SELECT * FROM TBL_CLASS C
-		INNER JOIN TBL_ONEDAYFILE O
-		ON C.CLASS_NO = O.CLASS_NO
-		WHERE C.CLASS_NO = #{classNo}
+	    SELECT C.*, O.* 
+	    FROM TBL_CLASS C
+	    INNER JOIN TBL_ONEDAYFILE O 
+	    ON C.CLASS_NO = O.CLASS_NO
+	    WHERE C.CLASS_NO = #{classNo}
+	      AND O.FILE_NO != (
+	          SELECT MIN(FILE_NO) 
+	          FROM TBL_ONEDAYFILE 
+	          WHERE CLASS_NO = #{classNo}
+	      )
 	</select>
 
 	<!--원데이클래스 결제정보-->
@@ -39,10 +45,10 @@
 	</insert>
 	
 	<!--원데이클래스 등록(관리자)-->
-	<insert id="onedayReg" parameterType="hashmap">
+	<insert id="onedayReg" parameterType="hashmap" useGeneratedKeys="true" keyProperty="classNo" keyColumn="CLASS_NO">
 		INSERT INTO TBL_CLASS 
 		(CLASS_NO, CLASS_NAME, PRICE, NUMBER_LIMIT, CLASS_DATE, START_DAY, END_DAY)
-		VALUES (#{classNo}, #{className}, #{price}, #{numberLimit}, #{classDate}, #{startDay}, #{endDay})
+		VALUES (CLASS_NO_SEQ.NEXTVAL, #{className}, #{price}, #{numberLimit}, #{classDate}, #{startDay}, #{endDay})
 	</insert>
 	
 	<!--원데이클래스 등록시 파일업로드-->
@@ -52,22 +58,16 @@
 		VALUES (#{fileName}, #{filePath}, #{fileSize}, #{extName}, #{classNo}, FILE_NO_SEQ.NEXTVAL)
 	</insert>
 	
-	<!--원데이클래스 등록시 클래스번호 시퀀스로 가져오기-->
-	<select id="classNo" parameterType="hashmap" resultType="int">
-		SELECT MAX(CLASS_NO) +1 FROM TBL_CLASS
-	</select>
-	
-	<!--원데이클래스 인원초과 여부 확인-->
-	<select id="numberLimit" parameterType="hashmap" resultType="Integer">
-		SELECT 
-		    CASE 
-		        WHEN COUNT(P.CLASS_NO) = C.NUMBER_LIMIT THEN 1 
-		        ELSE 0 
-		    END AS result
-		FROM TBL_PARTICIPANT P
-		INNER JOIN TBL_CLASS C ON P.CLASS_NO = C.CLASS_NO
-		WHERE P.CLASS_NO = #{classNo}
-		GROUP BY C.CLASS_NO, C.NUMBER_LIMIT
+    <!--원데이클래스 인원초과 여부 확인-->
+	<select id="numberLimit" parameterType="hashmap" resultType="com.example.furnature.model.Oneday">
+	SELECT NUMBER_LIMIT, NVL(COUNT,0) CURRENT_NUMBER
+	FROM TBL_CLASS C
+	LEFT JOIN(
+	SELECT NVL(COUNT(*),0) COUNT, CLASS_NO
+	FROM TBL_PARTICIPANT
+	GROUP BY CLASS_NO) P
+	ON C.CLASS_NO = P.CLASS_NO
+	WHERE C.CLASS_NO = #{classNo}
 	</select>
 
 	<!--원데이클래스 수정(관리자)-->

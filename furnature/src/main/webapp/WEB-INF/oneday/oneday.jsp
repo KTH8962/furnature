@@ -16,8 +16,8 @@
 		
 		<div style="display:flex;">
 			<div v-for = "item in list" :key="item.classNo">
-				<div v-if="item.message=='모집 중' && item.numberLimit===0">모집 중</div>
-				<div v-if="item.message=='모집 종료' || item.numberLimit===1">모집 종료</div>
+				<div v-if="item.message1=='모집 중' && item.numberLimit>item.currentNumber">모집 중</div>
+				<div v-if="item.message1=='모집 종료' || item.numberLimit==item.currentNumber">모집 종료</div>
 				<div>{{item.className}}</div> 
 				<div>{{item.classDate}}</div> 
 				<div>{{item.price}}</div> 
@@ -46,15 +46,17 @@
             return {
 				classNo : "",
 				list : [],
-				message : "",
+				message1 : "",
 				endDay : "",
 				numberLimit : "",
+				currentNumber : "",
 				currentPage : 1,
 				totalPages : "",
 				pageSize: 4,
 				totalCount : "",
 				isAdmin : false,
-				sessionAuth: "${sessionAuth}"
+				sessionAuth: "${sessionAuth}",
+				test : ""
             };
         },
         methods: {
@@ -71,36 +73,44 @@
 					type : "POST",
 					data : nparmap,
 					success : function(data){
-						self.list = data.onedayList;
+						for(var i=0; i<data.onedayList.length; i++){
+							self.list[i] = data.onedayList[i];
+						}
 						self.totalCount = data.totalCount;
 						self.totalPages = Math.ceil(self.totalCount / self.pageSize);
-						for(var i=0; i<self.list.length; i++){
-						   var endDay = new Date(self.list[i].endDay);
-						   var today = new Date();	
-						   if(endDay < today) {
-	   					       self.list[i].message = "모집 종료";
-	   					   }else{
-	   						   self.list[i].message = "모집 중";
-	   					   }   
-						   self.fnCheckNumberLimit(self.list[i].classNo, i);		
+						for(var i = 0; i < self.list.length; i++) {
+						    var endDay = new Date(self.list[i].endDay);
+						    var today = new Date();	
+						    if(endDay < today) {
+						        self.list[i].message1 = "모집 종료";
+						    } else {
+						        self.list[i].message1 = "모집 중";
+						    }   
+						    self.fnCheckNumberLimit(self.list[i].classNo, i); 
+						    console.log(self.list[i].message1);	
 						}
+						
 					}
 					
 				})
 			},
 			fnCheckNumberLimit(classNo, index) {
-				var self = this;
-				var nparmap = { classNo: classNo };	
-				$.ajax({
-					url: "/oneday/oneday-numberLimit.dox",
-					dataType: "json",
-					type: "POST",
-					data: nparmap,
-					success: function(data) {
-						self.list[index].numberLimit = data.numberLimit;	
-						console.log(self.list[index].numberLimit);
-					}
-				})
+			    var self = this;
+			    var nparmap = { classNo: classNo };	
+			    $.ajax({
+			        url: "/oneday/oneday-numberLimit.dox",
+			        dataType: "json",
+			        type: "POST",
+			        data: nparmap,
+			        success: function(data) {
+			            // numberLimit 결과를 currentNumber와 함께 self.list에 업데이트
+			            if (data.numberLimit) {
+			                self.list[index].currentNumber = data.numberLimit.currentNumber;
+			                self.list[index].numberLimit = data.numberLimit.numberLimit;
+			            }
+			            console.log(self.list[index]); // 각 항목의 현재 상태 출력
+			        }
+			    })
 			},
 			fnChange(classNo){
 				console.log(classNo);

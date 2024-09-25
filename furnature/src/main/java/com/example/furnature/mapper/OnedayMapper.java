@@ -20,7 +20,7 @@ public interface OnedayMapper {
 	void onedayPay(HashMap<String,Object> map);
 	
 	//원데이클래스 개별 상세 정보
-	Oneday onedayDetail(HashMap<String,Object> map);
+	List<Oneday> onedayDetail(HashMap<String,Object> map);
 	
 	//원데이클래스 등록(관리자)
 	void onedayReg(HashMap<String,Object> map);
@@ -28,11 +28,8 @@ public interface OnedayMapper {
 	//원데이클래스 등록시 파일 업로드
 	void onedayFile(HashMap<String,Object> map);
 	
-	//원데이클래스 등록시 클래스번호 시퀀스로 가져오기
-	int classNo(HashMap<String,Object> map);
-	
 	//원데이클래스 인원초과 여부 확인
-	Integer numberLimit(HashMap<String,Object> map);
+	Oneday numberLimit(HashMap<String,Object> map);
 	
 	//원데이클래스 수정(관리자)
 	void onedayUpdate(HashMap<String,Object> map);
