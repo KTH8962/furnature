@@ -48,7 +48,7 @@
 	<insert id="onedayReg" parameterType="hashmap" useGeneratedKeys="true" keyProperty="classNo" keyColumn="CLASS_NO">
 		INSERT INTO TBL_CLASS 
 		(CLASS_NO, CLASS_NAME, PRICE, NUMBER_LIMIT, CLASS_DATE, START_DAY, END_DAY)
-		VALUES (CLASS_NO_SEQ.NEXTVAL, #{className}, #{price}, #{numberLimit}, #{classDate}, #{startDay}, #{endDay})
+		VALUES (CLASS_NO_SEQ.NEXTVAL, #{className}, #{price}, #{numberLimit}, TO_DATE(#{classDate}, 'YYYY-MM-DD HH24:MI:SS'), TO_DATE(#{startDay}, 'YYYY-MM-DD HH24:MI:SS'), TO_DATE(#{endDay}, 'YYYY-MM-DD HH24:MI:SS'))
 	</insert>
 	
 	<!--원데이클래스 등록시 파일업로드-->
