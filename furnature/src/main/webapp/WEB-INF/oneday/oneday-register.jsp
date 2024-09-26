@@ -1,4 +1,4 @@
-			<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -146,6 +146,7 @@
 					        return;
 					}
 					console.log(nparam);
+
 					$.ajax({
 						url:"/oneday/oneday-register.dox",
 						dataType:"json",	
@@ -168,7 +169,8 @@
 									contentType : false,
 									success: function(){
 										console.log('업로드 성공!');
-										$.pageChange("/oneday/oneday.do",{});
+										$.pageChange("/oneday/oneday.do", {});
+
 									}
 								})
 							 }

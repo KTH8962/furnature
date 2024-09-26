@@ -21,5 +21,4 @@ public class Oneday {
 	private String fileSize;
 	private String orgName;
 	private String currentNumber;
-	private String result;
 }

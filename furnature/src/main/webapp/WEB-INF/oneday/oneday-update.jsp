@@ -87,6 +87,8 @@
                 </div>
             </div>
         </div>
+		
+		
         
         <div><button @click="fnUpdate">저장</button></div>			
     </div>
@@ -175,6 +177,7 @@ const app = Vue.createApp({
                 data: nparam,
                 success: function(data) {
                     alert("저장되었습니다.");
+					$.pageChange("/adminOneday.do", {});
                 }
             });
         }

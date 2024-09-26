@@ -25,6 +25,7 @@ public class MyPageController {
         return "/myPage/myPage";
     }
 
+    //원데이클래스 신청내역 조회 페이지
     @RequestMapping("/myPage/oneday.do")
     public String onedayInfo(Model model) throws Exception{
         return "/myPage/myPage-oneday";
@@ -82,14 +83,6 @@ public class MyPageController {
     	return new Gson().toJson(resultMap);
     }
 
-    @RequestMapping(value = "/myPage/oneday-info.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    public String onedayInfo(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
-        HashMap<String, Object> resultMap = new HashMap<String, Object>();
-        resultMap = myPageService.onedayInfo(map);
-        return new Gson().toJson(resultMap);
-    }
-
     // 경매 입찰 리스트 조회 db
     @RequestMapping(value = "/myPage/bidding-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
@@ -117,13 +110,13 @@ public class MyPageController {
     	return new Gson().toJson(resultMap);
     }
     
-    // 배송 조회
-    @RequestMapping(value = "/myPage/mileage-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    // 원데이클래스 수강신청 내역 조회(회원)
+    @RequestMapping(value = "/myPage/oneday-info.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String mypageMileage(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
-    	HashMap<String, Object> resultMap = new HashMap<String, Object>();
-    	resultMap = myPageService.searchMileageList(map);
-    	return new Gson().toJson(resultMap);
+    public String onedayInfo(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+        HashMap<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap = myPageService.onedayInfo(map);
+        return new Gson().toJson(resultMap);
     }
 
 

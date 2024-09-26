@@ -17,14 +17,14 @@
                 <div class="myPage myPage-oneday" style="width:100%">
 					
                     <div v-if="isCustomer">신청내역
-                    <br>
-                    <div v-for="item in list" :key="item.payId">
-                        <div>클래스명: {{item.className}}</div>
-                        <div>결제ID: {{item.payId}}</div>
-                        <div>신청일자: {{item.payDay}}</div>
-                        <div><button @click="fnCancel(item.classNo, item.payId)">수강취소</button></div>
-                        <br>
-                    </div>
+                   		<br>
+	                    <div v-for="item in list" :key="item.payId">
+	                        <div>클래스명: {{item.className}}</div>
+	                        <div>결제ID: {{item.payId}}</div>
+	                        <div>신청일자: {{item.payDay}}</div>
+	                        <div><button @click="fnCancel(item.classNo, item.payId)">수강취소</button></div>
+	                    	<br>
+	                    </div>
 					</div>
 					
                 </div>
@@ -40,44 +40,26 @@
             return {
                 sessionId: '${sessionId}',
 				sessionAuth : '${sessionAuth}',
-                list: [],
-				isCustomer : true,
-				onedayClass : [],
-				message1 : ""
+                list: []
             };
         },
         methods: {
             fnClass() {
-                var self = this;
-                var nparmap = { sessionId: self.sessionId };
-                $.ajax({
-                    url: "/myPage/oneday-info.dox",
-                    dataType: "json",
-                    type: "POST",
-                    data: nparmap,
-                    success: function(data) {
-                        self.list = data.onedayInfo;
-						if(self.sessionAuth=='2'){
-							self.isCustomer = false;
-						}
-                    }
-                });
-            },
-        
-
-			fnGetList(){
 				var self = this;
-				var nparmap = {};
-				$.ajax({
-                   url: "/oneday/oneday-list.dox",
-                   dataType: "json",
-                   type: "POST",
-                   data: nparmap,
-                   success: function(data) {
-                  	console.log(data);
-                   }
-               });
-			}
+				if(self.sessionAuth=='1'){
+					self.isCustomer = true;
+					var nparmap = { sessionId: self.sessionId };
+	                $.ajax({
+	                   url: "/myPage/oneday-info.dox",
+	                   dataType: "json",
+	                   type: "POST",
+	                   data: nparmap,
+	                   success: function(data) {
+	                       self.list = data.onedayInfo;
+	                   }
+	               });
+				}
+            }
         },
         mounted() {
             this.fnClass();

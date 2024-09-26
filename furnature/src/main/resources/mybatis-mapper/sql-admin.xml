@@ -51,10 +51,52 @@
 		</set>
 		WHERE USER_ID = #{id}
 	</update>
-	
-	<update id="resetPwd" parameterType="hashmap">
+  
+  <update id="resetPwd" parameterType="hashmap">
 		UPDATE TBL_USER
 		SET USER_PWD = '1234'
 		WHERE USER_ID = #{id}
-	</update>
+	</update>	
+
+	<!--원데이클래스 신청인수 등 현황-->
+	<select id="currentNumber" parameterType="hashmap" resultType="com.example.furnature.model.Admin">
+	    SELECT C.CLASS_NO, CLASS_NAME, CLASS_DATE, END_DAY, NUMBER_LIMIT, NVL(COUNT, 0) AS CURRENT_NUMBER
+	    FROM TBL_CLASS C
+	    LEFT JOIN (
+	        SELECT NVL(COUNT(*),0) COUNT, CLASS_NO
+	        FROM TBL_PARTICIPANT
+	        GROUP BY CLASS_NO
+	    ) P ON C.CLASS_NO = P.CLASS_NO
+	    WHERE 1 = 1
+	    <if test="searchOption == 'all' and (keyword != null and keyword != '')">
+	        AND (CLASS_NAME LIKE '%' || #{keyword} || '%' OR END_DAY LIKE '%' || #{keyword} || '%')
+	    </if>
+	    <if test="searchOption == 'className' and (keyword != null and keyword != '')">
+	        AND CLASS_NAME LIKE '%' || #{keyword} || '%'
+	    </if>
+	    <if test="searchOption == 'endDay' and (keyword != null and keyword != '')">
+	        AND END_DAY LIKE '%' || #{keyword} || '%'
+	    </if>
+	    ORDER BY C.CLASS_NO
+	</select>
+
+	<!--원데이클래스 삭제-->
+	<delete id="onedayDelete" parameterType="hashmap">
+		DELETE FROM TBL_CLASS
+		WHERE CLASS_NO = #{classNo}
+	</delete>
+	
+	<!--원데이클래스 파일삭제-->
+	<delete id="onedayFileDelete" parameterType="hashmap">
+		DELETE FROM TBL_ONEDAYFILE
+		WHERE CLASS_NO = #{classNo}
+	</delete>
+	
+	<!--원데이클래스 개별정보 출력-->
+	<select id="onedayInfo" parameterType="hashmap" resultType="com.example.furnature.model.Admin">
+	    SELECT * 
+	    FROM TBL_CLASS
+	    WHERE CLASS_NO = #{classNo}
+	</select>
+
 </mapper>
