@@ -44,8 +44,8 @@
 			<div>
 				<div>결제정보</div>
 				<div>총 상품 금액 : {{totalPrice}}</div>
-				<div>보유 포인트 : {{myPoint}}</div>
-				<div>사용 포인트 : <input type="text" placeholder="0" v-model="pointPay" @change="fnPointLimit">원
+				<div>보유 마일리지 : {{myPoint}}</div>
+				<div>사용 마일리지 : <input type="text" placeholder="0" v-model="pointPay" @change="fnPointLimit">원
 					<button type="button" @click="fnPoint">전액사용</button>
 				</div>
 				<div>최종 결제 금액 : {{totalPrice}}</div>
@@ -94,7 +94,7 @@
 				phone : "",
 				postcode : "",
 				deliveryInfo : "",
-				myPoint : 100000,
+				myPoint : 0,
 				pointPay : 0,
             };
         },
@@ -106,7 +106,11 @@
 		    },
 			mileage(){
 						var self = this;
-						return parseInt(self.payPrice * 0.05);
+						if(self.pointPay > 0 ){ //결제시 사용하는 마일리지가 있을때 적립은 X
+							return 0;
+						}else{
+							return parseInt(self.payPrice * 0.05);
+						}
 					}
 		},
         methods: {
@@ -141,6 +145,7 @@
 			        },
 			daumPost(){
 				var self = this;
+				var addr = "";
 			    new daum.Postcode({
 			        oncomplete: function(data) {
 			            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
@@ -168,8 +173,10 @@
 					data : nparmap,
 					success : function(data) {
 						self.info = data.info;
-						console.log("userinfo"+data.info);
+						console.log("다음찍히는 콘솔이 userinfo");
+						console.log(data.info);
 						console.log( new Date().getTime());
+						self.myPoint = data.info.mileageTotal
 					}
 				});
 			},
@@ -192,6 +199,9 @@
 			fnOrder() {
 				var self = this;
 				var orderList = JSON.stringify(self.selectedSize);
+//				if(self.pointPay > 0 ){ //결제시 사용하는 마일리지가 있을때 적립은 X
+//					var mileageSave = 0;
+//				}
 			  IMP.request_pay({
 			    pg: "html5_inicis.INIpayTest",
 			    pay_method: "card",
@@ -209,7 +219,16 @@
 					   msg += '거래ID : ' + rsp.merchant_uid;
 					   msg += '결제금액 : ' + rsp.paid_amount;
                      	
-						var nparmap = {impUid : rsp.imp_uid, orderNo : rsp.merchant_uid, orderPrice : rsp.paid_amount, userId : self.info.userId ,productNo : self.productNo, orderList : orderList, mileage : self.mileage};
+						var nparmap = {
+							impUid : rsp.imp_uid,
+							orderNo : rsp.merchant_uid,
+							orderPrice : rsp.paid_amount,
+							userId : self.info.userId,
+							productNo : self.productNo,
+							orderList : orderList,
+							mileage : self.mileage,	//구매시 적립 마일리지
+							pointPay : self.pointPay	// 구매시 사용한 마일리지
+						};
 						$.ajax({
 							url:"/productDetail/productOrder.dox",
 							dataType:"json",	
@@ -227,7 +246,8 @@
 					   
                    }
                    alert(msg);
-				   location.reload();
+				   window.location.href = "/myPage/delivery.do";
+
                });
 			},
 			fnPoint(){
@@ -240,17 +260,26 @@
 			},
 			fnPointLimit(){
 				var self=this;
-				if(self.pointPay>self.myPoint){
-					alert('보유 금액 이상은 사용 불가능 합니다.');
-					if(self.totalPrice<=self.myPoint){
-						self.pointPay = self.totalPrice;
-					}else{
-						self.pointPay = self.myPoint;						
-					}
+				self.pointPay = parseFloat(self.pointPay) || 0;
+				if (self.pointPay <= 0) {
+				    self.pointPay = 0; 
+					return;
 				}
+//				if (self.pointPay < 1000) {
+//				    alert('마일리지는 1000원 이상부터 사용 가능합니다.');
+//				    self.pointPay = 0;
+//					return;
+//				}
+				if (self.pointPay > self.myPoint) {
+				       alert('보유 금액 이상은 사용 불가능 합니다.');
+				       // 사용 마일리지를 보유 마일리지와 구매가격 중 적절한 값으로 설정
+				       self.pointPay = Math.min(self.myPoint, self.totalPrice);
+				       return;
+				   }
 				if(self.totalPrice<self.pointPay){
-					alert('사용 포인트가 구매가격을 넘었습니다.');
-						self.pointPay = self.totalPrice;
+					alert('사용 마일리지가 구매가격을 넘었습니다.');
+			        self.pointPay = Math.min(self.totalPrice, self.myPoint); // 구매가격과 보유 마일리지 중 더 작은 값으로 설정
+			        return;;
 				}
 			}
         },

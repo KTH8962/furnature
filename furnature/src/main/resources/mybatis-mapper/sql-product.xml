@@ -77,12 +77,28 @@
 	<!-- 상품 결제 데이터 인서트 -->
 	<insert id="productOrder" parameterType="hashmap">
         INSERT INTO TBL_PRODUCT_ORDER (PAY_NO, ORDER_NO, PRODUCT_NO, USER_ID, ORDER_PRICE, ORDER_SIZE, ORDER_COUNT, PRODUCT_PRICE, ORDER_CATE, DELIVERY_CATE)
-        VALUES (PAY_NO_SEQ.NEXTVAL, #{orderNo}, #{productNo}, #{userId}, #{orderPrice}, #{orderSize}, #{orderCount}, #{sizePrice}, '상품', 1)
+        VALUES (PAY_NO_SEQ.NEXTVAL, #{orderNo}, #{productNo}, #{userId}, #{orderPrice}, #{orderSize}, #{orderCount}, #{sizePrice}, '상품', 0)
 	</insert>
 	<!--리뷰 리스트-->
 	<select id="productReview" parameterType="hashmap" resultType="com.example.furnature.model.Product">
-		SELECT * FROM 
-		TBL_PRODUCT_REVIEW WHERE PRODUCT_NO = #{productNo}
+		SELECT R.*, ROUND(A.AVG_RATING, 1) AS AVG_RATING
+		FROM (
+		    SELECT *
+		    FROM TBL_PRODUCT_REVIEW 
+		    WHERE PRODUCT_NO = #{productNo}
+		    ORDER BY REVIEW_NO 
+		    OFFSET #{startIndex} ROWS FETCH FIRST #{outputNumber} ROWS ONLY
+		) R
+		LEFT JOIN (
+		    SELECT ROUND(AVG(REVIEW_RATING), 1) AS AVG_RATING
+		    FROM TBL_PRODUCT_REVIEW 
+		    WHERE PRODUCT_NO = #{productNo}
+		) A ON 1=1
+	</select>
+	<!--리뷰 카운-->
+	<select id="reviewCnt" parameterType="hashmap" resultType="int">
+		SELECT COUNT(*) FROM TBL_PRODUCT_REVIEW
+        WHERE PRODUCT_NO = #{productNo}
 	</select>
 	
 	<!--리뷰 작성-->
@@ -97,23 +113,16 @@
 		SET REVIEW_IMG_PATH = #{filePath}, REVIEW_IMG_NAME = #{fileName}
 		WHERE REVIEW_NO = #{reviewNo}
 	</update>
+	<!--상품 구매시 마일리지 사용-->
+	<insert id="useMileage" parameterType="hashmap">
+        INSERT INTO TBL_MILEAGE
+        VALUES(MILEAGE_SEQ.NEXTVAL, #{userId}, '상품구매', #{pointPay}, '사용', SYSDATE)
+	</insert>
 	<!--상품 구매시 마일리지 적립-->
 	<insert id="saveMileage" parameterType="hashmap">
-		INSERT INTO TBL_MILEAGE
+        INSERT INTO TBL_MILEAGE
 		VALUES(MILEAGE_SEQ.NEXTVAL, #{userId}, '상품구매', #{mileage}, '적립', SYSDATE)
 	</insert>
-	
-	<!--
-		유저별 총 마일리지 계산 쿼리 적립일땐 + / 사용일땐 -
-		SELECT U.USER_ID, SUM(CASE 
-                  WHEN M.MILEAGE_STATUS = '적립' THEN M.MILEAGE_PRICE
-                  WHEN M.MILEAGE_STATUS = '사용' THEN -M.MILEAGE_PRICE
-                  ELSE 0
-                  END) AS TOTAL_MILEAGE
-		FROM TBL_USER U INNER JOIN TBL_MILEAGE M ON U.USER_ID = M.USER_ID
-		GROUP BY U.USER_ID;
-
-	-->
 	<!-- 리뷰 수정시 해당 리뷰 불러오기-->
 	<select id="reviewInfo" parameterType="hashmap" resultType="com.example.furnature.model.Product">
 		SELECT * FROM 

@@ -143,7 +143,12 @@ public class ProductServiceImpl implements ProductService{
 		HashMap <String, Object> resultMap = new HashMap<>();
 		try {
 			List<Product> reviewList = productmapper.productReview(map);
+			System.out.println("REVEIWSSSSSSSSSSSS"+map);
+			int count = productmapper.reviewCnt(map);
+			System.out.println(count);
+			
 			resultMap.put("reviewList", reviewList);
+			resultMap.put("count", count);
 			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {
