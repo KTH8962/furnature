@@ -109,6 +109,7 @@ public class AdminServiceImpl implements AdminService{
 			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
 		}
 		return resultMap;
+	}
 	
     //원데이클래스 신청현황 조회(관리자)
 	@Override
