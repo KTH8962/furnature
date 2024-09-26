@@ -27,11 +27,9 @@
 					</div>
 				</div>
 				<div class="detail-top-info">
-					<div class="ip-list">
-						<div class="tit-box">
-							<p class="tit">입찰</p>
-						</div>
-						<div class="bot-box">
+					<div class="detail-box">
+						<div class="tit">입찰</div>
+						<div class="info">
 							<template v-if="detailInfo.auctionStatus == 'F'">
 								<div>경매 시작 전 입니다.</div>
 							</template>
@@ -69,12 +67,16 @@
 				</div>
 			</div>
 			<div class="detail-tab">
-				<button type="button" @click="fnTab(1)">상세 정보 설명</button>
+				<button type="button" @click="fnTab(1)" :class="bottomBox == '1' ? 'active' : ''">상세 정보 설명</button>
+				<button type="button" @click="fnTab(2)" :class="bottomBox == '2' ? 'active' : ''">택배</button>
 			</div>
 			<div class="detail-bottom">
-				<div class="detail-bottom-box" v-if="bottomBox == '1'" :class="bottomBox == '1' ? 'active' : ''">
+				<div class="detail-bottom-box" v-if="bottomBox == '1'">
 					<img :src="detailInfo.auctionContentsImgPath" :alt="detailInfo.auctionTitle + '상세이미지'">
 					<div>{{detailInfo.auctionContents}}</div>
+				</div>
+				<div class="detail-bottom-box" v-if="bottomBox == '2'">
+					택배
 				</div>
 			</div>
 		</div>

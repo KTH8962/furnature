@@ -532,7 +532,7 @@ body {
 	background-color: var(--color-contrasty2);
 	border-color: var(--color-contrasty2);
 }
-#container .detail-bottom .detail-bottom {
+#container .detail-bottom .detail-bottom-box {
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
