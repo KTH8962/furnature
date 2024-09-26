@@ -12,8 +12,11 @@
 </head>
 <body>
 	<jsp:include page="/layout/header.jsp"></jsp:include>
-	<div id="app">
+		<div id="app">
+			<div id="container">            
+	            <p class="blind">원데이클래스</p>
 		
+		<h2 class="sub-tit">원데이클래스</h2>
 		<div style="display:flex;">
 			<div v-for = "item in list" :key="item.classNo">
 				<div v-if="item.message1=='모집 중' && item.numberLimit>item.currentNumber">모집 중</div>

@@ -5,11 +5,18 @@
 <head>
 	<jsp:include page="/layout/headlink.jsp"></jsp:include>
 	<style>
+		img{
+			width:400px;
+		}
 	</style>	
 </head>
 <body>
 	<jsp:include page="/layout/header.jsp"></jsp:include>
-	<div id="app">	
+		<div id="app">
+			<div id="container">            
+	            <p class="blind">원데이클래스</p>
+		
+		<h2 class="sub-tit">원데이클래스 등록</h2>
 		
 		<div class="ip-list">
 		    <div class="tit-box">
@@ -39,7 +46,7 @@
 		    </div>
 		    <div class="bot-box">
 		        <div class="ip-box">
-		            <input type="number" v-model="numberLimit">
+		            <input type="text" v-model="numberLimit">
 		        </div>
 		    </div>
 		</div>
@@ -114,7 +121,9 @@
 					this.price = this.price.replace(/[^0-9]/, '');
 					
 				},
-				
+				validateNumber(){
+					this.numberLimit = this.numberLimit.replace(/[^0-9]/g, '');
+				},
 				fnFileUpload(event){
 					this.file = event.target.files; 
 				},

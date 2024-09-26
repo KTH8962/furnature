@@ -42,6 +42,7 @@
                                 <div class="th">마감일자</div>
                                 <div class="th">신청인원</div>
                                 <div class="th">정원</div>
+								<div class="th">기능</div>
                             </div>
                         </div>
                         <div class="tbody">

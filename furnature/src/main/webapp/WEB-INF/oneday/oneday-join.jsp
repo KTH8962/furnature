@@ -7,14 +7,19 @@
 	<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 
 	<style>
-		img{
-			width:600px;
-		}
-	</style>	
-</head>
-<body>
-	<jsp:include page="/layout/header.jsp"></jsp:include>
-	<div id="app">
+			img{
+				width:400px;
+			}
+		</style>	
+	</head>
+	<body>
+		<jsp:include page="/layout/header.jsp"></jsp:include>
+			<div id="app">
+				<div id="container">            
+		            <p class="blind">원데이클래스</p>
+			
+			<h2 class="sub-tit">원데이클래스</h2>
+			
 		<div class="slider">
 		<div class="slide" v-for="(file, index) in filePath" :key="file" v-show="currentSlide === index">
            <img :src="file">
@@ -223,6 +228,7 @@
 				        data: nparmap,
 				        success: function(data) {
 				         	console.log(data);
+							$.page
 				        }
 				    });
 				}
