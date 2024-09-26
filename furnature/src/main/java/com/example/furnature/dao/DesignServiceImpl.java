@@ -95,4 +95,33 @@ public class DesignServiceImpl implements DesignService{
 		
 		return resultMap;
 	}
+
+	@Override
+	public HashMap<String, Object> adminDesignList(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			List<Design> list = designMapper.adminDesignList(map);
+			int count = designMapper.desginCount(map);
+			resultMap.put("count", count);
+			resultMap.put("list", list);
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (Exception e) {
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		
+		return resultMap;
+	}
+
+	@Override
+	public HashMap<String, Object> designDelete(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			designMapper.designDelete(map);
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (Exception e) {
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		
+		return resultMap;
+	}
 }
