@@ -30,14 +30,15 @@
 		<div>모집 종료일 : {{endDay}}</div>
 		<div>수업일자 : {{classDate}}</div>
 		<div>수강료 : {{price}}</div>
-		<div class="onedayJoinForm" v-if="message=='' && numberLimit===0">
+		<div class="onedayJoinForm" v-if="message=='' && numberLimit>currentNumber">
 			신청자 이름 : <input type="text" v-model="name">
 		</div>
 		<div v-if="message">{{message}}</div>
 		<div v-if="message2">{{message2}}</div>
-		<div v-if="message=='' && numberLimit===0"><button @click="fnOnedayJoin">수강신청</button></div>
+		<div v-if="message=='' && numberLimit>currentNumber"><button @click="fnOnedayJoin">수강신청</button></div>
 		
-		<button v-if="isAdmin" @click="fnUpdate(detail.classNo)">수정</button>
+		<button v-if="isAdmin" @click="fnUpdate(detail[0].classNo)">수정</button>
+		<button v-if="isAdmin" @click="fnDelete(detail[0].classNo)">삭제</button>
     </div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
 </body>
@@ -68,7 +69,8 @@
 				   classDate : "",
 				   message : "",
 				   message2 : "",
-				   currentSlide: 0
+				   currentSlide: 0,
+				   alreadyIn : false
                 };
             },
             methods: {
@@ -89,6 +91,7 @@
 				fnDetail(classNo) {
 					var self = this;
 					var nparmap = {classNo:self.classNo};
+					
 					$.ajax({
 					url : "/oneday/oneday-detail.dox",
 					dataType : "json",
@@ -97,6 +100,7 @@
 					success : function(data){
 						console.log(data);
 						self.detail = data.onedayDetail; 
+						self.classNo = data.onedayDetail[0].classNo;
 						self.className = data.onedayDetail[0].className;
 						self.startDay = data.onedayDetail[0].startDay;
 						self.endDay = data.onedayDetail[0].endDay;
@@ -173,7 +177,7 @@
 						pg: "html5_inicis",
 					    pay_method: "card",
 						merchant_uid: 'oneday' + new Date().getTime(),
-					    name: self.detail.className,
+					    name: self.detail[0].className,
 					    amount: self.price,
 					    buyer_tel: "010-0000-0000",
 					  }	, function (rsp){ // callback
@@ -208,8 +212,20 @@
 				fnUpdate(classNo){
 					var self = this;						
 					$.pageChange("/oneday/oneday-update.do", {classNo:self.classNo});
+				},
+				fnDelete(classNo) {
+					var self = this;
+				    var nparmap = { classNo: classNo };
+				    $.ajax({
+				        url: "/admin/oneday-delete.dox",
+				        dataType: "json",
+				        type: "POST",
+				        data: nparmap,
+				        success: function(data) {
+				         	console.log(data);
+				        }
+				    });
 				}
-	 
 			},
             mounted() {
 				var self = this;

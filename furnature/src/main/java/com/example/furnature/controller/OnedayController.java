@@ -43,7 +43,7 @@ public class OnedayController {
 	//원데이클래스 등록(관리자)
 	@RequestMapping("/oneday/oneday-register.do")
 	 public String onedayFile(Model model) throws Exception{
-
+		
 		return "/oneday/oneday-register";
  }
 	//원데이클래스 수정(관리자)

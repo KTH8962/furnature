@@ -15,6 +15,7 @@
 	    FROM TBL_ONEDAYFILE 
 	    WHERE CLASS_NO = C.CLASS_NO)
 	    ORDER BY O.CLASS_NO ASC OFFSET #{startIndex} ROWS FETCH FIRST #{outputNumber} ROWS ONLY
+	    
 	</select>
 	
 	<!--원데이클래스 개시글 수 조회-->
@@ -35,6 +36,7 @@
 	          FROM TBL_ONEDAYFILE 
 	          WHERE CLASS_NO = #{classNo}
 	      )
+	      ORDER BY FILE_NO ASC
 	</select>
 
 	<!--원데이클래스 결제정보-->

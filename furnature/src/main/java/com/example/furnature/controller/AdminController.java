@@ -35,6 +35,18 @@ public class AdminController {
 		return "/admin/adminUserEditor";
 	}
 	
+	@RequestMapping("/adminOneday.do")
+	public String onedayClass(Model model, HttpServletRequest request, @RequestParam HashMap<String, Object> map) throws Exception{
+		request.setAttribute("sessionAuth", map.get("sessionAuth"));
+		return "/admin/adminOneday";
+	}
+	
+	@RequestMapping("/admin/oneday-edit.do")
+	public String onedayEdit(Model model, HttpServletRequest request, @RequestParam HashMap<String, Object> map) throws Exception{
+		request.setAttribute("classNo", map.get("classNo"));
+		return "/admin/adminOnedayEditor";
+	}
+	
 	// 유저 정보 목록 db
 	@RequestMapping(value = "/admin/admin-user.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
@@ -62,4 +74,32 @@ public class AdminController {
 		resultMap = adminService.editUser(map);
 		return new Gson().toJson(resultMap);
 	}
+	
+    // 원데이클래스 신청인수 등 현황 조회
+    @RequestMapping(value = "/admin/oneday-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String currentNumber(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+    	HashMap<String, Object> resultMap = new HashMap<String, Object>();
+    	resultMap = adminService.currentNumber(map);
+    	return new Gson().toJson(resultMap);
+    }
+    // 원데이클래스 삭제
+    @RequestMapping(value = "/admin/oneday-delete.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String onedayDelete(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+    	HashMap<String, Object> resultMap = new HashMap<String, Object>();
+    	resultMap = adminService.onedayDelete(map);
+    	return new Gson().toJson(resultMap);
+    }
+    
+    //
+    // 원데이클래스 개별조회
+    @RequestMapping(value = "/admin/oneday-info.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String onedayInfo(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+    	HashMap<String, Object> resultMap = new HashMap<String, Object>();
+    	resultMap = adminService.onedayInfo(map);
+    	return new Gson().toJson(resultMap);
+    }
+   
 }

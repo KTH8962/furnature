@@ -6,7 +6,7 @@
 	<jsp:include page="/layout/headlink.jsp"></jsp:include>
 	<style>
 		img{
-			width:300px;
+			width:400px;
 		}
 	</style>	
 </head>
@@ -21,7 +21,6 @@
 				<div>{{item.className}}</div> 
 				<div>{{item.classDate}}</div> 
 				<div>{{item.price}}</div> 
-				<div>{{item.classNo}}</div>
 				<div><a href="#" @click="fnChange(item.classNo)"><img :src="item.filePath"></a></div>
 			</div>
 		</div>		

@@ -28,19 +28,22 @@
 		</set>
 		WHERE USER_ID = #{sessionId}
 	</update>
-	
+
+	<!--원데이클래스 신청내역 조회(회원)-->
 	<select id="onedayInfo" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
 		SELECT *
 		FROM TBL_PARTICIPANT P
 		INNER JOIN TBL_CLASS C
 		ON P.CLASS_NO = C.CLASS_NO
 		WHERE P.USER_ID = #{sessionId}
-	</select>
+	</select>	
 	
+	<!--원데이클래스 수강취소(회원)-->
 	<delete id="onedayCancel" parameterType="hashmap">
 		DELETE FROM TBL_PARTICIPANT
 		WHERE CLASS_NO = #{classNo} AND USER_ID = #{sessionId}
 	</delete>
+
 	
 	<select id="selectBiddingList" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
 		SELECT MY_BIDDING, B.AUCTION_NO, B.AUCTION_BIDDING_DATE, AUCTION_TITLE, A.AUCTION_PRICE_CURRENT, A.AUCTION_STATUS

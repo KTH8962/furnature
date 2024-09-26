@@ -15,8 +15,6 @@ public interface MyPageMapper {
 	// 내정보 수정
 	void updateUser(HashMap<String, Object> map);
 	
-	List<MyPage> onedayInfo(HashMap<String, Object> map);
-	
 	// 경매 입찰 리스트 조회
 	List<MyPage> selectBiddingList(HashMap<String, Object> map);	
 	
@@ -37,4 +35,8 @@ public interface MyPageMapper {
 	
 	// 마일리지 리스트 조회
 	List<MyPage> selectMileageList(HashMap<String, Object> map);
+	
+	//원데이클래스 신청내역 조회(회원)
+	List<MyPage> onedayInfo(HashMap<String, Object> map);
+
 }

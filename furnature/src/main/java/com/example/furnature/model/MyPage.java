@@ -29,6 +29,8 @@ public class MyPage {
 	private String endDay;
 	private String payDay;
 	private String payId;
+	private String currentNumber;
+	private String result;
 	
 	// 이벤트 - 경매
 	private String auctionBiddingNo;
