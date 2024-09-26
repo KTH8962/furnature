@@ -97,7 +97,7 @@ public class ProductController {
 	//@RequestParam
 	public String productPay(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap = productService.searchImgUrl(map);
+		//resultMap = productService.searchImgUrl(map);
 		return new Gson().toJson(resultMap);
 	}
 	// 상품 결제
@@ -109,10 +109,17 @@ public class ProductController {
 		String json = map.get("orderList").toString(); 
 		ObjectMapper mapper = new ObjectMapper();
 		List<Object> list = mapper.readValue(json, new TypeReference<List<Object>>(){});
+		System.out.println("PPPPPPPPPPPPPP"+map.get("pointPay"));
+		//int pointPay = (Integer)map.get("pointPay");
 		
 		map.put("list", list);
-		//마일리지 적립
-		productMapper.saveMileage(map);
+		if(Integer.parseInt(map.get("pointPay").toString()) > 0) {
+			//사용 마일리지가 0이상일땐 마일리지 사용
+			productMapper.useMileage(map);
+		}else {
+			//사용 마일리지가 없을땐 마일리지 적립
+			productMapper.saveMileage(map);
+		}
 		
 		System.out.println("CONTROLLLLLLLLLLLL ORDER !! PAY"+map);
 		resultMap = productService.productOrder(map);
@@ -125,6 +132,7 @@ public class ProductController {
 	public String productReview(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap = productService.productReview(map);
+		System.out.println("REVIECCCCCCCCCCCCCCCCCCCCCCCCCCCCCMAP"+map);
 		return new Gson().toJson(resultMap);
 	}
 	//리뷰 작성 페이지
