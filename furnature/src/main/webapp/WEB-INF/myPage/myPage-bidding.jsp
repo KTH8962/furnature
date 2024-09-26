@@ -68,7 +68,7 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-						console.log(data);
+						//console.log(data);
 						self.biddingList = data.biddingList;
 					}
 				});
@@ -93,7 +93,7 @@
 			fnBuy(title, myBidding){
 				var self = this;
 				IMP.request_pay({
-	                pg: "kakaopay",
+	                pg: "html5_inicis",
 	                pay_method: "card",
 	                merchant_uid: "auction_id_" + new Date().getTime(), // 유니크한 주문 ID 생성
 	                name: title,
@@ -101,14 +101,18 @@
 	                buyer_name: "홍길동",
 	                buyer_tel: "010-1234-5678",
 	                buyer_email: "example@example.com",
-	                m_redirect_url: "http://your-redirect-url.com" // 결제 완료 후 리디렉션 URL
 	            }, function (rsp) {
 					console.log(rsp);
 					if (rsp.success) {
 						self.infoList = rsp;
                         $.ajax({
-                            url: "/payment/verification/" + rsp.imp_uid,
+                            url: "/payment/test.dox",
                             method: "POST",
+							data: {
+								imp_uid : rsp.imp_uid,
+								merchant_uid: rsp.merchant_uid,
+                            	amount: rsp.paid_amount
+							}
                         }).done(function (data) {
                             // 가맹점 서버 결제 API 성공시 로직
 							console.log(data);
