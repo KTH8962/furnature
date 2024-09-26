@@ -31,12 +31,9 @@
 		</if>
 	</select>
 	
-	<delete id="deleteUserList" parameterType="hashmap">
+	<delete id="deleteUser" parameterType="hashmap">
 		DELETE FROM TBL_USER
-		WHERE USER_ID IN
-		<foreach collection="removeList" item="item" open="(" close=")" separator=",">
-			 #{item}
-		</foreach>
+		WHERE USER_ID = #{id}
 	</delete>
 	
 	<update id="updateUser" parameterType="hashmap">
