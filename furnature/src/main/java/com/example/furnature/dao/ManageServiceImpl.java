@@ -25,7 +25,7 @@ public class ManageServiceImpl implements ManageService{
 			System.out.println("################################"+map);
 			manageMapper.enrollProduct(map);
 			resultMap.put("productNo",map.get("productNo"));
-			resultMap.put("result", "scuccess");
+			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		}catch (Exception e) {
 			resultMap.put("result", "fail");
@@ -42,7 +42,7 @@ public class ManageServiceImpl implements ManageService{
 			System.out.println("################################"+map);
 			manageMapper.productDelete(map);
 			manageMapper.productAttachDelete(map);
-			resultMap.put("result", "scuccess");
+			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		}catch (Exception e) {
 			resultMap.put("result", "fail");
@@ -56,7 +56,7 @@ public class ManageServiceImpl implements ManageService{
 		try {
 			Manage list =manageMapper.productUpdateList(map);
 			resultMap.put("list", list);
-			resultMap.put("result", "scuccess");
+			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		}catch (Exception e) {
 			resultMap.put("result", "fail");

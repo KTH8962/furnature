@@ -35,6 +35,11 @@ public interface MyPageMapper {
 	// 배송조회
 	List<MyPage> selectDelivery(HashMap<String, Object> map);
 	
+	// 관리자배송조회
+	List<MyPage> adminDelivery(HashMap<String, Object> map);
+	
 	// 마일리지 리스트 조회
 	List<MyPage> selectMileageList(HashMap<String, Object> map);
+	
+	int adminDeliveryCount(HashMap<String, Object> map);
 }

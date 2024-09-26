@@ -72,7 +72,7 @@
 		                <input type="radio" name="category2" v-model=productCate2 value="5" id="r122"><label for="r122">오피스</label>
 		            </div>
 				<div>
-					<button @click="fnUpdate()">수정</button>
+					<button @click="fnUpdateProduct()">수정</button>
 					<button @click="fnCancel()">취소</button>
 				</div>
 			</div>
@@ -102,7 +102,7 @@
             };
         },
         methods: {
-			fnGetProductList(){
+			fnProductList(){
 				var self = this;
 				
 				var nparmap = {
@@ -129,7 +129,7 @@
 					}
 				});				 
 			},
-			fnUpdate(productNo){
+			fnUpdateProduct(productNo){
 				var self = this;
 				if(self.productName == ""){
 					alert("상품이름을 입력해주세요");
@@ -188,7 +188,7 @@
         },
         mounted() {
             var self = this;
-			self.fnGetProductList();
+			self.fnProductList();
         }
     });
     app.mount('#app');
