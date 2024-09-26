@@ -28,10 +28,11 @@ public class AdminController {
 		return "/admin/adminUser";
 	}
 	
-	@RequestMapping("/adminRegister.do")
-	public String userEdit(Model model) throws Exception{
+	@RequestMapping("/adminEditor.do")
+	public String userEdit(Model model, HttpServletRequest request, @RequestParam HashMap<String, Object> map) throws Exception{
 		model.addAttribute("activePage", "admin");
-		return "/admin/adminUserRegister";
+		request.setAttribute("id", map.get("id"));
+		return "/admin/adminUserEditor";
 	}
 	
 	// 유저 정보 목록 db
@@ -46,17 +47,13 @@ public class AdminController {
 	// 유저 정보 삭제 db
 	@RequestMapping(value = "/admin/admin-user-remove.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public String removeUser(Model model, @RequestParam HashMap<String, Object> map, @RequestParam("removeList") String[] removeList) throws Exception {
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		List<String> removes = new ArrayList<>();
-		for(String remove : removeList) {
-			removes.add(remove);
-		}
-		map.put("removeList", removes);
-		map.remove("removeList[]");
-		resultMap = adminService.removeUserList(map);
+	public String removeUser(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();		
+		resultMap = adminService.removeUser(map);
 		return new Gson().toJson(resultMap);
 	}
+	
+	// 유저 정보 수정 db
 	@RequestMapping(value = "/admin/admin-user-edit.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String editUser(Model model, @RequestParam HashMap<String, Object> map) throws Exception {

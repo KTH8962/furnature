@@ -44,10 +44,10 @@ public class AdminServiceImpl implements AdminService{
 
 	// 유저 삭제
 	@Override
-	public HashMap<String, Object> removeUserList(HashMap<String, Object> map) {
+	public HashMap<String, Object> removeUser(HashMap<String, Object> map) {
 		HashMap <String, Object> resultMap = new HashMap<>();
 		try {
-			adminMapper.deleteUserList(map);
+			adminMapper.deleteUser(map);
 			resultMap.put("result", "scuccess");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {
