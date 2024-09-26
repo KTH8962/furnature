@@ -11,6 +11,83 @@
 		<div id="container">            
             <p class="blind">샘플페이지</p>
 			세션: {{sessionId}}
+			<div class="detail-top">
+				<div class="thumb-wrap auction-detail-thumb-list">
+					<div class="thum-list" style="width : 2000px;">
+						<div class="thumb-box"><img :src="productDetail.productThumbnail" alt="썸네일"></div>
+						<div class="thumb-box"><img :src="productDetail.productThumbnail" alt="썸네일"></div>
+						<div class="thumb-box"><img :src="productDetail.productThumbnail" alt="썸네일"></div>
+					</div>
+					<div class="thum-arrow">
+						<button type="button" class="prev"></button>
+						<button type="button" class="next"></button>
+					</div>
+				</div>
+				<div class="detail-top-info">
+					<div class="detail=box">
+						<div class="tit">상품명</div>
+						<div class="info">{{productDetail.productName}}</div>
+					</div>
+					<div class="detail=box">
+						<div class="tit">상품 가격</div>
+						<div class="info">{{parseInt(productDetail.productPrice).toLocaleString()}}</div>
+					</div>
+					<div class="detail=box">
+						<div class="tit">색상</div>
+						<div class="info">{{productDetail.productColor}}</div>
+					</div>
+					<div class="detail=box">
+						<div class="tit">사이즈 선택</div>
+						<div class="info">
+							<select v-model="sizeSelect" @change="fnSelectSize">
+								<option value="">사이즈 선택</option>
+								<option v-for="(item,index) in sizeList" :value="index">
+									<template v-if="index=='0'">
+									{{item}}
+									</template>
+									<template v-if="index=='1'">
+										{{item}} : + 20000 원
+									</template>
+									<template v-if="index=='2'">
+										{{item}} : + 40000 원
+									</template>
+								</option>					
+							</select>
+						</div>
+					</div>
+					<div class="detail=box">
+						<div class="tit">사이즈 선택</div>
+						<div class="info">
+							<div><!-- 사이즈 선택 후 목록 출력-->
+									<!--<template v-if="selectedSize != '' ||selectedSize == '0'">-->
+									<template v-for="(item,index) in selectedSize">
+										<div>
+											{{productDetail.productName}} {{ item.size }}번 사이즈
+											<button type="button" @click="fnUp(index)">+</button>
+											<input type="text" v-model="item.count">
+											<button type="button" @click="fnDown(index)">-</button>
+											{{(item.price * item.count).toLocaleString()}}원
+											<!--toLocaleString() >> 숫자를 천단위에 , 넣어서 출력해주는 함수-->
+										</div>
+									</template>
+									<div>총 합계: {{ totalPrice }}원</div>
+							</div>
+						</div>
+					</div>
+					<div class="detail-box">
+						<div class="info"><!-- 구매/ 커스텀 등 버튼 구현 -->
+							<button type="button" @click="fnPay">구매하기</button><br>
+							<button type="button" @click="fnBasket">장바구니</button><br>
+							<!--<button type="button">좋아요 버튼?</button>-->
+							<!-- 커스텀 버튼은 커스텀 가능 물품만 버튼 보이게 하기.-->
+							<button type="button" @click="fnCustom">커스텀 버튼</button>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			<div class="detail-tap"></div>
+			<div class="detail-bottom"></div>
             <div style="display: flex; align-items: center; flex-direction: column;">
 				<!--<div>	DB저장된 모든 썸네일 출력
 					<template v-for="item in urlList">
@@ -18,47 +95,8 @@
 					</template>
 				</div>-->
 				<!-- 상세 페이지 썸네일 , 이름, 가격, 사이즈 등 정보 출력 -->
-				<div><img :src="productDetail.productThumbnail" alt="썸네일"></div>
-				<div>{{productDetail.productName}}</div>
-				<div>{{parseInt(productDetail.productPrice).toLocaleString()}}</div>
-				<div>{{productDetail.productColor}}</div>
-				<div>
-					<select v-model="sizeSelect" @change="fnSelectSize">
-						<option value="">사이즈 선택</option>
-						<option v-for="(item,index) in sizeList" :value="index">
-							<template v-if="index=='0'">
-							{{item}}
-							</template>
-							<template v-if="index=='1'">
-								{{item}} : + 20000 원
-							</template>
-							<template v-if="index=='2'">
-								{{item}} : + 40000 원
-							</template>
-						</option>					
-					</select>
-				</div>
-				<div><!-- 사이즈 선택 후 목록 출력-->
-						<!--<template v-if="selectedSize != '' ||selectedSize == '0'">-->
-						<template v-for="(item,index) in selectedSize">
-							<div>
-								{{productDetail.productName}} {{ item.size }}번 사이즈
-								<button type="button" @click="fnUp(index)">+</button>
-								<input type="text" v-model="item.count">
-								<button type="button" @click="fnDown(index)">-</button>
-								{{(item.price * item.count).toLocaleString()}}원
-								<!--toLocaleString() >> 숫자를 천단위에 , 넣어서 출력해주는 함수-->
-							</div>
-						</template>
-						<div>총 합계: {{ totalPrice }}원</div>
-				</div>
-				<div><!-- 구매/ 커스텀 등 버튼 구현 -->
-					<button type="button" @click="fnPay">구매하기</button>
-					<button type="button" @click="fnBasket">장바구니</button>
-					<!--<button type="button">좋아요 버튼?</button>-->
-					<!-- 커스텀 버튼은 커스텀 가능 물품만 버튼 보이게 하기.-->
-					<button type="button" @click="fnCustom">커스텀 버튼</button>
-				</div>
+				
+				
 				<div><!-- 상세정보 이미지 출력 전에 띄울 버튼?-->
 					<div>이동할때 쓸 A태그==========================</div>
 					<ul>
