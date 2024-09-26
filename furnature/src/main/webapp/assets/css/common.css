@@ -577,6 +577,27 @@ body {
 	background-color: var(--color-contrasty2);
 }
 
+.tbl-btn-box {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0 6px;
+}
+.tbl-btn-box button {
+	font-size: 0px;
+	border: 1px solid var(--color-contrastyA);
+	background: center/16px auto no-repeat;
+	width: 24px;
+	height: 24px;
+	border-radius: 4px;
+}
+.tbl-btn-box button.edit {
+	background-image: url("../images/ico/ico_edit.png");
+}
+.tbl-btn-box button.remove {
+	background-image: url("../images/ico/ico_remove.png");
+}
+
 /* //admin */
 /* default-setting */
 table {
@@ -650,31 +671,31 @@ table tr th, table tr td {
 }
 
 .user-table .tr > *:nth-of-type(1) {
-	width: 3%;
+	width: 11%;
 }
 .user-table .tr > *:nth-of-type(2) {
-	width: 12%;
+	width: 8%;
 }
 .user-table .tr > *:nth-of-type(3) {
-	width: 8%;
-}
-.user-table .tr > *:nth-of-type(4) {
 	width: 26%;
 }
-.user-table .tr > *:nth-of-type(5) {
+.user-table .tr > *:nth-of-type(4) {
 	width: 14%;
 }
-.user-table .tr > *:nth-of-type(6) {
+.user-table .tr > *:nth-of-type(5) {
 	width: 16%;
 }
-.user-table .tr > *:nth-of-type(7) {
+.user-table .tr > *:nth-of-type(6) {
 	width: 8%;
 }
-.user-table .tr > *:nth-of-type(8) {
+.user-table .tr > *:nth-of-type(7) {
 	width: 6%;
 }
-.user-table .tr > *:nth-of-type(9) {
+.user-table .tr > *:nth-of-type(8) {
 	width: 7%;
+}
+.user-table .tr > *:nth-of-type(9) {
+	width: 4%;
 }
 
 .ip-box input[type=text], .ip-box input[type=password], .ip-box input[type=date], .ip-box input[type=datetime-local] {

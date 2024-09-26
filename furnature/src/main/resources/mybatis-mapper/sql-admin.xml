@@ -31,11 +31,17 @@
 		</if>
 	</select>
 	
-	<delete id="deleteUserList" parameterType="hashmap">
+	<delete id="deleteUser" parameterType="hashmap">
 		DELETE FROM TBL_USER
-		WHERE USER_ID IN
-		<foreach collection="removeList" item="item" open="(" close=")" separator=",">
-			 #{item}
-		</foreach>
+		WHERE USER_ID = #{id}
 	</delete>
+	
+	<update id="updateUser" parameterType="hashmap">
+		UPDATE TBL_USER
+		<set>
+			<if test="phone != null and phone != ''">USER_PHONE = #{phone},</if>
+			<if test="email != null and email != ''">USER_EMAIL = #{email},</if>
+		</set>
+		WHERE USER_ID = #{id}
+	</update>
 </mapper>

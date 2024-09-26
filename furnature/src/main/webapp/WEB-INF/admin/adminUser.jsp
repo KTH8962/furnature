@@ -35,7 +35,6 @@
                     <div class="flex-table user-table">
                         <div class="thead">
                             <div class="tr">
-                                <div class="th">삭제</div>
                                 <div class="th">아이디</div>
                                 <div class="th">이름</div>
                                 <div class="th">주소</div>
@@ -44,15 +43,11 @@
                                 <div class="th">생년월일</div>
                                 <div class="th">회원등급</div>
                                 <div class="th">룰렛 참여 현황</div>
+                                <div class="th">기능</div>
                             </div>
                         </div>
                         <div class="tbody">
                             <div class="tr" v-for="(item, index) in userList">
-                                <div class="td">
-                                    <div class="ip-chk" v-if="item.userId != 'admin'">
-                                        <input type="checkbox" name="remove" :id="index" v-model="removeList" :value="item.userId"><label :for="index">삭제</label>
-                                    </div>
-                                </div>
                                 <div class="td">{{item.userId}}</div>
                                 <div class="td">{{item.userName}}</div>
                                 <div class="td">{{item.userAddr}}</div>
@@ -60,15 +55,21 @@
                                 <div class="td">{{item.userEmail}}</div>
                                 <div class="td">{{item.userBirth}}</div>
                                 <div class="td">{{item.userAuth}}</div>
-                                <div class="td">{{item.eventRoul}}</div>
+                                <div class="td">
+                                    <template v-if="item.userId != 'admin'">{{item.eventRoul}}</template>
+                                </div>
+                                <div class="td">
+                                    <div class="tbl-btn-box" v-if="item.userId != 'admin'">
+                                        <button type="button" @click="fnEdit(item.userId)" title="수정" class="edit">수정</button>
+                                        <button type="button" @click="fnRemove(item.userId)" title="삭제" class="remove">삭제</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="btn-box">
                     <button type="button" class="admin-btn">등록</button>
-                    <button type="button" class="admin-btn" onclick="location.href='/adminEditor.do'">수정</button>
-                    <button type="button" class="admin-btn" @click="fnRemove">삭제</button>
                 </div>
             </div>
             <div class="contents-bottom">
@@ -91,7 +92,6 @@
                 pageSize: 11,
                 totalPages: 0,
                 keyword: "",
-                removeList: []
             };
         },
         methods: {
@@ -116,21 +116,25 @@
                 self.currentPage = item;
                 self.fnGetList(item);
             },
-            fnRemove() {
+            fnRemove(id) {
+                if(!confirm("삭제 하시겠습니까?")) return;
                 var self = this;
-                var nparmap = {removeList: self.removeList};
+                var nparmap = {id: id};
 				$.ajax({
 					url:"/admin/admin-user-remove.dox",
 					dataType:"json",	
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-                        console.log(data);
                         if(data.result == "scuccess") {
+                            alert("삭제 완료되었습니다.")
                             self.fnGetList(1);
                         }
 					}
 				});
+            },
+            fnEdit(id) {
+                $.pageChange("adminEditor.do", {id: id});
             }
         },
         mounted() {

@@ -44,11 +44,31 @@ public class AdminServiceImpl implements AdminService{
 
 	// 유저 삭제
 	@Override
-	public HashMap<String, Object> removeUserList(HashMap<String, Object> map) {
+	public HashMap<String, Object> removeUser(HashMap<String, Object> map) {
 		HashMap <String, Object> resultMap = new HashMap<>();
 		try {
-			System.out.println(map);
-			adminMapper.deleteUserList(map);
+			adminMapper.deleteUser(map);
+			resultMap.put("result", "scuccess");
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (DataAccessException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+		} catch (PersistenceException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+
+	// 유저 정보 수정
+	@Override
+	public HashMap<String, Object> editUser(HashMap<String, Object> map) {
+		HashMap <String, Object> resultMap = new HashMap<>();
+		try {
+			adminMapper.updateUser(map);
 			resultMap.put("result", "scuccess");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {
