@@ -143,7 +143,12 @@ public class ProductServiceImpl implements ProductService{
 		HashMap <String, Object> resultMap = new HashMap<>();
 		try {
 			List<Product> reviewList = productmapper.productReview(map);
+			System.out.println("REVEIWSSSSSSSSSSSS"+map);
+			int count = productmapper.reviewCnt(map);
+			System.out.println(count);
+			
 			resultMap.put("reviewList", reviewList);
+			resultMap.put("count", count);
 			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {
@@ -191,9 +196,11 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public HashMap<String, Object> updateReview(HashMap<String, Object> map) {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		System.out.println("SSSSSSSSSSSSSSSSSSUPDATE"+map);
 		try {
 			productmapper.updateReview(map);
+			resultMap.put("reviewNo",map.get("reviewNo"));
+			System.out.println("SSSSSSSSSSSSSSSSSSUPDATE"+map);
+			System.out.println("SSSSSSSSSSSSSSSSSSUPDATE"+resultMap);
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (Exception e) {
 			// TODO: handle exception

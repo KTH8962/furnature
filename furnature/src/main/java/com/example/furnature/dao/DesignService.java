@@ -18,5 +18,11 @@ public interface DesignService {
 	
 	//디자인 확정
 	HashMap<String, Object> designSelect(HashMap<String, Object> map);
+	
+	//디자인 관리자 목록
+	HashMap<String, Object> adminDesignList(HashMap<String, Object> map);
+	
+	//디자인 삭제
+	HashMap<String, Object> designDelete(HashMap<String, Object> map);
 
 }

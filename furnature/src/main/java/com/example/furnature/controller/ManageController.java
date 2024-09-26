@@ -32,14 +32,15 @@ public class ManageController {
 	 ProductService productService;
 
 	//상품등록
-	@RequestMapping("/manage/management.do")
-	public String product(Model model) throws Exception{
-		return "/manage/management";
+	@RequestMapping("/productRegist.do")
+	public String product(HttpServletRequest request,Model model,@RequestParam HashMap<String, Object> map) throws Exception{
+		request.setAttribute("productNo", map.get("productNo"));
+		return "/admin/adminProductRegist";
 	}
 	//상품관리
-	@RequestMapping("/manage/productmanage.do")
+	@RequestMapping("/productmanage.do")
 	public String productmanage(Model model) throws Exception{
-		return "/manage/manage-product";
+		return "/admin/adminProduct";
 	}
 	//상품수정
 	@RequestMapping("/manage/productUpdate.do")
@@ -115,9 +116,9 @@ public class ManageController {
                 String originFilename = descriptionFile.getOriginalFilename();
                 String extName = originFilename.substring(originFilename.lastIndexOf("."));
                 String saveFileName = genSaveFileName(extName);
-                File descriptionFileToSave = new File(path + "\\src\\main\\webapp\\images", saveFileName);
+                File descriptionFileToSave = new File(path + "\\src\\main\\webapp\\uploadImages\\product", saveFileName);
                 descriptionFile.transferTo(descriptionFileToSave);
-                map.put("productDetail1", "../images/" + saveFileName);
+                map.put("productDetail1", "../uploadImages/product" + saveFileName);
             }
             
 	            manageMapper.attachProduct(map);

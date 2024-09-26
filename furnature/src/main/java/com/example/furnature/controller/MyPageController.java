@@ -43,6 +43,12 @@ public class MyPageController {
     	return "/myPage/myPage-delivery";
     }
     
+    //관리자 배송 조회 페이지
+    @RequestMapping("/adminDelivery.do")
+    public String admindelivery(Model model) throws Exception{
+    	return "/admin/adminDelivery";
+    }
+    
     // 마일리지 리스트 조회 페이지
     @RequestMapping("/myPage/mileage.do")
     public String mileage(Model model) throws Exception{
@@ -55,6 +61,15 @@ public class MyPageController {
     public String searchUser(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
     	HashMap<String, Object> resultMap = new HashMap<String, Object>();
     	resultMap = myPageService.searchUser(map);
+    	return new Gson().toJson(resultMap);
+    }
+    
+    // 관리자 배송조회
+    @RequestMapping(value = "/admin/admin-delivery.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String adminDelivery(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+    	HashMap<String, Object> resultMap = new HashMap<String, Object>();
+    	resultMap = myPageService.adminDelivery(map);
     	return new Gson().toJson(resultMap);
     }
     

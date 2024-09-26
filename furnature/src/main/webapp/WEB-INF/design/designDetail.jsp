@@ -31,9 +31,9 @@
 			<div v-if="sessionId == 'admin'">
 				<button @click="fnDesignSelect()">추천확정</button>			
 			</div>
-
-			<hr>
-			{{sessionId}}
+			<div v-if="sessionId == list.userId">
+				<button @click="fnDelete(list.designNo)">게시물삭제</button>			
+			</div>
 		</div>
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
@@ -50,7 +50,6 @@
             };
         },
         methods: {
-			
             fnDesignDetail(){
 				var self = this;
 				var nparmap = {
@@ -119,6 +118,29 @@
 							self.designCheck = true;
 						}
 						
+					}
+				});
+			},
+			fnDelete(designNo){
+				var self = this;
+				if (!confirm("게시물을 삭제하시겠습니까?")) {
+				        return;
+				    }
+				var nparmap = {
+					designNo : designNo
+				};
+				$.ajax({
+					url:"/design/designDelete.dox",
+					dataType:"json",	
+					type : "POST", 
+					data : nparmap,
+					success : function(data) {
+						if(data.message="success"){
+							alert("삭제되었습니다.");
+							location.href="/design/design.do"					
+						}else{
+							alert("삭제시 문제가 발생하였습니다.");
+						}
 					}
 				});
 			}	

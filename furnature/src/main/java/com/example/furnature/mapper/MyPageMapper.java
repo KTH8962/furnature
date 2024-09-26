@@ -33,10 +33,16 @@ public interface MyPageMapper {
 	// 배송조회
 	List<MyPage> selectDelivery(HashMap<String, Object> map);
 	
+	// 관리자배송조회
+	List<MyPage> adminDelivery(HashMap<String, Object> map);
+	
 	// 마일리지 리스트 조회
 	List<MyPage> selectMileageList(HashMap<String, Object> map);
 	
+
 	//원데이클래스 신청내역 조회(회원)
 	List<MyPage> onedayInfo(HashMap<String, Object> map);
+
+	int adminDeliveryCount(HashMap<String, Object> map);
 
 }

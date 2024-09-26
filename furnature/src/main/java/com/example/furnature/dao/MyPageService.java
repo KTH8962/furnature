@@ -13,6 +13,8 @@ public interface MyPageService {
     HashMap<String, Object> cancelBidding(HashMap<String, Object> map);
     // 배송 조회
     HashMap<String, Object> selectDelivery(HashMap<String, Object> map);
+    // 관리자 배송 조회
+    HashMap<String, Object> adminDelivery(HashMap<String, Object> map);
     // 마일리지 조회
     HashMap<String, Object> searchMileageList(HashMap<String, Object> map);
     // 원데이클래스 신청내역 조회(회원)

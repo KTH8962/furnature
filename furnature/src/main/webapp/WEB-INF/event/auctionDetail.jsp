@@ -14,38 +14,69 @@
 				<button type="button" @click="fnEdit(auctionNo)">수정</button>
 				<button type="button" @click="fnRemove(auctionNo)">삭제</button>
 			</div>
-			<div class="auction-detail-thumb-list" style="display: flex;">
-				<div v-for="(item, index) in detailImgListPath">
-					<img :src="item" :alt="detailInfo.auctionTitle + ' 썸네일이미지' + (index+1)">
+			<div class="detail-top">
+				<div class="thumb-wrap auction-detail-thumb-list">
+					<div class="thumb-list">
+						<div class="thumb-box" v-for="(item, index) in detailImgListPath">
+							<img :src="item" :alt="detailInfo.auctionTitle + ' 썸네일이미지' + (index+1)">
+						</div>
+					</div>
+					<div class="thumb-arrow">
+						<button type="button" class="prev">이전</button>
+						<button type="button" class="next">다음</button>
+					</div>
+				</div>
+				<div class="detail-top-info">
+					<div class="ip-list">
+						<div class="tit-box">
+							<p class="tit">입찰</p>
+						</div>
+						<div class="bot-box">
+							<template v-if="detailInfo.auctionStatus == 'F'">
+								<div>경매 시작 전 입니다.</div>
+							</template>
+							<template v-else-if="detailInfo.auctionStatus == 'I'">
+								<div class="ip-box ip-ico-box type2">
+									<input type="text" placeholder="입찰 금액을 입력해주세요" v-model="biddingPrice">
+									<div class="btn-box type2"><button type="button" @click="fnBidding">입찰</button></div>
+								</div>
+							</template>
+							<template v-else-if="detailInfo.auctionStatus == 'E'">
+								<div>종료 된 경매입니다.</div>
+							</template>
+						</div>
+					</div>
+					<div class="detail-box">
+						<div class="tit">경매번호</div>
+						<div class="info">{{detailInfo.auctionNo}}</div>
+					</div>
+					<div class="detail-box">
+						<div class="tit">제목</div>
+						<div class="info">{{detailInfo.auctionTitle}}</div>
+					</div>
+					<div class="detail-box">
+						<div class="tit">시작 금액</div>
+						<div class="info">{{detailInfo.auctionPrice}}</div>
+					</div>
+					<div class="detail-box">
+						<div class="tit">현재 금액</div>
+						<div class="info">{{detailInfo.auctionPriceCurrent}}</div>
+					</div>
+					<div class="detail-box">
+						<div class="tit">경매 기간</div>
+						<div class="info">{{detailInfo.startDay}} ~ {{detailInfo.endDay}}</div>
+					</div>
 				</div>
 			</div>
-			<div class="ip-list">
-			    <div class="tit-box">
-			        <p class="tit">입찰</p>
-			    </div>
-			    <div class="bot-box">
-					<template v-if="detailInfo.auctionStatus == 'F'">
-						<div>경매 시작 전 입니다.</div>
-					</template>
-					<template v-else-if="detailInfo.auctionStatus == 'I'">
-						<div class="ip-box ip-ico-box">
-							<input type="text" placeholder="입찰 금액을 입력해주세요" v-model="biddingPrice">
-							<button type="button" @click="fnBidding">입찰</button>
-						</div>
-					</template>
-					<template v-else-if="detailInfo.auctionStatus == 'E'">
-						<div>종료 된 경매입니다.</div>
-					</template>
-			    </div>
+			<div class="detail-tab">
+				<button type="button" @click="fnTab(1)">상세 정보 설명</button>
 			</div>
-			<div>경매 번호 : {{detailInfo.auctionNo}}</div>
-			<div>제목 : {{detailInfo.auctionTitle}}</div>
-			<div>시작 금액 : {{detailInfo.auctionPrice}}</div>
-			<div>현재 금액 : {{detailInfo.auctionPriceCurrent}}</div>
-			<div>시작일 : {{detailInfo.startDay}}</div>
-			<div>종료일 : {{detailInfo.endDay}}</div>
-			<div>상세이미지 : <img :src="detailInfo.auctionContentsImgPath" :alt="detailInfo.auctionTitle + '상세이미지'"></div>
-			<div>상세설명 : {{detailInfo.auctionContents}}</div>
+			<div class="detail-bottom">
+				<div class="detail-bottom-box" v-if="bottomBox == '1'" :class="bottomBox == '1' ? 'active' : ''">
+					<img :src="detailInfo.auctionContentsImgPath" :alt="detailInfo.auctionTitle + '상세이미지'">
+					<div>{{detailInfo.auctionContents}}</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
@@ -61,7 +92,8 @@
 				detailImgList : [],
 				detailImgListPath : [], 
 				detailInfo : {},
-				biddingPrice : ""
+				biddingPrice : "",
+				bottomBox : 1
             };
         },
         methods: {
@@ -79,7 +111,8 @@
 							self.detailImgList.push(img.auctionImgName);
 							self.detailImgListPath.push(img.auctionImgPath);
 						}
-						self.detailInfo = data.detailList[0];
+						self.detailInfo = data.detailList[0];	
+						self.updateData();					
 					}
 				});
             },
@@ -134,11 +167,21 @@
 				} else {
 					alert("로그인 후 입찰이 가능합니다.");
 				}
-			}
+			},
+			updateData() {
+				var self = this;
+				self.$nextTick(() => {
+					$.sliderEvent();
+				});
+			},
+			fnTab(num) {
+				var self = this;
+				self.bottomBox = num;
+			}			
         },
         mounted() {
 			var self = this;
-			self.fnAuctionDetail();
+			self.fnAuctionDetail();	
         }
     });
     app.mount('#app');		

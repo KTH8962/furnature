@@ -16,7 +16,7 @@
 				<div><a href="#" @click="fnCateSearchList(item.cateNo)">{{item.cateName}}</a></div>
 			</div>
 			<div class="ip-box">
-	            <input type="text" v-model="searchKeyword" placeholder="상품이름">
+	            <input type="text" v-model="searchKeyword" placeholder="상품이름" @keyup.enter="fnSearchItem">
 				<button @click="fnSearchItem">상품검색</button>
 	        </div>
 			<!--치수 측정-->

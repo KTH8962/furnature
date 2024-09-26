@@ -38,6 +38,21 @@ public class DesignController {
 	public String designRegist(Model model) throws Exception{
 		return "/design/designRegist";
 	}
+	
+	//디자인 관리자 리스트
+	@RequestMapping("/adminDesign.do")
+	public String adminDesign(Model model) throws Exception{
+		return "/admin/adminDesign";
+	}
+	
+	//디자인삭제
+	@RequestMapping(value = "/design/designDelete.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String designdelete(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = designService.designDelete(map);
+		return new Gson().toJson(resultMap);
+	}
 	//디자인등록
 	@RequestMapping(value = "/design/designRegist.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
@@ -82,6 +97,14 @@ public class DesignController {
 	public String designList(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap = designService.selectDesign(map);
+		return new Gson().toJson(resultMap);
+	}
+	//디자인 관리자 리스트
+	@RequestMapping(value = "/design/adminDesign.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String designAdminList(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = designService.adminDesignList(map);
 		return new Gson().toJson(resultMap);
 	}
 	

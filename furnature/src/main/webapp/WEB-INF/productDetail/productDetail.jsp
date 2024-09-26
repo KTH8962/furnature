@@ -95,10 +95,7 @@
 					</div>
 					<div>리뷰목록</div>
 					<div>
-						<div>평점 평균<span style="color: gold; font-size: 3em;">★</span> {{averageRating}}</div>
-						<div>추천순</div>
-						<div>최신순</div>
-						<div>별점순</div>
+						<div>평점 평균<span style="color: gold; font-size: 3em;">★</span> {{ratingAvg}}</div>
 					</div>
 					<div><!-- 보고있는 페이지의 상품번호와 맞는 리뷰 목록들 출력-->
 						<template v-for="item in reviewList">
@@ -127,15 +124,22 @@
 								        </select>
 								        <div>내용<textarea v-model="reviewContents"></textarea></div>
 								        <div>사진첨부<input type="file" accept=".gif,.jpg,.png" @change="fnReviewAttach"></div>
-								        <button @click="fnReviewUpdateSave(item.reviewNo)">리뷰수정</button>
-								        <button @click="fnCancel">취소</button>
+								        <div>
+											<button @click="fnReviewUpdateSave(item.reviewNo)">수정완료</button>
+								        	<button @click="fnCancel">취소</button>
+										</div>
 								    </div>
+									<div><button type="button" @click="fnReviewDelete(item.reviewNo)">삭제</button></div>
 								</div>
-									<button type="button" @click="fnReviewDelete(item.reviewNo)">삭제</button>
-								</div>
-								</div>
-							</div> <br>
+							</div>
 						</template>
+						<div class="pagenation">
+						            <button type="button" class="prev" v-if="currentPage > 1" @click="fnBeforPage()">이전</button>
+						            <button type="button" class="num" v-for="page in totalPages" :class="{active: page == currentPage}" @click="fnGetReviewList(page)">
+										{{page}}
+									</button>
+						            <button type="button" class="next" v-if="currentPage < totalPages" @click="fnNextPage()">다음</button>
+						        </div>
 					</div>
 					<!--보고있는 페이지의 상품번호와 맞는 리뷰 없을때-->
 					<div v-if="reviewList == null || reviewList.length  === 0">등록된 리뷰가 없습니다.</div>
@@ -166,7 +170,11 @@
 				reviewContents : "",	//리뷰내용
 				reviewRating : 5,	//리뷰평점
 				file : null,
-				updateReviewNo : ""
+				updateReviewNo : "",
+				currentPage: 1,      
+				pageSize: 4,        
+				totalPages: 1,
+				ratingAvg : 0
             };
         },
 		computed: {
@@ -178,18 +186,7 @@
 		        return self.selectedSize.reduce((total, item) => {
 		            return total + (item.price * item.count);
 		        }, 0).toLocaleString();
-		    },
-			averageRating(){
-				var self = this;
-				if(self.reviewList.length===0){ // 등록된 리뷰가 없을때 0 리턴.
-					return 0;
-				}	
-				// 총가격 구할때 사용한 같은 방식 sum에 0으로 초기화 시켜준 후 reviewList의 인덱스값(item) 만큼 sum + ~~ 해줌
-				var totalRating = self.reviewList.reduce((sum, item) => { 
-				            return sum + parseFloat(item.reviewRating); //문자열이라 parseFloat 형식 변환해주고 더하기
-				        }, 0);
-				return (totalRating / self.reviewList.length).toString().slice(0, 3);
-			},
+		    } 
 		},
         methods: {
             fnGetProductDetail(){
@@ -256,7 +253,7 @@
 					
 				}
 			},
-			// 장바구니 버튼
+			// 장바구니 버튼 shoppingcart
 			fnBasket(productNo){
 				<!--$.pageChange("basket.do",{productNo: productNo});-->
 			},
@@ -316,9 +313,16 @@
 					console.log(self.totalPrice);
 			},
 			//리뷰 목록 출력
-			fnGetReviewList(){
+			fnGetReviewList(page){
 				var self = this;
-				var nparmap = {productNo : self.productNo};
+				var startIndex = (page-1) *self.pageSize;		
+				self.currentPage = page;
+				var outputNumber = this.pageSize;
+				var nparmap = {
+					productNo : self.productNo,
+					startIndex : startIndex,
+			 	    outputNumber : outputNumber,
+				};
 				$.ajax({
 					url:"/productDetail/productReview.dox",
 					dataType:"json",
@@ -327,6 +331,10 @@
 					success : function(data) { 
 						console.log(data);
 						self.reviewList = data.reviewList;
+						self.totalPages = Math.ceil(data.count/self.pageSize);
+						if(data != null && data.reviewList.length > 0){
+							self.ratingAvg = data.reviewList[0].avgRating
+						}
 					}
 				});
 	      	},
@@ -417,7 +425,7 @@
 							if(data && data.reviewNo){
 								alert("리뷰가 등록되었습니다.");
 								window.location.reload();
-								self.modal = false;
+								self.insertModal = false;
 							} else{
 								alert("리뷰 등록에 실패했습니다.");
 							}
@@ -427,6 +435,8 @@
 						}
 					  });
 					}
+					alert('리뷰가 등록되었습니다.');
+					window.location.reload();
 				}
 			});
 			},
@@ -447,11 +457,38 @@
 						type : "POST", 
 						data : nparmap,
 						success : function(data) {
-							alert('수정되었습니다.')
-							//self.updateModal = false;
-							//window.location.reload();
+							console.log(data);
+							console.log(data.reviewNo);
+							var reviewNo = data.reviewNo;
+							if(self.file){
+								console.log(data.reviewNo);
+							  const formData = new FormData();
+							  formData.append('file1', self.file);
+							  formData.append('reviewNo', reviewNo);
+							  $.ajax({
+								url: '/productDetail/reviewImgFile.dox',
+								type: 'POST',
+								data: formData,
+								processData: false,  
+								contentType: false,  
+								success: function() {
+									if(data && data.reviewNo){
+										alert("리뷰가 수정되었습니다.");
+										window.location.reload();
+										self.updateModal = false;
+									} else{
+										alert("리뷰 수정에 실패했습니다.");
+									}
+								},
+								error: function(jqXHR, textStatus, errorThrown) {
+								  console.error('업로드 실패!', textStatus, errorThrown);
+								}
+							  });
+							}
 						}
 					});
+					window.location.reload();
+					alert("리뷰가 수정되었습니다.");
 				} else {
 				    // 사용자가 "취소"를 클릭한 경우
 				    alert('삭제가 취소되었습니다.');
@@ -464,13 +501,23 @@
 				self.insertModal = false;
 				self.contents = "";
 				alert('취소되었습니다.');
+			},
+			fnBeforPage(){
+				var self = this;
+				self.currentPage = self.currentPage - 1;
+				self.fnGetReviewList(self.currentPage);
+			},
+			fnNextPage(){
+				var self = this;
+				self.currentPage = self.currentPage + 1;
+				self.fnGetReviewList(self.currentPage);
 			}
         },
         mounted() {
             var self = this;
 			self.fnGetProductDetail();
 			self.fnGetUrlList();
-			self.fnGetReviewList();
+			self.fnGetReviewList(1);
         }
     });
     app.mount('#app');

@@ -145,6 +145,8 @@
 					        alert("빈칸을 채워주세요.");
 					        return;
 					}
+					console.log(nparam);
+
 					$.ajax({
 						url:"/oneday/oneday-register.dox",
 						dataType:"json",	
@@ -168,6 +170,7 @@
 									success: function(){
 										console.log('업로드 성공!');
 										$.pageChange("/oneday/oneday.do", {});
+
 									}
 								})
 							 }

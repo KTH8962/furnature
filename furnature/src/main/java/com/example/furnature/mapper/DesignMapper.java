@@ -19,6 +19,15 @@ public interface DesignMapper {
 	// 디자인 목록
 	List<Design> selectDesign(HashMap<String, Object> map);
 	
+	// 디자인 관리자 목록
+	List<Design> adminDesignList(HashMap<String, Object> map);
+	
+	// 디자인 삭제
+	List<Design> designDelete(HashMap<String, Object> map);
+	
+	//디자인 추천확인
+	int desginCount(HashMap<String, Object> map);
+	
 	//디자인 상세
 	Design designDetail(HashMap<String, Object> map);
 	

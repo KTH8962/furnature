@@ -105,7 +105,7 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-                        //console.log(data);
+                        console.log(data);
                         self.userList = data.userList;
                         self.totalPages = Math.ceil(data.userAllList.allUser / self.pageSize);
 					}
