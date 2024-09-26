@@ -13,8 +13,12 @@ public interface AdminMapper {
 	List<Admin> selectUserList(HashMap<String, Object> map);
 	// 유저 전체 리스트수 조회
 	Admin selectAllUser(HashMap<String, Object> map);
+	// 유저 정보 조회
+	Admin selectUser(HashMap<String, Object> map);
 	// 유저 삭제
 	void deleteUser(HashMap<String, Object> map);
 	// 유저 정보 수정
 	void updateUser(HashMap<String, Object> map);
+	// 비밀번호 초기화
+	void resetPwd(HashMap<String, Object> map);
 }

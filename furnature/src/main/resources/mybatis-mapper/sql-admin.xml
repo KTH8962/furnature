@@ -31,6 +31,12 @@
 		</if>
 	</select>
 	
+	<select id="selectUser" parameterType="hashmap" resultType="com.example.furnature.model.Admin">
+		SELECT *
+		FROM TBL_USER
+		WHERE USER_ID = #{id}
+	</select>
+	
 	<delete id="deleteUser" parameterType="hashmap">
 		DELETE FROM TBL_USER
 		WHERE USER_ID = #{id}
@@ -41,7 +47,14 @@
 		<set>
 			<if test="phone != null and phone != ''">USER_PHONE = #{phone},</if>
 			<if test="email != null and email != ''">USER_EMAIL = #{email},</if>
+			<if test="email != null and email != ''">EVENT_ROUL = #{roul},</if>
 		</set>
+		WHERE USER_ID = #{id}
+	</update>
+	
+	<update id="resetPwd" parameterType="hashmap">
+		UPDATE TBL_USER
+		SET USER_PWD = '1234'
 		WHERE USER_ID = #{id}
 	</update>
 </mapper>

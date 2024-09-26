@@ -9,4 +9,6 @@ public interface AdminService {
 	HashMap<String, Object> removeUser(HashMap<String, Object> map);
 	// 유저 정보 수정
 	HashMap<String, Object> editUser(HashMap<String, Object> map);
+	// 비밀번호 초기화
+	HashMap<String, Object> resetPwd(HashMap<String, Object> map);
 }

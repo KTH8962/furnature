@@ -16,171 +16,107 @@
             <div class="contents-top"><a href="/main.do">메인페이지 이동</a></div>
             <div class="contents editor-mode">
                 <div class="contens-tit-wrap">
-                    <h2 class="admin-tit">
-                        유저 정보 
-                        <template v-if="id == ''">등록</template>
-                        <template v-else>수정</template>
-                    </h2>
+                    <h2 class="admin-tit">유저 정보 수정</h2>
                 </div>
                 <div class="contents-editor">
                     <div class="editor-wrap">
                         <div class="ip-list">
                             <div class="tit-box">
-                                <p class="tit">타이틀</p>
+                                <p class="tit">아이디</p>
                             </div>
                             <div class="bot-box">
                                 <div class="ip-box">
-                                    <input type="text">
+                                    <input type="text" disabled :value="info.userId">
                                 </div>
                             </div>
                         </div>
                         <div class="ip-list">
                             <div class="tit-box">
-                                <p class="tit">타이틀</p>
+                                <p class="tit">이름</p>
                             </div>
                             <div class="bot-box">
                                 <div class="ip-box">
-                                    <input type="text">
+                                    <input type="text" disabled :value="info.userName">
                                 </div>
                             </div>
                         </div>
                         <div class="ip-list">
                             <div class="tit-box">
-                                <p class="tit">타이틀</p>
+                                <p class="tit">주소</p>
                             </div>
                             <div class="bot-box">
                                 <div class="ip-box">
-                                    <input type="text">
+                                    <input type="text" disabled :value="info.userAddr">
                                 </div>
                             </div>
                         </div>
                         <div class="ip-list">
                             <div class="tit-box">
-                                <p class="tit">타이틀</p>
+                                <p class="tit">전화번호</p>
                             </div>
                             <div class="bot-box">
                                 <div class="ip-box">
-                                    <input type="text">
+                                    <input type="text" v-model="phone">
                                 </div>
                             </div>
                         </div>
                         <div class="ip-list">
                             <div class="tit-box">
-                                <p class="tit">타이틀</p>
+                                <p class="tit">이메일</p>
                             </div>
                             <div class="bot-box">
                                 <div class="ip-box">
-                                    <input type="text">
+                                    <input type="text" v-model="email">
                                 </div>
                             </div>
                         </div>
                         <div class="ip-list">
                             <div class="tit-box">
-                                <p class="tit">타이틀</p>
+                                <p class="tit">생년월일</p>
                             </div>
                             <div class="bot-box">
                                 <div class="ip-box">
-                                    <input type="text">
+                                    <input type="text" disabled :value="info.userBirth">
                                 </div>
                             </div>
                         </div>
                         <div class="ip-list">
                             <div class="tit-box">
-                                <p class="tit">타이틀</p>
+                                <p class="tit">회원등급</p>
                             </div>
                             <div class="bot-box">
                                 <div class="ip-box">
-                                    <input type="text">
+                                    <input type="text" disabled :value="info.userAuth">
                                 </div>
                             </div>
                         </div>
                         <div class="ip-list">
                             <div class="tit-box">
-                                <p class="tit">타이틀</p>
+                                <p class="tit">이벤트 참여여부</p>
                             </div>
                             <div class="bot-box">
-                                <div class="ip-box">
-                                    <input type="text">
+                                <div class="select-box">
+                                    <select name="" id="" v-model="roul">
+                                        <option value="Y">참여가능</option>
+                                        <option value="N">참여완료</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                         <div class="ip-list">
                             <div class="tit-box">
-                                <p class="tit">타이틀</p>
+                                <p class="tit">비밀번호 초기화</p>
                             </div>
                             <div class="bot-box">
-                                <div class="ip-box">
-                                    <input type="text">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ip-list">
-                            <div class="tit-box">
-                                <p class="tit">타이틀</p>
-                            </div>
-                            <div class="bot-box">
-                                <div class="ip-box">
-                                    <input type="text">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ip-list">
-                            <div class="tit-box">
-                                <p class="tit">타이틀</p>
-                            </div>
-                            <div class="bot-box">
-                                <div class="ip-chk-txt">
-                                    <input type="checkbox" name="t2" id="t12"><label for="t12">체크박스1</label>
-                                    <input type="checkbox" name="t2" id="t22"><label for="t22">체크박스2</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ip-list">
-                            <div class="tit-box">
-                                <p class="tit">타이틀</p>
-                            </div>
-                            <div class="bot-box">
-                                <div class="ip-box">
-                                    <input type="text">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ip-list">
-                            <div class="tit-box">
-                                <p class="tit">타이틀</p>
-                            </div>
-                            <div class="bot-box">
-                                <div class="ip-ra-txt">
-                                    <input type="radio" name="r2" id="r12"><label for="r12">라디오1</label>
-                                    <input type="radio" name="r2" id="r22"><label for="r22">라디오2</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ip-list">
-                            <div class="tit-box">
-                                <p class="tit">타이틀</p>
-                            </div>
-                            <div class="bot-box">
-                                <div class="ip-box">
-                                    <input type="text">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ip-list">
-                            <div class="tit-box">
-                                <p class="tit">타이틀</p>
-                            </div>
-                            <div class="bot-box">
-                                <div class="ip-box">
-                                    <input type="text">
-                                </div>
+                                <button type="button" class="admin-btn" @click="fnPwd">비밀번호 초기화</button>
+                                <p class="ico-info mgt20">비밀번호는 초기화 후 1234로 변경됩니다.</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="btn-box">
-                    <button type="button" class="admin-btn">등록</button>
-                    <button type="button" class="admin-btn">삭제</button>
+                    <button type="button" class="admin-btn" @click="fnSave">수정</button>
+                    <button type="button" class="admin-btn" @click="fnBack">취소</button>
                 </div>
             </div>
         </div>
@@ -192,23 +128,46 @@
         data() {
             return {
                 id: "${id}",
+                info: {},
+                phone: "",
+                email: "",
+                roul: "",
             };
         },
         methods: {
-            fnGetList() {
+            fnGetInfo() {
 				var self = this;
-				var nparmap = {};
+				var nparmap = {id: self.id};
 				$.ajax({
-					url:"",
+					url:"/admin/admin-user.dox",
 					dataType:"json",	
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-                        //console.log(data);
+                        console.log(data);
+                        self.info = data.info;
+                        self.phone = data.info.userPhone;
+                        self.email = data.info.userEmail;
+                        self.roul = data.info.eventRoul;
 					}
 				});
             },
-            fnSave(id) {
+            fnPwd() {
+                if(!confirm("비밀번호를 초기화 하겠습니까?")) return;
+                var self = this;
+				var nparmap = {id: self.id};
+				$.ajax({
+					url:"/admin/admin-user-pwd.dox",
+					dataType:"json",	
+					type : "POST", 
+					data : nparmap,
+					success : function(data) {
+                        console.log(data);
+                        alert("비밀번호가 초기화 되었습니다.");
+					}
+				});
+            },
+            fnSave() {
                 var self = this;
                 var self = this;
 				var check1 = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // 이메일이 적합한지 검사할 정규식
@@ -224,7 +183,7 @@
                 } else if(email != "" && !self.compare(check1, email, "emailRef","적합하지 않은 이메일 형식입니다")) {
 					return;
 				} else {
-                    var nparmap = {id: id, phone: self.phone, email: self.email};
+                    var nparmap = {id: self.id, phone: self.phone, email: self.email, roul: self.roul};
                     if(!(self.email == "" && self.phone == "")){
                         $.ajax({
                             url:"/admin/admin-user-edit.dox",
@@ -232,14 +191,11 @@
                             type : "POST", 
                             data : nparmap,
                             success : function(data) {
-                                console.log(data);
-                                self.fnGetList(self.currentPage);
+                                alert("수정 완료되었습니다.");
+                                self.fnGetInfo();
                             }
                         });
                     }
-                    self.num = "";
-                    self.phone = "";
-                    self.email = "";
                 }
             },
             compare(check, form, name, message) {
@@ -250,16 +206,20 @@
 			    alert(message);
 			    return false;
 			},
-            lengthCheck(id, cnt, message){
+            lengthCheck(id, cnt, message) {
                 if(id.length < cnt) {
                     alert(message);
                     return true;
                 }
                 return false;
+            },
+            fnBack() {
+                history.back(-1);
             }
         },
         mounted() {
             var self = this;
+            self.fnGetInfo();
         }
     });
     app.mount('#app');

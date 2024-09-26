@@ -12,21 +12,22 @@
             <p class="blind">이벤트 페이지</p>
 
 			<h2 class="sub-tit">경매 리스트</h2>
-			<ul class="auction-list" style="display:flex;">
-				<li v-for="item in auctionList">
+			<ul class="img-list auction-list" style="display:flex;">
+				<li v-for="item in auctionList" :class="item.auctionStatus == 'E' ? 'end': item.auctionStatus == 'I' ? 'ing' : 'fu'">
 					<a href="javascript:void(0);" @click="fnDeatil(item.auctionNo)">
-						<img :src="item.auctionImgPath" :alt="item.auctionTitle + '이미지'">
-						<span>{{item.auctionNo}}</span><br>
-						<span>{{item.auctionTitle}}</span><br>
-						<span>{{item.auctionPriceCurrent}}</span><br>
-						<span>{{item.startDay}}</span><br>
-						<span>{{item.endDay}}</span><br>
-						<span>
-							<template v-if="item.auctionStatus == 'F'">경매 예정</template>
-							<template v-else-if="item.auctionStatus == 'I'">경매 진행중</template>
-							<template v-else>경매 종료</template>
-						</span>
+						<figure class="img"><img :src="item.auctionImgPath" :alt="item.auctionTitle + '이미지'"></figure>
 					</a>
+					<span class="tit">{{item.auctionTitle}}</span>
+					<span class="price">
+						<template v-if="item.auctionStatus == 'E'">낙찰 금액: {{item.auctionPriceCurrent}}</template>
+						<template v-else>현재 경매가 : {{item.auctionPriceCurrent}}</template>
+					</span>
+					<span class="date">경매 기간 : <br> {{item.startDay}} ~ {{item.endDay}}</span>
+					<span class="state">
+						<template v-if="item.auctionStatus == 'F'">예정</template>
+						<template v-else-if="item.auctionStatus == 'I'">진행중</template>
+						<template v-else>종료</template>
+					</span>
 				</li>
 			</ul>
 			<a href="/event/auctionRegister.do">경매등록 임시버튼</a>

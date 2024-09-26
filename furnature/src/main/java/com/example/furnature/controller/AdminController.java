@@ -62,4 +62,14 @@ public class AdminController {
 		resultMap = adminService.editUser(map);
 		return new Gson().toJson(resultMap);
 	}
+	
+	// 비밀번호 초기화 db
+	@RequestMapping(value = "/admin/admin-user-pwd.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String resetPwd(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		System.out.println(map);
+		resultMap = adminService.resetPwd(map);
+		return new Gson().toJson(resultMap);
+	}
 }
