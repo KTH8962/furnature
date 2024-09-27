@@ -17,12 +17,12 @@
             <div class="contents">
                 <div class="contens-tit-wrap">
                     <h2 class="admin-tit">배송현황</h2>
-                </div>
-				<div class="search-box">
-                    <div class="ip-box ip-ico-box">
-			            <input type="text" v-model="searchKeyword" placeholder="주문번호" @keyup.enter="fnSearchItem">
-						<div class="btn-box type1"><button type="button" @click="fnSearchItem">주문번호검색</button></div>
-                    </div>
+					<div class="search-box">
+	                    <div class="ip-box ip-ico-box">
+				            <input type="text" v-model="searchKeyword" placeholder="주문번호" @keyup.enter="fnSearchItem">
+							<div class="btn-box type1"><button type="button" @click="fnSearchItem">주문번호검색</button></div>
+	                    </div>
+	                </div>
                 </div>
                 <div class="contents-table">
                     <div class="flex-table user-table">
