@@ -51,7 +51,7 @@
 		                        </div>
 								<div class="td">
                                     <div class="tbl-btn-box">
-										<button  @click="fnUpdate(item.orderNo)"  title="수정" class="edit">수정</button>
+										<button  @click="fnUpdate(item.deliveryCate,item.orderNo)"  title="수정" class="edit">수정</button>
                                     </div>
                                 </div>
 							</div>
@@ -109,8 +109,22 @@
 	                    }
 	                });
 	            },
-				fnUpdate(){
-					
+				fnUpdate(deliveryCate,orderNo){
+					var self = this;
+	                var nparmap = { 
+						deliveryCate : deliveryCate,
+						orderNo : orderNo
+					};
+	                $.ajax({
+	                    url: "/admin/admin-deliveryUpdate.dox",
+	                    dataType: "json",
+	                    type: "POST",
+	                    data: nparmap,
+	                    success: function(data) {
+							alert("배송이 수정 되었습니다.");
+							self.fnDelivery(1);
+	                    }
+	                });
 				},
 				fnSearchItem(){
 					var self = this;

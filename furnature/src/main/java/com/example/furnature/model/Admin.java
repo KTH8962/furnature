@@ -28,4 +28,51 @@ public class Admin {
 	private String fileSize;
 	private String orgName;
 	private String currentNumber;
+	
+	// 배송
+	private String payNo;
+	private String orderNo;
+	private String productNo;
+	private String orderPrice;
+	private String orderSize;
+	private String orderCount;
+	private String productPrice;
+	private String oderDate;
+	private String orderCate;
+	private String deliveryCate;
+	private String cateNo;
+	private String cateName;
+	private String productThumbnail;
+	private String productName;
+	
+	
+	//상품
+	private String productWidth;	//가로
+	private String productLength;	//세로
+	private String productHeight;	//높이
+	private String productCnt;		//상품수량
+	private String productColor;	//상품색상
+	private String productSize1;	//사이즈1
+	private String productSize2;	//사이즈2
+	private String productSize3;	//사이즈3
+	private String productCate1;	//상품 카테고리1
+	private String productCate2;	//상품 카테고리2
+	private String productCustom;	//상품 커스텀유무
+	private String productDelivery; //배달
+	private String productCdateTime;//생성일
+	private String productUdateTime;//수정일
+	
+	//상품 이미지 테이블
+	private String prodcutThumbnail; //상품 썸네일 이미지 URL
+	private String productDetail1; //상품 상세이미지1 URL
+	
+	//디자인 관리
+	private String designNo;
+	private String designTitle;
+	private String designContents;
+	private String designImgPath;
+	private String designImgName;
+	private String designChoice;
+	private String designCdateTime;
+	private String likeNo;
 }
