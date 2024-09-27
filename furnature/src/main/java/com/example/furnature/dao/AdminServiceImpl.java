@@ -9,8 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.example.furnature.constants.ResMessage;
 import com.example.furnature.mapper.AdminMapper;
+import com.example.furnature.mapper.DesignMapper;
+import com.example.furnature.mapper.ProductMapper;
 import com.example.furnature.model.Admin;
 import com.example.furnature.model.MyPage;
+import com.example.furnature.model.Product;
 
 import jakarta.persistence.PersistenceException;
 
@@ -18,6 +21,10 @@ import jakarta.persistence.PersistenceException;
 public class AdminServiceImpl implements AdminService{
 	@Autowired
 	AdminMapper adminMapper;
+	@Autowired
+	ProductMapper productmapper;
+	@Autowired
+	DesignMapper designMapper;
 
 	// 유저 리스트 조회
 	@Override
@@ -173,5 +180,148 @@ public class AdminServiceImpl implements AdminService{
             resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
         }
         return resultMap;
+	}
+	
+	//관리자 배송조회
+	@Override
+	public HashMap<String, Object> adminDelivery(HashMap<String, Object> map) {
+		 HashMap<String, Object> resultMap = new HashMap<>();
+	        try {
+	        	List<MyPage> list = adminMapper.adminDelivery(map);
+	        	int count = adminMapper.adminDeliveryCount(map);
+	        	resultMap.put("count",count);
+	            resultMap.put("list", list);
+	            resultMap.put("result", "success");
+	            resultMap.put("message", ResMessage.RM_SUCCESS);
+	        } catch (DataAccessException e) {
+	            resultMap.put("result", "fail");
+	            resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+	        } catch (PersistenceException e) {
+	            resultMap.put("result", "fail");
+	            resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+	        } catch (Exception e) {
+	            resultMap.put("result", "fail");
+	            resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+	        }
+	        return resultMap;
+	}
+	//관리자 배송 업데이트
+	@Override
+	public HashMap<String, Object> adminDeliveryUpdate(HashMap<String, Object> map) {
+		 HashMap<String, Object> resultMap = new HashMap<>();
+	        try {
+	        	adminMapper.adminDeliveryUpdate(map);
+	            resultMap.put("result", "success");
+	            resultMap.put("message", ResMessage.RM_SUCCESS);
+	        } catch (DataAccessException e) {
+	            resultMap.put("result", "fail");
+	            resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+	        } catch (PersistenceException e) {
+	            resultMap.put("result", "fail");
+	            resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+	        } catch (Exception e) {
+	            resultMap.put("result", "fail");
+	            resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+	        }
+	        return resultMap;
+	}
+	
+	
+	//상품등록
+	@Override
+	public HashMap<String, Object> enrollProduct(HashMap<String, Object> map) {
+		HashMap <String, Object> resultMap = new HashMap<>();
+		try {
+			System.out.println("################################"+map);
+			adminMapper.enrollProduct(map);
+			resultMap.put("productNo",map.get("productNo"));
+			resultMap.put("result", "success");
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		}catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+	
+	//상품삭제,첨부파일 삭제
+	@Override
+	public HashMap<String, Object> productDelete(HashMap<String, Object> map) {
+		HashMap <String, Object> resultMap = new HashMap<>();
+		try {
+			System.out.println("################################"+map);
+			adminMapper.productDelete(map);
+			adminMapper.productAttachDelete(map);
+			resultMap.put("result", "success");
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		}catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+	@Override
+	public HashMap<String, Object> productUpdateList(HashMap<String, Object> map) {
+		HashMap <String, Object> resultMap = new HashMap<>();
+		try {
+			Admin list =adminMapper.productUpdateList(map);
+			resultMap.put("list", list);
+			resultMap.put("result", "success");
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		}catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+
+	@Override
+	public HashMap<String, Object> productUpdate(HashMap<String, Object> map) {
+		HashMap <String, Object> resultMap = new HashMap<>();
+		try {
+			System.out.println("@@@@@@@@@@@@@@@@@@@@map@@@@"+map);
+			adminMapper.productUpdate(map);
+			
+			resultMap.put("result", "success");
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		}catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+	//상품 리스트
+		@Override
+		public HashMap<String, Object> productList(HashMap<String, Object> map) {
+			HashMap <String, Object> resultMap = new HashMap<>();
+			try {
+				List<Product> list = productmapper.productList(map);
+				int count = productmapper.productCnt(map);
+				System.out.println("@@@@@@@@@@@@@@@@@"+count);
+				resultMap.put("productList", list);
+				resultMap.put("count", count);
+				resultMap.put("result", "success");
+				resultMap.put("message", ResMessage.RM_SUCCESS);
+			} catch (Exception e) {
+				resultMap.put("result", "fail");
+				resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+			}
+			return resultMap;
+		}
+	
+	@Override
+	public HashMap<String, Object> adminDesignList(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			List<Admin> list = adminMapper.adminDesignList(map);
+			int count = designMapper.desginCount(map);
+			resultMap.put("count", count);
+			resultMap.put("list", list);
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (Exception e) {
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		
+		return resultMap;
 	}
 }

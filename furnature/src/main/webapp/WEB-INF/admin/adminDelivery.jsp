@@ -17,12 +17,12 @@
             <div class="contents">
                 <div class="contens-tit-wrap">
                     <h2 class="admin-tit">배송현황</h2>
-                </div>
-				<div class="search-box">
-                    <div class="ip-box ip-ico-box">
-			            <input type="text" v-model="searchKeyword" placeholder="주문번호" @keyup.enter="fnSearchItem">
-						<div class="btn-box type1"><button type="button" @click="fnSearchItem">주문번호검색</button></div>
-                    </div>
+					<div class="search-box">
+	                    <div class="ip-box ip-ico-box">
+				            <input type="text" v-model="searchKeyword" placeholder="주문번호" @keyup.enter="fnSearchItem">
+							<div class="btn-box type1"><button type="button" @click="fnSearchItem">주문번호검색</button></div>
+	                    </div>
+	                </div>
                 </div>
                 <div class="contents-table">
                     <div class="flex-table user-table">
@@ -51,7 +51,7 @@
 		                        </div>
 								<div class="td">
                                     <div class="tbl-btn-box">
-										<button  @click="fnUpdate(item.orderNo)"  title="수정" class="edit">수정</button>
+										<button  @click="fnUpdate(item.deliveryCate,item.orderNo)"  title="수정" class="edit">수정</button>
                                     </div>
                                 </div>
 							</div>
@@ -109,8 +109,22 @@
 	                    }
 	                });
 	            },
-				fnUpdate(){
-					
+				fnUpdate(deliveryCate,orderNo){
+					var self = this;
+	                var nparmap = { 
+						deliveryCate : deliveryCate,
+						orderNo : orderNo
+					};
+	                $.ajax({
+	                    url: "/admin/admin-deliveryUpdate.dox",
+	                    dataType: "json",
+	                    type: "POST",
+	                    data: nparmap,
+	                    success: function(data) {
+							alert("배송이 수정 되었습니다.");
+							self.fnDelivery(1);
+	                    }
+	                });
 				},
 				fnSearchItem(){
 					var self = this;
