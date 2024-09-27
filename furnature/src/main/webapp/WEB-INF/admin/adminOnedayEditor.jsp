@@ -203,7 +203,7 @@
 								contentType : false,
 								success: function(){
 									console.log('업로드 성공!');
-									$.pageChange("/oneday/oneday.do", {});
+									$.pageChange("/adminOneday.do", {});
 								}
 							})
 						 }

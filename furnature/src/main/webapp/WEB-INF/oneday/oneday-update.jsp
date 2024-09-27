@@ -3,13 +3,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <jsp:include page="/layout/headlink.jsp"></jsp:include>
-    <style>
-    </style>    
+	<jsp:include page="/layout/headlink.jsp"></jsp:include>
+	<style>
+		img{
+			width:400px;
+		}
+	</style>	
 </head>
 <body>
-    <jsp:include page="/layout/header.jsp"></jsp:include>
-    <div id="app">    
+	<jsp:include page="/layout/header.jsp"></jsp:include>
+		<div id="app">
+			<div id="container">            
+	            <p class="blind">원데이클래스</p>
+		
+		<h2 class="sub-tit">클래스 정보 수정</h2>   
         
         <div class="ip-list">
             <div class="tit-box">
@@ -50,7 +57,7 @@
             </div>
             <div class="bot-box">
                 <div class="ip-box">
-                    <input type="number" v-model="numberLimit">
+                    <input type="text" v-model="numberLimit" @input="validateNumber">
                 </div>
             </div>
         </div>
@@ -117,6 +124,9 @@ const app = Vue.createApp({
         validatePrice(){
             this.price = this.price.replace(/[^0-9]/g, '');
         },
+		validateNumber(){
+			this.numberLimit = this.numberLimit.replace(/[^0-9]/g, '');
+		},
         fnClass(classNo) {
             var self = this;
             var nparmap = { classNo: self.classNo };

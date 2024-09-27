@@ -37,6 +37,7 @@ public class BoardController {
         return "/board/board-view";
     }
 	
+	
 	// 게시글 목록 
 	@RequestMapping(value = "/board/board-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody

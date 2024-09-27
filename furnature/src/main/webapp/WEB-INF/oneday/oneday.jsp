@@ -4,34 +4,39 @@
 <html>
 <head>
 	<jsp:include page="/layout/headlink.jsp"></jsp:include>
-	<style>
-		img{
-			width:400px;
-		}
-	</style>	
 </head>
 <body>
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
-		
-		<div style="display:flex;">
-			<div v-for = "item in list" :key="item.classNo">
-				<div v-if="item.message1=='모집 중' && item.numberLimit>item.currentNumber">모집 중</div>
-				<div v-if="item.message1=='모집 종료' || item.numberLimit==item.currentNumber">모집 종료</div>
-				<div>{{item.className}}</div> 
-				<div>{{item.classDate}}</div> 
-				<div>{{item.price}}</div> 
-				<div><a href="#" @click="fnChange(item.classNo)"><img :src="item.filePath"></a></div>
+			<div id="container">            
+	            <p class="blind">원데이클래스</p>	
+				<h2 class="sub-tit">원데이클래스</h2>
+				
+				<ul class="img-list oneday-list">
+					<li v-for = "item in list" :key="item.classNo">
+						<a href="javascript:void(0);" @click="fnChange(item.classNo)">
+							<figure class="img"><img :src="item.filePath" :alt="item.className + '이미지'"></figure>
+						</a>
+						<span class="tit">{{item.className}}</span>
+						<span class="price">수강료 <br> {{item.price}} </span>
+						<span class="date">수업일자 <br> {{item.classDate}} </span>
+						<span class="date">모집기간 <br> {{item.startDay}} ~ {{item.endDay}}</span>
+						<span class="state">
+							<template v-if="item.message1=='모집 중' && item.numberLimit>item.currentNumber">모집 중</template>
+							<template v-else-if="item.message1=='모집 종료' || item.numberLimit==item.currentNumber">모집 종료</template>
+						</span>
+					</li>
+				</ul>
+	
+				<div>
+					<button @click="fnGetList(currentPage - 1)" :disabled="currentPage <= 1">이전</button>
+				    <button v-for="page in totalPages" :key="page" :class="{active: page == currentPage}"
+					@click="fnGetList(page)">{{page}}</button>
+				    <button @click="fnGetList(currentPage+1)" :disabled="currentPage >= totalPages">다음</button>
+				</div>
+				
+				<button @click="fnRegister" v-if="isAdmin">클래스 등록</button>
 			</div>
-		</div>		
-		<div>
-			<button @click="fnGetList(currentPage - 1)" :disabled="currentPage <= 1">이전</button>
-		    <button v-for="page in totalPages" :key="page" :class="{active: page == currentPage}"
-			@click="fnGetList(page)">{{page}}</button>
-		    <button @click="fnGetList(currentPage+1)" :disabled="currentPage >= totalPages">다음</button>
-		</div>
-		
-		<button @click="fnRegister" v-if="isAdmin">클래스 등록</button>
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
 </body>
@@ -48,7 +53,7 @@
 				currentNumber : "",
 				currentPage : 1,
 				totalPages : "",
-				pageSize: 4,
+				pageSize: 8,
 				totalCount : "",
 				isAdmin : false,
 				sessionAuth: "${sessionAuth}",

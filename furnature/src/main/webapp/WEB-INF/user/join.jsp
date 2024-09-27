@@ -15,9 +15,11 @@
                     <p class="tit">아이디</p>
                 </div>
                 <div class="bot-box">
-                    <div class="ip-box">
+                    <div class="ip-box ip-ico-box type2" placeholder="아이디는 5자 이상 입력해주세요">
                         <input type="text" placeholder="아이디를 입력해주세요." v-model="id" ref="idRef" @change="idCheck = false">
-						<button type="button" @click="fnIdCheck">중복체크</button>
+						<div class="btn-box type2">
+							<button type="button" @click="fnIdCheck">중복체크</button>
+						</div>
                     </div>
                 </div>
             </div>
@@ -27,7 +29,7 @@
                 </div>
                 <div class="bot-box">
                     <div class="ip-box">
-                        <input type="password" v-model="pwd" ref="pwdRef">
+                        <input type="password" v-model="pwd" ref="pwdRef" placeholder="비밀번호는 영어 숫자 특수문자를 포함해 8자 이상 입력해주세요">
                     </div>
                 </div>
             </div>
@@ -37,7 +39,7 @@
                 </div>
                 <div class="bot-box">
                     <div class="ip-box">
-                        <input type="password" v-model="pwdRe" ref="pwdReRef">
+                        <input type="password" v-model="pwdRe" ref="pwdReRef" placeholder="비밀번호를 재입력 입력해주세요">
                     </div>
                 </div>
             </div>
@@ -46,12 +48,16 @@
 			        <p class="tit">주소</p>
 			    </div>
 			    <div class="bot-box">
-			        <div class="ip-box">
-						<input type="hidden" id="postcode" placeholder="우편번호" readonly="readonly" v-model="zipCode">
-						<button type="button" @click="daumPost">주소검색</button><br>
-						<input type="text" id="address" placeholder="주소"  readonly="readonly" v-model="address"><br>
-						<input type="text" id="detailAddress" placeholder="상세주소" v-model="detailAddress" ref="addrRef">
+			        <div class="ip-box ip-ico-box type2">
+						<input type="hidden" id="postcode" placeholder="우편번호" readonly="readonly" v-model="zipCode">						
+						<input type="text" id="address" placeholder="주소"  readonly="readonly" v-model="address">
+						<div class="btn-box type2">
+							<button type="button" @click="daumPost">주소검색</button>
+						</div>
 			        </div>
+					<div class="ip-box mgt20">
+						<input type="text" id="detailAddress" placeholder="상세주소를 입력해주세요" v-model="detailAddress" ref="addrRef">
+					</div>
 			    </div>
 			</div>
 			<div class="ip-list">
@@ -60,7 +66,7 @@
                 </div>
                 <div class="bot-box">
                     <div class="ip-box">
-                        <input type="text" v-model="name" ref="nameRef">
+                        <input type="text" v-model="name" ref="nameRef" placeholder="이름을 입력해주세요">
                     </div>
                 </div>
             </div>
@@ -70,7 +76,7 @@
                 </div>
                 <div class="bot-box">
                     <div class="ip-box">
-                        <input type="text" v-model="email" ref="emailRef">
+                        <input type="text" v-model="email" ref="emailRef" placeholder="이메일은 형식에 맞게 입력해주세요">
                     </div>
                 </div>
             </div>
@@ -80,7 +86,7 @@
                 </div>
                 <div class="bot-box">
                     <div class="ip-box">
-                        <input type="text" v-model="phone" ref="phoneRef">
+                        <input type="text" v-model="phone" ref="phoneRef" placeholder="핸드폰 번호는 숫자만 입력해주세요">
                     </div>
                 </div>
             </div>
@@ -90,7 +96,7 @@
 			    </div>
 			    <div class="bot-box">
 			        <div class="ip-box">
-			            <input type="date" v-model="birth" ref="birthRef">
+			            <input type="date" v-model="birth" ref="birthRef" placeholder="생일을 입력해주세요">
 			        </div>
 			    </div>
 			</div>
