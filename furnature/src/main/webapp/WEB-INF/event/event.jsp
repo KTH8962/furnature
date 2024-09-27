@@ -12,7 +12,7 @@
             <p class="blind">이벤트 페이지</p>
 
 			<h2 class="sub-tit">경매 리스트</h2>
-			<ul class="img-list auction-list" style="display:flex;">
+			<ul class="img-list auction-list">
 				<li v-for="item in auctionList" :class="item.auctionStatus == 'E' ? 'end': item.auctionStatus == 'I' ? 'ing' : 'fu'">
 					<a href="javascript:void(0);" @click="fnDeatil(item.auctionNo)">
 						<figure class="img"><img :src="item.auctionImgPath" :alt="item.auctionTitle + '이미지'"></figure>
@@ -29,9 +29,10 @@
 						<template v-else>종료</template>
 					</span>
 				</li>
-			</ul>
-			<a href="/event/auctionRegister.do">경매등록 임시버튼</a>
-			
+			</ul>			
+			<div class="front-btn-box">
+				<button type="button" @click="fnRegister">경매등록</button>
+			</div>			
 			<h2 class="sub-tit">룰렛</h2>
 			<div class="roulette-wrap">
 				<div class="roulette-box">
@@ -41,8 +42,7 @@
 					<div class="roulette-arrow">룰렛 화살표</div>
 					<button type="button" class="roulette-btn" @click="fnRouletteBtn" ref="roulBtn">START!</button>
 				</div>
-			</div>
-			
+			</div>			
 		</div>
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
@@ -58,7 +58,7 @@
             };
         },
         methods: {
-            fnAuctionList(){
+            fnAuctionList() {
 				var self = this;
 				var nparmap = {};
 				$.ajax({
@@ -75,7 +75,7 @@
 			fnDeatil(auctionNo) {
 				$.pageChange("auctionDetail.do",{auctionNo: auctionNo});
 			},
-			fnRouletteBtn(){
+			fnRouletteBtn() {
 				var self = this;
 				if(self.sessionId != "" && self.sessionId != 'admin') {
 					var self = this;
@@ -143,6 +143,9 @@
 						}
 					});
 				},2800);
+			},
+			fnRegister() {
+				$.pageChange("auctionRegister.do",{});
 			}
         },
         mounted() {

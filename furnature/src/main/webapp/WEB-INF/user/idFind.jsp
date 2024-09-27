@@ -10,35 +10,50 @@
 	<div id="app">
 		<div id="container">            
             <p class="blind">기본페이지</p>
-			<div class="login-wrap">
-				<div class="ip-list">
-	                <div class="tit-box">
-	                    <p class="tit">이름</p>
-	                </div>
-	                <div class="bot-box">
-	                    <div class="ip-box">
-	                        <input type="text" placeholder="가입하신 이름을 입력해주세요" v-model="name">
-	                    </div>
-	                </div>
-	            </div>
-				<div class="ip-list">
-	                <div class="tit-box">
-	                    <p class="tit">핸드폰 번호</p>
-	                </div>
-	                <div class="bot-box">
-	                    <div class="ip-box">
-	                        <input type="text" placeholder="가입하신 핸드폰 번호를 입력해주세요" v-model="phone">
-	                    </div>
-	                </div>
-	            </div>
-				<button type="button" @click="fnMsg">문자인증</button></div>
-				<div class="none">
-					<input type="text" placeholder="인증번호를 입력해주세요." v-model="msgSubmit">
-					<button type="button" @click="fnSubmit">인증하기</button>
-					<span class="time"></span>
-				</div>				
-				<button @click="fnFind" v-if="findInfo">아이디찾기</button>
-				<div v-if="findShow">{{id}}</div>
+			<h2 class="sub-tit">아이디 찾기</h2>
+			<div class="login-wrap find-wrap">
+				<div class="wrap" v-if="!findShow">
+					<div class="ip-list">
+						<div class="tit-box">
+							<p class="tit">이름</p>
+						</div>
+						<div class="bot-box">
+							<div class="ip-box">
+								<input type="text" placeholder="가입하신 이름을 입력해주세요" v-model="name">
+							</div>
+						</div>
+					</div>
+					<div class="ip-list">
+						<div class="tit-box">
+							<p class="tit">핸드폰 번호</p>
+						</div>
+						<div class="bot-box">
+							<div class="ip-box">
+								<input type="text" placeholder="가입하신 핸드폰 번호를 입력해주세요" v-model="phone">
+							</div>
+						</div>
+					</div>
+					<div class="none">
+						<div class="ip-box ip-ico-box type2">
+							<input type="text" placeholder="인증번호를 입력해주세요." v-model="msgSubmit">
+							<div class="btn-box type2">
+								<button type="button" @click="fnSubmit">인증하기</button>
+							</div>
+						</div>					
+						<span class="time"></span>
+					</div>
+					<div class="login-box">
+						<div class="btn-box" v-if="findInfo">
+							<button @click="fnFind">아이디찾기</button>
+						</div>
+						<div class="btn-box" v-if="!findInfo">
+							<button type="button" @click="fnMsg">문자인증</button></div>
+						</div>
+					</div>
+				</div>
+				<div v-if="findShow">
+					<p class="findInfo">찾으시는 비밀번호는 <b>"{{id}}"</b> 입니다.</p>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -70,10 +85,9 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-						console.log(data);
 						self.msgText = data.msg;
 						self.msgTime = true;
-						document.querySelector('.none').classList.remove('none');
+						document.querySelector('.none').style.display = 'block';
 						self.fnInteval();
 					}
 				});
@@ -97,7 +111,7 @@
 			fnInteval(){
 				var self = this;
 				var time = document.querySelector(".time");
-				var timeSet = 65;
+				var timeSet = 180;
 				self.timer = setInterval(() => {
 					var min = Math.floor(timeSet / 60);
 					var sec = timeSet % 60;
@@ -120,7 +134,6 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-						console.log(data);
 						if(data.result == "success"){
 							self.findShow = true;
 							self.id = data.findInfo;
