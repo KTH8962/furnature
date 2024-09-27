@@ -49,6 +49,12 @@ public class MyPageController {
     	return "/myPage/myPage-mileage";
     }
 
+    // 마일리지 리스트 조회 페이지
+    @RequestMapping("/myPage/cart.do")
+    public String cart(Model model) throws Exception{
+    	return "/myPage/myPage-cart";
+    }
+    
     // 마이페이지 리스트 db
     @RequestMapping(value = "/myPage/myPage.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody

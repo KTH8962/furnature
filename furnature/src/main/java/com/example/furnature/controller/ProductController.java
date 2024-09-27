@@ -229,7 +229,17 @@ public class ProductController {
 	   System.out.println("CCCCCCCCCCCCCCCCUPDATE" + map);
 	   return new Gson().toJson(resultMap);
    }
-   
-	   
-  
+	/*
+	 * //장바구니 담기
+	 * 
+	 * @RequestMapping(value = "/productDetail/cart.dox", method =
+	 * RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	 * 
+	 * @ResponseBody public String cartInsert(Model model, @RequestParam
+	 * HashMap<String, Object> map) throws Exception { HashMap<String, Object>
+	 * resultMap = new HashMap<String, Object>(); resultMap =
+	 * productService.cartInsert(map);
+	 * System.out.println("cartInsertcartInsertcartInsertcartInsert" + map); return
+	 * new Gson().toJson(resultMap); }
+	 */
 }
