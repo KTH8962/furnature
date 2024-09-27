@@ -5,45 +5,75 @@
 <head>
 	<jsp:include page="/layout/headlink.jsp"></jsp:include>
 	<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
-
-	<style>
-			img{
-				width:400px;
-			}
-		</style>	
-	</head>
-	<body>
-		<jsp:include page="/layout/header.jsp"></jsp:include>
-			<div id="app">
-				<div id="container">            
-		            <p class="blind">원데이클래스</p>
-			
-			<h2 class="sub-tit">원데이클래스</h2>
-			
-		<div class="slider">
-		<div class="slide" v-for="(file, index) in filePath" :key="file" v-show="currentSlide === index">
-           <img :src="file">
-       </div>
-	   </div>
-	   <button @click="prevSlide"><</button>
-	   {{currentSlide+1}}
-	   <button @click="nextSlide">></button>
-		  
-		<div>{{classNo}}</div>
-		<div>{{className}}</div>
-		<div>모집 시작일 : {{startDay}}</div>
-		<div>모집 종료일 : {{endDay}}</div>
-		<div>수업일자 : {{classDate}}</div>
-		<div>수강료 : {{price}}</div>
-		<div class="onedayJoinForm" v-if="message=='' && numberLimit>currentNumber">
-			신청자 이름 : <input type="text" v-model="name">
-		</div>
-		<div v-if="message">{{message}}</div>
-		<div v-if="message2">{{message2}}</div>
-		<div v-if="message=='' && numberLimit>currentNumber"><button @click="fnOnedayJoin">수강신청</button></div>
-		
-		<button v-if="isAdmin" @click="fnUpdate(detail[0].classNo)">수정</button>
-		<button v-if="isAdmin" @click="fnDelete(detail[0].classNo)">삭제</button>
+</head>
+<body>
+	<jsp:include page="/layout/header.jsp"></jsp:include>
+	<div id="app">
+		<div id="container">            
+            <p class="blind">원데이클래스</p>
+			<div v-if="sessionAuth > 1">
+				<button type="button" @click="fnUpdate(detail[0].classNo)">수정</button>
+				<button type="button" @click="fnDelete(detail[0].classNo)">삭제</button>
+			</div>
+			<div class="detail-top">
+				<div class="thumb-wrap oneday-detail-thumb-list">
+					<div class="thumb-list">
+						<div class="thumb-box" v-for="(file, index) in filePath">
+							<img :src="file" :alt="detail[0].className + ' 썸네일이미지' + (index+1)">
+						</div>
+					</div>
+					<div class="thumb-arrow">
+						<button type="button" class="prev">이전</button>
+						<button type="button" class="next">다음</button>
+					</div>
+				</div>
+				<div class="detail-top-info">
+					<div class="detail-box">
+						<div class="tit">수강신청</div>
+						<div class="info">	
+							<template v-if="message=='모집 종료' || numberLimit==currentNumber">	
+								<div v-if="message">{{message}}</div>
+								<div v-if="message2">{{message2}}</div>
+							</template>
+							<template v-else-if="message=='모집 중' && numberLimit>currentNumber">
+								<div class="ip-box ip-ico-box type2">
+									<input type="text" placeholder="성함을 입력해주세요" v-model="name">
+									<div class="btn-box type2"><button type="button" @click="fnRegister">수강신청</button></div>
+								</div>
+							</template>
+						</div>
+					</div>
+					<div class="detail-box">
+						<div class="tit">클래스명</div>
+						<div class="info">{{className}}</div>
+					</div>
+					<div class="detail-box">
+						<div class="tit">수업일자</div>
+						<div class="info">{{classDate}}</div>
+					</div>
+					<div class="detail-box">
+						<div class="tit">수강료</div>
+						<div class="info">{{price}}</div>
+					</div>
+					<div class="detail-box">
+						<div class="tit">모집기간</div>
+						<div class="info">{{startDay}} ~ {{endDay}}</div>
+					</div>
+				</div>
+				</div>
+				<div class="detail-tab">
+					<button type="button" @click="fnTab(1)" :class="bottomBox == '1' ? 'active' : ''">상세 정보 설명</button>
+					<button type="button" @click="fnTab(2)" :class="bottomBox == '2' ? 'active' : ''">클래스 장소</button>
+				</div>
+				<div class="detail-bottom">
+					<div class="detail-bottom-box" v-if="bottomBox == '1'">
+						<div>클래스에서 만들 제품에 대해 설명</div>
+					</div>
+					<div class="detail-bottom-box" v-if="bottomBox == '2'">
+						클래스 장소와 전화번호
+					</div>
+				</div>
+		</div>		
     </div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
 </body>
@@ -75,24 +105,12 @@
 				   message : "",
 				   message2 : "",
 				   currentSlide: 0,
-				   alreadyIn : false
+				   alreadyIn : false,
+				   bottomBox : 1
                 };
             },
             methods: {
-				nextSlide() {
-				        if (this.currentSlide < this.filePath.length - 1) {
-				            this.currentSlide++;
-				        } else {
-				            this.currentSlide = 0; // 처음으로 돌아가기
-				        }
-				},
-			    prevSlide() {
-			        if (this.currentSlide > 0) {
-			            this.currentSlide--;
-			        } else {
-			            this.currentSlide = this.filePath.length - 1; // 마지막으로 돌아가기
-			        }
-			    },
+			
 				fnDetail(classNo) {
 					var self = this;
 					var nparmap = {classNo:self.classNo};
@@ -118,6 +136,7 @@
                                self.filePath.push(item.filePath); 
                            }
                        });
+					   self.updateData();	
 							
 						var endDay = new Date(self.detail[0].endDay);
 						var today = new Date()
@@ -167,17 +186,17 @@
 						data : nparmap,
 						success : function(data){
 							self.numberLimit = data.numberLimit;
-							var payConfirm = confirm("결제하시겠습니까?");
-							if(payConfirm){
-								self.fnPay();						
-							}else{
-								alert("결제를 취소하셨습니다");
-							}	
 						}							
 					})				
 			   },
 				fnPay() {
 				    var self = this;
+					var payConfirm = confirm("결제하시겠습니까?");
+					if(payConfirm){
+						self.fnPay();						
+					}else{
+						alert("결제를 취소하셨습니다");
+					}	
 				    IMP.request_pay({
 						pg: "html5_inicis",
 					    pay_method: "card",
@@ -231,7 +250,17 @@
 							$.page
 				        }
 				    });
-				}
+				},
+				updateData() {
+					var self = this;
+					self.$nextTick(() => {
+						$.sliderEvent();
+					});
+				},
+				fnTab(num) {
+					var self = this;
+					self.bottomBox = num;
+				}	
 			},
             mounted() {
 				var self = this;
