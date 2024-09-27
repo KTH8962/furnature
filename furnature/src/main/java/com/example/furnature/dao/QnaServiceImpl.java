@@ -120,5 +120,19 @@ public class QnaServiceImpl implements QnaService {
 		
 		return resultMap;
 	}
+
+	@Override
+	public HashMap<String, Object> qnaDelete(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			qnaMapper.qnaDelete(map);
+			resultMap.put("message", "success");
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("message", "fail");
+		}
+		
+		return resultMap;
+	}
 	 
 }

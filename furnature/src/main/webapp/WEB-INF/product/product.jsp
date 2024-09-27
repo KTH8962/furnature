@@ -23,13 +23,13 @@
 				<!--치수 측정-->
 				<div class="size-box">
 					<div class="ip-box">
-						<input type="text" v-model="widthSize" @input="validateInput('widthSize')" placeholder="가로 width(mm) 입력">
+						<input type="text" v-model="widthSize" @input="validateInput('widthSize')" placeholder="가로 width(mm) 입력" @keyup.enter="fnSearchSize">
 					</div>
 			  		<div class="ip-box">
-						<input type="text" v-model="depthSize" @input="validateInput('depthSize')" placeholder="세로 depth(mm) 입력">
+						<input type="text" v-model="depthSize" @input="validateInput('depthSize')" placeholder="세로 depth(mm) 입력" @keyup.enter="fnSearchSize">
 					</div>
 					<div class="ip-box">
-						<input type="text" v-model="heightSize" @input="validateInput('heightSize')" placeholder="높이 height(mm) 입력">
+						<input type="text" v-model="heightSize" @input="validateInput('heightSize')" placeholder="높이 height(mm) 입력" @keyup.enter="fnSearchSize">
 					</div>
 					<button type="button" @click="fnSearchSize" class="search">치수검색</button>
 				</div>

@@ -324,4 +324,19 @@ public class AdminServiceImpl implements AdminService{
 		
 		return resultMap;
 	}
+	
+	//게시물 삭제
+	@Override
+	public HashMap<String, Object> qnaDelete(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			adminMapper.qnaDelete(map);
+			resultMap.put("message", "success");
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("message", "fail");
+		}
+		
+		return resultMap;
+	}
 }

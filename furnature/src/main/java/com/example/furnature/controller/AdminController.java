@@ -41,6 +41,12 @@ public class AdminController {
 	 @Autowired
 	 ProductService productService;
 	 
+  // 게시판목록
+	 @RequestMapping("/adminQna.do")
+	 public String adminqna(Model model) throws Exception{
+		 model.addAttribute("activePage", "admin");
+		 return "/admin/adminQna";
+	 }
   // 유저 정보 목록
 	@RequestMapping("/admin.do")
 	public String userList(Model model) throws Exception{
@@ -380,4 +386,24 @@ public class AdminController {
   		resultMap = adminService.adminDesignList(map);
   		return new Gson().toJson(resultMap);
   	}
+    /*
+     * 
+     * 
+     * 
+     * 		게시판관리
+     * 
+     * 
+     * 
+     * 
+     * 
+     */
+  //게시물 삭제
+	@RequestMapping(value = "/qna/adminqnaDelete.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String qnadelete(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap 
+		= new HashMap<String, Object>();
+		resultMap = adminService.qnaDelete(map);
+		return new Gson().toJson(resultMap);
+	}
 }

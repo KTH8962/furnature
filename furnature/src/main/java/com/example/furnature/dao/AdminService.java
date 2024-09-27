@@ -40,4 +40,7 @@ public interface AdminService {
 	
 	//디자인 관리자 목록
 	HashMap<String, Object> adminDesignList(HashMap<String, Object> map);
+	
+	//게시판삭제
+	HashMap<String, Object> qnaDelete(HashMap<String, Object> map);
 }

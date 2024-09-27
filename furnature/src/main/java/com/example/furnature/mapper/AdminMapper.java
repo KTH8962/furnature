@@ -57,5 +57,8 @@ public interface AdminMapper {
 	
 	// 디자인 관리자 목록
 	List<Admin> adminDesignList(HashMap<String, Object> map);
+	
+	//게시판삭제
+	void qnaDelete(HashMap<String,Object> map);
 
 }
