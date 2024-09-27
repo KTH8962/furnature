@@ -4,8 +4,7 @@ import java.io.File;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import com.example.furnature.dao.QnaService;
 import com.example.furnature.mapper.QnaMapper;
@@ -28,32 +30,32 @@ public class QnaController {
 	@Autowired
 	QnaMapper qnaMapper;
 		//게시글 목록
-		@RequestMapping("/qnalist.do") 
+		@RequestMapping("/qna/qnalist.do") 
 	    public String milelist(Model model) throws Exception{
 
-	        return "qna/qna-list";
+	        return "/qna/qna-list";
 	    }
 		//게시글 등록
-		@RequestMapping("/qna-regist.do") 
-		public String milelistregist(Model model) throws Exception{
+		@RequestMapping("/qna/qna-regist.do") 
+		public String qnaregist(Model model) throws Exception{
 			
-			return "qna/qna-regist";
+			return "/qna/qna-regist";
 		}
-		//게시글상세
-		@RequestMapping("/qnaview.do") 
-		public String mileView(HttpServletRequest request,Model model,@RequestParam HashMap<String, Object> map) throws Exception{
-			request.setAttribute("qnaNo", map.get("qnaNo"));
-			return "qna/qna-view";
+		@RequestMapping("qna/qnaview.do") 
+		public String qnaView(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		    request.setAttribute("qnaNo", map.get("qnaNo"));
+		    return "qna/qna-view";
 		}
+		
 		//게시글수정
-		@RequestMapping("/qnaupdate.do") 
-		public String mileUpdate(HttpServletRequest request,Model model,@RequestParam HashMap<String, Object> map) throws Exception{
+		@RequestMapping("/qna/qnaupdate.do") 
+		public String qnaUpdate(HttpServletRequest request,Model model,@RequestParam HashMap<String, Object> map) throws Exception{
 			request.setAttribute("qnaNo", map.get("qnaNo"));
-			return "qna/qna-update";
+			return "/qna/qna-update";
 		}
 		
 		//게시글 수정 리스트
-		@RequestMapping(value = "/mileage/qna_update.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+		@RequestMapping(value = "/qna/qna_update.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 		@ResponseBody
 		public String qnaUpdatelist(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 			HashMap<String, Object> resultMap 
@@ -62,7 +64,7 @@ public class QnaController {
 			return new Gson().toJson(resultMap);
 		}
 		//게시글 수정
-		@RequestMapping(value = "/mileage/qna_update_regist.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+		@RequestMapping(value = "/qna/qna_update_regist.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 		@ResponseBody
 		public String qnaUpdate(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 			HashMap<String, Object> resultMap 
@@ -72,7 +74,7 @@ public class QnaController {
 		}
 		
 		//게시글 댓글
-		@RequestMapping(value = "/mileage/mileage_comments.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+		@RequestMapping(value = "/qna_comments.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 		@ResponseBody
 		public String qnaComment(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 			HashMap<String, Object> resultMap 
@@ -82,7 +84,7 @@ public class QnaController {
 		}
 		
 		//게시글목록
-		@RequestMapping(value = "mileage/mileage_list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+		@RequestMapping(value = "/qna/qna_list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 		@ResponseBody
 		public String qnalist(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 			HashMap<String, Object> resultMap 
@@ -91,43 +93,52 @@ public class QnaController {
 			return new Gson().toJson(resultMap);
 		}	
 		//게시글 상세
-		@RequestMapping(value = "mileage/mileage_view.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+		@RequestMapping(value = "/qna_view.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 		@ResponseBody
-		public String mileageview(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		public String qnaview(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 			HashMap<String, Object> resultMap 
 			= new HashMap<String, Object>();
 			resultMap = qnaService.QnaView(map);
 			return new Gson().toJson(resultMap);
 		}
 		//게시글 등록
-		@RequestMapping(value = "/mileage/mileage_regist.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+		@RequestMapping(value = "/qna/qna_regist.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 		@ResponseBody
-		public String mileageregist(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		public String qnaregist(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 			HashMap<String, Object> resultMap 
 			= new HashMap<String, Object>();
 			resultMap = qnaService.qnaRegist(map);
 			return new Gson().toJson(resultMap);
 		}
 		//댓글 삭제
-		@RequestMapping(value = "/mileage/commentDelete.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+		@RequestMapping(value = "/qna/commentDelete.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 		@ResponseBody
-		public String mileagedelete(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		public String commentdelete(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 			HashMap<String, Object> resultMap 
 			= new HashMap<String, Object>();
 			resultMap = qnaService.commentDelete(map);
 			return new Gson().toJson(resultMap);
 		}
 		//댓글 수정
-		@RequestMapping(value = "/mileage/commentUpdate.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+		@RequestMapping(value = "/qna/commentUpdate.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 		@ResponseBody
-		public String mileageUpdate(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		public String commentUpdate(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 			HashMap<String, Object> resultMap 
 			= new HashMap<String, Object>();
 			resultMap = qnaService.commentUpdate(map);
 			return new Gson().toJson(resultMap);
 		}
+		//게시물 삭제
+		@RequestMapping(value = "/qna/qnaDelete.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+		@ResponseBody
+		public String qnadelete(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+			HashMap<String, Object> resultMap 
+			= new HashMap<String, Object>();
+			resultMap = qnaService.qnaDelete(map);
+			return new Gson().toJson(resultMap);
+		}
 		
-		@RequestMapping("/mileage-file.dox")
+		@RequestMapping("/qna-file.dox")
 	    public String result(@RequestParam("file1") MultipartFile multi, @RequestParam("qnaNo") int qnaNo, HttpServletRequest request,HttpServletResponse response, Model model)
 	    {
 	        String path=System.getProperty("user.dir");
@@ -153,7 +164,7 @@ public class QnaController {
 	        }catch(Exception e) {
 	            System.out.println(e);
 	        }
-	        return "redirect:mileagelist.do";
+	        return "redirect:/qna/qnalist.do";
 	    }
 	    
 	    // 현재 시간을 기준으로 파일 이름 생성

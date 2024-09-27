@@ -8,7 +8,7 @@
 				<li><a href="/oneday/oneday.do">원데이클래스</a></li>
 				<li><a href="/event/event.do">이벤트</a></li>
 				<li><a href="/design/design.do">디자인추천</a></li>
-				<li><a href="/board/board.do">질문게시판</a></li>
+				<li><a href="/qna/qnalist.do">질문게시판</a></li>
 				<template v-if="sessionId != ''">
 					<li><a href="javascript:void(0);" @click="logout">로그아웃</a></li>
 					<li><a href="/myPage/myPage.do">마이페이지</a></li>

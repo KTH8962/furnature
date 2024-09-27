@@ -283,4 +283,10 @@
 	    </if>
 	    OFFSET #{startIndex} ROWS FETCH FIRST #{outputNumber} ROWS ONLY
 	</select>
+	<!--게시판 삭제-->
+	<delete id="qnaDelete" parameterType="hashmap">
+		DELETE 
+		FROM TBL_QNA
+		WHERE QNA_NO = #{qnaNo}
+	</delete>
 </mapper>

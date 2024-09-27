@@ -2,21 +2,15 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="UTF-8">
-	<jsp:include page="/layout/menu.jsp"></jsp:include>
-	<title>첫번째 페이지</title>
-</head>
-<style>
-</style>
-<body>
-	<div id="app">
-			<select name="category" v-model="category">
-			  <option value="" selected>::전체::</option>
-			  <option value="1">Q&A</option>
-			  <option value="2">공지사항</option>
-			</select>
-			<div>	
+	<head>
+		<jsp:include page="/layout/headlink.jsp"></jsp:include>
+	</head>
+	<body>
+		<jsp:include page="/layout/header.jsp"></jsp:include>
+		<div id="app">
+			<div id="container"> 
+			<h3>Q&A</h3>
+			<div class="ip-box">	
 				제목<input type="text" v-model="title">					
 			</div>
 			<div>
@@ -29,6 +23,7 @@
 			<div>
 				<button @click="fnRegist()">등록</button>
 			</div>
+		</div>	
 	</div>
 </body>
 </html> 
@@ -37,7 +32,6 @@
         data() {
             return {
 				sessionId : '${sessionId}',
-				category : "",
 				title : "",
 				contents : "",
 				file : null
@@ -55,15 +49,11 @@
 				}else if(self.contents == ""){
 					alert("내용을 입력해주세요");
 					return;
-				}else if(self.category == ""){
-					alert("카테고리를 선택해주세요");
-					return;
 				}
 				var nparam = {
 					userId : self.sessionId,
 					qnaTitle : self.title,
 					qnaContents : self.contents,
-					qnaCategory : self.category
 				}
 				$.ajax({
 					url:"/qna/qna_regist.dox",
@@ -84,7 +74,7 @@
 							contentType: false,
 							success: function() {
 							  alert("게시글을 등록하였습니다.");
-							  location.href="/qnalist.do";
+							  location.href="/qna/qnalist.do";
 							},
 							error: function(jqXHR, textStatus, errorThrown) {
 							  console.error('업로드 실패!', textStatus, errorThrown);
