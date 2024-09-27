@@ -95,6 +95,15 @@ public class MyPageController {
     	return new Gson().toJson(resultMap);
     }
     
+    // 배송 조회
+    @RequestMapping(value = "/myPage/mileage-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String mypageMileage(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+    	HashMap<String, Object> resultMap = new HashMap<String, Object>();
+    	resultMap = myPageService.searchMileageList(map);
+    	return new Gson().toJson(resultMap);
+    }
+    
     // 원데이클래스 수강신청 내역 조회(회원)
     @RequestMapping(value = "/myPage/oneday-info.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody

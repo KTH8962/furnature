@@ -52,11 +52,11 @@
 						</div>					
 						<span class="time"></span>
 					</div>
-					<div class="login-box">
-						<div class="btn-box" v-if="findInfo">
+					<div class="wrap">
+						<div class="btn-box front-box" v-if="findInfo">
 							<button @click="fnFind">비밀번호찾기</button>
 						</div>
-						<div class="btn-box" v-if="!findInfo">
+						<div class="btn-box front-box" v-if="!findInfo">
 							<button type="button" @click="fnMsg">문자인증</button></div>
 						</div>
 					</div>
