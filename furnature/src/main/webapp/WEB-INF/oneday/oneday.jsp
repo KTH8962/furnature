@@ -28,12 +28,13 @@
 					</li>
 				</ul>
 	
-				<div>
-					<button @click="fnGetList(currentPage - 1)" :disabled="currentPage <= 1">이전</button>
-				    <button v-for="page in totalPages" :key="page" :class="{active: page == currentPage}"
-					@click="fnGetList(page)">{{page}}</button>
-				    <button @click="fnGetList(currentPage+1)" :disabled="currentPage >= totalPages">다음</button>
-				</div>
+				<div class="pagenation">
+	                <button type="button" class="prev" v-if="currentPage > 1" @click="fnBeforPage()">이전</button>
+	                <button type="button" class="num" v-for="page in totalPages" :class="{active: page == currentPage}" @click="fnGetList(page)">
+						{{page}}
+					</button>
+	                <button type="button" class="next" v-if="currentPage < totalPages" @click="fnNextPage()">다음</button>
+	            </div>
 				
 				<button @click="fnRegister" v-if="isAdmin">클래스 등록</button>
 			</div>
@@ -126,6 +127,16 @@
 			},
 			fnRegister(){
 				$.pageChange("/oneday/oneday-register.do", {});	
+			},
+			fnBeforPage(){
+				var self = this;
+				self.currentPage = self.currentPage - 1;
+				self.fnGetList(self.currentPage);
+			},
+			fnNextPage(){
+				var self = this;
+				self.currentPage = self.currentPage + 1;
+				self.fnGetList(self.currentPage);
 			}			
         },
         mounted() {

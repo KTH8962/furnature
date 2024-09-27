@@ -247,7 +247,7 @@
 				        data: nparmap,
 				        success: function(data) {
 				         	console.log(data);
-							$.page
+							$.pageChange("/oneday/oneday.do", {});
 				        }
 				    });
 				},

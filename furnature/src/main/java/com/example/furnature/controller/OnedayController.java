@@ -123,7 +123,7 @@ public class OnedayController {
 //                model.addAttribute("fileName", multi.getOriginalFilename());
 //                model.addAttribute("filePath", file.getAbsolutePath());
                 
-                return "redirect:oneday/oneday.do";
+                return "redirect:/oneday/oneday.do";
             
         }catch(Exception e) {
             System.out.println(e);
