@@ -11,26 +11,28 @@
 		<div id="container">            
             <p class="blind">기본페이지</p>
 			<!--카테고리 리스트 출력 -->
-				<a href="#" @click=fnCateSearchList('')>전체</a>
-			<div v-for="item in cateList">
-				<div><a href="#" @click="fnCateSearchList(item.cateNo)">{{item.cateName}}</a></div>
+			<div class="tab-default">
+				<button type="button" @click="fnCateSearchList('')" :class="cateNum == '' ? 'active':''">전체</button>
+				<button type="button" @click="fnCateSearchList(item.cateNo)" v-for="(item, index) in cateList" :class="cateNum == (index+1) ? 'active':''">{{item.cateName}}</button>
 			</div>
-            <div class="ip-box ip-ico-box">
-	            <input type="text" v-model="searchKeyword" placeholder="상품이름" @keyup.enter="fnSearchItem">
-				<div class="btn-box type1"><button type="button" @click="fnSearchItem">상품검색</button></div>
-            </div>
-			<!--치수 측정-->
-			<div style="display:flex;">
-		  가로(W)<div class="ip-box">
-		            <input type="text" v-model="widthSize" @input="validateInput('widthSize')" placeholder="width(mm)">
-		        </div>
-		  세로(D)<div class="ip-box">
-		            <input type="text" v-model="depthSize" @input="validateInput('depthSize')" placeholder="depth(mm)">
-		        </div>
-		  높이(H)<div class="ip-box">
-		            <input type="text" v-model="heightSize" @input="validateInput('heightSize')" placeholder="height(mm)">
-		        </div>
-				<button @click="fnSearchSize">치수검색(이거버튼)</button>
+			<div class="product-search-wrap">
+				<div class="ip-box ip-ico-box">
+					<input type="text" v-model="searchKeyword" placeholder="상품이름 입력" @keyup.enter="fnSearchItem">
+					<div class="btn-box type1"><button type="button" @click="fnSearchItem">상품검색</button></div>
+				</div>
+				<!--치수 측정-->
+				<div class="size-box">
+					<div class="ip-box">
+						<input type="text" v-model="widthSize" @input="validateInput('widthSize')" placeholder="가로 width(mm) 입력">
+					</div>
+			  		<div class="ip-box">
+						<input type="text" v-model="depthSize" @input="validateInput('depthSize')" placeholder="세로 depth(mm) 입력">
+					</div>
+					<div class="ip-box">
+						<input type="text" v-model="heightSize" @input="validateInput('heightSize')" placeholder="높이 height(mm) 입력">
+					</div>
+					<button type="button" @click="fnSearchSize" class="search">치수검색</button>
+				</div>
 			</div>
 			<!--상품 리스트출력 -->
 			<ul class="img-list product-list" style="display:flex;">

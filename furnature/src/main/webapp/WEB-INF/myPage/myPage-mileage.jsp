@@ -19,9 +19,14 @@
 					<template v-if="mileageList == ''">
 						적립된 마일리지 포인트가 없습니다.
 					</template>
-					<div v-for="item in mileageList">
-						<div>제목 : {{item.mileageName}}</div>
-						<div>포인트 : {{item.mileagePrice}} {{item.mileageStatus}}</div>
+					<div v-for="(items, key) in Object.entries(mileageList).reverse()" :key="key">
+						<div>{{items.key}}</div>
+						<div v-for="item in items">
+							<div>{{item}}</div>
+							<div>{{item}}</div>
+							<div>{{item.mileageStatus}}</div>
+							<div>{{item.cdatetime}}</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -49,9 +54,11 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-						if(data.mileageList.length > 0) {
-							self.mileageList = data.mileageList;
-							self.totalMileage = data.mileageList[0].mileageTotal;
+						const keys = Object.keys(data.groupedMileage);
+						if(data.groupedMileage[keys[0]].length > 0) {
+							self.mileageList = data.groupedMileage;
+							self.mileageList.reverse;
+							self.totalMileage = data.groupedMileage[keys[0]][0].mileageTotal;
 						} else {
 							self.totalMileage = 0;
 						}
