@@ -22,8 +22,8 @@
 						<span class="date">수업일자 <br> {{item.classDate}} </span>
 						<span class="date">모집기간 <br> {{item.startDay}} ~ {{item.endDay}}</span>
 						<span class="state">
-							<template v-if="item.message1=='모집 중' && item.numberLimit>item.currentNumber">모집 중</template>
-							<template v-else-if="item.message1=='모집 종료' || item.numberLimit==item.currentNumber">모집 종료</template>
+							<template v-if="item.message1=='모집 중' && parseInt(item.numberLimit)>parseInt(item.currentNumber)">모집 중</template>
+							<template v-else="item.message1=='모집 종료' || item.numberLimit==item.currentNumber">모집 종료</template>
 						</span>
 					</li>
 				</ul>
@@ -57,8 +57,7 @@
 				pageSize: 8,
 				totalCount : "",
 				isAdmin : false,
-				sessionAuth: "${sessionAuth}",
-				test : ""
+				sessionAuth: "${sessionAuth}"
             };
         },
         methods: {
@@ -90,7 +89,6 @@
 						        self.list[i].message1 = "모집 중";
 						    }   
 						    self.fnCheckNumberLimit(self.list[i].classNo, i); 
-						    console.log(self.list[i].message1);	
 						}
 						
 					}
@@ -106,12 +104,10 @@
 			        type: "POST",
 			        data: nparmap,
 			        success: function(data) {
-			            // numberLimit 결과를 currentNumber와 함께 self.list에 업데이트
 			            if (data.numberLimit) {
 			                self.list[index].currentNumber = data.numberLimit.currentNumber;
 			                self.list[index].numberLimit = data.numberLimit.numberLimit;
 			            }
-			            console.log(self.list[index]); // 각 항목의 현재 상태 출력
 			        }
 			    })
 			},

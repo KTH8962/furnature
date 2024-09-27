@@ -4,11 +4,7 @@
 <html>
 <head>
 	<jsp:include page="/layout/headlink.jsp"></jsp:include>
-	<style>
-		img{
-			width:400px;
-		}
-	</style>	
+
 </head>
 <body>
 	<jsp:include page="/layout/header.jsp"></jsp:include>
@@ -95,9 +91,20 @@
             </div>
         </div>
 		
+		<div class="ip-list">
+           <div class="tit-box">
+               <p class="tit">상세설명</p>
+           </div>
+           <div class="bot-box">
+               <div class="ip-box">
+                   <div class="text-box"><pre><textarea v-model="description"></textarea></pre></div>
+               </div>
+           </div>
+       </div>
 		
         
-        <div><button @click="fnUpdate">저장</button></div>			
+        <div><button @click="fnUpdate()">저장</button></div>		
+	</div>	
     </div>
     <jsp:include page="/layout/footer.jsp"></jsp:include>
 </body>
@@ -113,8 +120,8 @@ const app = Vue.createApp({
             price: "",
             startDay: "",
             endDay: "",
-			detail: {
-	       }
+			description : "",
+			detail: {}
         };
     },
     methods: {
@@ -144,6 +151,7 @@ const app = Vue.createApp({
                     self.price = data.onedayDetail[0].price;
                     self.startDay = data.onedayDetail[0].startDay;
                     self.endDay = data.onedayDetail[0].endDay;
+					self.description = data.onedayDetail[0].description;
                 }
             });
         },
@@ -160,7 +168,8 @@ const app = Vue.createApp({
                 numberLimit: self.numberLimit,
                 price: self.price,
                 startDay: self.startDay,
-                endDay: self.endDay                
+                endDay: self.endDay,
+				description: self.description               
             };
 			console.log(self.classDate);
             var startDay = new Date(self.startDay);
@@ -175,7 +184,7 @@ const app = Vue.createApp({
                 return;
             }
             
-            if (!self.classNo || !self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay) {
+            if (!self.classNo || !self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay || !self.description) {
                 alert("빈칸을 채워주세요.");
                 return;
             }

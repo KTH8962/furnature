@@ -85,6 +85,16 @@
                                 </div>
                             </div>
                         </div>
+						<div class="ip-list">
+                           <div class="tit-box">
+                               <p class="tit">상세설명</p>
+                           </div>
+                           <div class="bot-box">
+                               <div class="ip-box">
+                                   <div class="text-box"><textarea v-model="description"></textarea></div>
+                               </div>
+                           </div>
+                       </div>
                         <div class="ip-list" v-if="isRegister">
                             <div class="tit-box">
                                 <p class="tit">파일업로드</p>
@@ -119,6 +129,7 @@
 	            price: "",
 	            startDay: "",
 	            endDay: "",
+				description: "",
 				isRegister : false,
 				file : []
             };
@@ -140,6 +151,7 @@
 						self.price = data.onedayInfo.price;
 						self.startDay = data.onedayInfo.startDay;
 						self.endDay = data.onedayInfo.endDay;
+						self.description = data.onedayInfo.description || "";
 					}
 				});
 			},
@@ -163,7 +175,8 @@
 					numberLimit : self.numberLimit,
 					price : self.price,
 					startDay : self.startDay.replace('T', ' '),
-					endDay : self.endDay.replace('T', ' ')		
+					endDay : self.endDay.replace('T', ' '),
+					description : self.description	
 				};
 				var startDay = new Date(self.startDay);
 				var endDay = new Date(self.endDay);
@@ -177,7 +190,7 @@
 					return;
 				}
 				
-				if(!self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay) {
+				if(!self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay || !self.description) {
 				        alert("빈칸을 채워주세요.");
 				        return;
 				}
@@ -241,7 +254,8 @@
 	                numberLimit: self.numberLimit,
 	                price: self.price,
 	                startDay: self.startDay,
-	                endDay: self.endDay                
+	                endDay: self.endDay,
+					description: self.description                
 	            };
 				console.log(self.classDate);
 	            var startDay = new Date(self.startDay);
@@ -256,7 +270,7 @@
 	                return;
 	            }
 	            
-	            if (!self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay) {
+	            if (!self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay || !self.description) {
 	                alert("빈칸을 채워주세요.");
 	                return;
 	            }

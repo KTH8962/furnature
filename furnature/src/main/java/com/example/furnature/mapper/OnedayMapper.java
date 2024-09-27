@@ -16,6 +16,9 @@ public interface OnedayMapper {
 	//원데이클래스 목록 갯수
 	int totalCount(HashMap<String,Object> map);
 	
+	//원데이클래스 수강신청
+	void onedayJoin(HashMap<String,Object> map);
+	
 	//원데이클래스 결제
 	void onedayPay(HashMap<String,Object> map);
 	

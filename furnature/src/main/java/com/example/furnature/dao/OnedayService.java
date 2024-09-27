@@ -7,6 +7,9 @@ public interface OnedayService {
 	//원데이클래스 목록 출력
 	HashMap<String,Object> onedayList(HashMap<String,Object> map);
 	
+	//원데이클래스 수강신청
+	HashMap<String,Object> onedayJoin(HashMap<String,Object> map);
+	
 	//원데이클래스 결제
 	HashMap<String,Object> onedayPay(HashMap<String,Object> map);
 	
