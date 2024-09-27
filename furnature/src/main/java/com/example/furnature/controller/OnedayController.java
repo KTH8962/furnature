@@ -35,7 +35,7 @@ public class OnedayController {
 	
 	//원데이클래스 수강신청
 	@RequestMapping("/oneday/oneday-join.do")
-	 public String onedayJoin(HttpServletRequest request, Model model, @RequestParam HashMap<String,Object> map) throws Exception{
+	 public String onedayClassJoin(HttpServletRequest request, Model model, @RequestParam HashMap<String,Object> map) throws Exception{
 		request.setAttribute("classNo", map.get("classNo"));
        return "/oneday/oneday-join";
    }
@@ -68,6 +68,15 @@ public class OnedayController {
 	public String onedayDetail(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap = onedayService.onedayDetail(map);
+		return new Gson().toJson(resultMap);
+	}
+	
+	//원데이클래스 수강신청
+	@RequestMapping(value = "/oneday/oneday-join.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String onedayJoin(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = onedayService.onedayJoin(map);
 		return new Gson().toJson(resultMap);
 	}
 	
@@ -123,7 +132,7 @@ public class OnedayController {
 //                model.addAttribute("fileName", multi.getOriginalFilename());
 //                model.addAttribute("filePath", file.getAbsolutePath());
                 
-                return "redirect:oneday/oneday.do";
+                return "redirect:/oneday/oneday.do";
             
         }catch(Exception e) {
             System.out.println(e);

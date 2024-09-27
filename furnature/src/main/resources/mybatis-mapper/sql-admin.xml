@@ -60,7 +60,7 @@
 
 	<!--원데이클래스 신청인수 등 현황-->
 	<select id="currentNumber" parameterType="hashmap" resultType="com.example.furnature.model.Admin">
-	    SELECT C.CLASS_NO, CLASS_NAME, CLASS_DATE, END_DAY, NUMBER_LIMIT, NVL(COUNT, 0) AS CURRENT_NUMBER
+	    SELECT C.CLASS_NO, CLASS_NAME, CLASS_DATE, END_DAY, NUMBER_LIMIT, NVL(COUNT, 0) AS CURRENT_NUMBER, DESCRIPTION
 	    FROM TBL_CLASS C
 	    LEFT JOIN (
 	        SELECT NVL(COUNT(*),0) COUNT, CLASS_NO

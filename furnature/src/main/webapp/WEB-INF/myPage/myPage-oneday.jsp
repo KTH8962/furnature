@@ -21,7 +21,7 @@
 	                    <div v-for="item in list" :key="item.payId">
 	                        <div>클래스명: {{item.className}}</div>
 	                        <div>결제ID: {{item.payId}}</div>
-	                        <div>신청일자: {{item.payDay}}</div>
+	                        <div>신청일자: {{item.joinDay}}</div>
 	                        <div><button @click="fnCancel(item.classNo, item.payId)">수강취소</button></div>
 	                    	<br>
 	                    </div>
@@ -40,7 +40,8 @@
             return {
                 sessionId: '${sessionId}',
 				sessionAuth : '${sessionAuth}',
-                list: []
+                list: [],
+				isCustomer : true
             };
         },
         methods: {
@@ -58,6 +59,8 @@
 	                       self.list = data.onedayInfo;
 	                   }
 	               });
+				}else{
+					self.isCustomer = false;
 				}
             }
         },

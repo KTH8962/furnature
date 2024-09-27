@@ -28,6 +28,9 @@ public class Admin {
 	private String fileSize;
 	private String orgName;
 	private String currentNumber;
+	private String description;
+	private String joinDay;
+	private String payDay;
 	
 	// 배송
 	private String payNo;
