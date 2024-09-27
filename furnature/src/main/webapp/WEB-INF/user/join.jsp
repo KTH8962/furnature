@@ -10,97 +10,100 @@
 	<div id="app">
 		<div id="container">            
             <p class="blind">회원가입 페이지</p>
-			<div class="ip-list">
-                <div class="tit-box">
-                    <p class="tit">아이디</p>
-                </div>
-                <div class="bot-box">
-                    <div class="ip-box ip-ico-box type2" placeholder="아이디는 5자 이상 입력해주세요">
-                        <input type="text" placeholder="아이디를 입력해주세요." v-model="id" ref="idRef" @change="idCheck = false">
-						<div class="btn-box type2">
-							<button type="button" @click="fnIdCheck">중복체크</button>
-						</div>
-                    </div>
-                </div>
-            </div>
-			<div class="ip-list">
-                <div class="tit-box">
-                    <p class="tit">비밀번호</p>
-                </div>
-                <div class="bot-box">
-                    <div class="ip-box">
-                        <input type="password" v-model="pwd" ref="pwdRef" placeholder="비밀번호는 영어 숫자 특수문자를 포함해 8자 이상 입력해주세요">
-                    </div>
-                </div>
-            </div>
-			<div class="ip-list">
-                <div class="tit-box">
-                    <p class="tit">비밀번호 확인</p>
-                </div>
-                <div class="bot-box">
-                    <div class="ip-box">
-                        <input type="password" v-model="pwdRe" ref="pwdReRef" placeholder="비밀번호를 재입력 입력해주세요">
-                    </div>
-                </div>
-            </div>
-			<div class="ip-list">
-			    <div class="tit-box">
-			        <p class="tit">주소</p>
-			    </div>
-			    <div class="bot-box">
-			        <div class="ip-box ip-ico-box type2">
-						<input type="hidden" id="postcode" placeholder="우편번호" readonly="readonly" v-model="zipCode">						
-						<input type="text" id="address" placeholder="주소"  readonly="readonly" v-model="address">
-						<div class="btn-box type2">
-							<button type="button" @click="daumPost">주소검색</button>
-						</div>
-			        </div>
-					<div class="ip-box mgt20">
-						<input type="text" id="detailAddress" placeholder="상세주소를 입력해주세요" v-model="detailAddress" ref="addrRef">
+			<h2 class="sub-tit">회원가입</h2>
+			<div class="join-wrap">	
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">아이디</p>
 					</div>
-			    </div>
+					<div class="bot-box">
+						<div class="ip-box ip-ico-box type2" placeholder="아이디는 5자 이상 입력해주세요">
+							<input type="text" placeholder="아이디를 입력해주세요." v-model="id" ref="idRef" @change="idCheck = false">
+							<div class="btn-box type2">
+								<button type="button" @click="fnIdCheck">중복체크</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">비밀번호</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+							<input type="password" v-model="pwd" ref="pwdRef" placeholder="비밀번호는 영어 숫자 특수문자를 포함해 8자 이상 입력해주세요">
+						</div>
+					</div>
+				</div>
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">비밀번호 확인</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+							<input type="password" v-model="pwdRe" ref="pwdReRef" placeholder="비밀번호를 재입력 입력해주세요">
+						</div>
+					</div>
+				</div>
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">주소</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box ip-ico-box type2">
+							<input type="hidden" id="postcode" placeholder="우편번호" readonly="readonly" v-model="zipCode">						
+							<input type="text" id="address" placeholder="주소"  readonly="readonly" v-model="address">
+							<div class="btn-box type2">
+								<button type="button" @click="daumPost">주소검색</button>
+							</div>
+						</div>
+						<div class="ip-box mgt10">
+							<input type="text" id="detailAddress" placeholder="상세주소를 입력해주세요" v-model="detailAddress" ref="addrRef">
+						</div>
+					</div>
+				</div>
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">이름</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+							<input type="text" v-model="name" ref="nameRef" placeholder="이름을 입력해주세요">
+						</div>
+					</div>
+				</div>
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">이메일</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+							<input type="text" v-model="email" ref="emailRef" placeholder="이메일은 형식에 맞게 입력해주세요">
+						</div>
+					</div>
+				</div>
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">핸드폰번호</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+							<input type="text" v-model="phone" ref="phoneRef" placeholder="핸드폰 번호는 숫자만 입력해주세요">
+						</div>
+					</div>
+				</div>
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">생일</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+							<input type="date" v-model="birth" ref="birthRef" placeholder="생일을 입력해주세요">
+						</div>
+					</div>
+				</div>
+				<div class="btn-box front-box mgt20"><button type="button" @click="fnJoin">회원가입</button></div>
 			</div>
-			<div class="ip-list">
-                <div class="tit-box">
-                    <p class="tit">이름</p>
-                </div>
-                <div class="bot-box">
-                    <div class="ip-box">
-                        <input type="text" v-model="name" ref="nameRef" placeholder="이름을 입력해주세요">
-                    </div>
-                </div>
-            </div>
-			<div class="ip-list">
-                <div class="tit-box">
-                    <p class="tit">이메일</p>
-                </div>
-                <div class="bot-box">
-                    <div class="ip-box">
-                        <input type="text" v-model="email" ref="emailRef" placeholder="이메일은 형식에 맞게 입력해주세요">
-                    </div>
-                </div>
-            </div>
-			<div class="ip-list">
-                <div class="tit-box">
-                    <p class="tit">핸드폰번호</p>
-                </div>
-                <div class="bot-box">
-                    <div class="ip-box">
-                        <input type="text" v-model="phone" ref="phoneRef" placeholder="핸드폰 번호는 숫자만 입력해주세요">
-                    </div>
-                </div>
-            </div>
-			<div class="ip-list">
-			    <div class="tit-box">
-			        <p class="tit">생일</p>
-			    </div>
-			    <div class="bot-box">
-			        <div class="ip-box">
-			            <input type="date" v-model="birth" ref="birthRef" placeholder="생일을 입력해주세요">
-			        </div>
-			    </div>
-			</div>
-			<div><button type="button" @click="fnJoin">회원가입</button></div>
 		</div>
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
