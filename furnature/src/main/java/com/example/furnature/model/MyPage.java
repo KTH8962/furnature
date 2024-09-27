@@ -65,6 +65,7 @@ public class MyPage {
 	private String mileagePrice;
 	private String mileageStatus;
 	private String cdatetime;
+	private String fullCdatetime;
 
 	public String getAuctionBiddingPrice() {
 		return auctionBiddingPrice;
