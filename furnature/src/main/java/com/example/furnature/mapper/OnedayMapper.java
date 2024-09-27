@@ -19,9 +19,6 @@ public interface OnedayMapper {
 	//원데이클래스 수강신청
 	void onedayJoin(HashMap<String,Object> map);
 	
-	//원데이클래스 결제
-	void onedayPay(HashMap<String,Object> map);
-	
 	//원데이클래스 개별 상세 정보
 	List<Oneday> onedayDetail(HashMap<String,Object> map);
 	

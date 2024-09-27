@@ -3,7 +3,7 @@
 <html>
 <head>
     <jsp:include page="/layout/headlink.jsp"></jsp:include>
-    <script src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 </head>
 <body>
     <jsp:include page="/layout/header.jsp"></jsp:include>
@@ -21,10 +21,11 @@
 	                        <div>클래스명: {{item.className}}</div>
 	                        <div>결제ID: {{item.payId}}</div>
 	                        <div>신청일자: {{item.joinDay}}</div>
+							<div>결제금액 : {{price}} </div>
 							<br>
 	                        <div><button @click="fnCancel()">수강취소</button></div>
 	                    	<br>
-							<div><button @click="fnPay">결제</button></div>
+							<div><button @click="fnPay()">결제</button></div>
 	                    </div>
 					</div>					
                 </div>
@@ -35,6 +36,9 @@
 </body>
 </html>
 <script>
+	const userCode = ""; 
+	IMP.init("imp52370275");
+	
     const app = Vue.createApp({
         data() {
             return {
@@ -43,8 +47,8 @@
                 list: [],
 				isCustomer : true,
 				className : "",
-				price : "",
-			    payId : ""
+			    payId : "",
+				price : ""
             };
         },
         methods: {
@@ -59,7 +63,12 @@
 	                   type: "POST",
 	                   data: nparmap,
 	                   success: function(data) {
+						   console.log(data);
 	                       self.list = data.onedayInfo;
+						   for(var i =0; i<self.list.length; i++){
+							self.className = data.onedayInfo[i].className;
+							self.price = data.onedayInfo[i].price;
+						   }		
 	                   }
 	               });
 				}else{
@@ -70,11 +79,11 @@
 			    var self = this;
 				var payConfirm = confirm("결제하시겠습니까?");
 				if(payConfirm){
-					self.fnPay();						
-				}else{
-					alert("결제를 취소하셨습니다");
-				}	
-			    IMP.request_pay({
+				
+					console.log("className:", self.className);  // 값을 확인하는 콘솔 출력
+					console.log("price:", self.price);  // 값을 확인하는 콘솔 출력
+
+					IMP.request_pay({
 					pg: "html5_inicis",
 				    pay_method: "card",
 					merchant_uid: 'oneday' + new Date().getTime(),
@@ -88,14 +97,17 @@
 			        } else {
 			            alert("실패");
 			        }
-			    }); 
+			    });				
+				}else{
+					alert("결제를 취소하셨습니다");
+				}	 
 			},
 	
 			fnSave(rsp) {
 			    var self = this;
-			    var nparmap = {name : self.name, price : rsp.paid_amount, payId : rsp.merchant_uid, classNo:self.classNo, userId:self.userId};
+			    var nparmap = {price : rsp.paid_amount, payId : rsp.merchant_uid, classNo:self.classNo, userId:self.userId};
 			    $.ajax({
-			        url: "/oneday/oneday-pay.dox",
+			        url: "/myPage/oneday-pay.dox",
 			        dataType: "json",
 			        type: "POST",
 			        data: nparmap,

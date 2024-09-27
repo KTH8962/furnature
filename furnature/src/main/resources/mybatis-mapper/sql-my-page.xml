@@ -31,11 +31,11 @@
 
 	<!--원데이클래스 신청내역 조회(회원)-->
 	<select id="onedayInfo" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
-		SELECT *
+		SELECT C.PRICE, P.NAME, PAY_ID, USER_ID, C.CLASS_NO, JOIN_DAY, PAY_DAY, C.CLASS_NAME, CLASS_DATE
 		FROM TBL_PARTICIPANT P
 		INNER JOIN TBL_CLASS C
 		ON P.CLASS_NO = C.CLASS_NO
-		WHERE P.USER_ID = #{sessionId}
+		WHERE P.USER_ID = #{userId}
 	</select>	
 	
 	<!--원데이클래스 수강취소(회원)-->

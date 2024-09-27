@@ -80,15 +80,6 @@ public class OnedayController {
 		return new Gson().toJson(resultMap);
 	}
 	
-	//원데이클래스 결제(고객)
-	@RequestMapping(value = "/oneday/oneday-pay.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	@ResponseBody
-	public String onedayPay(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception {
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap = onedayService.onedayPay(map);
-		return new Gson().toJson(resultMap);
-	}
-	
 	//원데이클래스 등록(관리자)
 	@RequestMapping(value = "/oneday/oneday-register.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
