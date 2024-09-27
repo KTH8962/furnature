@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.furnature.model.Admin;
+import com.example.furnature.model.Design;
 import com.example.furnature.model.MyPage;
 
 @Mapper
@@ -21,6 +22,7 @@ public interface AdminMapper {
 	// 유저 정보 수정
 	void updateUser(HashMap<String, Object> map);
   // 비밀번호 초기화
+	
 	void resetPwd(HashMap<String, Object> map);
 	//원데이클래스 신청인수 등 현황 조회
 	List<MyPage> currentNumber(HashMap<String, Object> map);
@@ -30,4 +32,30 @@ public interface AdminMapper {
 	void onedayFileDelete(HashMap<String, Object> map);
 	//원데이클래스 개별조회
 	Admin onedayInfo(HashMap<String, Object> map);
+	
+	
+	int adminDeliveryCount(HashMap<String, Object> map);
+	//관리자 배달현황 업데이트
+	void adminDeliveryUpdate(HashMap<String, Object> map);
+	// 관리자배송조회
+	List<MyPage> adminDelivery(HashMap<String, Object> map);
+	
+	
+	
+	//상품등록
+	void enrollProduct(HashMap<String,Object> map);
+	//상품 썸네일,설명 이미지 등록
+	void attachProduct(HashMap<String,Object> map);
+	
+	void productDelete(HashMap<String,Object> map);
+	
+	void productAttachDelete(HashMap<String,Object> map);
+	
+	void productUpdate(HashMap<String,Object> map);
+	
+	Admin productUpdateList(HashMap<String,Object> map);
+	
+	// 디자인 관리자 목록
+	List<Admin> adminDesignList(HashMap<String, Object> map);
+
 }

@@ -44,5 +44,7 @@ public interface MyPageMapper {
 	List<MyPage> onedayInfo(HashMap<String, Object> map);
 
 	int adminDeliveryCount(HashMap<String, Object> map);
-
+	
+	//관리자 배달현황 업데이트
+	void adminDeliveryUpdate(HashMap<String, Object> map);
 }
