@@ -4,7 +4,7 @@
 
 <mapper namespace="com.example.furnature.mapper.QnaMapper">
 	<select id="QnaList" parameterType="hashmap" resultType="com.example.furnature.model.Qna"> 
-		SELECT Q.*,U.USERNAME,C.COUNT AS COMMENT_COUNT
+		SELECT Q.*,U.USER_NAME,C.COUNT AS COMMENT_COUNT
 		FROM TBL_QNA Q
 		INNER JOIN TBL_USER U ON Q.USER_ID = U.USER_ID
 		LEFT JOIN
@@ -20,9 +20,9 @@
 	        AND Q.QNA_TITLE LIKE '%' ||  #{searchData} || '%'
 	    </if>
 		<if test="category == 'cateUser'">
-	        AND Q.USER_ID LIKE '%' ||  #{searchData} || '%'
+	        AND USER_NAME LIKE '%' ||  #{searchData} || '%'
 	    </if>
-		ORDER BY Q.QNA_NO ASC
+		ORDER BY Q.UDATETIME DESC
 		OFFSET #{startIndex} ROWS FETCH FIRST #{outputNumber} ROWS ONLY
 	</select>
 	<select id="listCount" parameterType="hashmap" resultType="int">
@@ -37,10 +37,10 @@
 	        AND QNA_TITLE LIKE '%' ||  #{searchData} || '%'
 	    </if>
 		<if test="category == 'cateUser'">
-	        AND USER_ID LIKE '%' ||  #{searchData} || '%'
+	        AND USER_NAME LIKE '%' ||  #{searchData} || '%'
 	    </if>
 	</select>
-	<select id="MileView" parameterType="hashmap" resultType="com.example.furnature.model.Qna"> 
+	<select id="QnaView" parameterType="hashmap" resultType="com.example.furnature.model.Qna"> 
 		SELECT *
 		FROM TBL_QNA Q
 		INNER JOIN TBL_USER U ON Q.USER_ID = U.USER_ID
@@ -61,7 +61,7 @@
 	<insert id="qnaRegist" parameterType="hashmap" useGeneratedKeys="true" keyProperty="qnaNo" keyColumn="QNA_NO">
 		INSERT
 		INTO TBL_QNA(QNA_NO,USER_ID,QNA_TITLE,QNA_CONTENTS,QNA_CATEGORY,QNA_COUNT,CDATETIME,UDATETIME)
-		VALUES(QNA_SEQ.NEXTVAL,#{userId},#{qnaTitle},#{qnaContents},#{qnaCategory},0,SYSDATE,SYSDATE)
+		VALUES(QNA_SEQ.NEXTVAL,#{userId},#{qnaTitle},#{qnaContents},1,0,SYSDATE,SYSDATE)
 	</insert>
 	<update id="fileRegist" parameterType="hashmap">
 		UPDATE TBL_QNA
@@ -77,6 +77,11 @@
 		DELETE 
 		FROM TBL_QNA_COMMENT
 		WHERE COMMENT_NO = #{commentNo}
+	</delete>
+	<delete id="qnaDelete" parameterType="hashmap">
+		DELETE 
+		FROM TBL_QNA
+		WHERE QNA_NO = #{qnaNo}
 	</delete>
 	<update id="commentUpdate" parameterType="hashmap">
 		UPDATE TBL_QNA_COMMENT

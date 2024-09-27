@@ -75,4 +75,28 @@ public class Admin {
 	private String designChoice;
 	private String designCdateTime;
 	private String likeNo;
+	
+	//qna게시판
+	private String qnaNo;
+	private String qnaTitle;
+	private String qnaContents;
+	private String qnaCategory;
+	private String qnaCount;
+	private String cdatetime;
+	private String udatetime;
+	
+
+	private String pwd;
+	private String email;
+	private String phone;
+	private String gender;
+	private String status;
+	private String addr;
+	
+	private String commentNo;
+	private String commentContents;
+	
+	private String qnaFilePath;
+	
+	private String commentCount;
 }

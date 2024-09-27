@@ -8,12 +8,13 @@
 <body>
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
+		<div id="container"> 
 		<select name="cate" v-model="category">
 		  <option value="" selected>::전체::</option>
 		  <option value="cateTitle">제목</option>
 		  <option value="cateUser">작성자</option>
 		</select>
-		<div class="ip-box">검색 : <input type="text" v-model="searchData">
+		<div class="ip-box"><input type="text" v-model="searchData" @keyup.enter=fnGetList(1)>
 			 <button @click="fnGetList(1)">검색</button></div>
 		<table>
 	        <tr>
@@ -25,8 +26,7 @@
 	        </tr>
 	        <tr v-for="item in list">
 				<p>
-					<td v-if="item.qnaCategory == 1">질문</td>
-					<td v-if="item.qnaCategory == 2">공지사항</td>					
+					<td v-if="item.qnaCategory == 1">Q&A질문</td>				
 				</p>
 	            <td>{{item.qnaNo}}</td>
 	            <td>{{item.userName}}</td>
@@ -35,14 +35,16 @@
 	        </tr>
 	    </table>
 				<button @click="fnInsert()">게시글작성</button>
-		<div class="pagination">
-		    <button v-if="currentPage > 1"  @click="fnBeforePage()">이전</button>
-		    <button v-for="page in totalPages" :class="{active: page == currentPage}" @click="fnGetList(page)">
+		<div class="pagenation">
+		    <button type="button" class="prev" v-if="currentPage > 1"  @click="fnBeforePage()">이전</button>
+		    <button type="button" class="num" v-for="page in totalPages" :class="{active: page == currentPage}" @click="fnGetList(page)">
 		        {{ page }}
 		    </button>
-		    <button v-if="currentPage < totalPages" @click="fnAfterPage()">다음</button>
+		    <button type="button" class="next" v-if="currentPage < totalPages" @click="fnAfterPage()">다음</button>
 		</div>
 		<hr>
+	 세션 : {{sessionId}}
+	</div>
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
 </body>
@@ -79,7 +81,7 @@
 					category : self.category
 				    };
 				$.ajax({
-					url:"qna/qna_list.dox",
+					url:"/qna/qna_list.dox",
 					dataType:"json",	
 					type : "POST", 
 					data : nparmap,
@@ -92,7 +94,7 @@
             },
 			fnView(qnano){
 				var self = this;
-				$.pageChange("/qnaview.do",{qnaNo : qnano});
+				$.pageChange("/qna/qnaview.do",{qnaNo : qnano});
 			},
 			fnBeforePage(){
 				var self = this;

@@ -2,15 +2,13 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="UTF-8">
-	<jsp:include page="/layout/menu.jsp"></jsp:include>
-	<title>첫번째 페이지</title>
-</head>
-<style>
-</style>
-<body>
-	<div id="app">
+	<head>
+		<jsp:include page="/layout/headlink.jsp"></jsp:include>
+	</head>
+	<body>
+		<jsp:include page="/layout/header.jsp"></jsp:include>
+		<div id="app">
+			<div id="container"> 
 			<select name="category" v-model="category">
 			  <option value="" selected>::전체::</option>
 			  <option value="1">Q&A</option>
@@ -28,7 +26,8 @@
 				<button @click="fnRegist()">등록</button>
 				<button @click="fnCancel()">취소</button>
 			</div>
-	</div>
+		</div>	
+     </div>
 </body>
 </html> 
 <script>
@@ -86,7 +85,7 @@
 					data : nparam,
 					success : function(data) {
 						alert("수정되었습니다.");
-						location.href="mileagelist.do"
+						location.href="qnalist.do"
 						
 					}
 				});
