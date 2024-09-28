@@ -458,6 +458,9 @@ body {
 	width: 1400px;
 	min-height: calc(100vh - 280px);
 }
+#container.myPage {
+	width: 1250px;
+}
 #container .sub-tit {
 	font-size: 40px;
 	font-Weight: 700;
@@ -627,6 +630,7 @@ body {
 	font-Weight: 500;
 	flex: 0 1 100%;
 	height: 50px;
+	transition: all 0.2s;
 }
 #container .detail-tab button + button {
 	border-left: 1px solid var(--color-contrastyC);
@@ -636,14 +640,31 @@ body {
 	background-color: var(--color-contrasty2);
 	border-color: var(--color-contrasty2);
 }
+#container .detail-bottom {
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 50px;
+	margin-left: 0px;
+}
 #container .detail-bottom .detail-bottom-box {
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
+	padding-top: 0px;
+	padding-right: 20px;
+	padding-bottom: 20px;
+	padding-left: 20px;
+	border-bottom: 1px solid var(--color-contrastyC);
 }
 #container .detail-bottom img {
 	margin: 0px auto;
 	width: auto;
+}
+#container .board-search-box {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 0 15px;
 }
 
 /** //container **/
@@ -741,7 +762,7 @@ body {
 	background-color: var(--base-white);
 }
 .roulette-wrap .roulette-box .roulette-btn:hover {
-	font-Weight: var(--base-white);
+	color: var(--base-white);
 	background-color: var(--color-contrasty2);
 }
 
@@ -752,30 +773,209 @@ body {
 	justify-content: space-between;
 	align-items: flex-start;
 }
+.myPage-wrap .myPage-tit {
+	font-size: 36px;
+	font-Weight: 700;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-bottom: 40px;
+	padding-left: 0px;
+}
 .myPage-wrap .myPage-snb {
-	width: 300px;
+	width: 250px;
+}
+.myPage-wrap .myPage-snb ul {
+	border-top: 1px solid var(--color-contrasty2);
+}
+.myPage-wrap .myPage-snb ul li {
+	border-bottom: 1px solid var(--color-contrasty2);
+	padding: 20px 0px;
 }
 .myPage-wrap .myPage-snb ul li a {
 	font-size: 18px;
-	font-Weight: 500;
+	font-Weight: 400;
 	color: var(--color-contrastyA);
 	display: inline-block;
 	transform: all 0.2s;
 }
-.myPage-wrap .myPage-snb ul li.active a, .myPage-wrap .myPage-snb ul li:hover a {
+.myPage-wrap .myPage-snb ul li a.active, .myPage-wrap .myPage-snb ul li a:hover {
+	font-Weight: 500;
 	color: var(--color-contrasty2);
 }
-.myPage-wrap .myPage-snb ul li + li {
-	margin-top: 20px;
+.myPage-wrap .myPage {
+	width: 880px;
+}
+.myPage-wrap .myPage .myPage-tit {
+	border-bottom: 1px solid var(--color-contrasty2);
+}
+.myPage-wrap .myPage .front-btn-box {
+	margin-top: 100px;
 	margin-right: 0px;
 	margin-bottom: 0px;
 	margin-left: 0px;
 }
-.myPage-wrap .myPage {
-	width: calc(100% - 360px);
+.myPage-wrap .myPage-list {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
 }
-.myPage-wrap .myPage .front-btn-box {
-	margin-top: 100px;
+.myPage-wrap .myPage-list > * {
+	border-bottom: 1px solid var(--color-contrastyE0);
+	padding: 20px 20px;
+	width: calc(50% - 10px);
+}
+.myPage-wrap .myPage-list > .ip-list {
+	margin: 0;
+}
+.myPage-wrap .myPage-img-list-wrap .myPage-img-list-box {
+	display: flex;
+	border-bottom: 1px solid var(--color-contrastyC);
+	padding: 20px 20px;
+}
+.myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .img-box {
+	margin-top: 0px;
+	margin-right: 20px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	width: 200px;
+}
+.myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .tit-box {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+}
+.myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .tit-box .num {
+	font-size: 12px;
+	font-Weight: 500;
+	color: var(--color-contrastyA);
+}
+.myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .tit-box .num + .num {
+	margin-top: 5px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+}
+.myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .tit-box .tit {
+	font-size: 20px;
+	font-Weight: 500;
+	line-height: 1.6;
+	margin-top: 5px;
+	margin-right: 0px;
+	margin-bottom: 10px;
+	margin-left: 0px;
+}
+.myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .tit-box .price-box {
+	display: flex;
+	gap: 0 10px;
+}
+.myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .tit-box .bidding-date, .myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .tit-box .end-day {
+	font-size: 14px;
+	font-Weight: 400;
+	color: var(--color-contrastyA);
+	margin: 10px 0px;
+}
+.myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .tit-box .result .desc {
+	font-size: 14px;
+	font-Weight: 500;
+	line-height: 1.6;
+}
+.myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .tit-box .result .desc + button {
+	margin-top: 5px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+}
+.myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .tit-box .result .desc.buy {
+	color: var(--color-green);
+}
+.myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .tit-box .result button {
+	font-size: 14px;
+	font-Weight: 500;
+	color: var(--color-contrastyC);
+	border: 1px solid var(--color-contrastyC);
+	padding: 10px 20px;
+	border-radius: 8px;
+	transition: all 0.2s;
+}
+.myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .tit-box .result button:hover {
+	color: var(--color-contrasty2);
+	border-color: var(--color-contrasty2);
+}
+.myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .tit-box .delivery-box {
+	display: flex;
+	gap: 0 10px;
+}
+.myPage-wrap .myPage-mileage .mileage-total {
+	font-size: 26px;
+	font-Weight: 500;
+	margin: 40px 0px;
+}
+.myPage-wrap .myPage-mileage .mileage-wrap {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 20px;
+}
+.myPage-wrap .myPage-mileage .mileage-wrap .mileage-day {
+	padding: 10px 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 10px;
+	margin-left: 0px;
+	text-align: center;
+	border-radius: 4px;
+	background-color: var(--color-contrastyF5);
+	width: 100%;
+}
+.myPage-wrap .myPage-mileage .mileage-wrap .mileage-box {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border: 1px solid var(--color-contrastyE5);
+	padding: 15px 20px;
+	width: calc(50% - 10px);
+	border-radius: 8px;
+}
+.myPage-wrap .myPage-mileage .mileage-wrap .mileage-box .state {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 11px;
+	font-Weight: 400;
+	color: var(--color-blue);
+	border: 1px solid var(--color-blue);
+	border-radius: 20px;
+	width: 40px;
+	height: 22px;
+}
+.myPage-wrap .myPage-mileage .mileage-wrap .mileage-box .tit {
+	margin: 10px 0px;
+	font-size: 20px;
+	font-Weight: 500;
+}
+.myPage-wrap .myPage-mileage .mileage-wrap .mileage-box .price {
+	font-size: 20px;
+	font-Weight: 700;
+	color: var(--color-blue);
+}
+.myPage-wrap .myPage-mileage .mileage-wrap .mileage-box .date {
+	font-size: 14px;
+	font-Weight: 400;
+	color: var(--color-contrastyA);
+	margin-top: 10px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+}
+.myPage-wrap .myPage-mileage .mileage-wrap .mileage-box.minus .state {
+	color: var(--color-red);
+	border-color: var(--color-red);
+}
+.myPage-wrap .myPage-mileage .mileage-wrap .mileage-box.minus .price {
+	color: var(--color-red);
+}
+.myPage-wrap .myPage-mileage .mileage-wrap + .mileage-wrap {
+	margin-top: 30px;
 	margin-right: 0px;
 	margin-bottom: 0px;
 	margin-left: 0px;
@@ -971,7 +1171,7 @@ body {
 
 .front-btn-box {
 	display: flex;
-	justify-content: flex-start;
+	justify-content: flex-end;
 	align-items: center;
 	gap: 0 20px;
 }
@@ -1088,6 +1288,101 @@ table tr th, table tr td {
 }
 .user-table .tr > *:nth-of-type(9) {
 	width: 4%;
+}
+
+.product-table .tr > *:nth-of-type(1) {
+	width: 5%;
+}
+.product-table .tr > *:nth-of-type(2) {
+	width: 45%;
+}
+.product-table .tr > *:nth-of-type(3) {
+	width: 20%;
+}
+.product-table .tr > *:nth-of-type(4) {
+	width: 15%;
+}
+.product-table .tr > *:nth-of-type(5) {
+	width: 10%;
+}
+.product-table .tr > *:nth-of-type(6) {
+	width: 5%;
+}
+
+.delivery-table .tr > *:nth-of-type(1) {
+	width: 20%;
+}
+.delivery-table .tr > *:nth-of-type(2) {
+	width: 10%;
+}
+.delivery-table .tr > *:nth-of-type(3) {
+	width: 45%;
+}
+.delivery-table .tr > *:nth-of-type(4) {
+	width: 5%;
+}
+.delivery-table .tr > *:nth-of-type(5) {
+	width: 15%;
+}
+.delivery-table .tr > *:nth-of-type(6) {
+	width: 5%;
+}
+
+.oneday-table .tr > *:nth-of-type(1) {
+	width: 10%;
+}
+.oneday-table .tr > *:nth-of-type(2) {
+	width: 25%;
+}
+.oneday-table .tr > *:nth-of-type(3) {
+	width: 20%;
+}
+.oneday-table .tr > *:nth-of-type(4) {
+	width: 20%;
+}
+.oneday-table .tr > *:nth-of-type(5) {
+	width: 10%;
+}
+.oneday-table .tr > *:nth-of-type(6) {
+	width: 10%;
+}
+.oneday-table .tr > *:nth-of-type(7) {
+	width: 5%;
+}
+
+.design-table .tr > *:nth-of-type(1) {
+	width: 5%;
+}
+.design-table .tr > *:nth-of-type(2) {
+	width: 15%;
+}
+.design-table .tr > *:nth-of-type(3) {
+	width: 45%;
+}
+.design-table .tr > *:nth-of-type(4) {
+	width: 15%;
+}
+.design-table .tr > *:nth-of-type(5) {
+	width: 15%;
+}
+.design-table .tr > *:nth-of-type(6) {
+	width: 5%;
+}
+
+.qna-table .tr > *:nth-of-type(1) {
+	width: 5%;
+}
+.qna-table .tr > *:nth-of-type(2) {
+	width: 15%;
+}
+.qna-table .tr > *:nth-of-type(3) {
+	width: 50%;
+}
+.qna-table .tr > *:nth-of-type(4) {
+	width: 25%;
+}
+.qna-table .tr > *:nth-of-type(5) {
+	width: 5%;
 }
 
 .ip-box input[type=text], .ip-box input[type=password], .ip-box input[type=date], .ip-box input[type=datetime-local] {

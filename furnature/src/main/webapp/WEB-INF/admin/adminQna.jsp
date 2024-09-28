@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="contents-table">
-                    <div class="flex-table user-table">
+                    <div class="flex-table qna-table">
                         <div class="thead">
                             <div class="tr">
                                 <div class="th">질문번호</div>
@@ -68,7 +68,7 @@
 				searchKeyword : "",
 				searchData : "",
 				currentPage: 1,      
-				pageSize: 10,        
+				pageSize: 11,        
 				totalPages: 1,
             };
         },

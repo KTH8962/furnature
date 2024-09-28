@@ -25,7 +25,7 @@
 	                </div>
                 </div>
                 <div class="contents-table">
-                    <div class="flex-table user-table">
+                    <div class="flex-table delivery-table">
                         <div class="thead">
                             <div class="tr">
                                 <div class="th">주문번호</div>
@@ -33,6 +33,7 @@
                                 <div class="th">상품이름</div>
                                 <div class="th">구매수량</div>
                                 <div class="th">배달현황</div>
+								<div class="th">기능</div>
                             </div>
                         </div>
 						<div class="tbody">
