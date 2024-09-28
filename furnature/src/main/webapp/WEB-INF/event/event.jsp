@@ -10,7 +10,6 @@
 	<div id="app">
 		<div id="container">            
             <p class="blind">이벤트 페이지</p>
-
 			<h2 class="sub-tit">경매 리스트</h2>
 			<ul class="img-list auction-list">
 				<li v-for="item in auctionList" :class="item.auctionStatus == 'E' ? 'end': item.auctionStatus == 'I' ? 'ing' : 'fu'">

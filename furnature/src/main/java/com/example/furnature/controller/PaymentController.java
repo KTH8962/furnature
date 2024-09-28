@@ -26,27 +26,33 @@ public class PaymentController {
 	@Autowired
 	PaymentServiceImpl paymentService;
 	
-	private IamportClient iamportClient;
+	//private IamportClient iamportClient;
 	
-	@PostMapping("/payment/test.dox")
-	public String editUser(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+	@PostMapping("/payment/payment/{imp_uid}")
+	public IamportResponse<Payment> paymentByImpUid(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		System.out.println(map);
-		resultMap = paymentService.payment(map);
-		return new Gson().toJson(resultMap);		
+		return paymentService.payment(map);	
 	}
+	
+	@PostMapping("/payment/cancel/{imp_uid}")
+	public IamportResponse<Payment> cancelPaymentByImpUid(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		System.out.println(map);
+		return paymentService.cancel(map);	
+	}
+	
     ///IamportClient 객체 생성
     public PaymentController() {
-        this.iamportClient = new IamportClient("2547521225544270", "m9t32DK2cjfLX6Fo2NUVcAsQySGqEO1GUBbnpXX1mUBHyxUGE0qqiSopsGbPwsSmYyfHjFrYs79ajDuw");
+        //this.iamportClient = new IamportClient("2547521225544270", "m9t32DK2cjfLX6Fo2NUVcAsQySGqEO1GUBbnpXX1mUBHyxUGE0qqiSopsGbPwsSmYyfHjFrYs79ajDuw");
     }
-
-    @PostMapping("/payment/verification/{imp_uid}")
-    private IamportResponse<Payment> paymentByImpUid(@PathVariable("imp_uid") String imp_uid) throws IamportResponseException, IOException {
-        return iamportClient.paymentByImpUid(imp_uid);
-    }
-    
-    @PostMapping("/payment/cancel/{imp_uid}")
-    private IamportResponse<Payment> cancelPaymentByImpUid(@PathVariable("imp_uid") String imp_uid) throws IamportResponseException, IOException {
-        return iamportClient.cancelPaymentByImpUid(new CancelData(imp_uid, true));
-    }
+//
+//    @PostMapping("/payment/verification/{imp_uid}")
+//    private IamportResponse<Payment> paymentByImpUid(@RequestParam HashMap<String, Object> map) throws IamportResponseException, IOException {
+//    	System.out.println(map);
+//        return paymentService.payment((String)map.get("imp_uid"));
+//    }
+//    
+//    @PostMapping("/payment/cancel/{imp_uid}")
+//    private IamportResponse<Payment> cancelPaymentByImpUid(@PathVariable("imp_uid") String imp_uid) throws IamportResponseException, IOException {
+//        return iamportClient.cancelPaymentByImpUid(new CancelData(imp_uid, true));
+//    }
 }

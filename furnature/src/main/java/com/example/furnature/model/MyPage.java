@@ -44,6 +44,7 @@ public class MyPage {
 	private String auctionPrice;
 	private String auctionPriceCurrent;
 	private String auctionStatus;
+	private String auctionImgPath;
 	
 	// 배송
 	private String payNo;
@@ -67,7 +68,7 @@ public class MyPage {
 	private String mileagePrice;
 	private String mileageStatus;
 	private String cdatetime;
-	private String fullCdatetime;
+	private String time;
 
 	public String getAuctionBiddingPrice() {
 		return auctionBiddingPrice;

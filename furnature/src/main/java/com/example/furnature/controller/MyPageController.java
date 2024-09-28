@@ -22,36 +22,42 @@ public class MyPageController {
     // 마이페이지
     @RequestMapping("/myPage/myPage.do")
     public String myPage(Model model) throws Exception{
+    	model.addAttribute("activePage","myPage");
         return "/myPage/myPage";
     }
 
     //원데이클래스 신청내역 조회 페이지
     @RequestMapping("/myPage/oneday.do")
     public String onedayInfo(Model model) throws Exception{
+    	model.addAttribute("activePage","oneday");
         return "/myPage/myPage-oneday";
     }
     
     // 경매 입찰 리스트 조회 페이지
     @RequestMapping("/myPage/bidding.do")
     public String bidding(Model model) throws Exception{
+    	model.addAttribute("activePage","bidding");
         return "/myPage/myPage-bidding";
     }
     
     // 배송 조회 페이지
     @RequestMapping("/myPage/delivery.do")
     public String delivery(Model model) throws Exception{
+    	model.addAttribute("activePage","delivery");
     	return "/myPage/myPage-delivery";
     }
     
     // 마일리지 리스트 조회 페이지
     @RequestMapping("/myPage/mileage.do")
     public String mileage(Model model) throws Exception{
+    	model.addAttribute("activePage","mileage");
     	return "/myPage/myPage-mileage";
     }
 
-    // 마일리지 리스트 조회 페이지
+    // 장바구니 리스트 조회 페이지
     @RequestMapping("/myPage/cart.do")
     public String cart(Model model) throws Exception{
+    	model.addAttribute("activePage","cart");
     	return "/myPage/myPage-cart";
     }
     
