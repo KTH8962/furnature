@@ -17,5 +17,6 @@ public interface MyPageService {
     HashMap<String, Object> searchMileageList(HashMap<String, Object> map);
     // 원데이클래스 신청내역 조회(회원)
     HashMap<String, Object> onedayInfo(HashMap<String, Object> map);
-
+	//원데이클래스 결제
+	HashMap<String,Object> onedayPay(HashMap<String,Object> map);
 }

@@ -66,26 +66,6 @@ public class OnedayServiceImpl implements OnedayService{
 			return resultMap;
 		}
 	
-	//원데이클래스 결제
-	@Override
-	public HashMap<String, Object> onedayPay(HashMap<String, Object> map) {
-		HashMap<String,Object> resultMap = new HashMap<>();
-		try{
-			onedayMapper.onedayPay(map);
-			resultMap.put("result", "success");
-			resultMap.put("message", ResMessage.RM_SUCCESS);
-		} catch (DataAccessException e) {
-			resultMap.put("result", "fail");
-			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
-		} catch (PersistenceException e) {
-			resultMap.put("result", "fail");
-			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
-		} catch (Exception e) {
-			resultMap.put("result", "fail");
-			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
-		}
-			return resultMap;
-		}
 	
 	//원데이클래스 개별 상세 정보
 	@Override

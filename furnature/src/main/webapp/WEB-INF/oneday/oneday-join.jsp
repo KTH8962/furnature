@@ -35,7 +35,7 @@
 								<div>{{message1}}</div>
 								<div>{{message2}}</div>
 							</template>
-							<template v-else-if="message1=='' && numberLimit>currentNumber">
+							<template v-else="message1=='' && numberLimit>currentNumber">
 								<div>{{message1}}</div>
 								<div>{{message2}}</div>
 								<div class="ip-box ip-ico-box type2">

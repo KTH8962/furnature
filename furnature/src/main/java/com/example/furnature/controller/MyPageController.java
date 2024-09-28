@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.furnature.dao.MyPageService;
 import com.google.gson.Gson;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 
 @Controller
 public class MyPageController {
@@ -32,6 +34,7 @@ public class MyPageController {
     	model.addAttribute("activePage","oneday");
         return "/myPage/myPage-oneday";
     }
+
     
     // 경매 입찰 리스트 조회 페이지
     @RequestMapping("/myPage/bidding.do")
@@ -124,7 +127,15 @@ public class MyPageController {
         resultMap = myPageService.onedayInfo(map);
         return new Gson().toJson(resultMap);
     }
-
+    
+  //원데이클래스 결제(고객)
+  	@RequestMapping(value = "/myPage/oneday-pay.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+  	@ResponseBody
+  	public String onedayPay(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+  		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+  		resultMap = myPageService.onedayPay(map);
+  		return new Gson().toJson(resultMap);
+  	}
 
 }
 
