@@ -65,6 +65,10 @@ public class MyPage {
 	private String mileagePrice;
 	private String mileageStatus;
 	
+	//장바구니
+	private String cartNo;
+	private String productSize;
+	
 	public String getAuctionBiddingPrice() {
 		return auctionBiddingPrice;
 	}

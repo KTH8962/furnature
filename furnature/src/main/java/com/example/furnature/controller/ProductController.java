@@ -20,6 +20,7 @@ import com.example.furnature.mapper.ProductMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -229,17 +230,30 @@ public class ProductController {
 	   System.out.println("CCCCCCCCCCCCCCCCUPDATE" + map);
 	   return new Gson().toJson(resultMap);
    }
-	/*
-	 * //장바구니 담기
-	 * 
-	 * @RequestMapping(value = "/productDetail/cart.dox", method =
-	 * RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	 * 
-	 * @ResponseBody public String cartInsert(Model model, @RequestParam
-	 * HashMap<String, Object> map) throws Exception { HashMap<String, Object>
-	 * resultMap = new HashMap<String, Object>(); resultMap =
-	 * productService.cartInsert(map);
-	 * System.out.println("cartInsertcartInsertcartInsertcartInsert" + map); return
-	 * new Gson().toJson(resultMap); }
-	 */
+	//장바구니 담기
+   @RequestMapping(value = "/productDetail/cart.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+   @ResponseBody
+   public String cartInsert(Model model, @RequestParam HashMap<String, Object> map, @RequestParam("selectedSzie") String selectedSzieJson) throws Exception {
+       HashMap<String, Object> resultMap = new HashMap<>();
+       
+       // JSON 파싱
+       Gson gson = new Gson();
+       List<HashMap<String, Object>> selectedSizeList = gson.fromJson(selectedSzieJson, new TypeToken<List<HashMap<String, Object>>>(){}.getType());
+       
+       for (int i = 0; i < selectedSizeList.size(); i++) {
+           HashMap<String, Object> cartMap = new HashMap<>();
+           cartMap.put("productNo", map.get("productNo"));
+           cartMap.put("userId", map.get("userId"));
+           cartMap.put("selectedSize", selectedSizeList.get(i).get("size"));
+           cartMap.put("price", ((Number) selectedSizeList.get(i).get("price")).intValue()); // 정수로변환
+           cartMap.put("count", ((Number) selectedSizeList.get(i).get("count")).intValue()); // 정수로 변환
+           
+           // cart에 아이템 추가
+           resultMap = productService.insertCart(cartMap); // insertCart 메서드를 호출
+           System.out.println(cartMap);
+       }
+       System.out.println("resultMMMM"+resultMap);
+       return new Gson().toJson(resultMap);
+   }
+	 
 }

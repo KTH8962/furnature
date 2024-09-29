@@ -225,6 +225,7 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) { 
+						console.log("pruductdetail");
 						console.log(data);
 						self.productDetail = data.productDetail;
 						//상품번호에 맞는 사이즈를 리스트 안에 담아주기
@@ -282,16 +283,23 @@
 						}if(buttonNo==2){
 							if(confirm('선택하신 상품을 장바구니에 담으시겠습니까?')){
 								//$.pageChange("basket.do",{productNo : self.productNo , totalPrice : self.totalPrice , selectedSize : self.selectedSize});
+								var nparmap = {
+									productNo : self.productNo,
+									userId : self.sessionId,
+									selectedSzie : JSON.stringify(self.selectedSize) //리스트라 JSON형식으로 변환
+								};
 								$.ajax({
 									url:"/productDetail/cart.dox",
 									dataType:"json",
 									type : "POST", 
 									data : nparmap,
 									success : function(data) { 
-										console.log(data);
 									}
 								});
-								console.log(self.selectedSize);
+								if(confirm('장바구니 목록으로 이동하시겠습니까?')){
+									window.location.href = "/myPage/cart.do";
+								}
+								window.location.reload();
 							}
 						}
 					}

@@ -223,5 +223,18 @@ public class ProductServiceImpl implements ProductService{
 		}
 		return resultMap;
 	}
+	//장바구니 담기
+	@Override
+	public HashMap<String, Object> insertCart(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			productmapper.insertCart(map);
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
 	
 }

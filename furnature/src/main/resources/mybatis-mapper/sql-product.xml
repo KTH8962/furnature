@@ -140,4 +140,9 @@
 	    REVIEW_RATING = #{reviewRating}, REVIEW_UDATETIME = SYSDATE 
 	    WHERE REVIEW_NO = #{reviewNo}
 	</update>
+	
+	<insert id="insertCart" parameterType="hashmap">
+        INSERT INTO TBL_PRODUCT_CART 
+   		VALUES (CART_NO_SEQ.NEXTVAL, #{productNo}, #{userId}, #{selectedSize}, #{price}, #{count}, SYSDATE, SYSDATE)
+	</insert>
 </mapper>
