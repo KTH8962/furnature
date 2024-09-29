@@ -1,5 +1,6 @@
 package com.example.furnature.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -139,12 +140,22 @@ public class MyPageServiceImpl implements MyPageService {
 	        return resultMap;
 	}
 
+	// 마일리지 리스트 조회
 	@Override
 	public HashMap<String, Object> searchMileageList(HashMap<String, Object> map) {
 		HashMap<String, Object> resultMap = new HashMap<>();
         try {
-        	List<MyPage> mileageList = myPageMapper.selectMileageList(map);
-            resultMap.put("mileageList", mileageList);
+        	List<MyPage> mileageList = myPageMapper.selectMileageList(map);        	
+        	 HashMap<String, List<MyPage>> groupedMileage = new HashMap<>();
+
+             for (MyPage mileage : mileageList) {
+                 String date = mileage.getCdatetime();
+
+                 // 날짜별로 리스트를 초기화하거나 추가
+                 groupedMileage.putIfAbsent(date, new ArrayList<>());
+                 groupedMileage.get(date).add(mileage);
+             }
+        	resultMap.put("groupedMileage", groupedMileage);
             resultMap.put("result", "success");
             resultMap.put("message", ResMessage.RM_SUCCESS);
         } catch (DataAccessException e) {
@@ -181,6 +192,27 @@ public class MyPageServiceImpl implements MyPageService {
         }
         return resultMap;
     }
+    
+	//원데이클래스 결제
+	@Override
+	public HashMap<String, Object> onedayPay(HashMap<String, Object> map) {
+		HashMap<String,Object> resultMap = new HashMap<>();
+		try{
+			myPageMapper.onedayPay(map);
+			resultMap.put("result", "success");
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (DataAccessException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+		} catch (PersistenceException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+			return resultMap;
+		}
 
 	@Override
 	public HashMap<String, Object> searchCartList(HashMap<String, Object> map) {

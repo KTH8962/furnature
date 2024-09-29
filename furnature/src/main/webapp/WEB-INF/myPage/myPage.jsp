@@ -8,116 +8,123 @@
 <body>
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
-		<div id="container">            
-            <p class="blind">마이페이지 - 내정보</p>
+		<div id="container" class="myPage">            
+            <p class="blind">마이페이지 - 내정보</p>			
 			<div class="myPage-wrap">
 				<div class="myPage-snb-wrap">
 					<jsp:include page="/layout/myPageSnb.jsp"></jsp:include>
 				</div>
 				<div class="myPage myPage-info">
-					<div class="ip-list">
-					    <div class="tit-box">
-					        <p class="tit">아이디</p>
-					    </div>
-					    <div class="bot-box">
-					        <p>{{info.userId}}</p>
-					    </div>
+					<h2 class="myPage-tit">내정보</h2>
+					<div class="myPage-list">
+						<div class="ip-list">
+							<div class="tit-box">
+								<p class="tit">아이디</p>
+							</div>
+							<div class="bot-box">
+								<p>{{info.userId}}</p>
+							</div>
+						</div>
+						<div class="ip-list">
+							<div class="tit-box">
+								<p class="tit">이름</p>
+							</div>
+							<div class="bot-box">
+								<p>{{info.userName}}</p>
+							</div>
+						</div>
+						<div class="ip-list" v-if="sessionId != 'admin'">
+							<div class="tit-box">
+								<p class="tit">마일리지</p>
+							</div>
+							<div class="bot-box">
+								<p>{{info.mileageTotal}}</p>
+							</div>
+						</div>
+						<div class="ip-list">
+							<div class="tit-box">
+								<p class="tit">주소</p>
+							</div>
+							<div class="bot-box">
+								<template v-if="!editInfo">
+									<p>{{info.userAddr}}</p>
+								</template>
+								<template v-else>
+									<div class="ip-box ip-ico-box type2">
+										<input type="hidden" id="postcode" placeholder="우편번호" readonly="readonly" v-model="zipCode">
+										<input type="text" id="address" placeholder="주소"  readonly="readonly" v-model="address">
+										<div class="btn-box type2">
+											<button type="button" @click="daumPost">주소검색</button>
+										</div>
+									</div>
+									<div class="ip-box mgt10">
+										<input type="text" id="detailAddress" placeholder="상세주소" v-model="detailAddress">
+									</div>
+								</template>
+							</div>
+						</div>
+						<div class="ip-list">
+							<div class="tit-box">
+								<p class="tit">핸드폰 번호</p>
+							</div>
+							<div class="bot-box">
+								<template v-if="!editInfo">
+									<p>{{info.userPhone}}</p>
+								</template>
+								<template v-else>
+									<div class="ip-box">
+										<input type="text" v-model="phone" ref="phoneRef">
+									</div>
+								</template>
+							</div>
+						</div>
+						<div class="ip-list">
+							<div class="tit-box">
+								<p class="tit">이메일</p>
+							</div>
+							<div class="bot-box">
+								<template v-if="!editInfo">
+									<p>{{info.userEmail}}</p>
+								</template>
+								<template v-else>
+									<div class="ip-box">
+										<input type="text" v-model="email" ref="emailRef">
+									</div>
+								</template>
+							</div>
+						</div>
+						<div class="ip-list">
+							<div class="tit-box">
+								<p class="tit">생년월일</p>
+							</div>
+							<div class="bot-box">
+								<p>{{info.userBirth}}</p>
+							</div>
+						</div>
+						<div class="ip-list">
+							<div class="tit-box">
+								<p class="tit">참여여부</p>
+							</div>
+							<div class="bot-box">
+								<p>
+									<template v-if="info.eventRoul == 'N'">참여완료</template>
+									<template v-else>참여가능</template>
+								</p>
+							</div>
+						</div>
+						<div class="ip-list">
+							<div class="tit-box">
+								<p class="tit">참여여부</p>
+							</div>
+							<div class="bot-box">
+								<p>
+									<template v-if="info.eventCheck == 'N'">참여완료</template>
+									<template v-else>참여가능</template>
+								</p>
+							</div>
+						</div>
 					</div>
-					<div class="ip-list">
-					    <div class="tit-box">
-					        <p class="tit">이름</p>
-					    </div>
-					    <div class="bot-box">
-					        <p>{{info.userName}}</p>
-					    </div>
-					</div>
-					<div class="ip-list" v-if="sessionId != 'admin'">
-					    <div class="tit-box">
-					        <p class="tit">마일리지</p>
-					    </div>
-					    <div class="bot-box">
-					        <p>{{info.mileageTotal}}</p>
-					    </div>
-					</div>
-					<div class="ip-list">
-					    <div class="tit-box">
-					        <p class="tit">주소</p>
-					    </div>
-					    <div class="bot-box">
-							<template v-if="!editInfo">
-								<p>{{info.userAddr}}</p>
-							</template>
-							<template v-else>
-								<div class="ip-box">
-									<input type="hidden" id="postcode" placeholder="우편번호" readonly="readonly" v-model="zipCode">
-									<button type="button" @click="daumPost">주소검색</button><br>
-									<input type="text" id="address" placeholder="주소"  readonly="readonly" v-model="address"><br>
-									<input type="text" id="detailAddress" placeholder="상세주소" v-model="detailAddress">
-								</div>
-							</template>
-					    </div>
-					</div>
-					<div class="ip-list">
-					    <div class="tit-box">
-					        <p class="tit">핸드폰 번호</p>
-					    </div>
-					    <div class="bot-box">
-							<template v-if="!editInfo">
-								<p>{{info.userPhone}}</p>
-							</template>
-							<template v-else>
-								<div class="ip-box">
-									<input type="text" v-model="phone" ref="phoneRef">
-								</div>
-							</template>
-					    </div>
-					</div>
-					<div class="ip-list">
-					    <div class="tit-box">
-					        <p class="tit">이메일</p>
-					    </div>
-					    <div class="bot-box">
-							<template v-if="!editInfo">
-								<p>{{info.userEmail}}</p>
-							</template>
-							<template v-else>
-								<div class="ip-box">
-									<input type="text" v-model="email" ref="emailRef">
-								</div>
-							</template>
-					    </div>
-					</div>
-					<div class="ip-list">
-					    <div class="tit-box">
-					        <p class="tit">생년월일</p>
-					    </div>
-					    <div class="bot-box">
-					        <p>{{info.userBirth}}</p>
-					    </div>
-					</div>
-					<div class="ip-list">
-					    <div class="tit-box">
-					        <p class="tit">참여여부</p>
-					    </div>
-					    <div class="bot-box">
-					        <p>
-								<template v-if="info.eventRoul == 'N'">참여완료</template>
-								<template v-else>참여가능</template>
-							</p>
-					    </div>
-					</div>
-					<div class="ip-list">
-					    <div class="tit-box">
-					        <p class="tit">참여여부</p>
-					    </div>
-					    <div class="bot-box">
-					        <p>
-								<template v-if="info.eventCheck == 'N'">참여완료</template>
-								<template v-else>참여가능</template>
-							</p>
-					    </div>
-					</div>
-					<div>
+					<div class="front-btn-box">
 						<button type="button" @click="fnEdit" v-if="!editInfo">수정하기</button>
 						<button type="button" @click="fnSave" v-if="editInfo">저장하기</button>
 					</div>

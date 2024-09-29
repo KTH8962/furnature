@@ -31,6 +31,8 @@ public class MyPage {
 	private String payId;
 	private String currentNumber;
 	private String result;
+	private String description;
+	private String joinDay;
 	
 	// 이벤트 - 경매
 	private String auctionBiddingNo;
@@ -42,6 +44,7 @@ public class MyPage {
 	private String auctionPrice;
 	private String auctionPriceCurrent;
 	private String auctionStatus;
+	private String auctionImgPath;
 	
 	// 배송
 	private String payNo;
@@ -68,7 +71,9 @@ public class MyPage {
 	//장바구니
 	private String cartNo;
 	private String productSize;
-	
+	private String cdatetime;
+	private String time;
+
 	public String getAuctionBiddingPrice() {
 		return auctionBiddingPrice;
 	}
@@ -76,5 +81,9 @@ public class MyPage {
 	public String getAuctionPrice() {
 		return auctionPrice;
 	}	
+	
+	public String getCdatetime() {
+		return cdatetime;
+	}
 	
 }

@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="contents-table">
-                    <div class="flex-table user-table">
+                    <div class="flex-table product-table">
                         <div class="thead">
                             <div class="tr">
                                 <div class="th">상품번호</div>
@@ -33,7 +33,6 @@
                                 <div class="th">상품가격</div>
                                 <div class="th">색상</div>
                                 <div class="th">커스텀유무</div>
-                                <div class="th">수정</div>
                                 <div class="th">삭제</div>
                             </div>
                         </div>
@@ -44,7 +43,6 @@
                                 <div class="td">{{item.productPrice}}</div>
                                 <div class="td">{{item.productColor}}</div>
                                 <div class="td">{{item.productCustom}}</div>
-                                <div class="td">{{item.userBirth}}</div>
 								<div class="td">
                                     <div class="tbl-btn-box">
 										<button  @click="fnUpdate(item.productNo)"  title="수정" class="edit">수정</button>

@@ -44,12 +44,13 @@ public class OnedayServiceImpl implements OnedayService{
 		return resultMap;
 	}
 	
-	//원데이클래스 결제
+	//원데이클래스 수강신청
 	@Override
-	public HashMap<String, Object> onedayPay(HashMap<String, Object> map) {
+	public HashMap<String, Object> onedayJoin(HashMap<String, Object> map) {
 		HashMap<String,Object> resultMap = new HashMap<>();
-		try{
-			onedayMapper.onedayPay(map);
+		System.out.println("!!!!!!!!!!!!!!"+map);
+		try {
+			onedayMapper.onedayJoin(map);
 			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {
@@ -64,6 +65,7 @@ public class OnedayServiceImpl implements OnedayService{
 		}
 			return resultMap;
 		}
+	
 	
 	//원데이클래스 개별 상세 정보
 	@Override
@@ -174,7 +176,5 @@ public class OnedayServiceImpl implements OnedayService{
 		}					
 		return resultMap;
 	}
-
-	
 
 }

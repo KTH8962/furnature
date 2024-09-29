@@ -19,7 +19,7 @@
                     <h2 class="admin-tit">디자인 추천</h2>
                 </div>
                 <div class="contents-table">
-                    <div class="flex-table user-table">
+                    <div class="flex-table design-table">
                         <div class="thead">
                             <div class="tr">
                                 <div class="th">디자인번호</div>
@@ -71,7 +71,7 @@
 				depth : "",
 				height : "",
 				currentPage: 1,      
-				pageSize: 10,        
+				pageSize: 11,        
 				totalPages: 1,
 				widthSize : "",
 				depthSize : "",

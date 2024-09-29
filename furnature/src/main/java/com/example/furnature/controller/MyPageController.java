@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.furnature.dao.MyPageService;
 import com.google.gson.Gson;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 
 @Controller
 public class MyPageController {
@@ -22,36 +24,44 @@ public class MyPageController {
     // 마이페이지
     @RequestMapping("/myPage/myPage.do")
     public String myPage(Model model) throws Exception{
+    	model.addAttribute("activePage","myPage");
         return "/myPage/myPage";
     }
 
     //원데이클래스 신청내역 조회 페이지
     @RequestMapping("/myPage/oneday.do")
     public String onedayInfo(Model model) throws Exception{
+    	model.addAttribute("activePage","oneday");
         return "/myPage/myPage-oneday";
     }
+
     
     // 경매 입찰 리스트 조회 페이지
     @RequestMapping("/myPage/bidding.do")
     public String bidding(Model model) throws Exception{
+    	model.addAttribute("activePage","bidding");
         return "/myPage/myPage-bidding";
     }
     
     // 배송 조회 페이지
     @RequestMapping("/myPage/delivery.do")
     public String delivery(Model model) throws Exception{
+    	model.addAttribute("activePage","delivery");
     	return "/myPage/myPage-delivery";
     }
     
     // 마일리지 리스트 조회 페이지
     @RequestMapping("/myPage/mileage.do")
     public String mileage(Model model) throws Exception{
+    	model.addAttribute("activePage","mileage");
     	return "/myPage/myPage-mileage";
     }
 
-    // 장바구니  페이지
+
+    // 장바구니 리스트 조회 페이지
     @RequestMapping("/myPage/cart.do")
     public String cart(Model model) throws Exception{
+    	model.addAttribute("activePage","cart");
     	return "/myPage/myPage-cart";
     }
     
@@ -101,6 +111,15 @@ public class MyPageController {
     	return new Gson().toJson(resultMap);
     }
     
+    // 배송 조회
+    @RequestMapping(value = "/myPage/mileage-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String mypageMileage(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+    	HashMap<String, Object> resultMap = new HashMap<String, Object>();
+    	resultMap = myPageService.searchMileageList(map);
+    	return new Gson().toJson(resultMap);
+    }
+    
     // 원데이클래스 수강신청 내역 조회(회원)
     @RequestMapping(value = "/myPage/oneday-info.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
@@ -109,7 +128,7 @@ public class MyPageController {
         resultMap = myPageService.onedayInfo(map);
         return new Gson().toJson(resultMap);
     }
-   
+
     // 장바구니 목록 조회
     @RequestMapping(value = "/myPage/mypage-cartList.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
@@ -119,7 +138,15 @@ public class MyPageController {
     	System.out.println("CCCCCCCC"+map);
     	return new Gson().toJson(resultMap);
     }
-
+ 
+    //원데이클래스 결제(고객)
+    @RequestMapping(value = "/myPage/oneday-pay.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String onedayPay(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+      HashMap<String, Object> resultMap = new HashMap<String, Object>();
+      resultMap = myPageService.onedayPay(map);
+      return new Gson().toJson(resultMap);
+    }
 
 }
 

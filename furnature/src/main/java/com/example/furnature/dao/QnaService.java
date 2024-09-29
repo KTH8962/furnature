@@ -17,5 +17,7 @@ public interface QnaService {
 	HashMap<String, Object> commentUpdate(HashMap<String, Object> map);
 	
 	HashMap<String, Object> qnaUpdate(HashMap<String, Object> map);
+	
+	HashMap<String, Object> qnaDelete(HashMap<String, Object> map);
 
 }

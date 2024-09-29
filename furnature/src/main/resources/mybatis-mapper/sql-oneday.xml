@@ -38,19 +38,30 @@
 	      )
 	      ORDER BY FILE_NO ASC
 	</select>
+	
+	<!--원데이클래스 수강신청-->
+	<insert id="onedayJoin" parameterType="hashmap">
+		INSERT INTO TBL_PARTICIPANT
+		(NAME, USER_ID, COUNT, JOIN_DAY, CLASS_NO)
+		VALUES (#{name}, #{userId}, 1, sysdate, #{classNo})
+	</insert>
 
 	<!--원데이클래스 결제정보-->
-	<insert id="onedayPay" parameterType="hashmap">
-		INSERT INTO TBL_PARTICIPANT 
-		(PAY_ID, USER_NAME, USER_ID, COUNT, PRICE, PAY_DAY, CLASS_NO) 
-		VALUES (#{payId}, #{name}, 'user1', 1, #{price}, SYSDATE, #{classNo})
-	</insert>
+	<update id="onedayPay" parameterType="hashmap">
+		UPDATE TBL_PARTICIPANT 
+		SET 
+		    PAY_ID = #{payId}, 
+		    PRICE = #{price}, 
+		    PAY_DAY = SYSDATE 
+		WHERE 
+		    USER_ID = #{userId} AND CLASS_NO = #{classNo};
+	</update>		
 	
 	<!--원데이클래스 등록(관리자)-->
 	<insert id="onedayReg" parameterType="hashmap" useGeneratedKeys="true" keyProperty="classNo" keyColumn="CLASS_NO">
 		INSERT INTO TBL_CLASS 
-		(CLASS_NO, CLASS_NAME, PRICE, NUMBER_LIMIT, CLASS_DATE, START_DAY, END_DAY)
-		VALUES (CLASS_NO_SEQ.NEXTVAL, #{className}, #{price}, #{numberLimit}, TO_DATE(#{classDate}, 'YYYY-MM-DD HH24:MI:SS'), TO_DATE(#{startDay}, 'YYYY-MM-DD HH24:MI:SS'), TO_DATE(#{endDay}, 'YYYY-MM-DD HH24:MI:SS'))
+		(CLASS_NO, CLASS_NAME, PRICE, NUMBER_LIMIT, CLASS_DATE, START_DAY, END_DAY, DESCRIPTION)
+		VALUES (CLASS_NO_SEQ.NEXTVAL, #{className}, #{price}, #{numberLimit}, TO_DATE(#{classDate}, 'YYYY-MM-DD HH24:MI:SS'), TO_DATE(#{startDay}, 'YYYY-MM-DD HH24:MI:SS'), TO_DATE(#{endDay}, 'YYYY-MM-DD HH24:MI:SS'), #{description})
 	</insert>
 	
 	<!--원데이클래스 등록시 파일업로드-->
@@ -82,7 +93,8 @@
 			    NUMBER_LIMIT = #{numberLimit}, 
 			    CLASS_DATE = TO_DATE(#{classDate}, 'YYYY-MM-DD HH24:MI:SS'),
 			    START_DAY = TO_DATE(#{startDay}, 'YYYY-MM-DD HH24:MI:SS'), 
-			    END_DAY = TO_DATE(#{endDay}, 'YYYY-MM-DD HH24:MI:SS')
+			    END_DAY = TO_DATE(#{endDay}, 'YYYY-MM-DD HH24:MI:SS'),
+			    DESCRIPTION = #{description}
 			WHERE 
 			    CLASS_NO = #{classNo}  
 	</update>

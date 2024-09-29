@@ -8,35 +8,52 @@
 <body>
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
-		<div id="container">            
-            <p class="blind">마이페이지 - 경매입찰리스트</p>
+		<div id="container" class="myPage">            
+            <p class="blind">마이페이지 - 경매 리스트</p>
 			<div class="myPage-wrap">
 				<div class="myPage-snb-wrap">
 					<jsp:include page="/layout/myPageSnb.jsp"></jsp:include>
 				</div>
 				<div class="myPage myPage-info">
-					<div v-for="item in biddingList">
-						<div>경매 제목 : {{item.auctionTitle}}</div>
-						<div>경매 번호 : {{item.auctionNo}}</div>
-						<div>최고 입찰 금액 : {{item.auctionPriceCurrent}}</div>
-						<div>내 입찰 금액 : {{item.myBidding}}</div>
-						<div>입찰 일자 : {{item.auctionBiddingDate}}</div>
-						<div>
-							<template v-if="item.auctionStatus == 'E'">
-								<template v-if="item.auctionPriceCurrent == item.myBidding">
-									최고 입찰 금액으로 입찰되었습니다. <br>
-									제품 구매를 진행해 주세요.
-									<button @click="fnBuy(item.auctionTitle, item.myBidding)">구매하기</button>
-									<button @click="fnBuyCancel()">취소하기</button>
-								</template>
-								<template v-else>
-									최고 입찰 금액 이용자에게 입찰되었습니다. <br>
-									다른 경매에도 많은 참여해주세요.
-								</template>
-							</template>
-							<template v-else>
-								<button type="button" @click="fnCancel(item.auctionNo)">입찰 취소</button>
-							</template>
+					<h2 class="myPage-tit">경매 리스트</h2>
+					<div class="myPage-img-list-wrap">
+						<div class="myPage-img-list-box" v-for="item in biddingList">
+							<div class="img-box">
+								<img :src="item.auctionImgPath" alt="item.auctionTitle + '이미지'">
+							</div>
+							<div class="tit-box">
+								<div class="top">
+									<div class="num">No.{{item.auctionNo}}</div>
+									<div class="tit">{{item.auctionTitle}}</div>
+									<div class="price-box">
+										<div class="myPrice">내 입찰 금액 : {{item.myBidding}}</div>
+										<div class="price">최고 입찰 금액 : {{item.auctionPriceCurrent}}</div>
+									</div>
+									<div class="bidding-date">입찰 일자 : {{item.auctionBiddingDate}}</div>
+									<div class="end-day">마감일 : {{item.endDay}}</div>
+								</div>
+								<div class="result">
+									<template v-if="item.auctionStatus == 'E'">
+										<template v-if="item.auctionPriceCurrent == item.myBidding">
+											<p class="desc buy">
+												최고 입찰 금액으로 입찰되었습니다. <br>
+												제품 구매를 진행해 주세요.
+											</p>
+											<button @click="fnBuy(item.auctionTitle, item.myBidding)">구매하기</button>
+											<button @click="fnBuyCancel()">취소하기</button>
+										</template>
+										<template v-else>
+											<p class="desc">
+												최고 입찰 금액 이용자에게 입찰되었습니다. <br>
+												다른 경매에도 많은 참여해주세요.
+											</p>
+										</template>
+									</template>
+									<template v-else>
+										<button type="button" @click="fnCancel(item.auctionNo)">입찰 취소</button>
+									</template>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -68,7 +85,7 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-						//console.log(data);
+						console.log(data);
 						self.biddingList = data.biddingList;
 					}
 				});
@@ -106,7 +123,7 @@
 					if (rsp.success) {
 						self.infoList = rsp;
                         $.ajax({
-                            url: "/payment/test.dox",
+                            url: "/payment/payment/" + rsp.imp_uid,
                             method: "POST",
 							data: {
 								imp_uid : rsp.imp_uid,
@@ -147,8 +164,13 @@
 				var self = this;
 				console.log(self.infoList);
 				$.ajax({
-					url: '/payment/cancel/' + self.infoList.imp_uid,
+					url: '/payment/cancel/',
 					method: 'POST',
+					data: {
+						imp_uid : "imp_422430017777",
+						merchant_uid: "imp_422430017777",
+						amount: "imp_422430017777"
+					}
 				}).done(function (data) {
 					console.log(data);
 				})

@@ -10,10 +10,6 @@
 	<div id="app">
 		<div id="container">            
             <p class="blind">경매 상세 페이지</p>
-			<div v-if="sessionAuth > 1">
-				<button type="button" @click="fnEdit(auctionNo)">수정</button>
-				<button type="button" @click="fnRemove(auctionNo)">삭제</button>
-			</div>
 			<div class="detail-top">
 				<div class="thumb-wrap auction-detail-thumb-list">
 					<div class="thumb-list">
@@ -79,6 +75,13 @@
 					택배
 				</div>
 			</div>
+			<div class="front-btn-box">				
+				<template v-if="sessionAuth > 1">					
+					<button type="button" @click="fnEdit(auctionNo)">수정</button>
+					<button type="button" @click="fnRemove(auctionNo)">삭제</button>
+				</template>
+				<button type="button" @click="fnList">목록</button>
+			</div>	
 		</div>
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>

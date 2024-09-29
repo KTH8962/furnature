@@ -33,7 +33,7 @@
                 </div>
 				
                 <div class="contents-table">
-                    <div class="flex-table user-table">
+                    <div class="flex-table oneday-table">
                         <div class="thead">
                             <div class="tr">
 								<div class="th">번호</div>

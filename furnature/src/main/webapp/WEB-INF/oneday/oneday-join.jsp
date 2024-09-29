@@ -29,16 +29,18 @@
 				</div>
 				<div class="detail-top-info">
 					<div class="detail-box">
-						<div class="tit">수강신청</div>
+						<div class="tit">수강 신청</div>
 						<div class="info">	
-							<template v-if="message=='모집 종료' || numberLimit==currentNumber">	
-								<div v-if="message">{{message}}</div>
-								<div v-if="message2">{{message2}}</div>
+							<template v-if="message1=='모집일자가 지났습니다.' || numberLimit==currentNumber">	
+								<div>{{message1}}</div>
+								<div>{{message2}}</div>
 							</template>
-							<template v-else-if="message=='모집 중' && numberLimit>currentNumber">
+							<template v-else="message1=='' && numberLimit>currentNumber">
+								<div>{{message1}}</div>
+								<div>{{message2}}</div>
 								<div class="ip-box ip-ico-box type2">
 									<input type="text" placeholder="성함을 입력해주세요" v-model="name">
-									<div class="btn-box type2"><button type="button" @click="fnRegister">수강신청</button></div>
+									<div class="btn-box type2"><button type="button" @click="fnOnedayJoin">수강신청</button></div>
 								</div>
 							</template>
 						</div>
@@ -62,17 +64,18 @@
 				</div>
 				</div>
 				<div class="detail-tab">
-					<button type="button" @click="fnTab(1)" :class="bottomBox == '1' ? 'active' : ''">상세 정보 설명</button>
+					<button type="button" @click="fnTab(1)" :class="bottomBox == '1' ? 'active' : ''">수업 소개</button>
 					<button type="button" @click="fnTab(2)" :class="bottomBox == '2' ? 'active' : ''">클래스 장소</button>
 				</div>
 				<div class="detail-bottom">
 					<div class="detail-bottom-box" v-if="bottomBox == '1'">
-						<div>클래스에서 만들 제품에 대해 설명</div>
+						<div><pre>{{description}}</pre></div>
 					</div>
 					<div class="detail-bottom-box" v-if="bottomBox == '2'">
 						클래스 장소와 전화번호
 					</div>
 				</div>
+			</div>	
 		</div>		
     </div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
@@ -102,7 +105,8 @@
 				   startDay : "",
 				   endDay : "",
 				   classDate : "",
-				   message : "",
+				   description : "",
+				   message1 : "",
 				   message2 : "",
 				   currentSlide: 0,
 				   alreadyIn : false,
@@ -121,7 +125,6 @@
 					type : "POST",
 					data : nparmap,
 					success : function(data){
-						console.log(data);
 						self.detail = data.onedayDetail; 
 						self.classNo = data.onedayDetail[0].classNo;
 						self.className = data.onedayDetail[0].className;
@@ -129,6 +132,7 @@
 						self.endDay = data.onedayDetail[0].endDay;
 						self.classDate = data.onedayDetail[0].classDate;
 						self.price = data.onedayDetail[0].price;
+						self.description = data.onedayDetail[0].description;
 						
 						self.filePath = [];			
 						self.detail.forEach(item => {
@@ -141,10 +145,11 @@
 						var endDay = new Date(self.detail[0].endDay);
 						var today = new Date()
 						if(endDay<today){
-							self.message = "모집일자가 지났습니다.";
+							self.message1 = "모집일자가 지났습니다.";
 						}else{
-							self.message = "";
+							self.message1 = "";
 						}
+						console.log(self.message1);
 						var nparmap = {classNo:self.classNo};
 						$.ajax({
 							url : "/oneday/oneday-numberLimit.dox",
@@ -178,14 +183,15 @@
 						alert("이름을 입력해주세요");
 						return;
 					}
-					var nparmap = {classNo:self.classNo};
+					var nparmap = {classNo:self.classNo, userId:self.userId, name:self.name};
 					$.ajax({
-						url : "/oneday/oneday-numberLimit.dox",
+						url : "/oneday/oneday-join.dox",
 						dataType : "json",
 						type : "POST",
 						data : nparmap,
 						success : function(data){
-							self.numberLimit = data.numberLimit;
+							alert("수강 신청 되었습니다.");
+							console.log(data);
 						}							
 					})				
 			   },
@@ -247,7 +253,7 @@
 				        data: nparmap,
 				        success: function(data) {
 				         	console.log(data);
-							$.page
+							$.pageChange("/oneday/oneday.do", {});
 				        }
 				    });
 				},

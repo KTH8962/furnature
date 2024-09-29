@@ -33,7 +33,7 @@
 							</div>
 						</div>
 					</div>	
-					<div class="btn-box">
+					<div class="btn-box front-box">
 						<button type="button" @click="login">로그인</button>
 					</div>
 				</div>

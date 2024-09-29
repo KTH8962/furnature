@@ -8,38 +8,53 @@
 <body>
     <jsp:include page="/layout/header.jsp"></jsp:include>
     <div id="app">
-        <div id="container">            
-            <p class="blind">마이페이지 - 내정보</p>
+        <div id="container" class="myPage">            
+            <p class="blind">마이페이지 - 배송정보</p>
             <div class="myPage-wrap">
                 <div class="myPage-snb-wrap">
                     <jsp:include page="/layout/myPageSnb.jsp"></jsp:include>
                 </div>
-                <div class="myPage myPage-delivery" style="width:100%">
-                    <div>배송정보</div>
-					{{sessionId}}
-					<div v-if="!list || list.length === 0">
-					    구매 목록이 없습니다.
-					</div>
-					<div v-for="item in list">
-						<div v-if="item.orderCate =='상품'">
-							<div>상품구매 목록</div>
-							상품이름 구매수량 주문번호 배달현황
-							<div>
-	 							<a href="#" @click="fnProDetail(item.productNo)"><img :src="item.productThumbnail" style= "width : 200px ; height : 200px">
-								{{item.productName}}</a> {{item.orderCount}}개 {{item.orderNo}}	{{item.cateName}}						
-							</div>					
-						</div>		
-                   </div>
-				   <div v-for="item in list">
-						<div v-if="item.orderCate =='경매'">
-							<div>경매구매 목록</div>
-							상품이름 구매수량 주문번호 배달현황
-							<div>
-	 							<a href="#" @click="fnProDetail(item.productNo)"><img :src="item.productThumbnail" style= "width : 200px ; height : 200px">
-								{{item.productName}}</a> {{item.orderCount}}개 {{item.orderNo}}	{{item.cateName}}						
-							</div>						
-						</div>
-				   </div>
+                <div class="myPage myPage-delivery">
+                    <h2 class="myPage-tit">배송정보</h2>
+                    <div class="myPage-img-list-wrap">
+                        <div class="myPage-img-list-box" v-for="item in list">
+                            <template v-if="item.orderCate =='상품'">
+                                <div class="img-box">
+                                    <a href="#" @click="fnProDetail(item.productNo)"><img :src="item.productThumbnail"></a>
+                                </div>
+                                <div class="tit-box">
+                                    <div class="top">
+                                        <div class="num">Order No. {{item.orderNo}}</div>
+                                        <div class="num">Product No. {{item.productNo}}</div>
+                                        <div class="tit"><a href="#" @click="fnProDetail(item.productNo)">{{item.productName}}</a></div>
+                                        <div class="delivery-box">
+                                            <div class="delivery-state" :class="'state' + item.deliveryCate">{{item.cateName}}</div>
+                                            <div class="delivert-cnt">{{item.orderCount}}개</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>	
+                            <template v-if="item.orderCate =='경매'">
+                                <div class="img-box">
+                                    <a href="#" @click="fnProDetail(item.productNo)"><img :src="item.productThumbnail"></a>
+                                </div>
+                                <div class="tit-box">
+                                    <div class="top">
+                                        <div class="num">Order No. {{item.orderNo}}</div>
+                                        <div class="num">Auction No. {{item.productNo}}</div>
+                                        <div class="tit"><a href="#" @click="fnProDetail(item.productNo)">{{item.productName}}</a></div>
+                                        <div class="delivery-box">
+                                            <div class="delivery-state">{{item.cateName}}</div>
+                                            <div class="delivert-cnt">{{item.orderCount}}개</div>
+                                        </div>                                        	
+                                    </div>
+                                </div>
+                            </template>	
+                        </div>
+                    </div>
+                    <div v-if="!list || list.length === 0">
+                       구매 목록이 없습니다.
+                    </div>
 				</div>   
             </div>
         </div>    

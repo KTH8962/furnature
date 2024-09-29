@@ -86,6 +86,17 @@
 		
 		<div class="ip-list">
 		    <div class="tit-box">
+		        <p class="tit">상세설명</p>
+		    </div>
+		    <div class="bot-box">
+		        <div class="ip-box">
+		           <input type="text" v-model="description" rows="10" cols="200"></textarea>
+		        </div>
+		    </div>
+		</div>
+		
+		<div class="ip-list">
+		    <div class="tit-box">
 		        <p class="tit">파일업로드</p>
 		    </div>
 			<div class="ip-box">
@@ -110,6 +121,7 @@
 	                price: "",
 	                startDay: "",
 	                endDay: "",
+					description : "",
 					file : []
 	            };
 	        },
@@ -136,7 +148,8 @@
 						numberLimit : self.numberLimit,
 						price : self.price,
 						startDay : self.startDay.replace('T', ' '),
-						endDay : self.endDay.replace('T', ' ')		
+						endDay : self.endDay.replace('T', ' '),
+						description : self.description		
 					};
 					var startDay = new Date(self.startDay);
 					var endDay = new Date(self.endDay);
@@ -150,7 +163,7 @@
 						return;
 					}
 					
-					if(!self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay) {
+					if(!self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay || !self.description) {
 					        alert("빈칸을 채워주세요.");
 					        return;
 					}
