@@ -127,10 +127,7 @@
 					data : nparmap,
 					success : function(data) {
 						alert("삭제되었습니다.");
-                        if(data.result == "scuccess") {
-                            alert("삭제 완료되었습니다.")
-                            location.reload();
-                        }
+                        self.fnGetList(1);
 					}
 				});
             },
