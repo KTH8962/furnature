@@ -27,35 +27,47 @@
 						</div>
 					</div>
 				</div>
-				<table>
-					<tr>
-						<th>카테고리</th>
-						<th>번호</th>
-						<th>작성자</th>
-						<th>제목</th>
-						<th>작성일</th>
-					</tr>
-					<tr v-for="item in list">
-						<p>
-							<td v-if="item.qnaCategory == 1">Q&A질문</td>
-						</p>
-						<td>{{item.qnaNo}}</td>
-						<td>{{item.userName}}</td>
-						<td><a href="#" @click="fnView(item.qnaNo)">{{item.qnaTitle}} <template
-									v-if="item.commentCount > 0">[{{item.commentCount}}]</template></a></td>
-						<td>{{item.udatetime}}</td>
-					</tr>
+				<table class="table-type1">
+					<colgroup>
+						<col style="width: 5%;">
+						<col style="width: 10%;">
+						<col style="width: 12%;">
+						<col style="width: 58%;">
+						<col style="width: 15%;">
+					</colgroup>
+					<thead>
+						<tr>
+							<th>번호</th>
+							<th>카테고리</th>
+							<th>작성자</th>
+							<th>제목</th>
+							<th>작성일</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="item in list">
+							<td>{{item.qnaNo}}</td>
+							<td v-if="item.qnaCategory == 1"><p>Q&A질문</p></td>
+							<td>{{item.userName}}</td>
+							<td>
+								<a href="#" @click="fnView(item.qnaNo)">
+									{{item.qnaTitle}} <template v-if="item.commentCount > 0">[{{item.commentCount}}]</template>
+								</a>
+							</td>
+							<td>{{item.udatetime}}</td>
+						</tr>
+					</tbody>
 				</table>
 				<div class="front-btn-box">
 					<button @click="fnInsert()">게시글작성</button>
 				</div>
 				<div class="pagenation">
-					<button type="button" class="prev"  @click="fnBeforePage()">이전</button>
+					<button type="button" class="prev" @click="fnBeforePage()" :disabled="currentPage == 1">이전</button>
 					<button type="button" class="num" v-for="page in totalPages" :class="{active: page == currentPage}"
 						@click="fnGetList(page)">
 						{{ page }}
 					</button>
-					<button type="button" class="next" @click="fnAfterPage()">다음</button>
+					<button type="button" class="next" :disabled="currentPage == totalPages" @click="fnAfterPage()">다음</button>
 				</div>
 			</div>
 		</div>
