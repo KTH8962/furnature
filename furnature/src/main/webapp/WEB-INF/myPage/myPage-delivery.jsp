@@ -24,7 +24,7 @@
                                 </div>
                                 <div class="tit-box">
                                     <div class="top">
-                                        <div class="num">Order No. {{item.orderNo}}</div>
+                                        <div class="num">Order Id. {{item.orderId}}</div>
                                         <div class="num">Product No. {{item.productNo}}</div>
                                         <div class="tit"><a href="#" @click="fnProDetail(item.productNo)">{{item.productName}}</a></div>
                                         <div class="delivery-box">
@@ -40,7 +40,7 @@
                                 </div>
                                 <div class="tit-box">
                                     <div class="top">
-                                        <div class="num">Order No. {{item.orderNo}}</div>
+                                        <div class="num">Order Id. {{item.orderId}}</div>
                                         <div class="num">Auction No. {{item.productNo}}</div>
                                         <div class="tit"><a href="#" @click="fnProDetail(item.productNo)">{{item.productName}}</a></div>
                                         <div class="delivery-box">
