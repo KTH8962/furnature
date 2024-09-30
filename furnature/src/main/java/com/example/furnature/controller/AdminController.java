@@ -261,10 +261,10 @@ public class AdminController {
 				String originFilename = thumbnailFile.getOriginalFilename();
 				String extName = originFilename.substring(originFilename.lastIndexOf("."));
 				String saveFileName = genSaveFileName(extName);
-				File thumbnailFileToSave = new File(path + "\\src\\main\\webapp\\uploadImages\\product", saveFileName);
+				File thumbnailFileToSave = new File(path + "\\src\\main\\webapp\\uploadImages\\product\\", saveFileName);
 				thumbnailFile.transferTo(thumbnailFileToSave);
 				map.put("productNo", productNo);
-				map.put("productThumbnail", "../uploadImages/product" + saveFileName);
+				map.put("productThumbnail", "../uploadImages/product/" + saveFileName);
 			}
 
 			// 설명 파일 처리
@@ -272,10 +272,10 @@ public class AdminController {
 				String originFilename = descriptionFile.getOriginalFilename();
 				String extName = originFilename.substring(originFilename.lastIndexOf("."));
 				String saveFileName = genSaveFileName(extName);
-				File descriptionFileToSave = new File(path + "\\src\\main\\webapp\\uploadImages\\product",
+				File descriptionFileToSave = new File(path + "\\src\\main\\webapp\\uploadImages\\product\\",
 						saveFileName);
 				descriptionFile.transferTo(descriptionFileToSave);
-				map.put("productDetail1", "../uploadImages/product" + saveFileName);
+				map.put("productDetail1", "../uploadImages/product/" + saveFileName);
 			}
 
 			adminMapper.attachProduct(map);
