@@ -10,21 +10,40 @@
 	<div id="app">
 		<div id="container">            
             <p class="blind">기본페이지</p>
-			디자인을 추천해주세요!
-			<div class="ip-box">
-	            내가 만든 가구의 이름<input type="text" placeholder="상품의 이름을 입력해주세요" v-model="designTitle">
-	        </div>
-			<div class="ip-box">
-				<div>나의 가구는 이런가구입니다</div>
-	           <textarea placeholder="상품을 소개해주세요" v-model="designContents"></textarea>
-	        </div>
-			<div class="ip-box">
-	            디자인 첨부<input type="file" accept=".gif,.jpg,.png" @change="fnDesignAttach">
-	        </div>
-			<button @click="fnDesignRegist">디자인등록</button>
-
-			<hr>
-			{{sessionId}}
+			<h2 class="sub-tit">디자인 등록</h2>
+			<div class="ip-list">
+				<div class="tit-box">
+					<p class="tit">나의 가구 이름</p>
+				</div>
+				<div class="bot-box">
+					<div class="ip-box">
+						<input type="text" placeholder="상품의 이름을 입력해주세요" v-model="designTitle">
+					</div>
+				</div>
+			</div>
+			<div class="ip-list">
+				<div class="tit-box">
+					<p class="tit">나의 가구 소개</p>
+				</div>
+				<div class="bot-box">
+					<div class="text-box">
+						<textarea placeholder="상품을 소개해주세요" v-model="designContents"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="ip-list">
+				<div class="tit-box">
+					<p class="tit">디자인 첨부</p>
+				</div>
+				<div class="bot-box">
+					<div class="ip-box">
+						<input type="file" accept=".gif,.jpg,.png" @change="fnDesignAttach">
+					</div>
+				</div>
+			</div>
+			<div class="front-btn-box">
+				<button @click="fnDesignRegist">디자인등록</button>
+			</div>
 		</div>
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>

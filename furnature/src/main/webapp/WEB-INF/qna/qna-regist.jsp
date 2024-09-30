@@ -9,23 +9,44 @@
 		<jsp:include page="/layout/header.jsp"></jsp:include>
 		<div id="app">
 			<div id="container"> 
-			<h3>Q&A</h3>
-			<div class="ip-box">	
-				제목<input type="text" v-model="title">					
-			</div>
-			<div>
-				내용<textarea v-model="contents">	</textarea>				
-			</div>
-			<div>
-				첨부<input type="file" accept=".gif,.jpg,.png" @change="fnAttach">
-			</div>
-		<hr>	
-			<div>
-				<button @click="fnRegist()">등록</button>
-			</div>
-		</div>	
-	</div>
-</body>
+				<h2 class="sub-tit">질문 등록</h2>
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">제목</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+							<input type="text" v-model="title">	
+						</div>
+					</div>
+				</div>
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">내용</p>
+					</div>
+					<div class="bot-box">
+						<div class="text-box">
+							<textarea v-model="contents"></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">파일 첨부</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+							<input type="file" accept=".gif,.jpg,.png" @change="fnAttach">
+						</div>
+					</div>
+				</div>
+				<div class="front-btn-box">
+					<button type="button" @click="fnRegist">등록 하기</button>
+				</div>
+			</div>	
+		</div>
+		<jsp:include page="/layout/footer.jsp"></jsp:include>
+	</body>
 </html> 
 <script>
     const app = Vue.createApp({

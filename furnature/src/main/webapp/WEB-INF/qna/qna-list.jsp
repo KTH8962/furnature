@@ -1,11 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-	<!DOCTYPE html>
-	<html>
-
+<!DOCTYPE html>
+<html>
 	<head>
 		<jsp:include page="/layout/headlink.jsp"></jsp:include>
 	</head>
-
 	<body>
 		<jsp:include page="/layout/header.jsp"></jsp:include>
 		<div id="app">
@@ -50,7 +48,7 @@
 							<td v-if="item.qnaCategory == 1"><p>Q&A질문</p></td>
 							<td>{{item.userName}}</td>
 							<td>
-								<a href="#" @click="fnView(item.qnaNo)">
+								<a href="javascript:void(0);" @click="fnView(item.qnaNo)">
 									{{item.qnaTitle}} <template v-if="item.commentCount > 0">[{{item.commentCount}}]</template>
 								</a>
 							</td>
@@ -73,81 +71,80 @@
 		</div>
 		<jsp:include page="/layout/footer.jsp"></jsp:include>
 	</body>
-
-	</html>
-	<script>
-		const app = Vue.createApp({
-			data() {
-				return {
-					list: [],
-					qnaNo: "",
-					title: "",
-					userId: "",
-					searchData: "",
-					category: "",
-					number: "",
-					sessionId: '${sessionId}',
-					currentPage: 1,
-					pageSize: 10,
-					totalPages: 1,
-					cntValue: 5,
-					selectItem: []
-				};
-			},
-			methods: {
-				fnGetList(page) {
-					var self = this;
-					self.currentPage = page;
-					var startIndex = (page - 1) * self.pageSize;
-					var outputNumber = self.pageSize;
-					var nparmap = {
-						startIndex: startIndex,
-						outputNumber: outputNumber,
-						searchData: self.searchData,
-						category: self.category
-					};
-					$.ajax({
-						url: "/qna/qna_list.dox",
-						dataType: "json",
-						type: "POST",
-						data: nparmap,
-						success: function (data) {
-							console.log(data);
-							self.list = data.list;
-							self.totalPages = Math.ceil(data.count / self.pageSize);
-						}
-					});
-				},
-				fnView(qnano) {
-					var self = this;
-					$.pageChange("/qna/qnaview.do", { qnaNo: qnano });
-				},
-				fnBeforePage() {
-					var self = this;
-					if(self.currentPage == 1){
-						return;
-					}
-					self.currentPage = self.currentPage - 1;
-					self.fnGetList(self.currentPage);
-				},
-				fnAfterPage() {
-					var self = this;
-					if(self.totalPages == self.currentPage){
-						return;
-					}
-					self.currentPage = self.currentPage + 1;
-					self.fnGetList(self.currentPage);
-				},
-				fnInsert() {
-					location.href = "qna-regist.do";
-				}
-
-			},
-
-			mounted() {
+</html>
+<script>
+	const app = Vue.createApp({
+		data() {
+			return {
+				list: [],
+				qnaNo: "",
+				title: "",
+				userId: "",
+				searchData: "",
+				category: "",
+				number: "",
+				sessionId: '${sessionId}',
+				currentPage: 1,
+				pageSize: 10,
+				totalPages: 1,
+				cntValue: 5,
+				selectItem: []
+			};
+		},
+		methods: {
+			fnGetList(page) {
 				var self = this;
-				self.fnGetList(1);
+				self.currentPage = page;
+				var startIndex = (page - 1) * self.pageSize;
+				var outputNumber = self.pageSize;
+				var nparmap = {
+					startIndex: startIndex,
+					outputNumber: outputNumber,
+					searchData: self.searchData,
+					category: self.category
+				};
+				$.ajax({
+					url: "/qna/qna_list.dox",
+					dataType: "json",
+					type: "POST",
+					data: nparmap,
+					success: function (data) {
+						console.log(data);
+						self.list = data.list;
+						self.totalPages = Math.ceil(data.count / self.pageSize);
+					}
+				});
+			},
+			fnView(qnano) {
+				var self = this;
+				$.pageChange("/qna/qnaview.do", { qnaNo: qnano });
+			},
+			fnBeforePage() {
+				var self = this;
+				if(self.currentPage == 1){
+					return;
+				}
+				self.currentPage = self.currentPage - 1;
+				self.fnGetList(self.currentPage);
+			},
+			fnAfterPage() {
+				var self = this;
+				if(self.totalPages == self.currentPage){
+					return;
+				}
+				self.currentPage = self.currentPage + 1;
+				self.fnGetList(self.currentPage);
+			},
+			fnInsert() {
+				location.href = "qna-regist.do";
 			}
-		});
-		app.mount('#app');
-	</script>
+
+		},
+
+		mounted() {
+			var self = this;
+			self.fnGetList(1);
+		}
+	});
+	app.mount('#app');
+</script>

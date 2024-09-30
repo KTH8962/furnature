@@ -9,26 +9,49 @@
 		<jsp:include page="/layout/header.jsp"></jsp:include>
 		<div id="app">
 			<div id="container"> 
-			<select name="category" v-model="category">
-			  <option value="" selected>::전체::</option>
-			  <option value="1">Q&A</option>
-			  <option value="2">공지사항</option>
-			</select>
-			<div>	
-				제목<input type="text" v-model="title">					
-			</div>
-			<div>
-				내용<textarea v-model="contents"></textarea>					
-			</div>
-			
-		<hr>	
-			<div>
-				<button @click="fnRegist()">등록</button>
-				<button @click="fnCancel()">취소</button>
-			</div>
-		</div>	
-     </div>
-</body>
+				<h2 class="sub-tit">질문 수정</h2>
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">카테고리 선택</p>
+					</div>
+					<div class="bot-box">
+						<div class="select-box">
+							<select name="category" v-model="category">
+								<option value="" selected>전체</option>
+								<option value="1">Q&A</option>
+								<option value="2">공지사항</option>
+							</select>
+						</div>
+					</div>
+				</div>				
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">제목</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+							<input type="text" v-model="title">	
+						</div>
+					</div>
+				</div>
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">내용</p>
+					</div>
+					<div class="bot-box">
+						<div class="text-box">
+							<textarea v-model="contents">{{contents}}</textarea>
+						</div>
+					</div>
+				</div>
+				<div class="front-btn-box">
+					<button @click="fnRegist()">등록</button>
+					<button @click="fnCancel()">취소</button>
+				</div>
+			</div>	
+		</div>
+	 <jsp:include page="/layout/footer.jsp"></jsp:include>
+	</body>
 </html> 
 <script>
     const app = Vue.createApp({
@@ -38,6 +61,7 @@
 				qnaNo : '${qnaNo}',
 				title : "",
 				contents : "",
+				category : "",
 				list : {}
 				
             };
