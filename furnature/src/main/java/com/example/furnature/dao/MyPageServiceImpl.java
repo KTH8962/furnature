@@ -235,6 +235,7 @@ public class MyPageServiceImpl implements MyPageService {
 			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
 		}
 			return resultMap;
+	}
 
 	@Override
 	public HashMap<String, Object> searchCartList(HashMap<String, Object> map) {
