@@ -237,8 +237,8 @@
 					data : nparmap,
 					success : function(data) {
 			            alert("삭제되었습니다.");
-						console.log(data);
-						self.fnGetInfo();
+						$.pageChange("/adminOneday.do", {});
+						
 					}
 				});
            },
