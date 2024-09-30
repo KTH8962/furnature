@@ -103,7 +103,15 @@
 	
 	<!--리뷰 작성-->
 	<insert id="reviewInsert" parameterType="hashmap" useGeneratedKeys="true" keyProperty="reviewNo" keyColumn="REVIEW_NO">
-		INSERT INTO TBL_PRODUCT_REVIEW (REVIEW_NO, REVIEW_TITLE, REVIEW_CONTENTS, USER_ID, PRODUCT_NO, REVIEW_CDATETIME, REVIEW_UDATETIME,REVIEW_RATING)
+		INSERT INTO TBL_PRODUCT_REVIEW 
+		(REVIEW_NO,
+		 REVIEW_TITLE,
+		 REVIEW_CONTENTS,
+		 USER_ID,
+		 PRODUCT_NO,
+		 REVIEW_CDATETIME,
+		 REVIEW_UDATETIME,
+		 REVIEW_RATING)
 		VALUES (TBL_PRODUCT_REVIEW_NO_SEQ.NEXTVAL, #{reviewTitle}, #{reviewContents}, #{userId}, #{productNo}, SYSDATE, SYSDATE, #{reviewRating})
 	</insert>
 	
