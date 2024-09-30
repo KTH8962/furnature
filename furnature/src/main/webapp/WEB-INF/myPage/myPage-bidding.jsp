@@ -35,12 +35,23 @@
 								<div class="result">
 									<template v-if="item.auctionStatus == 'E'">
 										<template v-if="item.auctionPriceCurrent == item.myBidding">
-											<p class="desc buy">
-												최고 입찰 금액으로 입찰되었습니다. <br>
-												제품 구매를 진행해 주세요.
-											</p>
-											<button @click="fnBuy(item.auctionTitle, item.myBidding)">구매하기</button>
-											<button @click="fnBuyCancel()">취소하기</button>
+											<template v-if="item.paymentStatus == '' || item.paymentStatus == null">
+												<p class="desc wait">
+													최고 입찰 금액으로 입찰되었습니다. <br>
+													제품 구매를 진행해 주세요.
+												</p>
+												<button @click="fnBuy(item.auctionTitle, item.myBidding, item.userInfo.split(',')[0], item.userInfo.split(',')[1], item.auctionNo)">결제하기</button>
+											</template>
+											<template v-else-if="item.paymentStatus == 'P'">
+												<p class="desc buy">
+													결제가 완료 되었습니다. <br>
+													배송 관련 정보는 마이페이지 > 배송정보에서 확인 가능합니다.
+												</p>
+												<button @click="fnBuyCancel(item.auctionNo)">취소하기</button>
+											</template>
+											<template v-else>
+												<p class="desc">결제가 취소 된 입찰 품목 입니다.</p>
+											</template>
 										</template>
 										<template v-else>
 											<p class="desc">
@@ -50,7 +61,7 @@
 										</template>
 									</template>
 									<template v-else>
-										<button type="button" @click="fnCancel(item.auctionNo)">입찰 취소</button>
+										<button type="button" @click="fnCancel(item.auctionNo)">입찰취소</button>
 									</template>
 								</div>
 							</div>
@@ -73,6 +84,7 @@
 				sessionId : '${sessionId}',
 				biddingList : [],
 				infoList: [],
+				cancelInfo: {}
             };
         },
         methods: {
@@ -85,7 +97,7 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-						console.log(data);
+						//console.log(data);
 						self.biddingList = data.biddingList;
 					}
 				});
@@ -107,73 +119,92 @@
 					}
 				});
 			},
-			fnBuy(title, myBidding){
+			fnBuy(title, myBidding, name, phone, orderNo){
 				var self = this;
 				IMP.request_pay({
 	                pg: "html5_inicis",
 	                pay_method: "card",
-	                merchant_uid: "auction_id_" + new Date().getTime(), // 유니크한 주문 ID 생성
+	                merchant_uid: "auction" + new Date().getTime(), // 유니크한 주문 ID 생성
 	                name: title,
-	                amount: myBidding, // 결제 금액
-	                buyer_name: "홍길동",
-	                buyer_tel: "010-1234-5678",
-	                buyer_email: "example@example.com",
+	                amount: myBidding,
+					buyer_name: name,
+					buyer_tel: phone,
 	            }, function (rsp) {
-					console.log(rsp);
+					//console.log(rsp);
 					if (rsp.success) {
-						self.infoList = rsp;
                         $.ajax({
                             url: "/payment/payment/" + rsp.imp_uid,
                             method: "POST",
 							data: {
 								imp_uid : rsp.imp_uid,
 								merchant_uid: rsp.merchant_uid,
-                            	amount: rsp.paid_amount
+                            	amount: rsp.paid_amount,
+								name: name,
+								phone: phone
+							},
+							success : function (data) {
+								$.ajax({
+									url: "/payment/payment-add.dox",
+									method: "POST",
+									data: {
+										sessionId : self.sessionId,
+										category : "auction",
+										impUid : rsp.imp_uid,
+										merchantUid: rsp.merchant_uid,
+										amount: rsp.paid_amount,
+										name : rsp.buyer_name,
+										phone : rsp.buyer_tel,
+										orderNo: orderNo
+									},
+									success : function(data){
+										if(data.result == 'success') {
+											self.fnGetList();
+										}
+									}
+								})
 							}
-                        }).done(function (data) {
-                            // 가맹점 서버 결제 API 성공시 로직
-							console.log(data);
                         })
                     } else {
                         alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
                     }
-	                // if (rsp.success) {
-	                //     // 결제 성공 시
-	                //     alert("결제 성공!");
-	                //     console.log(rsp);
-					// 	self.fnInsert(rsp);
-	                // } else {
-	                //     // 결제 실패 시
-	                //     alert("결제 실패: " + rsp.error_msg);
-	                //     console.log(rsp);
-	                // }
-	                // if (rsp.success) {
-	                //     // 결제 성공 시
-	                //     alert("결제 성공!");
-					// 	self.infoList = rsp;
-	                //     console.log(self.infoList);
-					// 	//self.fnInsert(rsp);
-	                // } else {
-	                //     // 결제 실패 시
-	                //     alert("결제 실패: " + rsp.error_msg);
-	                //     console.log(rsp);
-	                // }
 	            });
 			},
-			fnBuyCancel() {
+			fnBuyCancel(orderNo) {
 				var self = this;
-				console.log(self.infoList);
+				var nparmap = {auctionNo: orderNo, category: "auction"};
 				$.ajax({
-					url: '/payment/cancel/',
-					method: 'POST',
-					data: {
-						imp_uid : "imp_422430017777",
-						merchant_uid: "imp_422430017777",
-						amount: "imp_422430017777"
+					url:"/payment/payment-info.dox",
+					dataType:"json",	
+					type : "POST", 
+					data : nparmap,
+					success : function(data) {				
+						$.ajax({
+							url: '/payment/cancel/' + data.payInfo.paymentMerchantUid,
+							method: 'POST',
+							data: {
+								imp_uid : data.payInfo.paymentImpUid,
+								merchant_uid: data.payInfo.paymentMerchantUid,
+								amount: data.payInfo.paymentAmount
+							},
+							success: function(data){
+								console.log(data);
+								$.ajax({
+									url: "/payment/payment-edit.dox",
+									method: "POST",
+									data: {
+										orderNo : orderNo,
+										category : "auction",
+									},
+									success : function(data){
+										if(data.result == 'success') {
+											self.fnGetList();
+										}
+									}
+								})
+							}
+						})
 					}
-				}).done(function (data) {
-					console.log(data);
-				})
+				});
 			},
 			fnInsert(rsp){
 				var self = this;

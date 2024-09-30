@@ -3,9 +3,14 @@ package com.example.furnature.dao;
 import java.io.IOException;
 import java.util.HashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.example.furnature.constants.ResMessage;
+import com.example.furnature.mapper.PaymentMapper;
+import com.example.furnature.model.Pay;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.request.CancelData;
@@ -13,11 +18,15 @@ import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.persistence.PersistenceException;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService{
+	@Autowired
+	PaymentMapper paymentMapper;
+	
 	@Value("${imp_key}")
 	private String impKey;
 
@@ -25,7 +34,7 @@ public class PaymentServiceImpl implements PaymentService{
     private String impSecret;
     
     private IamportClient iamportClient;
-	
+    	
     @PostConstruct
 	public void init() {
         this.iamportClient = new IamportClient(impKey, impSecret);
@@ -87,6 +96,70 @@ public class PaymentServiceImpl implements PaymentService{
 			e.printStackTrace();
 		}
 		return paymentResponse;
+	}
+
+	// 결제 내역 등록
+	@Override
+	public HashMap<String, Object> addPayment(HashMap<String, Object> map) {
+		HashMap <String, Object> resultMap = new HashMap<>();
+		try {
+			paymentMapper.insertPayment(map);
+			resultMap.put("result", "success");
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (DataAccessException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+		} catch (PersistenceException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+
+	// 결제 내역 불러오기
+	@Override
+	public HashMap<String, Object> searchPaymentInfo(HashMap<String, Object> map) {
+		HashMap <String, Object> resultMap = new HashMap<>();
+		try {
+			Pay payInfo = paymentMapper.selectPaymentInfo(map);
+			resultMap.put("payInfo", payInfo);
+			resultMap.put("result", "success");
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (DataAccessException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+		} catch (PersistenceException e) {
+			resultMap.put("result", "fail"); 
+			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+
+	// 결제 내역 수정 - 결제 취소
+	@Override
+	public HashMap<String, Object> editPayment(HashMap<String, Object> map) {
+		HashMap <String, Object> resultMap = new HashMap<>();
+		try {
+			paymentMapper.updatePayment(map);
+			resultMap.put("result", "success");
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (DataAccessException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+		} catch (PersistenceException e) {
+			resultMap.put("result", "fail"); 
+			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
 	}
 
 }

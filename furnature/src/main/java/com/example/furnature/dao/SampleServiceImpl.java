@@ -25,7 +25,7 @@ public class SampleServiceImpl implements SampleService{
 		try {
 			List<Sample> emp = sampleMapper.selectEmpList(map);
 			resultMap.put("empList", emp);
-			resultMap.put("result", "scuccess");
+			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {
 			resultMap.put("result", "fail");
