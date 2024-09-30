@@ -236,5 +236,35 @@ public class ProductServiceImpl implements ProductService{
 		}
 		return resultMap;
 	}
+	@Override
+	public HashMap<String, Object> recommend(HashMap<String, Object> map) {
+		HashMap <String, Object> resultMap = new HashMap<>();
+		try {
+			System.out.println("RECOMMENDSSSSSSSS"+map);
+			List<Product> list = productmapper.recommend(map);
+			resultMap.put("list", list);
+			resultMap.put("result", "success");
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		}catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+	//유저저
+	@Override
+	public HashMap<String, Object> searchUser(HashMap<String, Object> map) {
+		HashMap <String, Object> resultMap = new HashMap<>();
+		try {
+			List<Product> list = productmapper.searchUser(map);
+			resultMap.put("list", list);
+			resultMap.put("result", "success");
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		}catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
 	
 }

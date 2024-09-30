@@ -51,7 +51,11 @@ public interface ProductMapper {
 	int reviewCnt(HashMap<String,Object> map);
 	//장바구니 담기
 	void insertCart(HashMap<String, Object> map);
-	//리뷰 수정전 정보 불러오기
-	//Product reviewInfo(HashMap<String, Object> map);
+	
+	//추천상품 리스트
+	List<Product> recommend(HashMap<String, Object> map);
+	
+	//구매 사용자 정보가져오기
+	List<Product> searchUser(HashMap<String, Object> map);
 	
 }

@@ -255,5 +255,23 @@ public class ProductController {
        System.out.println("resultMMMM"+resultMap);
        return new Gson().toJson(resultMap);
    }
+	// 추천상품리스트
+	@RequestMapping(value = "/productDetail/productRecommend.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	//@RequestParam
+	public String productRecommend(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = productService.recommend(map);
+		return new Gson().toJson(resultMap);
+	}
+    // 선택한 상품번호 주문한 유저정보 가져오기
+    @RequestMapping(value = "/productDetail/userInfo.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String searchUser(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+    	HashMap<String, Object> resultMap = new HashMap<String, Object>();
+    	resultMap = productService.searchUser(map);
+    	return new Gson().toJson(resultMap);
+    }
+    
 	 
 }

@@ -21,38 +21,40 @@
 					</div>
 				</div>
 				<div class="detail-top-info">
-					<div class="detail=box">
+					<div class="detail-box">
 						<div class="tit">상품명</div>
 						<div class="info">{{productDetail.productName}}</div>
 					</div>
-					<div class="detail=box">
+					<div class="detail-box">
 						<div class="tit">상품 가격</div>
 						<div class="info">{{parseInt(productDetail.productPrice).toLocaleString()}}</div>
 					</div>
-					<div class="detail=box">
+					<div class="detail-box">
 						<div class="tit">색상</div>
 						<div class="info">{{productDetail.productColor}}</div>
 					</div>
-					<div class="detail=box">
+					<div class="detail-box">
 						<div class="tit">사이즈 선택</div>
 						<div class="info">
-							<select v-model="sizeSelect" @change="fnSelectSize">
-								<option value="">사이즈 선택</option>
-								<option v-for="(item,index) in sizeList" :value="index">
-									<template v-if="index=='0'">
-									{{item}}
-									</template>
-									<template v-if="index=='1'">
-										{{item}} : + 20000 원
-									</template>
-									<template v-if="index=='2'">
-										{{item}} : + 40000 원
-									</template>
-								</option>					
-							</select>
+							<div class="select-box">
+								<select v-model="sizeSelect" @change="fnSelectSize">
+									<option value="">사이즈 선택</option>
+									<option v-for="(item,index) in sizeList" :value="index">
+										<template v-if="index=='0'">
+										{{item}}
+										</template>
+										<template v-if="index=='1'">
+											{{item}} : + 20000 원
+										</template>
+										<template v-if="index=='2'">
+											{{item}} : + 40000 원
+										</template>
+									</option>					
+								</select>
+							</div>
 						</div>
 					</div>
-					<div class="detail=box">
+					<div class="detail-box">
 						<div class="tit">사이즈 선택</div>
 						<div class="info">
 							<div><!-- 사이즈 선택 후 목록 출력-->
@@ -98,37 +100,57 @@
 					배송교환정보
 				</div>
 				<div class="detail-bottom-box" v-if="bottomBox == '3'">
-					관련추천상품 4개정도 뿌리기
+					<ul class="img-list product-list">
+						<li v-for="item in recommendList">
+							<a href="javascript:void(0);" @click="fnPorductDetail(item.productNo)">
+								<figure class="img"><img :src="item.productThumbnail"></figure>
+							</a>
+							<span class="tit">{{item.productName}}</span>
+							<span class="price">{{(item.productPrice*1).toLocaleString()}}원~</span>
+						</li>
+					<ul>
 				</div>
 				<div class="detail-bottom-box" v-if="bottomBox == '4'">
 					<div style="display: flex; align-items: center; flex-direction: column;">
 						<div id="review"> <!-- 제품 리뷰 영역 5개 정도씩 보이게, 페이징처리 추천순 최신순 별점순 ?-->
-							<div><button type="button" @click="fnReviewInsert">리뷰작성하기</div>
+							<div class="front-btn-box"><button type="button" @click="fnReviewInsert" v-if="reviewFlag==true">리뷰작성하기</div>
 							<div v-if="insertModal">
-								모달 리뷰 작성영역
-								<!-- repeqt는 숫자만큼 '' 안에 문자열을 출력해주는 함수-->
-								<select v-model="reviewRating">
-								    <option v-for="(title, index) in reviewTitle" :key="index" :value="index + 1">
-								        {{ '★'.repeat(index + 1) + '☆'.repeat(5 - (index + 1)) }} - {{ title }}
-								    </option>
-								</select>
-								<div>내용<textarea v-model="reviewContents"></textarea></div>
+								<div class="select-box">
+									<select v-model="reviewRating">
+										<!-- repeqt는 숫자만큼 '' 안에 문자열을 출력해주는 함수-->
+									    <option v-for="(title, index) in reviewTitle" :key="index" :value="index + 1">
+									        {{ '★'.repeat(index + 1) + '☆'.repeat(5 - (index + 1)) }} - {{ title }}
+									    </option>
+									</select>
+								</div>
+								<div class="ip-list">
+		                           <div class="tit-box">
+		                               <p class="tit">내용</p>
+		                           </div>
+		                           <div class="bot-box">
+		                               <div class="ip-box">
+		                                   <div class="text-box"><textarea v-model="reviewContents"></textarea></div>
+		                               </div>
+		                           </div>
+		                       </div>
 								<div>사진첨부<input type="file" accept=".gif,.jpg,.png" @change="fnReviewAttach"></div>
-								<button @click="fnReviewInsertSave">리뷰작성</button>
-								<button @click="fnCancel">취소</button>
+								<div class="front-btn-box">
+									<button @click="fnReviewInsertSave">리뷰작성</button>
+									<button @click="fnCancel">취소</button>
+								</div>
 								
 							</div>
-							<div>
-								<div>평점 평균<span style="color: gold; font-size: 3em;">★</span> {{ratingAvg}}</div>
+							<div><!--이건 style 빼면 별이 이상해져서 일단 냅뒀습니다 !!-->
+								<div>평점 <span style="color: gold; font-size: 3em;">★</span> {{ratingAvg}}</div>
 							</div>
 							<div><!-- 보고있는 페이지의 상품번호와 맞는 리뷰 목록들 출력-->
 								<template v-for="item in reviewList">
 									<div v-if="item.productNo==productDetail.productNo">
-										<div v-if="item.reviewImgPath != null"><img :src="item.reviewImgPath" style= "width : 250px ; height : 250px"></div>
+										<div v-if="item.reviewImgPath != null"><img :src="item.reviewImgPath"></div>
 										<div>{{item.reviewCdateTime}}</div>
 										<div>
 											{{item.reviewTitle}}
-											<template v-if="item.reviewRating">
+											<template v-if="item.reviewRating">	<!-- 얘도 별점 스타일 일단 냅뒀습니다!-->
 										        <span v-for="star in 5" :key="star" style="color: gold;">
 										            {{ star <= item.reviewRating ? '★' : '☆' }}
 										        </span>
@@ -137,23 +159,28 @@
 										</div>
 										<div>{{item.reviewContents}}</div>
 										<div v-if="item.userId==sessionId">
-										    <button type="button" @click="fnReviewUpdate(item.reviewNo)">수정</button>
+										    <div class="front-btn-box">
+												<button type="button" @click="fnReviewUpdate(item.reviewNo)">수정</button>
+												<button type="button" @click="fnReviewDelete(item.reviewNo)">삭제</button>
+											</div>
 										    <div v-if="updateModal && updateReviewNo === item.reviewNo">
 										        {{updateReviewNo}}모달 수정영역 {{item.reviewNo}}
 												<!-- repeqt는 숫자만큼 '' 안에 문자열을 출력해주는 함수-->
-										        <select v-model="reviewRating">
-										            <option v-for="(title, index) in reviewTitle" :key="index" :value="index + 1">
-										                {{ '★'.repeat(index + 1) + '☆'.repeat(5 - (index + 1)) }} - {{ title }}
-										            </option>
-										        </select>
-										        <div>내용<textarea v-model="reviewContents"></textarea></div>
+												<div class="select-box">
+											        <select v-model="reviewRating">
+											            <option v-for="(title, index) in reviewTitle" :key="index" :value="index + 1">
+											                {{ '★'.repeat(index + 1) + '☆'.repeat(5 - (index + 1)) }} - {{ title }}
+											            </option>
+											        </select>
+												</div>
+										        <div class="text-box">내용<textarea v-model="reviewContents"></textarea></div>
 										        <div>사진첨부<input type="file" accept=".gif,.jpg,.png" @change="fnReviewAttach"></div>
-										        <div>
+										        <div class="front-btn-box">
 													<button @click="fnReviewUpdateSave(item.reviewNo)">수정완료</button>
 										        	<button @click="fnCancel">취소</button>
 												</div>
 										    </div>
-											<div><button type="button" @click="fnReviewDelete(item.reviewNo)">삭제</button></div>
+											
 										</div>
 									</div>
 								</template>
@@ -201,7 +228,10 @@
 				pageSize: 4,        
 				totalPages: 1,
 				ratingAvg : 0,
-				bottomBox : 1
+				bottomBox : 1,
+				recommendList : [],
+				userInfo : [],
+				reviewFlag : false
             };
         },
 		computed: {
@@ -235,7 +265,9 @@
 						     data.productDetail.productSize3
 						 ].filter(size => size != null); // null 값을 제외하고 필터링
 						console.log(self.sizeList);
-						self.updateData();					
+						self.updateData();
+						self.FnRecommend();
+						self.fnGetInfo();
 					}
 				});
             },
@@ -297,9 +329,10 @@
 									}
 								});
 								if(confirm('장바구니 목록으로 이동하시겠습니까?')){
-									window.location.href = "/myPage/cart.do";
+									location.href = "/myPage/cart.do";
+								}else{
+									window.location.reload();
 								}
-								window.location.reload();
 							}
 						}
 					}
@@ -391,11 +424,13 @@
 				var self = this;
 				if(self.sessionId != ""){
 					var self = this;
-					var url = '/productDetail/reviewInsert.do?productNo=' + encodeURIComponent(self.productNo);
-					var option = 'width = 700 , height = 600, scrollbars = yes, left = 550, top = 200'; 
-					//window.open(url,'review',option);
+					if(self.reviewFlag==false){
+						alert('상품을 구매하셔야 리뷰작성이 가능합니다.');
+						return;
+					}
 					if(confirm('리뷰를 작성하시겠습니까?')){
 						self.insertModal = !self.insertModal;
+						console.log(self.reviewFlag);
 					}
 					//location.href='/productDetail/reviewInsert.do?productNo='+ encodeURIComponent(self.productNo);
 				}else{
@@ -569,12 +604,71 @@
 			fnTab(num) {
 				var self = this;
 				self.bottomBox = num;
+			},
+			FnRecommend(){
+				var self = this;
+				var nparmap = {
+					cate1 : self.productDetail.productCate1,
+					cate2 : self.productDetail.productCate2
+				};
+				$.ajax({
+					url:"/productDetail/productRecommend.dox",
+					dataType:"json",
+					type : "POST", 
+					data : nparmap,
+					success : function(data) { 
+						console.log(data);
+						self.recommendList = data.list;
+						self.fnrandomList(self.recommendList);
+					}
+				});
+			},
+			fnPorductDetail(productNo){
+				$.pageChange("/productDetail/productDetail.do",{productNo : productNo});
+			},
+			fnrandomList(list) {
+			    for (var i = list.length - 1; i > 0; i--) {
+			        var j = Math.floor(Math.random() * (i + 1));
+			        [list[i], list[j]] = [list[j], list[i]];
+			    }
+			},
+			fnGetInfo() {
+			      var self = this;
+			      var nparmap = { sessionId: self.sessionId , productNo : self.productNo};
+			      $.ajax({
+			          url: "/productDetail/userInfo.dox",
+			          dataType: "json",    
+			          type: "POST", 
+			          data: nparmap,
+			          success: function(data) {
+			              self.userInfo = data.list;
+			              console.log(data);
+
+						  // 최근 주문 확인
+						  var dateLimte = new Date();
+						  dateLimte.setDate(dateLimte.getDate() - 14); // 14일 전 날짜로 설정
+
+						  for (var i = 0; i < self.userInfo.length; i++) {
+						      var orderDate = new Date(self.userInfo[i].orderDate); // 주문 날짜를 Date 객체로 변환
+						      if (orderDate >= dateLimte) {
+						          self.reviewFlag = true; //  최근 주문이 있고, 2주 지나지 않았으면 true
+						          break;
+						      }
+						  }
+
+						  // hasRecentOrder가 true이면 최근 주문이 있는 것입니다.
+						  if (self.reviewFlag) {
+						      console.log("최근 주문이 있습니다.");
+						  } else {
+						      console.log("최근 주문이 없습니다.");
+						  }
+			          }
+			      });
 			}
         },
         mounted() {
             var self = this;
 			self.fnGetProductDetail();
-			self.fnGetUrlList();
 			self.fnGetReviewList(1);
         }
     });
