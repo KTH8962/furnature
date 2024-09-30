@@ -69,6 +69,10 @@ public class MyPage {
 	private String mileageName;
 	private String mileagePrice;
 	private String mileageStatus;
+	
+	//장바구니
+	private String cartNo;
+	private String productSize;
 	private String cdatetime;
 	private String time;
 

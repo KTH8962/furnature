@@ -137,4 +137,11 @@
 		WHERE M.USER_ID = #{sessionId}
 		ORDER BY MILEAGE_NO DESC
 	</select>
+	<select id="searchCartList" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
+		SELECT C.*, P.PRODUCT_NAME, P.PRODUCT_PRICE, I.PRODUCT_THUMBNAIL 
+		FROM TBL_PRODUCT_CART C
+		LEFT JOIN TBL_PRODUCT P ON C.PRODUCT_NO = P.PRODUCT_NO
+		LEFT JOIN TBL_PRODUCT_IMG I ON P.PRODUCT_NO = I.PRODUCT_NO
+		WHERE C.USER_ID = #{userId}
+	</select>	
 </mapper>

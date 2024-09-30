@@ -76,8 +76,8 @@
 	
 	<!-- 상품 결제 데이터 인서트 -->
 	<insert id="productOrder" parameterType="hashmap">
-        INSERT INTO TBL_PRODUCT_ORDER (PAY_NO, ORDER_NO, PRODUCT_NO, USER_ID, ORDER_PRICE, ORDER_SIZE, ORDER_COUNT, PRODUCT_PRICE, ORDER_CATE, DELIVERY_CATE)
-        VALUES (PAY_NO_SEQ.NEXTVAL, #{orderNo}, #{productNo}, #{userId}, #{orderPrice}, #{orderSize}, #{orderCount}, #{sizePrice}, '상품', 0)
+        INSERT INTO TBL_PRODUCT_ORDER (PAY_NO, ORDER_NAME, PRODUCT_NO, USER_ID,ORDER_SIZE, ORDER_COUNT, PRODUCT_PRICE, ORDER_CATE, DELIVERY_CATE)
+        VALUES (PAY_NO_SEQ.NEXTVAL, #{orderNo}, #{productNo}, #{userId},#{orderSize}, #{orderCount}, #{sizePrice}, '상품', 0)
 	</insert>
 	<!--리뷰 리스트-->
 	<select id="productReview" parameterType="hashmap" resultType="com.example.furnature.model.Product">
@@ -148,4 +148,27 @@
 	    REVIEW_RATING = #{reviewRating}, REVIEW_UDATETIME = SYSDATE 
 	    WHERE REVIEW_NO = #{reviewNo}
 	</update>
+	<!--장바구니 쿼리-->
+	<insert id="insertCart" parameterType="hashmap">
+        INSERT INTO TBL_PRODUCT_CART 
+   		VALUES (CART_NO_SEQ.NEXTVAL, #{productNo}, #{userId}, #{selectedSize}, #{price}, #{count}, SYSDATE, SYSDATE)
+	</insert>
+	<!-- 추천 상품 리스트-->
+	<select id="recommend" parameterType="hashmap" resultType="com.example.furnature.model.Product">
+		SELECT P.PRODUCT_NO, PRODUCT_NAME, PRODUCT_CATE1,PRODUCT_CATE2,PRODUCT_PRICE ,I.PRODUCT_THUMBNAIL
+		FROM TBL_PRODUCT P
+		LEFT JOIN TBL_PRODUCT_IMG I ON P.PRODUCT_NO = I.PRODUCT_NO
+		WHERE PRODUCT_CATE1 = #{cate1} OR PRODUCT_CATE2 = #{cate2}
+		OFFSET 0 ROWS FETCH FIRST 4 ROWS ONLY
+	</select>
+	<!--상품구매한 유저 정보 (리뷰작성위해)-->
+	<select id="searchUser" parameterType="hashmap" resultType="com.example.furnature.model.Product">
+		SELECT O.ORDER_ID, U.USER_ID, MIN(O.ORDER_DATE) AS ORDER_DATE, O.PRODUCT_NO 
+		FROM TBL_USER U 
+		INNER JOIN TBL_PRODUCT_ORDER O 
+		ON U.USER_ID = O.USER_ID
+		WHERE O.PRODUCT_NO = #{productNo} AND U.USER_ID = #{sessionId}
+		GROUP BY O.ORDER_ID, U.USER_ID, O.PRODUCT_NO
+	</select>
+	
 </mapper>
