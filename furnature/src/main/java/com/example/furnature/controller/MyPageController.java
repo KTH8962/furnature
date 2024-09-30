@@ -58,6 +58,7 @@ public class MyPageController {
     	return "/myPage/myPage-mileage";
     }
 
+
     // 장바구니 리스트 조회 페이지
     @RequestMapping("/myPage/cart.do")
     public String cart(Model model) throws Exception{
@@ -145,6 +146,15 @@ public class MyPageController {
   		resultMap = myPageService.onedayCancel(map);
   		return new Gson().toJson(resultMap);
   	}
+    // 장바구니 목록 조회
+    @RequestMapping(value = "/myPage/mypage-cartList.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String cartList(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+    	HashMap<String, Object> resultMap = new HashMap<String, Object>();
+    	resultMap = myPageService.searchCartList(map);
+    	System.out.println("CCCCCCCC"+map);
+    	return new Gson().toJson(resultMap);
+    }
 
 }
 

@@ -46,6 +46,8 @@ public class MyPage {
 	private String auctionPriceCurrent;
 	private String auctionStatus;
 	private String auctionImgPath;
+	private String userInfo;
+	private String paymentStatus;
 	
 	// 배송
 	private String payNo;
@@ -68,6 +70,10 @@ public class MyPage {
 	private String mileageName;
 	private String mileagePrice;
 	private String mileageStatus;
+	
+	//장바구니
+	private String cartNo;
+	private String productSize;
 	private String cdatetime;
 	private String time;
 

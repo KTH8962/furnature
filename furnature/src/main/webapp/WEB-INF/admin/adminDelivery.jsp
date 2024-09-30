@@ -62,11 +62,11 @@
             </div>
             <div class="contents-bottom">
 				<div class="pagenation">
-	                <button type="button" class="prev" v-if="currentPage > 1" @click="fnBeforPage()">이전</button>
+	                <button type="button" class="prev"  @click="fnBeforPage()">이전</button>
 	                <button type="button" class="num" v-for="page in totalPages" :class="{active: page == currentPage}" @click="fnDelivery(page)">
 						{{page}}
 					</button>
-	                <button type="button" class="next" v-if="currentPage < totalPages" @click="fnNextPage()">다음</button>
+	                <button type="button" class="next"  @click="fnNextPage()">다음</button>
 	            </div>
             </div>
         </div>

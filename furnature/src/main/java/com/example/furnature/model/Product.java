@@ -51,5 +51,6 @@ public class Product {
 	private String reviewUdateTime;
 	private String userId;
 	private String avgRating;
+	private String orderDate;
 	
 }

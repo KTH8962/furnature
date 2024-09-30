@@ -493,6 +493,7 @@ body {
 	margin-bottom: 16px;
 	margin-left: 0px;
 	transition: all 0.2s;
+	width: 100%;
 }
 #container .img-list li .tit {
 	font-size: 18px;
@@ -767,6 +768,37 @@ body {
 }
 
 /* //event */
+/* qna */
+.comment-tit {
+	font-size: 20px;
+	font-Weight: 500;
+	margin-top: 50px;
+	margin-right: 0px;
+	margin-bottom: 20px;
+	margin-left: 0px;
+}
+
+.qna-list {
+	border-top: 2px solid var(--color-contrasty2);
+}
+.qna-list .qna-box {
+	border-bottom: 1px solid var(--color-contrastyF5);
+	padding: 20px 20px;
+}
+.qna-list .qna-box .qna-top {
+	font-size: 12px;
+	color: var(--color-contrastyA);
+}
+.qna-list .qna-box .qna-top b {
+	font-size: 16px;
+	font-Weight: 500;
+	color: var(--color-contrasty2);
+}
+.qna-list .qna-box .qna-contents {
+	padding: 10px 10px;
+}
+
+/* //qna */
 /* myPage */
 .myPage-wrap {
 	display: flex;
@@ -887,6 +919,9 @@ body {
 }
 .myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .tit-box .result .desc.buy {
 	color: var(--color-green);
+}
+.myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .tit-box .result .desc.wait {
+	color: var(--color-red);
 }
 .myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .tit-box .result button {
 	font-size: 14px;
@@ -1156,6 +1191,51 @@ body {
 
 /* //admin */
 /* default-setting */
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.table-type1 {
+	margin: 80px 0px;
+	border-top: 2px solid var(--color-contrastyC);
+	border-bottom: 1px solid var(--color-contrastyC);
+}
+.table-type1 thead th {
+	font-size: 14px;
+	font-Weight: 500;
+	color: var(--color-contrastyA);
+	padding: 20px 0px;
+	text-align: left;
+}
+.table-type1 tbody tr {
+	border-top: 1px solid var(--color-contrastyC);
+}
+.table-type1 tbody tr td {
+	padding: 20px 5px;
+}
+
+.table-type2 {
+	border-top: 2px solid var(--color-contrasty2);
+}
+.table-type2 tbody tr {
+	border-bottom: 1px solid var(--color-contrastyC);
+	min-height: 50px;
+}
+.table-type2 tbody tr th {
+	font-Weight: 500;
+	background-color: var(--color-contrastyF5);
+}
+.table-type2 tbody tr td {
+	padding: 20px 20px;
+}
+.table-type2 tbody tr td .contents {
+	min-height: 300px;
+}
+.table-type2 tbody tr > * {
+	vertical-align: middle;
+}
+
 .none {
 	display: none;
 }
@@ -1190,14 +1270,6 @@ body {
 	color: var(--base-white);
 	background-color: var(--color-contrasty2);
 	border-color: var(--color-contrasty2);
-}
-
-table {
-	border-collapse: collapse;
-}
-table tr th, table tr td {
-	border: 1px solid var(--color-contrasty2);
-	padding: 10px 10px;
 }
 
 .flex-table {

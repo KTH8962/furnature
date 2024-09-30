@@ -40,7 +40,7 @@ public class AdminServiceImpl implements AdminService{
 				Admin info = adminMapper.selectUser(map);
 				resultMap.put("info", info);
 			}
-			resultMap.put("result", "scuccess");
+			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {
 			resultMap.put("result", "fail");
@@ -61,7 +61,7 @@ public class AdminServiceImpl implements AdminService{
 		HashMap <String, Object> resultMap = new HashMap<>();
 		try {
 			adminMapper.deleteUser(map);
-			resultMap.put("result", "scuccess");
+			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {
 			resultMap.put("result", "fail");
@@ -82,7 +82,7 @@ public class AdminServiceImpl implements AdminService{
 		HashMap <String, Object> resultMap = new HashMap<>();
 		try {
 			adminMapper.updateUser(map);
-			resultMap.put("result", "scuccess");
+			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {
 			resultMap.put("result", "fail");
@@ -103,7 +103,7 @@ public class AdminServiceImpl implements AdminService{
 		HashMap <String, Object> resultMap = new HashMap<>();
 		try {
 			adminMapper.resetPwd(map);
-			resultMap.put("result", "scuccess");
+			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {
 			resultMap.put("result", "fail");

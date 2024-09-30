@@ -28,4 +28,10 @@ public interface ProductService {
 	HashMap<String, Object> updateReview(HashMap<String, Object> map);
 	//리뷰 수정전 내용 불러오기
 	HashMap<String, Object> reviewInfo(HashMap<String, Object> map);
+	//장바구니 담기
+	HashMap<String, Object> insertCart(HashMap<String, Object> map);
+	//추천상품
+	HashMap<String, Object> recommend(HashMap<String, Object> map);
+	//상품 구매한 사용자 정보
+	HashMap<String, Object> searchUser(HashMap<String, Object> map);
 }

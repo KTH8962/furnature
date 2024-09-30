@@ -54,4 +54,7 @@ public interface MyPageMapper {
 	
 	//관리자 배달현황 업데이트
 	void adminDeliveryUpdate(HashMap<String, Object> map);
+	
+	//장바구니 목록
+	List<MyPage> searchCartList(HashMap<String, Object> map);
 }

@@ -21,4 +21,7 @@ public interface MyPageService {
 	HashMap<String,Object> onedayPay(HashMap<String,Object> map);
 	//원데이클래스 수강취소
 	HashMap<String,Object> onedayCancel(HashMap<String,Object> map);
+    //장바구니 목록
+    HashMap<String, Object> searchCartList(HashMap<String, Object> map);
+
 }

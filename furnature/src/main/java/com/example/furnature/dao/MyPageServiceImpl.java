@@ -214,6 +214,7 @@ public class MyPageServiceImpl implements MyPageService {
 			return resultMap;
 		}
 
+
 	//원데이클래스 수강취소
 	@Override
 	public HashMap<String, Object> onedayCancel(HashMap<String, Object> map) {
@@ -234,6 +235,27 @@ public class MyPageServiceImpl implements MyPageService {
 			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
 		}
 			return resultMap;
+
+	@Override
+	public HashMap<String, Object> searchCartList(HashMap<String, Object> map) {
+		 HashMap<String, Object> resultMap = new HashMap<>();
+        try {
+        	System.out.println("SSSSSS"+map);
+            List<MyPage> cartList = myPageMapper.searchCartList(map);
+            resultMap.put("cartList", cartList);
+            resultMap.put("result", "success");
+            resultMap.put("message", ResMessage.RM_SUCCESS);
+        } catch (DataAccessException e) {
+            resultMap.put("result", "fail");
+            resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+        } catch (PersistenceException e) {
+            resultMap.put("result", "fail");
+            resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+        } catch (Exception e) {
+            resultMap.put("result", "fail");
+            resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+        }
+        return resultMap;
 	}
 
 }

@@ -9,40 +9,68 @@
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
 		<div id="container">
-			<div v-if="list.qnaCategory==1">질문
-			</div> 게시판
-			<div v-if="list.qnaCategory==2">공지사항
+			<div class="sub-tit">
+				<template v-if="list.qnaCategory==1">질문 </template>
+				<template v-if="list.qnaCategory==2">공지사항 </template>
+				게시판
 			</div>
-				<div>
-					제목 : {{list.qnaTitle}}					
+			<table class="table-type2">
+				<colgroup>
+					<col style="width: 10%;">
+					<col style="width: 40%;">
+					<col style="width: 10%;">
+					<col style="width: 40%;">
+				</colgroup>
+				<tbody>
+					<tr>
+						<th>제목</th>
+						<td colspan="3">{{list.qnaTitle}}</td>
+					</tr>
+					<tr>
+						<th>작성자</th>
+						<td>{{list.userName}}</td>
+						<th>작성일</th>
+						<td>{{list.udatetime}}</td>
+					</tr>
+					<tr>
+						<th>내용</th>
+						<td colspan="3">
+							<div class="contents">
+								{{list.qnaContents}}
+								<img :src="list.qnaFilePath">
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<p class="comment-tit">댓글 입력</p>			
+			<div class="ip-box ip-ico-box type2">
+				<input type="text" v-model="comments" placeholder="댓글을 입력하세요">
+				<div class="btn-box type2">
+					<button @click="fnComments">댓글등록</button>
 				</div>
-				<div>작성자 : {{list.userName}} 작성날짜 : {{list.udatetime}}</div>
-				<div>
-					내용 : {{list.qnaContents}}	
-					<img :src="list.qnaFilePath">				
-				</div>
-			<hr>	
-				<div class="ip-box">
-	                <input type="text" v-model="comments" placeholder="댓글을 입력하세요">
-	            </div>
-				<button @click="fnComments">댓글</button>
-			<hr>
-				<div v-for="item in comList">
-					<div>댓글 : {{item.commentContents}}</div>
-					<span>이름 : {{item.userName}}</span>
-					<div v-if="item.userId == sessionId">
-						<button :style="{ display: item.flg ? 'none' : 'inline' }" @click="fnCommentUp(item)">수정</button>
-						<div class="ip-box" v-if="item.flg">
-			                <input type="text" v-model="commentsUp">
-							<button @click="fnComUpdate(item.commentNo)">등록</button>
-							<button @click="fnCancel">취소</button>
-			            </div>
-						<button	@click="fnComDelete(item.commentNo)">삭제</button>
+			</div>				
+			<p class="comment-tit">댓글 리스트</p>
+			
+			<div class="qna-list-wrap">
+				<div class="qna-list">
+					<div class="qna-box" v-for="item in comList">
+						<div class="qna-top"><b>{{item.userName}}</b> ({{item.udatetime}})</div>
+						<div class="qna-contents">
+							{{item.commentContents}}
+						</div>
+						<div v-if="item.userId == sessionId" class="btn-box">
+							<button :style="{ display: item.flg ? 'none' : 'inline' }" @click="fnCommentUp(item)">수정</button>
+							<div class="ip-box" v-if="item.flg">
+								<input type="text" v-model="commentsUp">
+								<button @click="fnComUpdate(item.commentNo)">등록</button>
+								<button @click="fnCancel">취소</button>
+							</div>
+							<button	@click="fnComDelete(item.commentNo)">삭제</button>
+						</div>
 					</div>
 				</div>
-				<div>
-					세션아이디 : {{sessionId}}
-				</div>
+			</div>
 			<div v-if="list.userId == sessionId">			
 				<button @click="fnUpdate()">수정</button>
 				<button @click="fnDelete()">삭제</button>
