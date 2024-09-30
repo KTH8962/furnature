@@ -80,7 +80,7 @@
 					<button type="button" @click="fnEdit(auctionNo)">수정</button>
 					<button type="button" @click="fnRemove(auctionNo)">삭제</button>
 				</template>
-				<button type="button" @click="fnList">목록</button>
+				<button type="button" @click="fnListMove">목록</button>
 			</div>	
 		</div>
 	</div>
@@ -182,7 +182,10 @@
 			fnTab(num) {
 				var self = this;
 				self.bottomBox = num;
-			}			
+			},
+			fnListMove() {
+				$.pageChange("/event/event.do", {});
+			}		
         },
         mounted() {
 			var self = this;

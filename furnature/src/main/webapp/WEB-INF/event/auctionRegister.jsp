@@ -82,7 +82,9 @@
 			        </div>
 			    </div>
 			</div>
-			<button type="button" @click="fnAuction">경매 등록 하기</button>
+			<div class="front-btn-box">
+				<button type="button" @click="fnAuction">경매 등록 하기</button>
+			</div>
 		</div>
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>

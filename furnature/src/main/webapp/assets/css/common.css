@@ -778,24 +778,41 @@ body {
 	margin-left: 0px;
 }
 
-.qna-list {
+.qna-list-wrap {
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 50px;
+	margin-left: 0px;
+}
+.qna-list-wrap .qna-list {
 	border-top: 2px solid var(--color-contrasty2);
 }
-.qna-list .qna-box {
+.qna-list-wrap .qna-list .qna-box {
 	border-bottom: 1px solid var(--color-contrastyF5);
 	padding: 20px 20px;
 }
-.qna-list .qna-box .qna-top {
+.qna-list-wrap .qna-list .qna-box .qna-top {
 	font-size: 12px;
 	color: var(--color-contrastyA);
 }
-.qna-list .qna-box .qna-top b {
+.qna-list-wrap .qna-list .qna-box .qna-top b {
 	font-size: 16px;
 	font-Weight: 500;
 	color: var(--color-contrasty2);
 }
-.qna-list .qna-box .qna-contents {
+.qna-list-wrap .qna-list .qna-box .qna-contents {
 	padding: 10px 10px;
+}
+.qna-list-wrap .qna-list .qna-box .qna-btns .ip-box input {
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 10px;
+	margin-left: 0px;
+}
+.qna-list-wrap .qna-list .qna-box .qna-btns button {
+	font-size: 12px;
+	font-Weight: 500;
+	padding: 5px 10px;
 }
 
 /* //qna */
@@ -1271,6 +1288,12 @@ table {
 	background-color: var(--color-contrasty2);
 	border-color: var(--color-contrasty2);
 }
+.front-btn-box + .pagenation {
+	margin-top: 40px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+}
 
 .flex-table {
 	background: var(--base-white);
@@ -1665,6 +1688,7 @@ table {
 	border-radius: 4px;
 	font-family: "RubikNoto";
 	resize: none;
+	box-sizing: border-box;
 }
 
 .ip-ra-txt {
@@ -1720,6 +1744,12 @@ table {
 }
 .ip-list + .ip-list {
 	margin-top: 20px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+}
+.ip-list + .front-btn-box {
+	margin-top: 40px;
 	margin-right: 0px;
 	margin-bottom: 0px;
 	margin-left: 0px;
