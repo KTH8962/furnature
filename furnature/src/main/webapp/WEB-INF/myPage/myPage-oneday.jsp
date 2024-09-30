@@ -16,16 +16,18 @@
                 </div>
                 <div class="myPage myPage-oneday">					
                     <div v-if="isCustomer">신청내역
-                   		<br>
+                   		<br><br>
 	                    <div v-for="item in list">
 	                        <div>클래스명: {{item.className}}</div>
-	                        <div>결제ID: {{item.payId}}</div>
+	                        <div v-if="item.payStatus==1">결제상태: 결제예정</div>
+							<div v-else>결제상태: 결제완료
+								<div>결제번호: {{item.payId}}</div>
+							</div>		
 	                        <div>신청일자: {{item.joinDay}}</div>
 							<div>결제금액 : {{price}} </div>
+							<div><button @click="fnCancel(item.classNo)">수강취소</button></div>
+							<div><button @click="fnPay(item.classNo)">결제</button></div>
 							<br>
-	                        <div><button @click="fnCancel()">수강취소</button></div>
-	                    	<br>
-							<div><button @click="fnPay()">결제</button></div>
 	                    </div>
 					</div>					
                 </div>
@@ -75,13 +77,10 @@
 					self.isCustomer = false;
 				}
             },
-			fnPay() {
+			fnPay(classNo) {
 			    var self = this;
 				var payConfirm = confirm("결제하시겠습니까?");
 				if(payConfirm){
-				
-					console.log("className:", self.className);  // 값을 확인하는 콘솔 출력
-					console.log("price:", self.price);  // 값을 확인하는 콘솔 출력
 
 					IMP.request_pay({
 					pg: "html5_inicis",
@@ -120,6 +119,20 @@
 			        }
 			    }); 
 			},
+			fnCancel(classNo){
+				var self = this;
+				var nparmap = {classNo:classNo, userId:self.userId}
+				$.ajax({
+					url:"/myPage/oneday-cancel.dox",
+					dataType:"json",
+					type:"POST",
+					data:nparmap,
+					success: function(data){
+						alert("수강취소 되었습니다.");
+						self.fnClass();
+					}
+				})
+			}
         },
         mounted() {
             this.fnClass();

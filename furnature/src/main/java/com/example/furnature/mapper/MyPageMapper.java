@@ -45,6 +45,10 @@ public interface MyPageMapper {
 	
 	//원데이클래스 결제
 	void onedayPay(HashMap<String,Object> map);
+	
+	//원데이클래스 수강취소
+	void onedayCancel(HashMap<String,Object> map);
+
 
 	int adminDeliveryCount(HashMap<String, Object> map);
 	

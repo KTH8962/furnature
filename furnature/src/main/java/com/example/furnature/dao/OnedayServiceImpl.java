@@ -21,7 +21,7 @@ public class OnedayServiceImpl implements OnedayService{
 
 	//원데이클래스 목록 출력
 	@Override
-	public HashMap<String, Object> onedayList(HashMap<String, Object> map) {
+	public HashMap<String, Object> onedayList(HashMap<String, Object> map){ 
 		HashMap<String,Object> resultMap = new HashMap<>();
 		try {
 			List<Oneday> onedayList = onedayMapper.onedayList(map);
@@ -48,7 +48,7 @@ public class OnedayServiceImpl implements OnedayService{
 	@Override
 	public HashMap<String, Object> onedayJoin(HashMap<String, Object> map) {
 		HashMap<String,Object> resultMap = new HashMap<>();
-		System.out.println("!!!!!!!!!!!!!!"+map);
+		System.out.println("!!!!!!"+map);
 		try {
 			onedayMapper.onedayJoin(map);
 			resultMap.put("result", "success");
@@ -73,6 +73,7 @@ public class OnedayServiceImpl implements OnedayService{
 		HashMap<String,Object> resultMap = new HashMap<>();
 		try {
 			List<Oneday> onedayDetail = onedayMapper.onedayDetail(map);
+		
 			resultMap.put("onedayDetail", onedayDetail);
 			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
@@ -176,5 +177,27 @@ public class OnedayServiceImpl implements OnedayService{
 		}					
 		return resultMap;
 	}
+
+	@Override
+	public HashMap<String, Object> onedayCheck(HashMap<String, Object> map) {
+		HashMap<String,Object> resultMap = new HashMap<>();
+		try {
+			int onedayCheck = onedayMapper.onedayCheck(map);
+			resultMap.put("onedayCheck", onedayCheck);
+			resultMap.put("result", "success");
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (DataAccessException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+		} catch (PersistenceException e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}					
+		return resultMap;
+	}
+
 
 }

@@ -31,19 +31,32 @@
 
 	<!--원데이클래스 신청내역 조회(회원)-->
 	<select id="onedayInfo" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
-		SELECT C.PRICE, P.NAME, PAY_ID, USER_ID, C.CLASS_NO, JOIN_DAY, PAY_DAY, C.CLASS_NAME, CLASS_DATE
+		SELECT C.PRICE, P.NAME, P.PAY_ID, P.USER_ID, C.CLASS_NO, P.JOIN_DAY, P.PAY_DAY, C.CLASS_NAME, C.CLASS_DATE,
+		    CASE 
+		        WHEN P.PAY_ID IS NULL OR P.PAY_ID = '' THEN 1 
+		        ELSE 2 
+		    END AS PAY_STATUS
 		FROM TBL_PARTICIPANT P
-		INNER JOIN TBL_CLASS C
-		ON P.CLASS_NO = C.CLASS_NO
+		INNER JOIN TBL_CLASS C ON P.CLASS_NO = C.CLASS_NO
 		WHERE P.USER_ID = #{userId}
 	</select>	
 	
 	<!--원데이클래스 수강취소(회원)-->
 	<delete id="onedayCancel" parameterType="hashmap">
 		DELETE FROM TBL_PARTICIPANT
-		WHERE CLASS_NO = #{classNo} AND USER_ID = #{sessionId}
+		WHERE CLASS_NO = #{classNo} AND USER_ID = #{userId}
 	</delete>
 
+	<!--원데이클래스 결제정보-->
+	<update id="onedayPay" parameterType="hashmap">
+		UPDATE TBL_PARTICIPANT 
+		SET 
+		    PAY_ID = #{payId}, 
+		    PRICE = #{price}, 
+		    PAY_DAY = SYSDATE 
+		WHERE 
+		    USER_ID = #{userId} AND CLASS_NO = #{classNo};
+	</update>	
 	
 	<select id="selectBiddingList" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
 		SELECT MY_BIDDING, B.AUCTION_NO, B.AUCTION_BIDDING_DATE, AUCTION_TITLE, A.AUCTION_PRICE_CURRENT, A.AUCTION_STATUS, I.AUCTION_IMG_PATH, A.END_DAY, P.PAYMENT_STATUS,

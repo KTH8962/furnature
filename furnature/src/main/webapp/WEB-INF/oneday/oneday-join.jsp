@@ -115,17 +115,17 @@
             },
             methods: {
 			
-				fnDetail(classNo) {
+				fnDetail() {
 					var self = this;
-					var nparmap = {classNo:self.classNo};
-					
+					var nparmap = {classNo:self.classNo};	
 					$.ajax({
 					url : "/oneday/oneday-detail.dox",
 					dataType : "json",
 					type : "POST",
 					data : nparmap,
 					success : function(data){
-						self.detail = data.onedayDetail; 
+						console.log(data);
+						self.detail = data.onedayDetail;
 						self.classNo = data.onedayDetail[0].classNo;
 						self.className = data.onedayDetail[0].className;
 						self.startDay = data.onedayDetail[0].startDay;
@@ -133,7 +133,7 @@
 						self.classDate = data.onedayDetail[0].classDate;
 						self.price = data.onedayDetail[0].price;
 						self.description = data.onedayDetail[0].description;
-						
+				
 						self.filePath = [];			
 						self.detail.forEach(item => {
                            if (item.filePath) {
@@ -185,15 +185,28 @@
 					}
 					var nparmap = {classNo:self.classNo, userId:self.userId, name:self.name};
 					$.ajax({
-						url : "/oneday/oneday-join.dox",
+						url : "/oneday/oneday-check.dox",
 						dataType : "json",
 						type : "POST",
 						data : nparmap,
 						success : function(data){
-							alert("수강 신청 되었습니다.");
-							console.log(data);
+							self.onedayCheck = data.onedayCheck;
+							if(self.onedayCheck==1){
+								$.ajax({
+									url : "/oneday/oneday-join.dox",
+									dataType : "json",
+									type : "POST",
+									data : nparmap,
+									success : function(data){
+										alert("수강신청 되었습니다.");
+									}							
+								})				
+							}else{
+								alert("이미 신청한 클래스입니다.");
+							}
 						}							
-					})				
+					})	
+					
 			   },
 				fnPay() {
 				    var self = this;
@@ -266,14 +279,11 @@
 				fnTab(num) {
 					var self = this;
 					self.bottomBox = num;
-				}	
+				}
 			},
             mounted() {
 				var self = this;
 				self.fnDetail(self.classNo);
-				if (self.sessionAuth === "2") {
-				       self.isAdmin = true;
-				   }
             }
         });
         app.mount('#app');

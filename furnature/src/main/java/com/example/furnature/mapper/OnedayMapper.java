@@ -34,5 +34,7 @@ public interface OnedayMapper {
 	//원데이클래스 수정(관리자)
 	void onedayUpdate(HashMap<String,Object> map);
 	
+	//원데이클래스 수강신청 중복여부
+	int onedayCheck(HashMap<String,Object> map);
 
 }
