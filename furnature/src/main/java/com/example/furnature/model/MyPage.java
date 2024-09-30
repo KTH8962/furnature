@@ -52,6 +52,7 @@ public class MyPage {
 	// 배송
 	private String payNo;
 	private String orderNo;
+	private String orderId;
 	private String productNo;
 	private String orderPrice;
 	private String orderSize;

@@ -109,7 +109,7 @@
 	
 	<select id="selectDelivery" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
 		SELECT 
-			ORDER_NO,
+			ORDER_ID,
 			USER_ID,
 		    SUM(ORDER_COUNT) AS ORDER_COUNT,
 		    ORDER_CATE,
@@ -125,7 +125,7 @@
 	        INNER JOIN TBL_PRODUCT P2 ON P2.PRODUCT_NO = P.PRODUCT_NO
 	        WHERE USER_ID = #{userId}
 		GROUP BY 
-		    ORDER_NO, 
+		    ORDER_ID, 
 		    USER_ID,
 		    ORDER_CATE,
 	        ORDER_COUNT,
