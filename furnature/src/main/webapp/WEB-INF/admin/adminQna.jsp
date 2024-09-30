@@ -50,11 +50,11 @@
                 </div>
             </div>
 			<div class="pagenation">
-			    <button type="button" class="prev" v-if="currentPage > 1"  @click="fnBeforePage()">이전</button>
+			    <button type="button" class="prev"   @click="fnBeforePage()">이전</button>
 			    <button type="button" class="num" v-for="page in totalPages" :class="{active: page == currentPage}" @click="fnGetList(page)">
 			        {{ page }}
 			    </button>
-			    <button type="button" class="next" v-if="currentPage < totalPages" @click="fnAfterPage()">다음</button>
+			    <button type="button" class="next"  @click="fnAfterPage()">다음</button>
 			</div>
         </div>
 	</div>
@@ -124,13 +124,19 @@
 					}
 				});
 			},
-			fnBeforPage(){
+			fnBeforePage(){
 				var self = this;
+				if(self.currentPage == 1){
+					return;					
+				}
 				self.currentPage = self.currentPage - 1;
 				self.fnGetList(self.currentPage);
 			},
-			fnNextPage(){
+			fnAfterPage(){
 				var self = this;
+				if(self.totalPages == self.currentPage){
+					return;
+				}
 				self.currentPage = self.currentPage + 1;
 				self.fnGetList(self.currentPage);
 			}

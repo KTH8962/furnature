@@ -49,11 +49,11 @@
 			</ul>
 			<!--페이징처리-->
 			<div class="pagenation">
-                <button type="button" class="prev" v-if="currentPage > 1" @click="fnBeforPage()">이전</button>
+                <button type="button" class="prev"  @click="fnBeforPage()">이전</button>
                 <button type="button" class="num" v-for="page in totalPages" :class="{active: page == currentPage}" @click="fnGetProductList(page)">
 					{{page}}
 				</button>
-                <button type="button" class="next" v-if="currentPage < totalPages" @click="fnNextPage()">다음</button>
+                <button type="button" class="next"  @click="fnNextPage()">다음</button>
             </div>
 		</div> 
 	</div>
@@ -132,10 +132,6 @@
 					alert("4자리 이하로 입력해주세요");
 					return;
 				}
-				else if(self.widthSize == "" && self.depthSize == "" && self.heightSize == ""){
-					alert("치수를 입력해주세요");
-					return;
-				}
 				self.width = self.widthSize;
 				self.depth = self.depthSize;
 				self.height = self.heightSize;
@@ -159,11 +155,17 @@
 			},
 			fnBeforPage(){
 				var self = this;
+				if(self.currentPage == 1){
+					return;
+				}
 				self.currentPage = self.currentPage - 1;
 				self.fnGetProductList(self.currentPage);
 			},
 			fnNextPage(){
 				var self = this;
+				if(self.totalPages == self.currentPage){
+						return;
+					}
 				self.currentPage = self.currentPage + 1;
 				self.fnGetProductList(self.currentPage);
 			}

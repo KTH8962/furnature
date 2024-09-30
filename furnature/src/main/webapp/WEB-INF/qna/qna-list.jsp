@@ -124,11 +124,17 @@
 				},
 				fnBeforePage() {
 					var self = this;
+					if(self.currentPage == 1){
+						return;
+					}
 					self.currentPage = self.currentPage - 1;
 					self.fnGetList(self.currentPage);
 				},
 				fnAfterPage() {
 					var self = this;
+					if(self.totalPages == self.currentPage){
+						return;
+					}
 					self.currentPage = self.currentPage + 1;
 					self.fnGetList(self.currentPage);
 				},
