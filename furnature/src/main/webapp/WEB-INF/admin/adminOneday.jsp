@@ -68,11 +68,12 @@
                 </div>
             </div>
             <div class="contents-bottom">
-                <div class="pagenation">
-                    <button type="button" class="prev" :disabled="currentPage == 1" @click="fnPageChange(currentPage - 1)">이전</button>
-                    <button type="button" class="num" v-for="item in totalPages" :class="{active: item == currentPage}" @click="fnPageChange(item)">{{item}}</button>
-                    <button type="button" class="next" :disabled="currentPage == totalPages" @click="fnPageChange(currentPage + 1)">다음</button>
-                </div>
+				<div class="pagenation">
+                   <button type="button" class="prev" :disabled="currentPage == 1" @click="fnPageChange(currentPage - 1)">이전</button>
+                   <button type="button" class="num" v-for="item in totalPages" :class="{active: item == currentPage}" @click="fnPageChange(item)">{{item}}</button>
+                   <button type="button" class="next" :disabled="currentPage == totalPages" @click="fnPageChange(currentPage + 1)">다음</button>
+               </div>
+				
             </div>
         </div>
 	</div>
@@ -87,13 +88,17 @@
                 pageSize: 11,
                 totalPages: 0,
                 keyword: "",
-				searchOption : 'all'
+				searchOption : 'all',
+				totalCount : ""
             };
         },
         methods: {
-			fnGetList(){
+			fnGetList(page){
 				var self = this;	
-				var nparmap = {searchOption:self.searchOption, keyword:self.keyword};
+				var startIndex = (page-1)*self.pageSize;
+				var outputNumber = self.pageSize;
+				self.currentPage = page;
+				var nparmap = {searchOption:self.searchOption, keyword:self.keyword, startIndex:startIndex, outputNumber:outputNumber};
 				$.ajax({
 	               url: "/admin/oneday-list.dox",
 	               dataType: "json",
@@ -101,15 +106,16 @@
 	               data: nparmap,
 	               success: function(data) {
 					self.list = data.currentNumber;
-	              	console.log(data);
+					self.totalCount = data.totalCount;
+					self.totalPages = Math.ceil(self.totalCount / self.pageSize);
 	               }
 	           });
 			},
-            fnPageChange(item) {
-                var self = this;
-                self.currentPage = item;
-                self.fnGetList(item);
-            },
+			fnPageChange(item) {
+              var self = this;
+              self.currentPage = item;
+              self.fnGetList(item);
+          },
             fnRemove(classNo) {
                 if(!confirm("삭제 하시겠습니까?")) return;
                 var self = this;
@@ -120,6 +126,7 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
+						alert("삭제되었습니다.");
                         if(data.result == "scuccess") {
                             alert("삭제 완료되었습니다.")
                             location.reload();

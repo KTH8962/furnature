@@ -19,4 +19,6 @@ public interface MyPageService {
     HashMap<String, Object> onedayInfo(HashMap<String, Object> map);
 	//원데이클래스 결제
 	HashMap<String,Object> onedayPay(HashMap<String,Object> map);
+	//원데이클래스 수강취소
+	HashMap<String,Object> onedayCancel(HashMap<String,Object> map);
 }

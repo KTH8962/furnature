@@ -110,7 +110,7 @@
                 </div>
                 <div class="btn-box">
                     <button type="button" class="admin-btn" @click="fnUpdate(classNo)" v-if="!isRegister">수정</button>
-                    <button type="button" class="admin-btn" @click="fnRemove(classNo)" v-if="!isRegister">삭제</button>
+                    <button type="button" class="admin-btn" @click="fnDelete(classNo)" v-if="!isRegister">삭제</button>
 					<button type="button" class="admin-btn" @click="fnRegister()" v-if="isRegister">등록</button>
                 </div>
             </div>
@@ -190,7 +190,7 @@
 					return;
 				}
 				
-				if(!self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay || !self.description) {
+				if(!self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay || !self.description || !self.file) {
 				        alert("빈칸을 채워주세요.");
 				        return;
 				}
@@ -224,8 +224,10 @@
 				});
 			},
 			
-			fnRemove(classNo) {
-               if(!confirm("삭제 하시겠습니까?")) return;
+			fnDelete(classNo) {
+               if(!confirm("삭제하시겠습니까?")) {
+				return;
+				}
                var self = this;
                var nparmap = {classNo: classNo};
 				$.ajax({
@@ -234,10 +236,9 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-	                       if(data.result == "scuccess") {
-	                           alert("삭제 완료되었습니다.")
-	                           location.reload();
-	                       }
+			            alert("삭제되었습니다.");
+						console.log(data);
+						self.fnGetInfo();
 					}
 				});
            },

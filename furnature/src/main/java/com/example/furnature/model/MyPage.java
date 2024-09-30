@@ -33,6 +33,7 @@ public class MyPage {
 	private String result;
 	private String description;
 	private String joinDay;
+	private String payStatus;
 	
 	// 이벤트 - 경매
 	private String auctionBiddingNo;

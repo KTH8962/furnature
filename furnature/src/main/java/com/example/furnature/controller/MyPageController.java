@@ -30,8 +30,9 @@ public class MyPageController {
 
     //원데이클래스 신청내역 조회 페이지
     @RequestMapping("/myPage/oneday.do")
-    public String onedayInfo(Model model) throws Exception{
+    public String onedayInfo(HttpServletRequest request, Model model, @RequestParam HashMap<String,Object> map) throws Exception{
     	model.addAttribute("activePage","oneday");
+    	request.setAttribute("classNo", map.get("classNo"));
         return "/myPage/myPage-oneday";
     }
 
@@ -134,6 +135,14 @@ public class MyPageController {
   	public String onedayPay(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception {
   		HashMap<String, Object> resultMap = new HashMap<String, Object>();
   		resultMap = myPageService.onedayPay(map);
+  		return new Gson().toJson(resultMap);
+  	}
+  //원데이클래스 수강취소(고객)
+  	@RequestMapping(value = "/myPage/oneday-cancel.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+  	@ResponseBody
+  	public String onedayCancel(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+  		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+  		resultMap = myPageService.onedayCancel(map);
   		return new Gson().toJson(resultMap);
   	}
 

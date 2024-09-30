@@ -32,6 +32,8 @@ public interface AdminMapper {
 	void onedayFileDelete(HashMap<String, Object> map);
 	//원데이클래스 개별조회
 	Admin onedayInfo(HashMap<String, Object> map);
+	//원데이클래스 클래스수
+	int totalCount(HashMap<String,Object> map);
 	
 	
 	int adminDeliveryCount(HashMap<String, Object> map);

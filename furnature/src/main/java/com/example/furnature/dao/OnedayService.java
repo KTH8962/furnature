@@ -24,4 +24,7 @@ public interface OnedayService {
 	
 	//원데이클래스 수정(관리자)
 	HashMap<String,Object> onedayUpdate(HashMap<String,Object> map);
+	
+	//원데이클래스 중복신청 여부
+	HashMap<String,Object> onedayCheck(HashMap<String,Object> map);
 }	

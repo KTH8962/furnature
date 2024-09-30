@@ -165,5 +165,16 @@ public class OnedayController {
 		resultMap = onedayService.onedayUpdate(map);
 		return new Gson().toJson(resultMap);
 	}
+    
+    //원데이클래스 중복신청 여부
+    @RequestMapping(value = "/oneday/oneday-check.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String onedayCheck(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = onedayService.onedayUpdate(map);
+		return new Gson().toJson(resultMap);
+	}
+    
+   
 	
 } 

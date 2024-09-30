@@ -19,7 +19,7 @@
 			AND USER_NAME LIKE '%' || #{keyword} || '%'
 		</if>
 		ORDER BY USER_AUTH ASC, USER_NAME
-		OFFSET #{currentPage} ROWS FETCH FIRST #{pageSize} ROWS ONLY
+		
 	</select>
 	
 	<select id="selectAllUser" parameterType="hashmap" resultType="com.example.furnature.model.Admin">
@@ -78,7 +78,15 @@
 	        AND END_DAY LIKE '%' || #{keyword} || '%'
 	    </if>
 	    ORDER BY C.CLASS_NO
+	    OFFSET #{startIndex} ROWS FETCH FIRST #{outputNumber} ROWS ONLY
 	</select>
+	
+	<!--원데이클래스 클래스 수 조회-->
+	<select id="totalCount" parameterType="hashmap" resultType="int"> 
+		SELECT COUNT(CLASS_NO) AS TOTAL 
+		FROM TBL_CLASS
+	</select>
+
 
 	<!--원데이클래스 삭제-->
 	<delete id="onedayDelete" parameterType="hashmap">

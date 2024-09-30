@@ -18,9 +18,9 @@
 							<figure class="img"><img :src="item.filePath" :alt="item.className + '이미지'"></figure>
 						</a>
 						<span class="tit">{{item.className}}</span>
-						<span class="price">수강료 <br> {{item.price}} </span>
-						<span class="date">수업일자 <br> {{item.classDate}} </span>
-						<span class="date">모집기간 <br> {{item.startDay}} ~ {{item.endDay}}</span>
+						<span class="price">수강료 <br> {{Number(item.price).toLocaleString()}}원 </span>
+						<span class="date">수업일자 <br> {{item.classDate2}} </span>
+						<span class="date">모집기간 <br> {{item.startDay2}} ~ {{item.endDay2}}</span>
 						<span class="state">
 							<template v-if="item.message1=='모집 중' && parseInt(item.numberLimit)>parseInt(item.currentNumber)">모집 중</template>
 							<template v-else="item.message1=='모집 종료' || item.numberLimit==item.currentNumber">모집 종료</template>
@@ -29,13 +29,11 @@
 				</ul>
 	
 				<div class="pagenation">
-	                <button type="button" class="prev" v-if="currentPage > 1" @click="fnBeforPage()">이전</button>
-	                <button type="button" class="num" v-for="page in totalPages" :class="{active: page == currentPage}" @click="fnGetList(page)">
-						{{page}}
-					</button>
-	                <button type="button" class="next" v-if="currentPage < totalPages" @click="fnNextPage()">다음</button>
-	            </div>
-				
+                   <button type="button" class="prev" :disabled="currentPage == 1" @click="fnPageChange(currentPage - 1)">이전</button>
+                   <button type="button" class="num" v-for="item in totalPages" :class="{active: item == currentPage}" @click="fnPageChange(item)">{{item}}</button>
+                   <button type="button" class="next" :disabled="currentPage == totalPages" @click="fnPageChange(currentPage + 1)">다음</button>
+               </div>
+
 				<button @click="fnRegister" v-if="isAdmin">클래스 등록</button>
 			</div>
 	</div>
@@ -67,13 +65,13 @@
 				var outputNumber = self.pageSize;
 				self.currentPage = page;
 				var nparmap = {startIndex:startIndex, outputNumber:outputNumber};
-				console.log(nparmap);
 				$.ajax({
 					url : "/oneday/oneday-list.dox",
 					dataType : "json",
 					type : "POST",
 					data : nparmap,
 					success : function(data){
+						console.log(data);
 						self.list = [];
 						for(var i=0; i<data.onedayList.length; i++){
 							self.list.push(data.onedayList[i]);
@@ -112,7 +110,6 @@
 			    })
 			},
 			fnChange(classNo){
-				console.log(classNo);
 				$.pageChange("/oneday/oneday-join.do", {classNo:classNo});
 			},
 			changePage(page) {
@@ -124,16 +121,11 @@
 			fnRegister(){
 				$.pageChange("/oneday/oneday-register.do", {});	
 			},
-			fnBeforPage(){
-				var self = this;
-				self.currentPage = self.currentPage - 1;
-				self.fnGetList(self.currentPage);
-			},
-			fnNextPage(){
-				var self = this;
-				self.currentPage = self.currentPage + 1;
-				self.fnGetList(self.currentPage);
-			}			
+			fnPageChange(item) {
+              var self = this;
+              self.currentPage = item;
+              self.fnGetList(item);
+          }
         },
         mounted() {
 			var self = this;

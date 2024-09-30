@@ -124,7 +124,9 @@ public class AdminServiceImpl implements AdminService{
 		HashMap<String, Object> resultMap = new HashMap<>();
 		try {
 			List<MyPage> currentNumber = adminMapper.currentNumber(map);
+			int totalCount = adminMapper.totalCount(map);
 			resultMap.put("currentNumber", currentNumber);
+			resultMap.put("totalCount", totalCount);
 			resultMap.put("result", "success");
             resultMap.put("message", ResMessage.RM_SUCCESS);
         } catch (DataAccessException e) {
@@ -139,7 +141,7 @@ public class AdminServiceImpl implements AdminService{
         }
         return resultMap;
 	}
-
+	//원데이클래스 삭제
 	@Override
 	public HashMap<String, Object> onedayDelete(HashMap<String, Object> map) {
 		HashMap<String, Object> resultMap = new HashMap<>();
@@ -161,6 +163,7 @@ public class AdminServiceImpl implements AdminService{
         return resultMap;
 	}
 
+	//원데이클래스 정보 불러오기
 	@Override
 	public HashMap<String, Object> onedayInfo(HashMap<String, Object> map) {
 		HashMap<String, Object> resultMap = new HashMap<>();
