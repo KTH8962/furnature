@@ -20,7 +20,7 @@
                         <div class="myPage-img-list-box" v-for="item in list">
                             <template v-if="item.orderCate =='상품'">
                                 <div class="img-box">
-                                    <a href="#" @click="fnProDetail(item.productNo)"><img :src="item.productThumbnail"></a>
+                                    <a href="#" @click="fnProDetail(item.productNo, item.orderCate)"><img :src="item.productThumbnail"></a>
                                 </div>
                                 <div class="tit-box">
                                     <div class="top">
@@ -36,7 +36,7 @@
                             </template>	
                             <template v-if="item.orderCate =='경매'">
                                 <div class="img-box">
-                                    <a href="#" @click="fnProDetail(item.productNo)"><img :src="item.productThumbnail"></a>
+                                    <a href="#" @click="fnProDetail(item.productNo, item.orderCate)"><img :src="item.productThumbnail"></a>
                                 </div>
                                 <div class="tit-box">
                                     <div class="top">
@@ -88,8 +88,12 @@
                     }
                 });
             },
-			fnProDetail(productNo){
-				$.pageChange("/productDetail/productDetail.do",{productNo : productNo});
+			fnProDetail(productNo, orderCate){
+                if(orderCate == "상품") {
+                    $.pageChange("/productDetail/productDetail.do",{productNo : productNo});
+                } else if(orderCate == "경매") {
+                    $.pageChange("/event/auctionDetail.do",{auctionNo : productNo});
+                }
 			}
       
         },
