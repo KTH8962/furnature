@@ -10,29 +10,39 @@
 	<div id="app">
 		<div id="container">            
             <p class="blind">기본페이지</p>
-			<div>
-				
-			</div>
-			<div class="ip-box">
-				<div>
-					디자이너 {{list.userId}}
-				</div>
-				<div>
-		            디자인 제목 {{list.designTitle}}
-				</div>
-				<div>
-					<img :src="list.designImgPath" style= "width : 500px ; height : 500px">
-				</div>
-				<div>
-					{{list.designContents}}
-				</div>
-	        </div>
-			<button @click="fnRecommend()">추천하기</button>
-			<div v-if="sessionId == 'admin'">
-				<button @click="fnDesignSelect()">추천확정</button>			
-			</div>
-			<div v-if="sessionId == list.userId">
-				<button @click="fnDelete(list.designNo)">게시물삭제</button>			
+			<table class="table-type2">
+				<colgroup>
+					<col style="width: 10%;">
+					<col style="width: 40%;">
+					<col style="width: 10%;">
+					<col style="width: 40%;">
+				</colgroup>
+				<tbody>
+					<tr>
+						<th>디자이너</th>
+						<td>{{list.userId}}</td>
+						<th>디자인 제목</th>
+						<td>{{list.designTitle}}</td>
+					</tr>
+					<tr>
+						<th>내용</th>
+						<td colspan="3">
+							<div class="contents">
+								<img :src="list.designImgPath">
+								<p class="desc">{{list.designContents}}</p>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="front-btn-box">
+				<button @click="fnRecommend()">추천하기</button>
+				<template v-if="sessionId == 'admin'">
+					<button @click="fnDesignSelect()">추천확정</button>			
+				</template>
+				<template v-if="sessionId == list.userId">
+					<button @click="fnDelete(list.designNo)">게시물삭제</button>			
+				</template>
 			</div>
 		</div>
 	</div>

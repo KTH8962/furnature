@@ -339,6 +339,10 @@ jQuery.extend( {
 		let cnt = 0;
 		let maxCnt = sliderCnt.length-1;
 	
+		if(sliderCnt.length < 2) {
+			document.querySelector(".thumb-arrow").style.display = 'none';
+		}
+
 		let sliderSize = parseInt(styleWrap.getPropertyValue("width"));
 		sliderList.style.width = parseInt(sliderSize) * sliderCnt.length + "px";
 		var movingSize = parseInt(sliderSize);
