@@ -17,7 +17,7 @@
                 <div class="myPage myPage-oneday">
 					<h2 class="myPage-tit">원데이클래스 신청내역</h2>			
                     <div v-if="isCustomer">
-                   		<br><br>
+                   		<br>
 	                    <div v-for="item in list">
 	                        <div>클래스명: {{item.className}}</div>
 	                        <div v-if="item.payStatus==1">결제상태: 결제예정</div>
