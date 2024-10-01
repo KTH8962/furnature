@@ -8,7 +8,7 @@
 <body>
     <jsp:include page="/layout/header.jsp"></jsp:include>
     <div id="app">
-        <div id="container">            
+        <div id="container" class="myPage">            
             <p class="blind">마이페이지 - 원데이클래스</p>
             <div class="myPage-wrap">
                 <div class="myPage-snb-wrap">
@@ -17,20 +17,28 @@
                 <div class="myPage myPage-oneday">
 					<h2 class="myPage-tit">원데이클래스 신청내역</h2>			
                     <div v-if="isCustomer">
-                   		<br>
-	                    <div v-for="item in list">
-							<div><img :src="item.filePath"></div>
-	                        <div>클래스명: {{item.className}}</div>
-	                        <div v-if="item.payStatus==1">결제상태: 결제예정</div>
-							<div v-else>결제상태: 결제완료
-								<div>결제번호: {{item.payId}}</div>
-							</div>		
-	                        <div>신청일자: {{item.joinDay}}</div>
-							<div>결제금액 : {{price}} </div>
-							<div><button @click="fnCancel(item.classNo)">수강취소</button></div>
-							<div><button @click="fnPay(item.classNo)">결제</button></div>
-							<br>
-	                    </div>
+						<div class="myPage-img-list-wrap">
+							<div class="myPage-img-list-box" v-for="item in list">
+								<div class="img-box"><img :src="item.filePath" :alt="item.className + '이미지'"></div>
+								<div class="tit-box">
+									<div class="top">
+										<div class="tit">{{item.className}}</div>
+									</div>
+									<div v-if="item.payStatus==1">결제상태: 결제예정</div>
+									<div v-else>결제상태: 결제완료
+										<div>결제번호: {{item.payId}}</div>
+									</div>
+									<div class="price-box">
+										<div class="price">결제 금액 : {{item.price}} </div>
+									</div>
+									<div class="date">신청일자: {{item.joinDay}}</div>
+									<div class="result">
+										<button type="button" @click="fnCancel(item.classNo)">수강취소</button>
+										<button type="button" @click="fnPay(item.classNo)">결제</button>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>					
                 </div>
             </div>

@@ -40,49 +40,45 @@
 								<select v-model="sizeSelect" @change="fnSelectSize">
 									<option value="">사이즈 선택</option>
 									<option v-for="(item,index) in sizeList" :value="index">
-										<template v-if="index=='0'">
-										{{item}}
-										</template>
-										<template v-if="index=='1'">
-											{{item}} : + 20000 원
-										</template>
-										<template v-if="index=='2'">
-											{{item}} : + 40000 원
-										</template>
+										<template v-if="index=='0'">{{item}}</template>
+										<template v-if="index=='1'">{{item}} : + 20000 원</template>
+										<template v-if="index=='2'">{{item}} : + 40000 원</template>
 									</option>					
 								</select>
 							</div>
 						</div>
 					</div>
-					<div class="detail-box">
-						<div class="tit">사이즈 선택</div>
-						<div class="info">
-							<div><!-- 사이즈 선택 후 목록 출력-->
-									<!--<template v-if="selectedSize != '' ||selectedSize == '0'">-->
-									<template v-for="(item,index) in selectedSize">
-										<div>
-											{{productDetail.productName}} {{ item.size }}번 사이즈
-											<button type="button" @click="fnUp(index)">+</button>
-											<input type="text" v-model="item.count">
-											<button type="button" @click="fnDown(index)">-</button>
-											{{(item.price * item.count).toLocaleString()}}원
-											<!--toLocaleString() >> 숫자를 천단위에 , 넣어서 출력해주는 함수-->
+					<div class="detail-box" v-if="selectedSize != null">
+						<div class="tit">선택 된 사이즈</div>
+						<div class="info">								
+							<div class="total-wrap">
+								<div class="total-box" v-for="(item,index) in selectedSize">
+									<p class="tit">{{productDetail.productName}} {{ item.size }}번 사이즈</p>
+									<div class="option-box">
+										<div class="option">
+											<button type="button" class="btn minus" @click="fnDown(index)">-</button>
+											<div class="ip-box">
+												<input type="text" v-model="item.count">
+											</div>
+											<button type="button" class="btn plus" @click="fnUp(index)">+</button>
 										</div>
-									</template>
-									<div>총 합계: {{ totalPrice }}원</div>
-							</div>
+										<p class="price"><b>{{(item.price * item.count).toLocaleString()}}</b>원</p>
+									</div>
+								</div>
+							</div>						
 						</div>
 					</div>
 					<div class="detail-box">
-						<div class="info"><!-- 구매/ 커스텀 등 버튼 구현 -->
-							<button type="button" @click="fnPay(1)">구매하기</button><br>
-							<button type="button" @click="fnPay(2)">장바구니</button><br>
-							<!--<button type="button">좋아요 버튼?</button>-->
-							<!-- 커스텀 버튼은 커스텀 가능 물품만 버튼 보이게 하기.-->
-							<button type="button" @click="fnCustom">커스텀 버튼</button>
+						<div class="tit">총 합</div>
+						<div class="info">
+							<div class="total-price">총 합계: <b>{{ totalPrice }}</b>원</div>
 						</div>
 					</div>
-					
+					<div class="btn-box">
+						<button type="button" @click="fnPay(1)">구매하기</button>
+						<button type="button" @click="fnPay(2)">장바구니</button>
+						<button type="button" @click="fnCustom">커스텀 버튼</button>
+					</div>				
 				</div>
 			</div>
 			<div class="detail-tab">
@@ -90,14 +86,12 @@
 				<button type="button" @click="fnTab(2)" :class="bottomBox == '2' ? 'active' : ''">배송 교환 정보</button>
 				<button type="button" @click="fnTab(3)" :class="bottomBox == '3' ? 'active' : ''">관련 추천 상품</button>
 				<button type="button" @click="fnTab(4)" :class="bottomBox == '4' ? 'active' : ''">후기</button>
-			</div>
-			
+			</div>			
 			<div class="detail-bottom">
 				<div class="detail-bottom-box" v-if="bottomBox == '1'">
 					<img :src="productDetail.productDetail1" alt="제품상세정보">
 				</div>
 				<div class="detail-bottom-box" v-if="bottomBox == '2'">
-					배송교환정보
 				</div>
 				<div class="detail-bottom-box" v-if="bottomBox == '3'">
 					<ul class="img-list product-list">
@@ -111,92 +105,114 @@
 					<ul>
 				</div>
 				<div class="detail-bottom-box" v-if="bottomBox == '4'">
-					<div style="display: flex; align-items: center; flex-direction: column;">
-						<div id="review"> <!-- 제품 리뷰 영역 5개 정도씩 보이게, 페이징처리 추천순 최신순 별점순 ?-->
-							<div class="front-btn-box"><button type="button" @click="fnReviewInsert" v-if="reviewFlag==true">리뷰작성하기</div>
-							<div v-if="insertModal">
-								<div class="select-box">
-									<select v-model="reviewRating">
-										<!-- repeqt는 숫자만큼 '' 안에 문자열을 출력해주는 함수-->
-									    <option v-for="(title, index) in reviewTitle" :key="index" :value="index + 1">
-									        {{ '★'.repeat(index + 1) + '☆'.repeat(5 - (index + 1)) }} - {{ title }}
-									    </option>
-									</select>
+					<div id="review"> 
+						<div class="front-btn-box"><button type="button" @click="fnReviewInsert" v-if="reviewFlag==true">리뷰작성하기</div>
+						<div class="popup-wrap" v-if="insertModal">
+							<div class="popup-box">
+								<p class="popup-tit">리뷰 작성</p>
+								<div class="ip-list">
+									<div class="tit-box">
+										<p class="tit">평점</p>
+									</div>
+									<div class="bot-box">
+										<div class="select-box">
+											<select v-model="reviewRating">												
+												<option v-for="(title, index) in reviewTitle" :key="index" :value="index + 1">
+													{{ '★'.repeat(index + 1) + '☆'.repeat(5 - (index + 1)) }} - {{ title }}
+												</option>
+											</select>
+										</div>
+									</div>
 								</div>
 								<div class="ip-list">
-		                           <div class="tit-box">
-		                               <p class="tit">내용</p>
-		                           </div>
-		                           <div class="bot-box">
-		                               <div class="ip-box">
-		                                   <div class="text-box"><textarea v-model="reviewContents"></textarea></div>
-		                               </div>
-		                           </div>
-		                       </div>
-								<div>사진첨부<input type="file" accept=".gif,.jpg,.png" @change="fnReviewAttach"></div>
-								<div class="front-btn-box">
+									<div class="tit-box">
+										<p class="tit">내용</p>
+									</div>
+									<div class="bot-box">
+										<div class="ip-box">
+											<div class="text-box"><textarea v-model="reviewContents"></textarea></div>
+										</div>
+									</div>
+								</div>
+								<div class="ip-list">
+									<div class="tit-box">
+										<p class="tit">사진첨부</p>
+									</div>
+									<div class="bot-box">
+										<div class="ip-box">
+											<input type="file" accept=".gif,.jpg,.png" @change="fnReviewAttach">
+										</div>
+									</div>
+								</div>
+								<div class="popup-btn-box">
 									<button @click="fnReviewInsertSave">리뷰작성</button>
 									<button @click="fnCancel">취소</button>
-								</div>
-								
+								</div>	
+							</div>							
+						</div>
+						<div class="star-wrap">
+							<div class="star-box">
+								<div class="bg-box">기본별</div>
+								<div class="bg-box active" :style="{width: (100/5*ratingAvg) + '%'}">active별</div>
 							</div>
-							<div><!--이건 style 빼면 별이 이상해져서 일단 냅뒀습니다 !!-->
-								<div>평점 <span style="color: gold; font-size: 3em;">★</span> {{ratingAvg}}</div>
-							</div>
-							<div><!-- 보고있는 페이지의 상품번호와 맞는 리뷰 목록들 출력-->
-								<template v-for="item in reviewList">
-									<div v-if="item.productNo==productDetail.productNo">
-										<div v-if="item.reviewImgPath != null"><img :src="item.reviewImgPath"></div>
-										<div>{{item.reviewCdateTime}}</div>
-										<div>
-											{{item.reviewTitle}}
-											<template v-if="item.reviewRating">	<!-- 얘도 별점 스타일 일단 냅뒀습니다!-->
-										        <span v-for="star in 5" :key="star" style="color: gold;">
-										            {{ star <= item.reviewRating ? '★' : '☆' }}
-										        </span>
-										    </template> 
-											<!--평점 :{{item.reviewRating}}-->
-										</div>
-										<div>{{item.reviewContents}}</div>
-										<div v-if="item.userId==sessionId">
-										    <div class="front-btn-box">
+							<div class="tit-box"><b>{{ratingAvg}}</b>/5.0</div>
+						</div>
+						<div class="review-wrap"><!-- 보고있는 페이지의 상품번호와 맞는 리뷰 목록들 출력-->
+							<div class="review-box" v-for="item in reviewList">
+								<template v-if="item.productNo==productDetail.productNo">
+									<div class="img-box" v-if="item.reviewImgPath != null"><img :src="item.reviewImgPath"></div>
+									<div class="info-box">
+										<div class="desc-box">
+											<div class="date">{{item.reviewCdateTime}}</div>
+											<div class="star-wrap2">
+												<div class="star-box">
+													<div class="bg-box">기본별</div>
+													<div class="bg-box active" :style="{width: (100/5*item.reviewRating) + '%'}">active별</div>
+												</div>
+											</div>
+										</div>										
+										<div class="contents">{{item.reviewContents}}</div>
+										<template v-if="item.userId==sessionId">
+											<div class="btn-box">
 												<button type="button" @click="fnReviewUpdate(item.reviewNo)">수정</button>
 												<button type="button" @click="fnReviewDelete(item.reviewNo)">삭제</button>
 											</div>
-										    <div v-if="updateModal && updateReviewNo === item.reviewNo">
-										        {{updateReviewNo}}모달 수정영역 {{item.reviewNo}}
+											<div v-if="updateModal && updateReviewNo === item.reviewNo">
+												{{updateReviewNo}}모달 수정영역 {{item.reviewNo}}
 												<!-- repeqt는 숫자만큼 '' 안에 문자열을 출력해주는 함수-->
 												<div class="select-box">
-											        <select v-model="reviewRating">
-											            <option v-for="(title, index) in reviewTitle" :key="index" :value="index + 1">
-											                {{ '★'.repeat(index + 1) + '☆'.repeat(5 - (index + 1)) }} - {{ title }}
-											            </option>
-											        </select>
+													<select v-model="reviewRating">
+														<option v-for="(title, index) in reviewTitle" :key="index" :value="index + 1">
+															{{ '★'.repeat(index + 1) + '☆'.repeat(5 - (index + 1)) }} - {{ title }}
+														</option>
+													</select>
 												</div>
-										        <div class="text-box">내용<textarea v-model="reviewContents"></textarea></div>
-										        <div>사진첨부<input type="file" accept=".gif,.jpg,.png" @change="fnReviewAttach"></div>
-										        <div class="front-btn-box">
+												<div class="text-box">내용<textarea v-model="reviewContents"></textarea></div>
+												<!-- <div>사진첨부<input type="file" accept=".gif,.jpg,.png" @change="fnReviewAttach"></div> -->
+												<div class="front-btn-box">
 													<button @click="fnReviewUpdateSave(item.reviewNo)">수정완료</button>
-										        	<button @click="fnCancel">취소</button>
+													<button @click="fnCancel">취소</button>
 												</div>
-										    </div>
-											
-										</div>
+											</div>											
+										</template>
 									</div>
 								</template>
-								<div class="pagenation">
-						            <button type="button" class="prev" v-if="currentPage > 1" @click="fnBeforPage()">이전</button>
-						            <button type="button" class="num" v-for="page in totalPages" :class="{active: page == currentPage}" @click="fnGetReviewList(page)">
-										{{page}}
-									</button>
-						            <button type="button" class="next" v-if="currentPage < totalPages" @click="fnNextPage()">다음</button>
-						        </div>
 							</div>
-							<!--보고있는 페이지의 상품번호와 맞는 리뷰 없을때-->
-							<div v-if="reviewList == null || reviewList.length  === 0">등록된 리뷰가 없습니다.</div>
+							<div class="pagenation">
+								<button type="button" class="prev" @click="fnBeforPage()" :disabled="currentPage == 1">이전</button>
+								<button type="button" class="num" v-for="page in totalPages" :class="{active: page == currentPage}" @click="fnGetReviewList(page)">
+									{{page}}
+								</button>
+								<button type="button" class="next" @click="fnNextPage()" :disabled="currentPage == totalPages">다음</button>
+							</div>
 						</div>
-			          </div>
+						<!--보고있는 페이지의 상품번호와 맞는 리뷰 없을때-->
+						<div v-if="reviewList == null || reviewList.length  === 0">등록된 리뷰가 없습니다.</div>
+					</div>
 				</div>
+			</div>
+			<div class="front-btn-box">
+				<button type="button" @click="fnListMove">목록</button>
 			</div>
         </div>
 	</div>
@@ -228,7 +244,7 @@
 				pageSize: 4,        
 				totalPages: 1,
 				ratingAvg : 0,
-				bottomBox : 1,
+				bottomBox : 4,
 				recommendList : [],
 				userInfo : [],
 				reviewFlag : false
@@ -664,6 +680,9 @@
 						  }
 			          }
 			      });
+			},
+			fnListMove() {
+				$.pageChange("/product/product.do",{});
 			}
         },
         mounted() {

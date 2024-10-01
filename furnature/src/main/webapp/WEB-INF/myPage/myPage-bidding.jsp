@@ -19,7 +19,7 @@
 					<div class="myPage-img-list-wrap">
 						<div class="myPage-img-list-box" v-for="item in biddingList">
 							<div class="img-box">
-								<img :src="item.auctionImgPath" alt="item.auctionTitle + '이미지'">
+								<img :src="item.auctionImgPath" :alt="item.auctionTitle + '이미지'">
 							</div>
 							<div class="tit-box">
 								<div class="top">
@@ -29,7 +29,7 @@
 										<div class="myPrice">내 입찰 금액 : {{item.myBidding}}</div>
 										<div class="price">최고 입찰 금액 : {{item.auctionPriceCurrent}}</div>
 									</div>
-									<div class="bidding-date">입찰 일자 : {{item.auctionBiddingDate}}</div>
+									<div class="date">입찰 일자 : {{item.auctionBiddingDate}}</div>
 									<div class="end-day">마감일 : {{item.endDay}}</div>
 								</div>
 								<div class="result">

@@ -9,36 +9,38 @@
 <body>
     <jsp:include page="/layout/header.jsp"></jsp:include>
     <div id="app">
-        <div id="container">            
+        <div id="container" class="payment">            
             <p class="blind">기본페이지</p>
+            <h2 class="sub-tit">결제목록</h2>
             <div class="detail-top">
-                <div>
-                    <h2 class="sub-tit">결제목록</h2>
+                <div class="thumb-wrap">
                     <div class="thumb-list">
                         <div class="thumb-box"><img :src="productDetail.productThumbnail" alt="썸네일"></div>
                     </div>
-                    <div class="detail-top-info">
+                </div>
+                <div class="detail-top-info">
+                    <div class="detail-box">
+                        <div class="tit">상품명</div>
+                        <div class="info">{{productDetail.productName}}</div>
+                    </div>
+                    <template v-for="item in selectedSize">
                         <div class="detail-box">
-                            <div class="tit">상품명</div>
-                            <div class="info">{{productDetail.productName}}</div>
+                            <div class="tit">선택 사이즈</div>
+                            <div class="info">{{item.size}}</div>
                         </div>
-                        <template v-for="item in selectedSize">
-                            <div class="detail-box">
-                                <div class="tit">선택 사이즈</div>
-                                <div class="info">{{item.size}}</div>
-                            </div>
-                            <div class="detail-box">
-                                <div class="tit">수량</div>
-                                <div class="info">{{item.count}}</div>
-                            </div>
-                            <div class="detail-box">
-                                <div class="tit">판매가</div>
-                                <div class="info">{{ (item.price * 1).toLocaleString() }}</div>
-                            </div>
-                        </template>
                         <div class="detail-box">
-                            <div class="tit">총 구매가격</div>
-                            <div class="info">{{parseInt(totalPrice).toLocaleString()}}</div>
+                            <div class="tit">수량</div>
+                            <div class="info">{{item.count}}</div>
+                        </div>
+                        <div class="detail-box">
+                            <div class="tit">판매가</div>
+                            <div class="info">{{ (item.price * 1).toLocaleString() }}</div>
+                        </div>
+                    </template>
+                    <div class="detail-box">
+                        <div class="tit">총 구매가격</div>
+                        <div class="info">
+                            <div class="total-price"><b>{{parseInt(totalPrice).toLocaleString()}}</b>원</div>
                         </div>
                     </div>
                 </div>
@@ -46,10 +48,16 @@
             <div class="detail-bottom">
                 <div class="detail-bottom-box">
                     <div class="detail-box">
-                        <div class="tit">배송지 정보</div>
-                        <div>
-                            <label><input type="radio" name="as" value="10" @click="fnDeliveryInfo(10)">주문자정보와 동일</label>
-                            <label><input type="radio" name="as" value="20" @click="fnDeliveryInfo(20)">직접입력</label> 
+                        <div class="ip-list">
+                            <div class="tit-box">
+                                <p class="tit">배송지 정보</p>
+                            </div>
+                            <div class="bot-box">
+                                <div class="ip-ra-txt">
+                                    <input type="radio" name="as" value="10" id="r1" @click="fnDeliveryInfo(10)"><label for="r1">주문자정보와 동일</label>
+                                    <input type="radio" name="as" value="20" id="r2" @click="fnDeliveryInfo(20)"><label for="r2">직접입력</label> 
+                                </div>
+                            </div>
                         </div>
                         <div class="ip-list">
                             <div class="tit-box">
@@ -78,7 +86,9 @@
                             <div class="bot-box">
                                 <div class="ip-box ip-ico-box type2">
                                     <input type="text" id="postcode" placeholder="우편번호" readonly="readonly" v-model="postcode">                    
-                                    <input type="text" id="address" placeholder="주소" readonly="readonly" v-model="address">
+                                    <div class="mgt10">
+                                        <input type="text" id="address" placeholder="주소" readonly="readonly" v-model="address">
+                                    </div>
                                     <div class="btn-box type2">
                                         <button type="button" @click="daumPost">주소검색</button>
                                     </div>
@@ -98,71 +108,62 @@
 	                                <option value="4">빠른 배송 부탁드립니다.</option>
 									<option value="5">직접입력</option>
 	                            </select>
-									<div v-if="deliveryComment == 5" class="ip-box">
-									     <input type="text" placeholder="입력하셈" v-model="customDeliveryComment">
-									 </div>
+                                <div v-if="deliveryComment == 5" class="ip-box mgt10">
+                                    <input type="text" placeholder="내용을 입력해주세요." v-model="customDeliveryComment">
+                                </div>
 							</div>
+                        </div>
+                        <div class="ip-list">
+                            <div class="tit-box">
+                                <p class="tit">총 상품 금액</p>
+                            </div>
+                            <div class="bot-box">
+                                <div class="ip-box">{{totalPrice.toLocaleString()}}</div>
+                            </div>
+                        </div>
+                        <div class="ip-list">
+                            <div class="tit-box">
+                                <p class="tit">보유 마일리지</p>
+                            </div>
+                            <div class="bot-box">
+                                <div class="ip-box">{{(myPoint*1).toLocaleString()}}</div>
+                            </div>
+                        </div>
+                        <div class="ip-list">
+                            <div class="tit-box">
+                                <p class="tit">사용 마일리지</p>
+                            </div>
+                            <div class="bot-box">
+                                <div class="ip-box ip-ico-box type2">
+                                    <input type="text" placeholder="0" v-model="pointPay" @change="fnPointLimit">
+                                    <div class="btn-box type2">
+                                        <button type="button" @click="fnPoint">전액사용</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ip-list">
+                            <div class="tit-box">
+                                <p class="tit">최종 결제 금액</p>
+                            </div>
+                            <div class="bot-box">
+                                <div class="ip-box">{{payPrice.toLocaleString()}}</div>
+                            </div>
+                        </div>
+                        <div class="ip-list">
+                            <div class="tit-box">
+                                <p class="tit">구매시 적립 마일리지</p>
+                            </div>
+                            <div class="bot-box">
+                                <div class="ip-box">{{mileage.toLocaleString()}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-				<div class="detail-bottom-box">
-				    <div class="detail-box">
-				        <div class="ip-list">
-				            <div class="tit-box">
-				                <p class="tit">총 상품 금액</p>
-				            </div>
-				            <div class="bot-box">
-				                <div class="ip-box">{{totalPrice.toLocaleString()}}</div>
-				            </div>
-				        </div>
-				        <div class="ip-list">
-				            <div class="tit-box">
-				                <p class="tit">보유 마일리지</p>
-				            </div>
-				            <div class="bot-box">
-				                <div class="ip-box">{{(myPoint*1).toLocaleString()}}</div>
-				            </div>
-				        </div>
-				        <div class="ip-list">
-				            <div class="tit-box">
-				                <p class="tit">사용 마일리지</p>
-				            </div>
-				            <div class="bot-box">
-				                <div class="ip-box">
-				                    <input type="text" placeholder="0" v-model="pointPay" @change="fnPointLimit">원
-				                    <button type="button" @click="fnPoint">전액사용</button>
-				                </div>
-				            </div>
-				        </div>
-				        <div class="ip-list">
-				            <div class="tit-box">
-				                <p class="tit">최종 결제 금액</p>
-				            </div>
-				            <div class="bot-box">
-				                <div class="ip-box">{{payPrice.toLocaleString()}}</div>
-				            </div>
-				        </div>
-				    </div>
-				</div>
-				<div class="detail-bottom-box">
-				    <div class="detail-box">
-				        <div class="ip-list">
-				            <div class="tit-box">
-				                <p class="tit">구매시 적립 마일리지</p>
-				            </div>
-				            <div class="bot-box">
-				                <div class="ip-box">{{mileage.toLocaleString()}}</div>
-				            </div>
-				        </div>
-				        <div class="ip-list">
-							<div class="front-btn-box">
-				                <button type="button" @click="fnOrder">결제하기</button>
-				                <button type="button" @click="fnPorductDetail">취소하기/돌아가기</button>
-								{{info}}
-				            </div>
-				        </div>
-				    </div>
-				</div>
+                <div class="front-btn-box">
+                    <button type="button" @click="fnOrder">결제하기</button>
+                    <button type="button" @click="fnPorductDetail">취소하기/돌아가기</button>
+                </div>
             </div>
         </div>
     </div>
