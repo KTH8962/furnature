@@ -36,7 +36,7 @@ public class Product {
 	private String productDetail1; //상품 상세이미지1 URL
 	
 	//주문
-	private String orderNo;
+	private String orderId;
 	private String orderPrice;
 	private String mileagePrice;
 	

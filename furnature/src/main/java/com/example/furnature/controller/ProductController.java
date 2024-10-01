@@ -64,6 +64,7 @@ public class ProductController {
 	//@RequestParam
 	public String searchProductDetail(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		System.out.println("상품상세정보불러오기맵" + map);
 		resultMap = productService.searchProductDetail(map);
 		return new Gson().toJson(resultMap);
 	}

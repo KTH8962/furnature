@@ -157,4 +157,9 @@
 		LEFT JOIN TBL_PRODUCT_IMG I ON P.PRODUCT_NO = I.PRODUCT_NO
 		WHERE C.USER_ID = #{userId}
 	</select>	
+	<delete id="deleteCheckCart" parameterType="hashmap">
+		DELETE FROM TBL_PRODUCT_CART  
+		WHERE CART_NO IN  
+		<foreach collection="list" item="item" open="(" close=")" separator=","> #{item}</foreach>
+	</delete>
 </mapper>

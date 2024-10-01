@@ -57,4 +57,6 @@ public interface MyPageMapper {
 	
 	//장바구니 목록
 	List<MyPage> searchCartList(HashMap<String, Object> map);
+	//장바구니 체크 삭제
+	void deleteCheckCart(HashMap<String, Object> map);
 }

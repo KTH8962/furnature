@@ -1,6 +1,7 @@
 package com.example.furnature.controller;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.furnature.dao.MyPageService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -155,6 +158,19 @@ public class MyPageController {
     	System.out.println("CCCCCCCC"+map);
     	return new Gson().toJson(resultMap);
     }
+    //장바구니 선택삭제
+	@RequestMapping(value = "/myPage/check-remove.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String check_remove(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		String json = map.get("selectCheck").toString(); 
+		ObjectMapper mapper = new ObjectMapper();
+		List<Object> list = mapper.readValue(json, new TypeReference<List<Object>>(){});
+		map.put("list", list);
+		System.out.println("CCCCCCCCCCCCCCCCCCCCCC"+map);
+		resultMap = myPageService.removeCartCheck(map);
+		return new Gson().toJson(resultMap);
+	}
 
 }
 

@@ -23,5 +23,7 @@ public interface MyPageService {
 	HashMap<String,Object> onedayCancel(HashMap<String,Object> map);
     //장바구니 목록
     HashMap<String, Object> searchCartList(HashMap<String, Object> map);
+    //장바구니 체크 삭제
+    HashMap<String, Object> removeCartCheck(HashMap<String, Object> map);
 
 }

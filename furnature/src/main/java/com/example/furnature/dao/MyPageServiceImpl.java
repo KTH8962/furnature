@@ -259,5 +259,19 @@ public class MyPageServiceImpl implements MyPageService {
         return resultMap;
 	}
 
+	@Override
+	public HashMap<String, Object> removeCartCheck(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new  HashMap<String, Object>();
+		System.out.print("SSSSSSSSSSSSS"+map);
+		try {
+			myPageMapper.deleteCheckCart(map);
+			resultMap.put("message","삭제되었습니다.");
+		}catch(Exception e) {
+			resultMap.put("message","예기치 못한 문제 발생");
+		}
+		
+		return resultMap;
+	}
+
 }
 
