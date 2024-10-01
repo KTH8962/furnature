@@ -181,8 +181,10 @@ public class OnedayServiceImpl implements OnedayService{
 	@Override
 	public HashMap<String, Object> onedayCheck(HashMap<String, Object> map) {
 		HashMap<String,Object> resultMap = new HashMap<>();
+		System.out.println("!!!"+map);
 		try {
 			int onedayCheck = onedayMapper.onedayCheck(map);
+			System.out.println("!!!!"+onedayCheck);
 			resultMap.put("onedayCheck", onedayCheck);
 			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);

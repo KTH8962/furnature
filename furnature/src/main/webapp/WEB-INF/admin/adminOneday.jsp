@@ -98,7 +98,7 @@
 				var startIndex = (page-1)*self.pageSize;
 				var outputNumber = self.pageSize;
 				self.currentPage = page;
-				var nparmap = {searchOption:self.searchOption, keyword:self.keyword, startIndex:startIndex, outputNumber:outputNumber};
+				var nparmap = {searchOption:self.searchOption, keyword:self.keyword.trim(), startIndex:startIndex, outputNumber:outputNumber};
 				$.ajax({
 	               url: "/admin/oneday-list.dox",
 	               dataType: "json",

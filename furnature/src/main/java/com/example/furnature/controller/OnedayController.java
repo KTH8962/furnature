@@ -171,7 +171,7 @@ public class OnedayController {
 	@ResponseBody
 	public String onedayCheck(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap = onedayService.onedayUpdate(map);
+		resultMap = onedayService.onedayCheck(map);
 		return new Gson().toJson(resultMap);
 	}
     
