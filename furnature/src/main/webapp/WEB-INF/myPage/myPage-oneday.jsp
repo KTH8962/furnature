@@ -14,8 +14,9 @@
                 <div class="myPage-snb-wrap">
                     <jsp:include page="/layout/myPageSnb.jsp"></jsp:include>
                 </div>
-                <div class="myPage myPage-oneday">					
-                    <div v-if="isCustomer">신청내역
+                <div class="myPage myPage-oneday">
+					<h2 class="myPage-tit">원데이클래스 신청내역</h2>			
+                    <div v-if="isCustomer">
                    		<br><br>
 	                    <div v-for="item in list">
 	                        <div>클래스명: {{item.className}}</div>
