@@ -158,6 +158,7 @@
 							<div class="front-btn-box">
 				                <button type="button" @click="fnOrder">결제하기</button>
 				                <button type="button" @click="fnPorductDetail">취소하기/돌아가기</button>
+								{{info}}
 				            </div>
 				        </div>
 				    </div>
@@ -212,7 +213,7 @@
         methods: {
             fnGetProductDetail() {
                 var self = this;
-                var nparmap = { productNo: self.productNo };
+                var nparmap = { productNo: self.productNo , carList : "" };
                 $.ajax({
                     url: "/productDetail/productDetail.dox",
                     dataType: "json",    
@@ -310,7 +311,7 @@
                         
                         var nparmap = {
                             impUid: rsp.imp_uid,
-                            orderNo: rsp.merchant_uid,
+                            orderId: rsp.merchant_uid,
                             orderPrice: rsp.paid_amount,
                             userId: self.info.userId,
                             productNo: self.productNo,

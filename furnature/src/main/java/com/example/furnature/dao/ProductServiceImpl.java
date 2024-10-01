@@ -111,7 +111,7 @@ public class ProductServiceImpl implements ProductService{
 		try {
 			
 			for(int i=0 ;i<orderList.size();i++) {
-				orderMap.put("orderNo", map.get("orderNo"));
+				orderMap.put("orderId", map.get("orderId"));
 				orderMap.put("productNo", map.get("productNo"));
 				orderMap.put("orderPrice", map.get("orderPrice"));
 				orderMap.put("userId", map.get("userId"));
