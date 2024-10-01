@@ -101,6 +101,9 @@
 							  console.error('업로드 실패!', textStatus, errorThrown);
 							}
 						  });
+						}else{
+							alert("게시글을 등록하였습니다.");
+							location.href="/qna/qnalist.do";
 						}
 					}
 				});
