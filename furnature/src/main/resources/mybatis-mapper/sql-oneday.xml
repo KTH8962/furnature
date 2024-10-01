@@ -17,8 +17,7 @@
 	    SELECT MIN(FILE_NO) 
 	    FROM TBL_ONEDAYFILE 
 	    WHERE CLASS_NO = C.CLASS_NO)
-	    ORDER BY O.CLASS_NO ASC OFFSET #{startIndex} ROWS FETCH FIRST #{outputNumber} ROWS ONLY
-	    
+	    ORDER BY O.CLASS_NO ASC OFFSET #{startIndex} ROWS FETCH FIRST #{outputNumber} ROWS ONLY	    
 	</select>
 	
 	<!--원데이클래스 개시글 수 조회-->
