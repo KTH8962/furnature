@@ -20,7 +20,7 @@
 					<template v-if="mileageList == ''">
 						적립된 마일리지 포인트가 없습니다.
 					</template>
-					<div v-for="([key, items], index) in Object.entries(mileageList).reverse()" :key="key" class="mileage-wrap">
+					<div v-for="([key, items], index) in mileageList" :key="key" class="mileage-wrap">
 						<div class="mileage-day">{{key}}</div>
 						<div v-for="(item, index) in items" class="mileage-box" :class="item.mileageStatus == '적립' ? 'plus':'minus'">
 							<div class="left-box">
@@ -61,11 +61,11 @@
 						const keys = Object.keys(data.groupedMileage);
 						if(data.groupedMileage[keys[0]].length > 0) {
 							self.mileageList = data.groupedMileage;
-							self.mileageList.reverse;
 							self.totalMileage = data.groupedMileage[keys[0]][0].mileageTotal;
 						} else {
 							self.totalMileage = 0;
 						}
+						self.mileageList = Object.entries(self.mileageList).sort(([A], [B]) => new Date(B) - new Date(A));
 					}
 				});
             }

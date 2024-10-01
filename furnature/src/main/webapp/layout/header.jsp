@@ -11,7 +11,9 @@
 				<li><a href="/qna/qnalist.do">질문게시판</a></li>
 				<template v-if="sessionId != ''">
 					<li><a href="javascript:void(0);" @click="logout">로그아웃</a></li>
-					<li><a href="/myPage/myPage.do">마이페이지</a></li>
+                    <template v-if="sessionId != 'admin'">
+                        <li><a href="/myPage/myPage.do">마이페이지</a></li>
+                    </template>
 				</template>
 				<template v-else>
 					<li><a href="/login.do">로그인</a></li>
