@@ -96,6 +96,7 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
+						
 						self.designList = data.list;
 						self.totalPages = Math.ceil(data.count/self.pageSize);								
 					}
