@@ -36,7 +36,9 @@
 				</tbody>
 			</table>
 			<div class="front-btn-box">
-				<button @click="fnRecommend()">추천하기</button>
+				<template v-if="checklist =='false' "><button @click="fnRecommend()">추천하기</button></template>
+				<template v-if="checklist =='true' "><button @click="fnRecommend()">취소하기</button></template>
+										
 				<template v-if="sessionId == 'admin'">
 					<button @click="fnDesignSelect()">추천확정</button>			
 				</template>
@@ -56,7 +58,9 @@
 				designNo : '${designNo}',
 				sessionId : '${sessionId}',
 				designCheck : false,
-				list : {}
+				list : {},
+				checklist : {},
+				btnChange: false
             };
         },
         methods: {
@@ -72,8 +76,9 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-						self.list = data.list;
 						console.log(data);
+						self.list = data.list;
+						self.checklist = data.likeCheck
 					}
 				});
             },
@@ -93,10 +98,13 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
+						console.log(data);
 						if(data.Flg == "true"){
 							alert("추천을 취소하였습니다.");
+							self.fnDesignDetail();
 						}else{
 							alert("디자인을 추천하였습니다.");
+							self.fnDesignDetail();
 						}
 						console.log(data);
 					}

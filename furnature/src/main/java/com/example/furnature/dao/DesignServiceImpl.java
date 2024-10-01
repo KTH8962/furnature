@@ -52,6 +52,13 @@ public class DesignServiceImpl implements DesignService{
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			Design list = designMapper.designDetail(map);
+			int count = designMapper.designRecommend(map);
+			System.out.println("##################"+count);
+			if(count >= 1) {
+				resultMap.put("likeCheck", "true");
+			}else {
+				resultMap.put("likeCheck", "false");				
+			}
 			resultMap.put("list",list);
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (Exception e) {

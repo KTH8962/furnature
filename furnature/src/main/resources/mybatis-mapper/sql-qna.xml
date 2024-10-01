@@ -70,7 +70,7 @@
 	</update>
 	<update id="qnaUpdate" parameterType="hashmap">
 		UPDATE TBL_QNA
-		SET QNA_TITLE = #{qnaTitle}, QNA_CONTENTS = #{qnaContents} , QNA_CATEGORY = #{qnaCategory}
+		SET QNA_TITLE = #{qnaTitle}, QNA_CONTENTS = #{qnaContents}
 		WHERE QNA_NO = #{qnaNo}
 	</update>
 	<delete id="commentDelete" parameterType="hashmap">
