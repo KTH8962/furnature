@@ -693,4 +693,3 @@
     });
     app.mount('#app');
 </script>
-​
