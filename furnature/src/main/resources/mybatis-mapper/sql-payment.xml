@@ -20,4 +20,11 @@
 			PAYMENT_STATUS = 'R'
 		WHERE PAYMENT_CATEGORY = #{category} AND ORDER_NO = #{orderNo}
 	</update>
+	
+	<insert id="insertProductOrder" parameterType="hashmap">
+		INSERT INTO TBL_PRODUCT_ORDER(PAY_NO, ORDER_ID, PRODUCT_NO, USER_ID, ORDER_SIZE, ORDER_COUNT, PRODUCT_PRICE, ORDER_DATE, 
+		ORDER_CATE, DELIVERY_CATE)
+		VALUES (PAY_NO_SEQ.NEXTVAL, #{merchantUid}, #{orderNo}, #{sessionId}, NULL, 1, #{amount}, SYSDATE + INTERVAL '9' HOUR, 
+		<if test="category == 'auction'">'경매'</if>, 0)
+	</insert>
 </mapper>

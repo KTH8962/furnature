@@ -98,12 +98,13 @@ public class PaymentServiceImpl implements PaymentService{
 		return paymentResponse;
 	}
 
-	// 결제 내역 등록
+	// 결제 내역 등록 + 경매 주문 내역 추가
 	@Override
 	public HashMap<String, Object> addPayment(HashMap<String, Object> map) {
 		HashMap <String, Object> resultMap = new HashMap<>();
 		try {
 			paymentMapper.insertPayment(map);
+			paymentMapper.insertProductOrder(map);
 			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {

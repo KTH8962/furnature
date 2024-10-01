@@ -161,7 +161,7 @@
 											self.fnGetList();
 										}
 									}
-								})
+								});
 							}
                         })
                     } else {
