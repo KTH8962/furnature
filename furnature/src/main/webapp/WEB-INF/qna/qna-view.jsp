@@ -72,7 +72,7 @@
 					</div>
 				</div>
 				<div class="front-btn-box">
-					<template v-if="list.userId == sessionId">
+					<template v-if="list.userId == sessionId || sessionId == 'admin'">
 						<button type="button" @click="fnUpdate">수정</button>
 						<button type="button" @click="fnDelete">삭제</button>
 					</template>
@@ -178,7 +178,7 @@
 			fnDelete() {
 				var self = this
 				var confirmed = confirm("게시물을 삭제 하시겠습니까?");
-				if (confirmed) {
+				if (!confirmed) {
 					history.back();
 					return;
 				}
@@ -192,7 +192,7 @@
 					data: nparam,
 					success: function (data) {
 						alert("게시물을 삭제하였습니다.");
-						self.fnView();
+						location.href="/qna/qnalist.do"
 					}
 				});
 			},

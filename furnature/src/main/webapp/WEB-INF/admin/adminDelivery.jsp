@@ -38,7 +38,7 @@
                         </div>
 						<div class="tbody">
 							<div class="tr" v-for="item in list">
-								<div class="td">{{item.orderNo}}</div>
+								<div class="td">{{item.orderId}}</div>
                                 <div class="td">{{item.userId}}</div>
                                 <div class="td">{{item.productName}}</div>
                                 <div class="td">{{item.orderCount}}</div>
@@ -52,7 +52,7 @@
 		                        </div>
 								<div class="td">
                                     <div class="tbl-btn-box">
-										<button  @click="fnUpdate(item.deliveryCate,item.orderNo)"  title="수정" class="edit">수정</button>
+										<button  @click="fnUpdate(item.deliveryCate,item.orderId)"  title="수정" class="edit">수정</button>
                                     </div>
                                 </div>
 							</div>
@@ -110,11 +110,11 @@
 	                    }
 	                });
 	            },
-				fnUpdate(deliveryCate,orderNo){
+				fnUpdate(deliveryCate,orderId){
 					var self = this;
 	                var nparmap = { 
 						deliveryCate : deliveryCate,
-						orderNo : orderNo
+						orderId : orderId
 					};
 	                $.ajax({
 	                    url: "/admin/admin-deliveryUpdate.dox",
@@ -134,11 +134,17 @@
 				},
 				fnBeforPage(){
 					var self = this;
+					if(self.currentPage == 1){
+						return;
+					}
 					self.currentPage = self.currentPage - 1;
 					self.fnDelivery(self.currentPage);
 				},
 				fnNextPage(){
 					var self = this;
+					if(self.totalPages == self.currentPage){
+						return;
+					}
 					self.currentPage = self.currentPage + 1;
 					self.fnDelivery(self.currentPage);
 				},
