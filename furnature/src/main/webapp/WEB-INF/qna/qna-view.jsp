@@ -35,8 +35,8 @@
 							<th>내용</th>
 							<td colspan="3">
 								<div class="contents">
-									{{list.qnaContents}}
 									<img :src="list.qnaFilePath">
+									<p class="desc">{{list.qnaContents}}</p>
 								</div>
 							</td>
 						</tr>

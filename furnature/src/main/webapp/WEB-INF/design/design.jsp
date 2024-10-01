@@ -9,17 +9,23 @@
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 	<div id="app">
 		<div id="container">            
-            <p class="blind">기본페이지</p>
-			<div v-for="item in list">
-			<a href="#" @click=fnDesignDetail(item.designNo)><img :src="item.designImgPath" style="width:150px; height : 150px;"></a>	
-			 {{item.designTitle}}추천({{item.count}})
-			 </a>
-			 <div v-if="item.designChoice == 'Y'">
-				축하드립니다! 이달의 디자인으로 확정 되었습니다.
-			 </div>
+            <p class="blind">디자인 추천 페이지</p>
+			<h2 class="sub-tit">디자인추천</h2>
+			<ul class="design-list">
+				<li v-for="item in list">
+					<a href="javascript:void(0);" @click=fnDesignDetail(item.designNo)>
+						<figure class="img-box"><img :src="item.designImgPath">	</figure>
+						<div class="tit-box">
+							<p class="cnt">추천({{item.count}})</p>
+							<p class="tit">{{item.designTitle}}</p>
+						</div>
+					</a>
+					<p class="choice" v-if="item.designChoice == 'Y'">축하드립니다! 이달의 디자인으로 확정 되었습니다.</p>
+				</li>
+			</ul>
+			<div class="front-btn-box">
+				<button @click="fnDesignRegist">디자인등록</button>
 			</div>
-			<button @click="fnDesignRegist">디자인등록</button>
-			{{sessionId}}
 		</div>
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>

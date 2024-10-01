@@ -22,7 +22,7 @@
 		<if test="category == 'cateUser'">
 	        AND USER_NAME LIKE '%' ||  #{searchData} || '%'
 	    </if>
-		ORDER BY Q.UDATETIME DESC
+		ORDER BY Q.QNA_NO DESC
 		OFFSET #{startIndex} ROWS FETCH FIRST #{outputNumber} ROWS ONLY
 	</select>
 	<select id="listCount" parameterType="hashmap" resultType="int">

@@ -493,6 +493,8 @@ body {
 	margin-bottom: 16px;
 	margin-left: 0px;
 	transition: all 0.2s;
+}
+#container .img-list li a .img img {
 	width: 100%;
 }
 #container .img-list li .tit {
@@ -768,6 +770,70 @@ body {
 }
 
 /* //event */
+/* design */
+.design-list {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 60px 30px;
+}
+.design-list li {
+	width: calc(33.3333333333% - 20px);
+}
+.design-list li .img-box {
+	position: relative;
+	width: 100%;
+	height: 250px;
+	border-radius: 20px;
+	transition: all 0.3s;
+	background-color: var(--color-contrastyC);
+	overflow: hidden;
+}
+.design-list li .img-box img {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	transition: all 0.3s;
+}
+.design-list li .tit-box {
+	margin-top: 20px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+}
+.design-list li .tit-box .cnt {
+	font-size: 13px;
+	font-Weight: 500;
+	color: var(--color-contrastyA);
+}
+.design-list li .tit-box .tit {
+	margin-top: 10px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	font-size: 22px;
+	font-Weight: 500;
+	line-height: 1.5;
+}
+.design-list li .choice {
+	font-size: 14px;
+	font-Weight: 500;
+	color: var(--color-red);
+	line-height: 1.5;
+	margin-top: 10px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+}
+.design-list li:hover .img-box {
+	box-shadow: 3px 3px 10px 2px rgba(0, 0, 0, 0.3);
+}
+.design-list li:hover .img-box img {
+	transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* //design */
 /* qna */
 .comment-tit {
 	font-size: 20px;
@@ -1212,6 +1278,9 @@ table {
 	border-collapse: collapse;
 	width: 100%;
 }
+table img {
+	width: auto;
+}
 
 .table-type1 {
 	margin: 80px 0px;
@@ -1249,8 +1318,21 @@ table {
 .table-type2 tbody tr td .contents {
 	min-height: 300px;
 }
+.table-type2 tbody tr td .contents .desc {
+	line-height: 1.6;
+	margin-top: 30px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+}
 .table-type2 tbody tr > * {
 	vertical-align: middle;
+}
+.table-type2 + .front-btn-box {
+	margin-top: 40px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
 }
 
 .none {
