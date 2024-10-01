@@ -34,6 +34,8 @@ public class MyPage {
 	private String description;
 	private String joinDay;
 	private String payStatus;
+	private String fileNo;
+	private String filePath;
 	
 	// 이벤트 - 경매
 	private String auctionBiddingNo;

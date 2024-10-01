@@ -69,13 +69,14 @@
 	    ) P ON C.CLASS_NO = P.CLASS_NO
 	    WHERE 1 = 1
 	    <if test="searchOption == 'all' and (keyword != null and keyword != '')">
-	        AND (CLASS_NAME LIKE '%' || #{keyword} || '%' OR END_DAY LIKE '%' || #{keyword} || '%')
+	        AND (CLASS_NAME LIKE '%' || #{keyword} || '%' 
+            OR TO_CHAR(END_DAY, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{keyword} || '%')
 	    </if>
 	    <if test="searchOption == 'className' and (keyword != null and keyword != '')">
 	        AND CLASS_NAME LIKE '%' || #{keyword} || '%'
 	    </if>
 	    <if test="searchOption == 'endDay' and (keyword != null and keyword != '')">
-	        AND END_DAY LIKE '%' || #{keyword} || '%'
+	        AND TO_CHAR(END_DAY, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{keyword} || '%'
 	    </if>
 	    ORDER BY C.CLASS_NO
 	    OFFSET #{startIndex} ROWS FETCH FIRST #{outputNumber} ROWS ONLY

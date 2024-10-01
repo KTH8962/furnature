@@ -184,6 +184,7 @@
 						return;
 					}
 					var nparmap = {classNo:self.classNo, userId:self.userId, name:self.name};
+					console.log("nparmap:"+nparmap);
 					$.ajax({
 						url : "/oneday/oneday-check.dox",
 						dataType : "json",
@@ -191,6 +192,7 @@
 						data : nparmap,
 						success : function(data){
 							self.onedayCheck = data.onedayCheck;
+							console.log("onedayCheck:"+data);
 							if(self.onedayCheck==1){
 								$.ajax({
 									url : "/oneday/oneday-join.dox",
@@ -199,6 +201,7 @@
 									data : nparmap,
 									success : function(data){
 										alert("수강신청 되었습니다.");
+										$.pageChange("/myPage/oneday.do", {});
 									}							
 								})				
 							}else{

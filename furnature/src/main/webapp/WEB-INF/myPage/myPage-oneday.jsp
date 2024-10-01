@@ -19,6 +19,7 @@
                     <div v-if="isCustomer">
                    		<br>
 	                    <div v-for="item in list">
+							<div><img :src="item.filePath"></div>
 	                        <div>클래스명: {{item.className}}</div>
 	                        <div v-if="item.payStatus==1">결제상태: 결제예정</div>
 							<div v-else>결제상태: 결제완료
@@ -68,10 +69,7 @@
 	                   success: function(data) {
 						   console.log(data);
 	                       self.list = data.onedayInfo;
-						   for(var i =0; i<self.list.length; i++){
-							self.className = data.onedayInfo[i].className;
-							self.price = data.onedayInfo[i].price;
-						   }		
+							
 	                   }
 	               });
 				}else{
