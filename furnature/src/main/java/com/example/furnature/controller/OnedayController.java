@@ -91,12 +91,25 @@ public class OnedayController {
 	
 	//원데이클래스 파일등록(관리자)
 	@RequestMapping(value = "/oneday/oneday-file.dox")
-	 public String result(@RequestParam("file") MultipartFile[] multi, @RequestParam("classNo") int classNo, HttpServletRequest request,HttpServletResponse response, Model model)
+	 public String result(@RequestParam("file") MultipartFile[] multi, @RequestParam("thumb") MultipartFile thumb, @RequestParam("classNo") int classNo, HttpServletRequest request,HttpServletResponse response, Model model)
     {
         String url = null;
         String path=System.getProperty("user.dir");
         try {
- 
+        	if(thumb != null && !thumb.isEmpty()) {
+        		String thumbExtName = thumb.getOriginalFilename().substring(thumb.getOriginalFilename().lastIndexOf("."));
+                String thumbFileName = genSaveFileName(thumbExtName);	
+                File thumbSaveFile = new File(path + "\\src\\main\\webapp\\uploadImages\\oneday\\thumb", thumbFileName);
+                thumb.transferTo(thumbSaveFile);
+                
+                HashMap<String, Object> thumbMap = new HashMap<>();
+                thumbMap.put("fileName", thumbFileName);
+                thumbMap.put("filePath", "../uploadImages/oneday/thumb/" + thumbFileName);
+                thumbMap.put("fileSize", thumb.getSize());
+                thumbMap.put("extName", thumbExtName);
+                thumbMap.put("classNo", classNo);
+                onedayService.onedayFile(thumbMap);
+        	}
             //String uploadpath = request.getServletContext().getRealPath(path);
             String filePath = path;
             for(MultipartFile files : multi) {

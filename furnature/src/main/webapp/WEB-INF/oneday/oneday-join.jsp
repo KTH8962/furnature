@@ -135,13 +135,13 @@
 					data : nparmap,
 					success : function(data){
 						console.log(self.data);
-						console.log(data.onedayDetail[0].startDay2, data.onedayDetail[0].endDay2, data.onedayDetail[0].classDate2);
+					
 						self.detail = data.onedayDetail;
 						self.classNo = data.onedayDetail[0].classNo;
 						self.className = data.onedayDetail[0].className;
-						self.startDay = data.onedayDetail[0].startDay2;
-						self.endDay = data.onedayDetail[0].endDay2;
-						self.classDate = data.onedayDetail[0].classDate2;
+						self.startDay = data.onedayDetail[0].startDay;
+						self.endDay = data.onedayDetail[0].endDay;
+						self.classDate = data.onedayDetail[0].classDate;
 						self.price = data.onedayDetail[0].price;
 						self.description = data.onedayDetail[0].description;
 				
