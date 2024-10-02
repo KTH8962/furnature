@@ -118,6 +118,7 @@ public class OnedayServiceImpl implements OnedayService{
 		HashMap<String,Object> resultMap = new HashMap<>();
 		try {
 			onedayMapper.onedayFile(map);
+			onedayMapper.onedayThumb(map);
 			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {

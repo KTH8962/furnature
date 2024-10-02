@@ -15,12 +15,12 @@
 				<ul class="img-list oneday-list">
 					<li v-for = "item in list" :key="item.classNo">
 						<a href="javascript:void(0);" @click="fnChange(item.classNo)">
-							<figure class="img"><img :src="item.filePath" :alt="item.className + '이미지'"></figure>
+							<figure class="img"><img :src="item.thumbPath" :alt="item.className + '이미지'"></figure>
 						</a>
 						<span class="tit">{{item.className}}</span>
 						<span class="price">수강료 <br> {{Number(item.price).toLocaleString()}}원 </span>
-						<span class="date">수업일자 <br> {{item.classDate2}} </span>
-						<span class="date">모집기간 <br> {{item.startDay2}} ~ {{item.endDay2}}</span>
+						<span class="date">수업일자 <br> {{item.classDate}} </span>
+						<span class="date">모집기간 <br> {{item.startDay}} ~ {{item.endDay}}</span>
 						<span class="state">
 							<template v-if="item.message1=='모집 중' && parseInt(item.numberLimit)>parseInt(item.currentNumber)">모집 중</template>
 							<template v-else="item.message1=='모집 종료' || item.numberLimit==item.currentNumber">모집 종료</template>
@@ -71,7 +71,6 @@
 					type : "POST",
 					data : nparmap,
 					success : function(data){
-						console.log(data);
 						self.list = [];
 						for(var i=0; i<data.onedayList.length; i++){
 							self.list.push(data.onedayList[i]);

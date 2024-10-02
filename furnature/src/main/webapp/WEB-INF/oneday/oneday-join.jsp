@@ -39,7 +39,7 @@
 								<div>{{message1}}</div>
 								<div>{{message2}}</div>
 								<div class="ip-box ip-ico-box type2">
-									<input type="text" placeholder="이름을 입력해주세요" v-model="name">
+									<input type="text" placeholder="수강 인원을 입력해주세요" v-model="count">
 									<div class="btn-box type2"><button type="button" @click="fnOnedayJoin">수강신청</button></div>
 								</div>
 							</template>
@@ -104,7 +104,7 @@
 				   filePath : [],
 				   userId : "${sessionId}",
 				   name : "",
-				   count : "",
+				   count : 0,
 				   price : "",
 				   payId : "",
 				   numberLimit : "",
@@ -135,13 +135,13 @@
 					data : nparmap,
 					success : function(data){
 						console.log(self.data);
-						console.log(data.onedayDetail[0].startDay2, data.onedayDetail[0].endDay2, data.onedayDetail[0].classDate2);
+					
 						self.detail = data.onedayDetail;
 						self.classNo = data.onedayDetail[0].classNo;
 						self.className = data.onedayDetail[0].className;
-						self.startDay = data.onedayDetail[0].startDay2;
-						self.endDay = data.onedayDetail[0].endDay2;
-						self.classDate = data.onedayDetail[0].classDate2;
+						self.startDay = data.onedayDetail[0].startDay;
+						self.endDay = data.onedayDetail[0].endDay;
+						self.classDate = data.onedayDetail[0].classDate;
 						self.price = data.onedayDetail[0].price;
 						self.description = data.onedayDetail[0].description;
 				
@@ -183,18 +183,20 @@
 					
 				})
 				},
-			   fnOnedayJoin(){
+				fnOnedayJoin(){
 					var self = this;
 					if(self.userId==''){
 						alert("수강 신청은 로그인 후 가능합니다");
 						return;
-					}	
-					if(self.name==''){
-						alert("이름을 입력해주세요");
-						return;
 					}
-					var nparmap = {classNo:self.classNo, userId:self.userId, name:self.name};
-					console.log("nparmap:"+nparmap);
+					
+					var count = parseInt(self.count);
+				   	if(isNaN(count) || count <= 0) {
+					       alert("유효한 수강 인원을 입력해주세요.");
+					       return;
+				   	}
+					
+					var nparmap = {classNo:self.classNo, userId:self.userId, count:count};
 					$.ajax({
 						url : "/oneday/oneday-check.dox",
 						dataType : "json",
@@ -202,8 +204,7 @@
 						data : nparmap,
 						success : function(data){
 							self.onedayCheck = data.onedayCheck;
-							console.log("onedayCheck:"+data);
-							if(self.onedayCheck==1){
+							if(self.onedayCheck==1){		
 								$.ajax({
 									url : "/oneday/oneday-join.dox",
 									dataType : "json",
@@ -211,16 +212,14 @@
 									data : nparmap,
 									success : function(data){
 										alert("수강신청 되었습니다.");
-										$.pageChange("/myPage/oneday.do", {});
-									}							
-								})				
+									}
+								});
 							}else{
 								alert("이미 신청한 클래스입니다.");
 							}
-						}							
-					})	
-					
-			   },
+						}
+					});
+				}, 
 				fnPay() {
 				    var self = this;
 					var payConfirm = confirm("결제하시겠습니까?");

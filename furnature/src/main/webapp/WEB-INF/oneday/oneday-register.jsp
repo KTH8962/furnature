@@ -146,12 +146,17 @@
 					var startDay = new Date(self.startDay);
 					var endDay = new Date(self.endDay);
 					var classDate = new Date(self.classDate);
+					console.log(startDay, endDay, classDate);
 					if(startDay>endDay){
 						alert("모집시작일이 모집마감일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
 						return;
 					}
 					if(classDate<startDay){
 						alert("모집시작일이 수업일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
+						return;
+					}
+					if(endDay<classDate){
+						alert("수업일이 모집마감일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
 						return;
 					}
 					
@@ -194,8 +199,8 @@
 									processData : false,
 									contentType : false,
 									success: function(){
-										console.log('업로드 성공!');
-										$.pageChange("/oneday/oneday.do", {});
+										
+										//$.pageChange("/oneday/oneday.do", {});
 
 									}
 								})

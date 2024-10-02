@@ -28,6 +28,9 @@ public interface OnedayMapper {
 	//원데이클래스 등록시 파일 업로드
 	void onedayFile(HashMap<String,Object> map);
 	
+	//원데이클래스 등록시 썸네일 업로드
+	void onedayThumb(HashMap<String,Object> map);
+	
 	//원데이클래스 인원초과 여부 확인
 	Oneday numberLimit(HashMap<String,Object> map);
 	

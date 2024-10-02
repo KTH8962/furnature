@@ -6,20 +6,15 @@
 
 	<!--원데이클래스 목록 출력-->
 	<select id="onedayList" parameterType="hashmap" resultType="com.example.furnature.model.Oneday">
-		SELECT C.*, O.*,
-			TO_CHAR(C.START_DAY, 'YYYY-MM-DD') AS START_DAY2, 
-            TO_CHAR(C.END_DAY, 'YYYY-MM-DD') AS END_DAY2,
-            TO_CHAR(C.CLASS_DATE, 'YYYY-MM-DD HH24:MI') AS CLASS_DATE2
-		FROM TBL_CLASS C
-		INNER JOIN TBL_ONEDAYFILE O
-		ON C.CLASS_NO = O.CLASS_NO
-		WHERE O.FILE_NO = (
-	    SELECT MIN(FILE_NO) 
-	    FROM TBL_ONEDAYFILE 
-	    WHERE CLASS_NO = C.CLASS_NO)
-	    ORDER BY O.CLASS_NO ASC OFFSET #{startIndex} ROWS FETCH FIRST #{outputNumber} ROWS ONLY	    
+	    SELECT C.*, O.*, T.*
+	    FROM TBL_CLASS C
+	    INNER JOIN TBL_ONEDAYFILE O ON C.CLASS_NO = O.CLASS_NO
+	    INNER JOIN TBL_ONEDAYTHUMB T ON C.CLASS_NO = T.CLASS_NO
+	    ORDER BY O.CLASS_NO ASC 
+	    OFFSET #{startIndex} ROWS 
+	    FETCH FIRST #{outputNumber} ROWS ONLY
 	</select>
-	
+
 	<!--원데이클래스 개시글 수 조회-->
 	<select id="totalCount" parameterType="hashmap" resultType="int"> 
 		SELECT COUNT(CLASS_NO) AS TOTAL 
@@ -28,10 +23,7 @@
 	
 	<!--원데이클래스 개별 상세정보 출력-->
 	<select id="onedayDetail" parameterType="hashmap" resultType="com.example.furnature.model.Oneday">
-	    SELECT C.*, O.*,
-	    	TO_CHAR(C.START_DAY, 'YYYY-MM-DD') AS START_DAY2, 
-            TO_CHAR(C.END_DAY, 'YYYY-MM-DD') AS END_DAY2,
-            TO_CHAR(C.CLASS_DATE, 'YYYY-MM-DD HH24:MI') AS CLASS_DATE2
+	    SELECT C.*, O.*
 	    FROM TBL_CLASS C
 	    INNER JOIN TBL_ONEDAYFILE O 
 	    ON C.CLASS_NO = O.CLASS_NO
@@ -47,15 +39,15 @@
 	<!--원데이클래스 수강신청-->
 	<insert id="onedayJoin" parameterType="hashmap">
 		INSERT INTO TBL_PARTICIPANT
-		(NAME, USER_ID, COUNT, JOIN_DAY, CLASS_NO)
-		VALUES (#{name}, #{userId}, 1, sysdate, #{classNo})
+		(USER_ID, COUNT, JOIN_DAY, CLASS_NO)
+		VALUES (#{userId},  #{count}, sysdate, #{classNo})
 	</insert>	
 	
 	<!--원데이클래스 등록(관리자)-->
 	<insert id="onedayReg" parameterType="hashmap" useGeneratedKeys="true" keyProperty="classNo" keyColumn="CLASS_NO">
 		INSERT INTO TBL_CLASS 
 		(CLASS_NO, CLASS_NAME, PRICE, NUMBER_LIMIT, CLASS_DATE, START_DAY, END_DAY, DESCRIPTION)
-		VALUES (CLASS_NO_SEQ.NEXTVAL, #{className}, #{price}, #{numberLimit}, TO_DATE(#{classDate}, 'YYYY-MM-DD HH24:MI:SS'), TO_DATE(#{startDay}, 'YYYY-MM-DD HH24:MI:SS'), TO_DATE(#{endDay}, 'YYYY-MM-DD HH24:MI:SS'), #{description})
+		VALUES (CLASS_NO_SEQ.NEXTVAL, #{className}, #{price}, #{numberLimit}, #{classDate}, #{startDay}, #{endDay}, #{description})
 	</insert>
 	
 	<!--원데이클래스 등록시 파일업로드-->
@@ -65,12 +57,18 @@
 		VALUES (#{fileName}, #{filePath}, #{fileSize}, #{extName}, #{classNo}, FILE_NO_SEQ.NEXTVAL)
 	</insert>
 	
+	<insert id="onedayThumbFile" parameterType="hashmap">
+		INSERT INTO TBL_ONEDAYTHUMB
+		(FILE_NAME, FILE_PATH, FILE_SIZE, EXT_NAME, CLASS_NO, FILE_NO)
+		VALUES (#{fileName}, #{filePath}, #{fileSize}, #{extName}, #{classNo}, FILE_NO_SEQ.NEXTVAL)
+	</insert>
+	
     <!--원데이클래스 인원초과 여부 확인-->
 	<select id="numberLimit" parameterType="hashmap" resultType="com.example.furnature.model.Oneday">
 	SELECT NUMBER_LIMIT, NVL(COUNT,0) CURRENT_NUMBER
 	FROM TBL_CLASS C
 	LEFT JOIN(
-	SELECT NVL(COUNT(*),0) COUNT, CLASS_NO
+	SELECT NVL(SUM(COUNT),0) COUNT, CLASS_NO
 	FROM TBL_PARTICIPANT
 	GROUP BY CLASS_NO) P
 	ON C.CLASS_NO = P.CLASS_NO
@@ -85,9 +83,9 @@
 			    CLASS_NAME = #{className}, 
 			    PRICE = #{price}, 
 			    NUMBER_LIMIT = #{numberLimit}, 
-			    CLASS_DATE = TO_DATE(#{classDate}, 'YYYY-MM-DD HH24:MI:SS'),
-			    START_DAY = TO_DATE(#{startDay}, 'YYYY-MM-DD HH24:MI:SS'), 
-			    END_DAY = TO_DATE(#{endDay}, 'YYYY-MM-DD HH24:MI:SS'),
+			    CLASS_DATE = #{classDate},
+			    START_DAY = #{startDay},
+			    END_DAY = #{endDay}, 
 			    DESCRIPTION = #{description}
 			WHERE 
 			    CLASS_NO = #{classNo}  

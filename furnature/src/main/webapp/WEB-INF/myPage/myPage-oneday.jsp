@@ -23,6 +23,7 @@
 									<div class="top">
 										<div class="tit">{{item.className}}</div>
 									</div>
+									<div>신청인원 : {{item.count}} </div>
 									<div v-if="item.payStatus==1">결제상태: 결제예정</div>
 									<div v-else>결제상태: 결제완료
 										<div>결제번호: {{item.payId}}</div>
