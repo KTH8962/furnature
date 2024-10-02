@@ -43,6 +43,7 @@
        C.CLASS_DATE, 
        O.FILE_NO, 
        O.FILE_PATH,
+       P.COUNT,
        CASE 
            WHEN P.PAY_ID IS NULL OR P.PAY_ID = '' THEN 1 
            ELSE 2 

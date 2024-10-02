@@ -181,12 +181,16 @@
 				var startDay = new Date(self.startDay);
 				var endDay = new Date(self.endDay);
 				var classDate = new Date(self.classDate);
-				if(startDay>endDay){
+				if(endDay<startDay){
 					alert("모집시작일이 모집마감일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
 					return;
 				}
 				if(classDate<startDay){
 					alert("모집시작일이 수업일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
+					return;
+				}
+				if(endDay<classDate){
+					alert("수업일이 모집마감일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
 					return;
 				}
 				
@@ -275,6 +279,10 @@
 	                alert("모집시작일이 수업일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
 	                return;
 	            }
+				if(endDay<classDate){
+					alert("수업일이 모집마감일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
+					return;
+				}
 	            
 	            if (!self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay || !self.description) {
 	                alert("빈칸을 채워주세요.");

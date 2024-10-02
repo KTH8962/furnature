@@ -47,8 +47,8 @@
 	<!--원데이클래스 수강신청-->
 	<insert id="onedayJoin" parameterType="hashmap">
 		INSERT INTO TBL_PARTICIPANT
-		(NAME, USER_ID, COUNT, JOIN_DAY, CLASS_NO)
-		VALUES (#{name}, #{userId}, 1, sysdate, #{classNo})
+		(USER_ID, COUNT, JOIN_DAY, CLASS_NO)
+		VALUES (#{userId},  #{count}, sysdate, #{classNo})
 	</insert>	
 	
 	<!--원데이클래스 등록(관리자)-->
@@ -70,7 +70,7 @@
 	SELECT NUMBER_LIMIT, NVL(COUNT,0) CURRENT_NUMBER
 	FROM TBL_CLASS C
 	LEFT JOIN(
-	SELECT NVL(COUNT(*),0) COUNT, CLASS_NO
+	SELECT NVL(SUM(COUNT),0) COUNT, CLASS_NO
 	FROM TBL_PARTICIPANT
 	GROUP BY CLASS_NO) P
 	ON C.CLASS_NO = P.CLASS_NO
