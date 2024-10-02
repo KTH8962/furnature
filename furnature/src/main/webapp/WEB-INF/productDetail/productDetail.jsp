@@ -437,6 +437,7 @@
 						return;
 					}
 					if(confirm('리뷰를 작성하시겠습니까?')){
+						self.reviewContents = "";
 						self.insertModal = !self.insertModal;
 						console.log(self.reviewFlag);
 						self.updateModal = false;
