@@ -95,6 +95,12 @@
 		WHERE CLASS_NO = #{classNo}
 	</delete>
 	
+	<!--원데이클래스 썸네일삭제-->
+	<delete id="onedayThumbDelete" parameterType="hashmap">
+		DELETE FROM TBL_ONEDAYTHUMB
+		WHERE CLASS_NO = #{classNo}
+	</delete>
+	
 	<!--원데이클래스 파일삭제-->
 	<delete id="onedayFileDelete" parameterType="hashmap">
 		DELETE FROM TBL_ONEDAYFILE

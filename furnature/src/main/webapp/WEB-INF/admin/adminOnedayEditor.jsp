@@ -95,7 +95,7 @@
 		    </div>
 		</div>
 		
-		<div class="ip-list">
+		<div class="ip-list" v-if="isRegist">
 			<div class="tit-box">
 		        <p class="tit">썸네일업로드</p>
 		    </div>
@@ -108,10 +108,9 @@
 			<div class="ip-box">
 			   <input type="file" multiple @change="fnFileUpload">
 			   <span v-if="file.length > 0">파일{{file.length}}개</span>
-			</div>
-			<div><button @click="fnSave">저장</button></div>			
+			</div>		
 		</div>
-		
+		<div><button @click="fnSave">저장</button></div>	
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
 </body>
@@ -120,7 +119,7 @@
 	const app = Vue.createApp({
 	        data() {
 	            return {
-					classNo : "",
+					classNo : '${classNo}',
 	                className: "",
 	                classDate: "",
 	                numberLimit : "",
@@ -128,11 +127,31 @@
 	                startDay: "",
 	                endDay: "",
 					description : "",
+					isRegist : false,
 					file : [],
 					thumb : ""
 	            };
 	        },
 	        methods: {
+				fnGetInfo(){
+					var self = this;
+					var nparam = {classNo:self.classNo};
+					$.ajax({
+						url: "/admin/oneday-info.dox",
+						dataType: "json",
+						type: "POST",
+						data: nparam,
+						success: function(data){
+							self.className = data.onedayInfo.className;
+							self.classDate = data.onedayInfo.classDate;
+							self.numberLimit = data.onedayInfo.numberLimit;
+							self.price = data.onedayInfo.price;
+							self.startDay = data.onedayInfo.startDay;
+							self.endDay = data.onedayInfo.endDay;
+							self.description = data.onedayInfo.description;
+						}
+					});
+				},
 				validateClassName() {
 				      this.className = this.className.replace(/[^A-Za-z가-힣 ]+/g, '');
 				    },
@@ -152,25 +171,24 @@
 				
 				fnSave(){
 					var self = this;
-					
-					var classDate = new Date(self.classDate);
 					var startDay = new Date(self.startDay);
 					var endDay = new Date(self.endDay);
+					var classDate = new Date(self.classDate);
 					
-					if(startDay>endDay){
-						alert("모집시작일이 모집마감일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
+					if (startDay > endDay) {
+						alert("모집 시작일이 모집 마감일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
 						return;
 					}
-					if(classDate<startDay){
-						alert("모집시작일이 수업일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
+					if (classDate < startDay) {
+						alert("모집 시작일이 수업일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
 						return;
 					}
-					if(classDate<endDay){
-						alert("수업일이 모집마감일 전입니다. 올바른 날짜를 입력해주세요.");
+					if (classDate < endDay) {
+						alert("수업일이 모집 마감일 전입니다. 올바른 날짜를 입력해주세요.");
 						return;
 					}
 					
-					if(!self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay || !self.description) {
+					if (!self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay || !self.description) {
 					        alert("빈칸을 채워주세요.");
 					        return;
 					}
@@ -182,56 +200,72 @@
 						alert("파일을 2개 이상 업로드해주세요.");
 						return;
 					}
+
 					var nparam = {
-						className : self.className, 
-						classDate : self.classDate.replace('T', ' '),
-						numberLimit : self.numberLimit,
-						price : self.price,
-						startDay : self.startDay.replace('T', ' '),
-						endDay : self.endDay.replace('T', ' '),
-						description : self.description		
+						className: self.className,
+						classDate: self.classDate.replace('T', ' '),
+						numberLimit: self.numberLimit,
+						price: self.price,
+						startDay: self.startDay.replace('T', ' '),
+						endDay: self.endDay.replace('T', ' '),
+						description: self.description
 					};
 
 					$.ajax({
-						url:"/oneday/oneday-register.dox",
-						dataType:"json",	
-						type : "POST", 
-						data : nparam,
-						success : function(data) {
-							console.log(data);
-							var classNo = data.classNo;	 
-							if(self.thumb){
-								const formData = new FormData();
-								formData.append('thumb', self.thumb);
-								formData.append('classNo', classNo);
-							}
-																
-							 if(self.file.length!==0){
-								const formData = new FormData();
-								for(var i=0; i<self.file.length; i++){
-									formData.append('file', self.file[i]);
-								} 	formData.append('classNo', classNo);
+						url: "/oneday/oneday-register.dox",
+						dataType: "json",
+						type: "POST",
+						data: nparam,
+						success: function(data) {
+							var classNo = data.classNo;
+							// 썸네일 업로드
+							if (self.thumb) {
+								const formDataThumb = new FormData();
+								formDataThumb.append('thumb', self.thumb);
+								formDataThumb.append('classNo', classNo);
 								
-								if(self.thumb && self.file.length!==0){
+								$.ajax({
+									url: '/oneday/oneday-thumb.dox',
+									type: 'POST',
+									data: formDataThumb,
+									processData: false,
+									contentType: false,
+									success: function() {
+										console.log('썸네일 업로드 성공!');
+									}
+								});
+							}
+
+							// 파일 업로드
+							if (self.file.length > 0) {
+								const formDataFile = new FormData();
+								for (var i = 0; i < self.file.length; i++) {
+									formDataFile.append('file', self.file[i]);
+								}
+								formDataFile.append('classNo', classNo);
+
 								$.ajax({
 									url: '/oneday/oneday-file.dox',
-									type : 'POST',
-									data : formData,
-									processData : false,
-									contentType : false,
-									success: function(){
-										console.log('업로드 성공!');
+									type: 'POST',
+									data: formDataFile,
+									processData: false,
+									contentType: false,
+									success: function() {
+										console.log('파일 업로드 성공!');
 										$.pageChange("/adminOneday.do", {});
 									}
-								})
-							  }
-							 }
+								});
+							}
 						}
 					});
-				}
-			 	},
+			 	}
+			},
 			mounted() {
 				var self = this;
+				if(self.classNo===''){
+					self.isRegist = true;
+				}
+				self.fnGetInfo();
             }
         });
 	    app.mount('#app');

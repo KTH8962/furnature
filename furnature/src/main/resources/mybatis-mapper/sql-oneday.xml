@@ -27,12 +27,7 @@
 	    INNER JOIN TBL_ONEDAYFILE O 
 	    ON C.CLASS_NO = O.CLASS_NO
 	    WHERE C.CLASS_NO = #{classNo}
-	      AND O.FILE_NO != (
-	          SELECT MIN(FILE_NO) 
-	          FROM TBL_ONEDAYFILE 
-	          WHERE CLASS_NO = #{classNo}
-	      )
-	      ORDER BY FILE_NO ASC
+	    ORDER BY FILE_NO ASC
 	</select>
 	
 	<!--원데이클래스 수강신청-->
@@ -61,7 +56,7 @@
 	</insert>
 	
 	<!--원데이클래스 등록시 썸네일 업로드-->
-	<insert id="onedayThumbFile" parameterType="hashmap">
+	<insert id="onedayThumb" parameterType="hashmap">
 		INSERT INTO TBL_ONEDAYTHUMB
 		(THUMB_NAME, THUMB_PATH, THUMB_SIZE, EXT_NAME, CLASS_NO, THUMB_NO)
 		VALUES (#{thumbName}, #{thumbPath}, #{thumbSize}, #{extName}, #{classNo}, THUMB_NO_SEQ.NEXTVAL)

@@ -148,6 +148,7 @@ public class AdminServiceImpl implements AdminService{
 		try {
 			adminMapper.onedayFileDelete(map);
 			adminMapper.onedayDelete(map);
+			adminMapper.onedayThumbDelete(map);
 			resultMap.put("result", "success");
             resultMap.put("message", ResMessage.RM_SUCCESS);
         } catch (DataAccessException e) {
