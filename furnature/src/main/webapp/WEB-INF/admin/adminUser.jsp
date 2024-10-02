@@ -18,13 +18,6 @@
                 <div class="contens-tit-wrap">
                     <h2 class="admin-tit">유저 정보</h2>
                     <div class="search-box">
-                        <div class="select-box">
-                            <select name="" id="">
-                                <option value="">전체</option>
-                                <option value="">이름</option>
-                                <option value="">제목</option>
-                            </select>
-                        </div>
                         <div class="ip-box ip-ico-box">
                             <input type="text" placeholder="이름을 입력해주세요" v-model="keyword" @keyup.enter="fnPageChange(1)">
                             <div class="btn-box type1"><button type="button" @click="fnPageChange(1)">검색버튼</button></div>
@@ -68,9 +61,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="btn-box">
-                    <button type="button" class="admin-btn">등록</button>
-                </div>
             </div>
             <div class="contents-bottom">
                 <div class="pagenation">
@@ -105,7 +95,7 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-                        console.log(data);
+                        //console.log(data);
                         self.userList = data.userList;
                         self.totalPages = Math.ceil(data.userAllList.allUser / self.pageSize);
 					}
@@ -126,7 +116,7 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-                        if(data.result == "scuccess") {
+                        if(data.result == "success") {
                             alert("삭제 완료되었습니다.")
                             self.fnGetList(1);
                         }

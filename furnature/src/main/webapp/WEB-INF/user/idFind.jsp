@@ -29,7 +29,7 @@
 						</div>
 						<div class="bot-box">
 							<div class="ip-box">
-								<input type="text" placeholder="가입하신 핸드폰 번호를 입력해주세요" v-model="phone">
+								<input type="text" placeholder="가입하신 핸드폰 번호를 입력해주세요" v-model="phone" ref="phoneRef">
 							</div>
 						</div>
 					</div>
@@ -50,9 +50,9 @@
 							<button type="button" @click="fnMsg">문자인증</button></div>
 						</div>
 					</div>
-				</div>
-				<div v-if="findShow">
-					<p class="findInfo">찾으시는 비밀번호는 <b>"{{id}}"</b> 입니다.</p>
+					<div v-if="findShow">
+						<p class="findInfo">찾으시는 아이디는 <b>"{{id}}"</b> 입니다.</p>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -78,6 +78,20 @@
         methods: {
             fnMsg(){
 				var self = this;
+				var check1 = /^\d+$/;
+				var phone = self.phone;
+				if(self.name == "" || self.name == " " || self.name.length < 2){
+					alert("이름을 입력해주세요.");
+					return;
+				} else if(self.phone == "") {
+					alert("전화번호를 입력해주세요.");
+					return;
+				} else if(self.phone.length < 11){
+					alert("전화번호를 제대로 입력해주세요.");
+					return
+				}else if(!self.compare(check1, phone, "phoneRef","전화번호는 숫자만 작성해주세요.")){
+					return;
+				}
 				var nparmap = {phone: self.phone};
 				$.ajax({
 					url:"/user/msg.dox",
@@ -143,6 +157,15 @@
 						}
 					}
 				});
+			},
+			compare(check, form, name, message) {
+				var self = this;
+			    if(check.test(form)) {
+			        return true;
+			    }
+			    alert(message);
+			    self.$refs[name].focus();
+			    return false;
 			}
         },
         mounted() {

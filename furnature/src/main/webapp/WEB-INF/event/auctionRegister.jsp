@@ -96,6 +96,7 @@
             return {
 				title : "",
 				price : "",
+				currentPrice: "",
 				thumbFile : [],
 				contentsFile : "",
 				contents : "",
@@ -123,6 +124,13 @@
 				if(self.startDay.indexOf("T")<0) {
 					self.startDay = self.startDay.replace(" ","T");
 				}
+
+				if(self.auctionNo != "") {
+					if(self.price > self.currentPrice) {
+						alert("현재 경매가보다 큰 금액으로 시작가를 수정하는것은 불가합니다. \n 현재 경매가는 " + self.currentPrice + "원 입니다.");
+						return;
+					}
+				}
 				
 				if(self.compare(self.title, "경매 제목을 입력해주세요.")){
 					return false;
@@ -130,14 +138,22 @@
 					return false;
 				} else if (self.compare2(check, self.price, "시작가는 숫자만 입력해주세요.")) {
 					return false;
+				} else if(self.price <= 0){
+					alert("시작가는 0원보다 커야 입력이 가능합니다.");
+					return false;
 				} else if (self.compare(self.startDay, "시작일을 입력해주세요.")) {
 					return false;
 				} else if (self.compare(self.endDay, "종료일을 입력해주세요.")) {
 					return false;
-				} else if (today > self.startDay) {
-					alert("시작일은 오늘 일자보다 늦은 일자로 선택해주세요");
-					return false;
-				} else if (self.startDay >= self.endDay) {
+				} 
+				
+				if(self.status != "I") {
+					if (today > self.startDay) {
+						alert("시작일은 오늘 일자보다 늦은 일자로 선택해주세요");
+						return false;
+					}
+				}
+				if (self.startDay >= self.endDay) {
 					alert("종료일 시작일 보다 늦은 일자로 선택해주세요");
 					return false;
 				} 
@@ -171,7 +187,7 @@
 								const formData = new FormData();
 								for (var i = 0; i < self.thumbFile.length; i++) {
 									formData.append('thumbFile', self.thumbFile[i]);
-								   }
+								}
 								formData.append('contentsFile', self.contentsFile);
 								formData.append('auctionNo', auctionNo);
 								  $.ajax({
@@ -229,10 +245,11 @@
 					success : function(data) {
 						self.title = data.editInfo.auctionTitle;
 						self.price = data.editInfo.auctionPrice;
-						self.infoPrice = data.editInfo.auctionPrice;
+						self.currentPrice = parseInt(data.editInfo.auctionPriceCurrent);
 						self.contents = data.editInfo.auctionContents;
 						self.startDay = data.editInfo.startDay;
 						self.endDay = data.editInfo.endDay;
+						self.status = data.editInfo.auctionStatus;
 					}
 				});
 				}
