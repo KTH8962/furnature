@@ -31,22 +31,39 @@
 
 	<!--원데이클래스 신청내역 조회(회원)-->
 	<select id="onedayInfo" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
-		SELECT C.PRICE, P.NAME, P.PAY_ID, P.USER_ID, C.CLASS_NO, P.JOIN_DAY, P.PAY_DAY, C.CLASS_NAME, C.CLASS_DATE, 
-        O.FILE_NO, O.FILE_PATH,
-	        CASE 
-	            WHEN P.PAY_ID IS NULL OR P.PAY_ID = '' THEN 1 
-	            ELSE 2 
-	        END AS PAY_STATUS
-   		FROM TBL_PARTICIPANT P
-    	INNER JOIN TBL_CLASS C ON P.CLASS_NO = C.CLASS_NO
-    	INNER JOIN TBL_ONEDAYFILE O ON C.CLASS_NO = O.CLASS_NO
-    	WHERE P.USER_ID = #{userId}
-      	AND O.FILE_NO = (
-            SELECT MIN(FILE_NO) 
-            FROM TBL_ONEDAYFILE 
-            WHERE CLASS_NO = C.CLASS_NO
-      )
+		SELECT U.USER_NAME,
+       C.PRICE, 
+       P.NAME, 
+       P.PAY_ID, 
+       P.USER_ID, 
+       C.CLASS_NO, 
+       P.JOIN_DAY, 
+       P.PAY_DAY, 
+       C.CLASS_NAME, 
+       C.CLASS_DATE, 
+       O.FILE_NO, 
+       O.FILE_PATH,
+       CASE 
+           WHEN P.PAY_ID IS NULL OR P.PAY_ID = '' THEN 1 
+           ELSE 2 
+       END AS PAY_STATUS
+		FROM TBL_USER U
+		INNER JOIN TBL_PARTICIPANT P ON U.USER_ID = P.USER_ID
+		INNER JOIN TBL_CLASS C ON P.CLASS_NO = C.CLASS_NO
+		INNER JOIN TBL_ONEDAYFILE O ON C.CLASS_NO = O.CLASS_NO
+		WHERE P.USER_ID = #{userId}
+		AND O.FILE_NO = (
+		    SELECT MIN(FILE_NO) 
+		    FROM TBL_ONEDAYFILE 
+		    WHERE CLASS_NO = C.CLASS_NO
+		)
+
 	</select>	
+	
+	<!--원데이클래스 회원이름 조회-->
+	<select id="onedayName">
+		
+	</select>
 	
 	<!--원데이클래스 수강취소(회원)-->
 	<delete id="onedayCancel" parameterType="hashmap">
