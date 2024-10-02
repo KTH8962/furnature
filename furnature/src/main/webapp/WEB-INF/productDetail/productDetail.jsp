@@ -132,7 +132,10 @@
 										<p class="tit">내용</p>
 									</div>
 									<div class="bot-box">
-										<div class="ip-box">
+										<div class="ip-box" v-if="updateModal">
+											<div class="text-box"><textarea v-model="reviewContents"></textarea></div>
+										</div>
+										<div class="ip-box" v-else>
 											<div class="text-box"><textarea v-model="reviewContents"></textarea></div>
 										</div>
 									</div>
@@ -290,12 +293,16 @@
           	},
 			// 커스텀 버튼
 			fnCustom(){
+				var self = this;
 				if(self.sessionId == null || self.sessionId == ''){
 					alert('로그인 후 이용 가능합니다.');
 					window.location.reload();
 					return;
 				}
-				confirm('커스텀 하시겠습니까?');
+				if(confirm('커스텀 신청하시겠습니까?')){
+					alert('커스텀 신청이 완료되었습니다.');
+					window.location.reload();
+				}
 			},
 			// 결제 , 장바구니 버튼    shoppingCart
 			fnPay(buttonNo){
@@ -455,6 +462,7 @@
 				  	self.updateReviewNo = reviewNo; // 현재 수정할 리뷰 번호 저장
 				  	self.insertModal = true;
 					self.updateModal = true;
+					self.fnGetReviewInfo(reviewNo);
 				}else{
 					self.insertModal = false;
 					self.updateModal = false;
@@ -683,6 +691,20 @@
 				var self = this;
 				self.selectedSize.splice(index, 1); // .splice() 해당 인덱스의 1개 항목을 제거
 				console.log('삭제된 후 selectedSize:', this.selectedSize);
+			},
+			fnGetReviewInfo(reviewNo){
+				var self = this;
+				var nparmap = {reviewNo : reviewNo};
+				$.ajax({
+					url:"/productDetail/reviewInfo.dox",
+					dataType:"json",
+					type : "POST", 
+					data : nparmap,
+					success : function(data) {
+						console.log(data); 
+						self.reviewContents = data.reviewInfo.reviewContents;
+					}
+				});
 			}
         },
         mounted() {

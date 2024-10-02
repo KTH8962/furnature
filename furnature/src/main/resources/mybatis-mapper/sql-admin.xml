@@ -138,6 +138,8 @@
 	
 	<!-- 관리자 배달목록 -->
 	<select id="adminDelivery" parameterType="hashmap" resultType="com.example.furnature.model.Admin">
+	SELECT *
+	FROM(
 	    SELECT 
 		    ORDER_ID,
 		    USER_ID,
@@ -184,6 +186,8 @@
 	    <if test="keyword != null and keyword !=''">
 	        AND ORDER_ID LIKE '%' ||  #{keyword} || '%'
 	    </if>
+	    ) COMBINE_RESULT
+	    ORDER BY ORDER_ID
         OFFSET #{startIndex} ROWS FETCH FIRST #{outputNumber} ROWS ONLY   
 	</select>
 	

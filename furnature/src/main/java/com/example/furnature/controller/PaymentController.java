@@ -2,6 +2,7 @@ package com.example.furnature.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.furnature.dao.PaymentServiceImpl;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
@@ -50,6 +53,10 @@ public class PaymentController {
 	@ResponseBody
 	public String addPayment(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		String json = map.get("selectedSize").toString(); 
+		ObjectMapper mapper = new ObjectMapper();
+		List<Object> selectedSize = mapper.readValue(json, new TypeReference<List<Object>>(){});
+		map.put("selectedSize", selectedSize);
 		resultMap = paymentService.addPayment(map);
 		return new Gson().toJson(resultMap);
 	}

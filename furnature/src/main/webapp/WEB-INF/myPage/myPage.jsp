@@ -177,8 +177,10 @@
 				
 				var phone = self.phone;
 				var email = self.email;
-				
-				if(phone != "" && !self.compare(check2, phone, "phoneRef","전화번호는 숫자만 작성해주세요.")){
+				if(self.address == "") {
+					alert("주소 변경시 상세 주소만 입력하면 변경이 불가합니다.");
+					return;
+				}else if(phone != "" && !self.compare(check2, phone, "phoneRef","전화번호는 숫자만 작성해주세요.")){
 					return;
 				} else if(phone != "" && self.lengthCheck(phone, 10, "전화번호는 최소 10자리 이상 입력해주세요.")){
                     return;
@@ -189,6 +191,7 @@
 					if(self.addr == " "){
 						self.addr = "";
 					}
+					console.log(self.address == "");
 					if(!(self.addr == "" && self.phone == "" &&  self.email == "" && self.zipCode == "")) {
 						var nparmap = {sessionId: self.sessionId, addr: self.addr, phone: self.phone, email: self.email, zipCode: self.zipCode};
 						$.ajax({

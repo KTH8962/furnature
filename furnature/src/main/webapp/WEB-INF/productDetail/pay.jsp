@@ -160,10 +160,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="front-btn-box">
-                    <button type="button" @click="fnBuy(productDetail.productName, totalPrice, name, phone, productNo)">결제하기</button>
-                    <button type="button" @click="fnPorductDetail">취소하기/돌아가기</button>
-                </div>
+            </div>
+            <div class="front-btn-box">
+                <button type="button" @click="fnBuy(productDetail.productName, totalPrice, name, phone, productNo)">결제하기</button>
+                <button type="button" @click="fnPorductDetail">취소하기</button>
             </div>
         </div>
     </div>
@@ -235,9 +235,6 @@
                         if (typeof self.selectedSize === 'string') {
                             self.selectedSize = JSON.parse(self.selectedSize);
                         }
-                        console.log(data);
-                        console.log(self.sizeList);
-                        console.log(self.selectedSize);
                     }
                 });
             },
@@ -270,7 +267,9 @@
                         self.info = data.info;
                         console.log("다음찍히는 콘솔이 userinfo");
                         console.log(data.info);
-                        self.myPoint = data.info.mileageTotal;
+						if(!(self.myPoint == null || self.myPoint == '')){
+	                        self.myPoint = data.info.mileageTotal;
+						}
 						self.fnDeliveryInfo(10);
                     }
                 });
@@ -292,7 +291,7 @@
                 console.log(value);
             },
             fnBuy(title, totalPrice, name, phone, orderNo){
-				var self = this;
+                var self = this;
 				IMP.request_pay({
 	                pg: "html5_inicis",
 	                pay_method: "card",
@@ -326,7 +325,8 @@
 										amount: rsp.paid_amount,
 										name : rsp.buyer_name,
 										phone : rsp.buyer_tel,
-										orderNo: orderNo
+										orderNo: orderNo,
+                                        selectedSize: JSON.stringify(self.selectedSize)
 									},
 									success : function(data){
 										if(data.result == 'success') {
@@ -344,8 +344,11 @@
             fnOrder() {
                 var self = this;
                 var orderList = JSON.stringify(self.selectedSize);
+				//결제시 orderList에 담긴 배열을 JSON.stringify JSON 형식의 문자열로 변환해줍니다.
+				// 이후에 컨트롤러 단에 넘겨주고 컨트롤러단에서 다시 List형식인 list에 담아주고 map에 넣어 서비스단으로 넘겨줬습니다.
+				//이후 서비스단에서 리스트 길이만큼 for문 돌려서 사이즈별로 가격 개수 등을 다르게 insert 돌려주는 형식으로 처리했었어요.
                 if (!self.name || !self.phone || !self.postcode || !self.address || !self.detailAddress) {
-                    alert('모든 입력 항목을 채워주세요.');
+                    alert('모든 입력 항목을 채워주세요.');	
                     return;
                 }
                 IMP.request_pay({

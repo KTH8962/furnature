@@ -45,6 +45,7 @@
 				<template v-if="sessionId == list.userId">
 					<button @click="fnDelete(list.designNo)">게시물삭제</button>			
 				</template>
+					<button @click="fnList">목록</button>
 			</div>
 		</div>
 	</div>
@@ -161,6 +162,9 @@
 						}
 					}
 				});
+			},
+			fnList(){
+				location.href="/design/design.do"
 			}	
         },
         mounted() {

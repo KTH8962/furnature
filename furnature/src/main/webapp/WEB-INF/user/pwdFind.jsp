@@ -61,7 +61,7 @@
 						</div>
 					</div>
 					<div v-if="findShow">
-						<p class="findInfo">찾으시는 아이디는 <b>"{{pwd}}"</b> 입니다.</p>
+						<p class="findInfo">찾으시는 비밀번호는 <b>"{{pwd}}"</b> 입니다.</p>
 					</div>
 				</div>
 			</div>
@@ -74,9 +74,9 @@
     const app = Vue.createApp({
         data() {
             return {
-				id : "user2",
-				name : "김철수",
-				phone : "01089622170",
+				id : "",
+				name : "",
+				phone : "",
 				msgText : "",
 				msgSubmit : "",
 				msgTime : false,
@@ -90,6 +90,23 @@
             fnMsg(){
 				var self = this;
 				var nparmap = {phone: self.phone};
+				var check1 = /^\d+$/;
+				var phone = self.phone;
+				if(self.id == "") {
+					alert("아이디를 입력해주세요.");
+					return;
+				} else if(self.name == "" || self.name == " " || self.name.length < 2){
+					alert("이름을 입력해주세요.");
+					return;
+				} else if(self.phone == "") {
+					alert("전화번호를 입력해주세요.");
+					return;
+				} else if(self.phone.length < 11){
+					alert("전화번호를 제대로 입력해주세요.");
+					return
+				}else if(!self.compare(check1, phone, "phoneRef","전화번호는 숫자만 작성해주세요.")){
+					return;
+				}
 				$.ajax({
 					url:"/user/msg.dox",
 					dataType:"json",	
@@ -154,6 +171,15 @@
 						}
 					}
 				});
+			},
+			compare(check, form, name, message) {
+				var self = this;
+			    if(check.test(form)) {
+			        return true;
+			    }
+			    alert(message);
+			    self.$refs[name].focus();
+			    return false;
 			}
         },
         mounted() {
