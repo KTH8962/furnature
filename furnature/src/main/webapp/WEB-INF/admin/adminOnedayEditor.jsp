@@ -190,9 +190,13 @@
 					return;
 				}
 				
-				if(!self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay || !self.description || !self.file) {
+				if(!self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay || !self.description) {
 				        alert("빈칸을 채워주세요.");
 				        return;
+				}
+				if(self.file.length<2){
+					alert("파일을 2개 이상 업로드해주세요.");
+					return;
 				}
 				$.ajax({
 					url:"/oneday/oneday-register.dox",
@@ -207,6 +211,7 @@
 							for(var i=0; i<self.file.length; i++){
 								formData.append('file', self.file[i]);
 							} 	formData.append('classNo', classNo);
+							
 							
 							$.ajax({
 								url: '/oneday/oneday-file.dox',

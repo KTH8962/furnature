@@ -28,13 +28,15 @@
 										<div>결제번호: {{item.payId}}</div>
 									</div>
 									<div class="price-box">
-										<div class="price">결제 금액 : {{item.price}} </div>
+										<div class="price" v-if="item.payStatus==2">결제 금액 : {{item.price}} </div>
+										<div class="price" v-if="item.payStatus==1">결제 예정 금액 : {{item.price}} </div>
 									</div>
-									<div class="date">신청일자: {{item.joinDay}}</div>
+									<div class="date" v-if="item.payStatus==1">신청일자: {{item.joinDay}}</div>
+									<div class="date" v-if="item.payStatus==2">결제일자: {{item.payDay}}</div>
 									<div class="result">
-										<button type="button" @click="fnCancel(item.classNo)">수강취소</button>
-										<button type="button" @click="fnBuy(item.className, item.classNo, item.price)">결제</button>
-										<button type="button" @click="fnBuyCancel(item.classNo)">결제 취소</button>
+										<button type="button" @click="fnCancel(item.classNo)" v-if="item.payStatus==1">수강취소</button>
+										<button type="button" @click="fnBuy(item.className, item.classNo, item.price)" v-if="item.payStatus==1">결제</button>
+										<button type="button" @click="fnBuyCancel(item.classNo)" v-if="item.payStatus==2">결제 취소</button>
 									</div>
 								</div>
 							</div>
@@ -62,6 +64,7 @@
 				className : "",
 			    payId : "",
 				price : "",
+				name : "",
 				payInfo: {}
             };
         },
@@ -77,8 +80,9 @@
 	                   type: "POST",
 	                   data: nparmap,
 	                   success: function(data) {
-						   //console.log(data);
-	                       self.list = data.onedayInfo;							
+						   console.log(data);
+	                       self.list = data.onedayInfo;		
+						   self.name = data.onedayInfo[0].userName;					
 	                   }
 	               });
 				}else{
@@ -93,7 +97,7 @@
 					merchant_uid: 'oneday' + new Date().getTime(),
 					name: className,
 					amount: price,
-					buyer_name: "홍길동",
+					buyer_name: self.name,
 					buyer_tel: "01012349876",
 				}, function (rsp){ 
 					//console.log(rsp);
@@ -136,6 +140,7 @@
 			},
 			fnBuyCancel(orderNo) {
 				var self = this;
+				confirm("결제를 취소하시겠습니까?");
 				var nparmap = {classNo: orderNo, category: "oneday"};
 				$.ajax({
 					url:"/payment/payment-info.dox",
@@ -177,16 +182,19 @@
 			fnCancel(classNo){
 				var self = this;
 				var nparmap = {classNo:classNo, userId:self.userId}
-				$.ajax({
-					url:"/myPage/oneday-cancel.dox",
-					dataType:"json",
-					type:"POST",
-					data:nparmap,
-					success: function(data){
-						alert("수강취소 되었습니다.");
-						self.fnClass();
-					}
-				})
+				if(confirm("수강 신청을 취소하시겠습니까?")){
+					$.ajax({
+						url:"/myPage/oneday-cancel.dox",
+						dataType:"json",
+						type:"POST",
+						data:nparmap,
+						success: function(data){
+							self.fnClass();
+						}
+					})
+				}else{
+					return;
+				}			
 			}
         },
         mounted() {

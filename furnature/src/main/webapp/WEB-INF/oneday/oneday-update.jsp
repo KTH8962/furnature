@@ -12,7 +12,7 @@
 			<div id="container">            
 	            <p class="blind">원데이클래스</p>
 		
-		<h2 class="sub-tit">클래스 정보 수정</h2>   
+		<h2 class="sub-tit">클래스 정보 </h2>   
         
         <div class="ip-list">
             <div class="tit-box">
@@ -196,7 +196,7 @@ const app = Vue.createApp({
                 data: nparam,
                 success: function(data) {
                     alert("저장되었습니다.");
-					$.pageChange("/adminOneday.do", {});
+					$.pageChange("/oneday/oneday-join.do", {classNo:self.classNo});
                 }
             });
         }

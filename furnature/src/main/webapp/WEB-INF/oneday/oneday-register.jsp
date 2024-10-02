@@ -142,15 +142,7 @@
 				
 				fnSave(){
 					var self = this;
-					var nparam = {
-						className : self.className, 
-						classDate : self.classDate.replace('T', ' '),
-						numberLimit : self.numberLimit,
-						price : self.price,
-						startDay : self.startDay.replace('T', ' '),
-						endDay : self.endDay.replace('T', ' '),
-						description : self.description		
-					};
+	
 					var startDay = new Date(self.startDay);
 					var endDay = new Date(self.endDay);
 					var classDate = new Date(self.classDate);
@@ -167,8 +159,20 @@
 					        alert("빈칸을 채워주세요.");
 					        return;
 					}
-					console.log(nparam);
-
+					if(self.file.length<2){
+						alert("파일을 2개 이상 업로드해주세요.");
+						return;
+					}
+					var nparam = {
+						className : self.className, 
+						classDate : self.classDate.replace('T', ' '),
+						numberLimit : self.numberLimit,
+						price : self.price,
+						startDay : self.startDay.replace('T', ' '),
+						endDay : self.endDay.replace('T', ' '),
+						description : self.description		
+					};
+					console.log(self.classDate, self.startDay, self.endDay);
 					$.ajax({
 						url:"/oneday/oneday-register.dox",
 						dataType:"json",	
