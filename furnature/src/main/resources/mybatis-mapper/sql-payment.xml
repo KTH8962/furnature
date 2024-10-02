@@ -29,7 +29,7 @@
 		ORDER_CATE, DELIVERY_CATE)
 		VALUES (PAY_NO_SEQ.NEXTVAL, #{merchantUid}, #{orderNo}, #{sessionId}, NULL, 1, #{amount}, SYSDATE + INTERVAL '9' HOUR, 
 		<if test="category == 'auction'">'경매'</if>
-		<if test="category == 'product'">'상품구매'</if>, 0)
+		<if test="category == 'product'">'상품'</if>, 0)
 	</insert>
 	
 	<update id="updateOneday" parameterType="hashmap">

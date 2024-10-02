@@ -583,7 +583,7 @@ body {
 	font-Weight: 500;
 	color: var(--color-contrastyA);
 }
-#container .detail-top .detail-top-info .btn-box {
+#container .detail-top .detail-top-info > .btn-box {
 	display: flex;
 	margin-top: 50px;
 	margin-right: 0px;
@@ -592,7 +592,7 @@ body {
 	width: 100%;
 	gap: 0 10px;
 }
-#container .detail-top .detail-top-info .btn-box button {
+#container .detail-top .detail-top-info > .btn-box button {
 	border: 1px solid var(--color-contrastyE0);
 	font-size: 18px;
 	font-Weight: 500;
@@ -601,7 +601,7 @@ body {
 	transition: all 0.3s;
 	border-radius: 4px;
 }
-#container .detail-top .detail-top-info .btn-box button:hover {
+#container .detail-top .detail-top-info > .btn-box button:hover {
 	color: var(--base-white);
 	background-color: var(--color-contrasty2);
 	border-color: var(--color-contrasty2);

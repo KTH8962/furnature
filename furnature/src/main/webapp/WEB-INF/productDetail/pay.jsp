@@ -161,7 +161,7 @@
                     </div>
                 </div>
                 <div class="front-btn-box">
-                    <button type="button" @click="fnOrder">결제하기</button>
+                    <button type="button" @click="fnBuy(productDetail.productName, totalPrice, name, phone, productNo)">결제하기</button>
                     <button type="button" @click="fnPorductDetail">취소하기/돌아가기</button>
                 </div>
             </div>
@@ -173,7 +173,7 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
     //포트원 결제 api 사용
-    IMP.init("imp16537616");
+    IMP.init("imp80826844");
     
     const app = Vue.createApp({
         data() {
@@ -291,6 +291,56 @@
                 }
                 console.log(value);
             },
+            fnBuy(title, totalPrice, name, phone, orderNo){
+				var self = this;
+				IMP.request_pay({
+	                pg: "html5_inicis",
+	                pay_method: "card",
+	                merchant_uid: "product" + new Date().getTime(), // 유니크한 주문 ID 생성
+	                name: title,
+	                amount: "100",
+					buyer_name: self.name,
+					buyer_tel: self.phone,
+	            }, function (rsp) {
+					//console.log(rsp);
+					if (rsp.success) {
+                        $.ajax({
+                            url: "/payment/payment/" + rsp.imp_uid,
+                            method: "POST",
+							data: {
+								imp_uid : rsp.imp_uid,
+								merchant_uid: rsp.merchant_uid,
+                            	amount: rsp.paid_amount,
+								name: name,
+								phone: phone
+							},
+							success : function (data) {
+								$.ajax({
+									url: "/payment/payment-add.dox",
+									method: "POST",
+									data: {
+										sessionId : self.sessionId,
+										category : "product",
+										impUid : rsp.imp_uid,
+										merchantUid: rsp.merchant_uid,
+										amount: rsp.paid_amount,
+										name : rsp.buyer_name,
+										phone : rsp.buyer_tel,
+										orderNo: orderNo
+									},
+									success : function(data){
+										if(data.result == 'success') {
+											window.location.href = "/myPage/delivery.do";
+										}
+									}
+								});
+							}
+                        })
+                    } else {
+                        alert(rsp.error_msg);
+                    }
+	            });
+			},
             fnOrder() {
                 var self = this;
                 var orderList = JSON.stringify(self.selectedSize);
