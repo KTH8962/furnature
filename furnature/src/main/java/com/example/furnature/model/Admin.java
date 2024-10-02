@@ -31,6 +31,11 @@ public class Admin {
 	private String description;
 	private String joinDay;
 	private String payDay;
+	private String thumbName;
+	private String thumbNo;
+	private String thumbSize;
+	private String thumbPath;
+	private String thumb;
 	
 	// 배송
 	private String payNo;

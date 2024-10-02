@@ -90,12 +90,18 @@
 		    </div>
 		    <div class="bot-box">
 		        <div class="ip-box">
-		           <input type="text" v-model="description" rows="10" cols="200"></textarea>
+		           <textarea type="text" v-model="description" rows="10" cols="200"></textarea>
 		        </div>
 		    </div>
 		</div>
 		
 		<div class="ip-list">
+			<div class="tit-box">
+		        <p class="tit">썸네일업로드</p>
+		    </div>
+			<div class="ip-box">
+			   <input type="file" @change="fnThumbUpload">
+			</div>
 		    <div class="tit-box">
 		        <p class="tit">파일업로드</p>
 		    </div>
@@ -185,7 +191,7 @@
 						endDay : self.endDay.replace('T', ' '),
 						description : self.description		
 					};
-					console.log(self.classDate, self.startDay, self.endDay);
+
 					$.ajax({
 						url:"/oneday/oneday-register.dox",
 						dataType:"json",	

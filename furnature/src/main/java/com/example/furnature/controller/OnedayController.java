@@ -96,20 +96,21 @@ public class OnedayController {
         String url = null;
         String path=System.getProperty("user.dir");
         try {
-        	if(thumb != null && !thumb.isEmpty()) {
-        		String thumbExtName = thumb.getOriginalFilename().substring(thumb.getOriginalFilename().lastIndexOf("."));
-                String thumbFileName = genSaveFileName(thumbExtName);	
-                File thumbSaveFile = new File(path + "\\src\\main\\webapp\\uploadImages\\oneday\\thumb", thumbFileName);
-                thumb.transferTo(thumbSaveFile);
-                
-                HashMap<String, Object> thumbMap = new HashMap<>();
-                thumbMap.put("fileName", thumbFileName);
-                thumbMap.put("filePath", "../uploadImages/oneday/thumb/" + thumbFileName);
-                thumbMap.put("fileSize", thumb.getSize());
-                thumbMap.put("extName", thumbExtName);
-                thumbMap.put("classNo", classNo);
-                onedayService.onedayFile(thumbMap);
-        	}
+        
+        	 if(thumb != null && !thumb.isEmpty()) {
+           		String thumbExtName = thumb.getOriginalFilename().substring(thumb.getOriginalFilename().lastIndexOf("."));
+                   String thumbFileName = genSaveThumbName(thumbExtName);	
+                   File thumbSaveFile = new File(path + "\\src\\main\\webapp\\uploadImages\\oneday\\thumb", thumbFileName);
+                   thumb.transferTo(thumbSaveFile);
+                   
+                   HashMap<String, Object> thumbMap = new HashMap<>();
+                   thumbMap.put("thumbName", thumbFileName);
+                   thumbMap.put("thumbPath", "../uploadImages/oneday/thumb/" + thumbFileName);
+                   thumbMap.put("thumbSize", thumb.getSize());
+                   thumbMap.put("extName", thumbExtName);
+                   thumbMap.put("classNo", classNo);
+                   onedayService.onedayFile(thumbMap);
+           	}
             //String uploadpath = request.getServletContext().getRealPath(path);
             String filePath = path;
             for(MultipartFile files : multi) {
@@ -159,6 +160,25 @@ public class OnedayController {
         fileName += extName;
         
         return fileName;
+    }
+    
+    
+    
+ // 현재 시간을 기준으로 썸네일 이름 생성
+    private String genSaveThumbName(String thumbExtName) {
+        String thumbName = "";
+        
+        Calendar calendar = Calendar.getInstance();
+        thumbName += calendar.get(Calendar.YEAR);
+        thumbName += calendar.get(Calendar.MONTH);
+        thumbName += calendar.get(Calendar.DATE);
+        thumbName += calendar.get(Calendar.HOUR);
+        thumbName += calendar.get(Calendar.MINUTE);
+        thumbName += calendar.get(Calendar.SECOND);
+        thumbName += calendar.get(Calendar.MILLISECOND);
+        thumbName += thumbExtName;
+        
+        return thumbName;
     }
     
     //원데이클래스 인원초과 여부 확인
