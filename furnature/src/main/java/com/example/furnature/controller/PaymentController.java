@@ -71,6 +71,8 @@ public class PaymentController {
 		resultMap = paymentService.editPayment(map);
 		return new Gson().toJson(resultMap);
 	}
+	
+	
 	private IamportClient iamportClient;
 	public PaymentController() {
         this.iamportClient = new IamportClient("2547521225544270", "m9t32DK2cjfLX6Fo2NUVcAsQySGqEO1GUBbnpXX1mUBHyxUGE0qqiSopsGbPwsSmYyfHjFrYs79ajDuw");

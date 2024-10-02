@@ -98,13 +98,18 @@ public class PaymentServiceImpl implements PaymentService{
 		return paymentResponse;
 	}
 
-	// 결제 내역 등록 + 경매 주문 내역 추가
+	// 결제 내역 등록 + 경매 주문 내역 추가 + 원데이 클래스 결제 내역 추가
 	@Override
 	public HashMap<String, Object> addPayment(HashMap<String, Object> map) {
 		HashMap <String, Object> resultMap = new HashMap<>();
 		try {
+			System.out.println(map);
 			paymentMapper.insertPayment(map);
-			paymentMapper.insertProductOrder(map);
+			if(map.get("category").toString().equals("oneday")) {
+				paymentMapper.updateOneday(map);
+			} else {
+				paymentMapper.insertProductOrder(map);
+			}
 			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {
@@ -126,6 +131,7 @@ public class PaymentServiceImpl implements PaymentService{
 		HashMap <String, Object> resultMap = new HashMap<>();
 		try {
 			Pay payInfo = paymentMapper.selectPaymentInfo(map);
+			System.out.println(payInfo);
 			resultMap.put("payInfo", payInfo);
 			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
@@ -148,6 +154,11 @@ public class PaymentServiceImpl implements PaymentService{
 		HashMap <String, Object> resultMap = new HashMap<>();
 		try {
 			paymentMapper.updatePayment(map);
+			if(map.get("category").toString().equals("oneday")) {
+				paymentMapper.deleteOneday(map);
+			} else {
+				
+			}
 			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (DataAccessException e) {

@@ -3,7 +3,6 @@
 <html>
 <head>
     <jsp:include page="/layout/headlink.jsp"></jsp:include>
-    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 </head>
 <body>
     <jsp:include page="/layout/header.jsp"></jsp:include>
@@ -34,7 +33,8 @@
 									<div class="date">신청일자: {{item.joinDay}}</div>
 									<div class="result">
 										<button type="button" @click="fnCancel(item.classNo)">수강취소</button>
-										<button type="button" @click="fnPay(item.classNo)">결제</button>
+										<button type="button" @click="fnBuy(item.className, item.classNo, item.price)">결제</button>
+										<button type="button" @click="fnBuyCancel(item.classNo)">결제 취소</button>
 									</div>
 								</div>
 							</div>
@@ -47,9 +47,10 @@
     <jsp:include page="/layout/footer.jsp"></jsp:include>
 </body>
 </html>
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script>
 	const userCode = ""; 
-	IMP.init("imp52370275");
+	IMP.init("imp80826844");
 	
     const app = Vue.createApp({
         data() {
@@ -60,7 +61,8 @@
 				isCustomer : true,
 				className : "",
 			    payId : "",
-				price : ""
+				price : "",
+				payInfo: {}
             };
         },
         methods: {
@@ -75,56 +77,102 @@
 	                   type: "POST",
 	                   data: nparmap,
 	                   success: function(data) {
-						   console.log(data);
-	                       self.list = data.onedayInfo;
-							
+						   //console.log(data);
+	                       self.list = data.onedayInfo;							
 	                   }
 	               });
 				}else{
 					self.isCustomer = false;
 				}
             },
-			fnPay(classNo) {
+			fnBuy(className, classNo, price) {
 			    var self = this;
-				var payConfirm = confirm("결제하시겠습니까?");
-				if(payConfirm){
-
-					IMP.request_pay({
+				IMP.request_pay({
 					pg: "html5_inicis",
-				    pay_method: "card",
+					pay_method: "card",
 					merchant_uid: 'oneday' + new Date().getTime(),
-				    name: self.className,
-				    amount: self.price,
-				    buyer_tel: "010-0000-0000",
-				  }	, function (rsp){ 
+					name: className,
+					amount: price,
+					buyer_name: "홍길동",
+					buyer_tel: "01012349876",
+				}, function (rsp){ 
+					//console.log(rsp);
 			        if (rsp.success) {
-			            alert("성공");
-			            self.fnSave(rsp);
+						$.ajax({
+							url: "/payment/payment/" + rsp.imp_uid,
+							type: "POST",
+							data: {
+								imp_uid : rsp.imp_uid,
+								merchant_uid: rsp.merchant_uid,
+                            	amount: rsp.paid_amount,
+								name: rsp.buyer_name,
+								phone: rsp.buyer_tel
+							},
+							success: function (data) {
+								console.log(data)
+								$.ajax({
+									url: "/payment/payment-add.dox",
+									method: "POST",
+									data: {
+										sessionId : self.userId,
+										category : "oneday",
+										impUid : rsp.imp_uid,
+										merchantUid: rsp.merchant_uid,
+										amount: rsp.paid_amount,
+										name : rsp.buyer_name,
+										phone : rsp.buyer_tel,
+										orderNo: classNo
+									},
+									success : function(data){
+										self.fnClass();
+									}
+								});
+							}
+						}); 
 			        } else {
-			            alert("실패");
+			            alert(rsp.error_msg);
 			        }
-			    });				
-				}else{
-					alert("결제를 취소하셨습니다");
-				}	 
+			    });	
 			},
-	
-			fnSave(rsp) {
-			    var self = this;
-			    var nparmap = {price : rsp.paid_amount, payId : rsp.merchant_uid, classNo:self.classNo, userId:self.userId};
-			    $.ajax({
-			        url: "/myPage/oneday-pay.dox",
-			        dataType: "json",
-			        type: "POST",
-			        data: nparmap,
-			        success: function (data) {
-						if (data.result === "success") {
-	                        alert("신청이 완료되었습니다.");
-	                    } else {
-	                        alert("신청 중 문제가 발생했습니다.");
-	                    }
-			        }
-			    }); 
+			fnBuyCancel(orderNo) {
+				var self = this;
+				var nparmap = {classNo: orderNo, category: "oneday"};
+				$.ajax({
+					url:"/payment/payment-info.dox",
+					dataType:"json",	
+					type : "POST", 
+					data : nparmap,
+					success : function(data) {
+						console.log(data);
+						self.payInfo = data.payInfo;				
+						$.ajax({
+							url: '/payment/cancel/' + data.payInfo.paymentImpUid,
+							method: 'POST',
+							data: {
+								imp_uid : self.payInfo.paymentImpUid,
+								merchant_uid: self.payInfo.paymentMerchantUid,
+								amount: self.payInfo.paymentAmount
+							},
+							success: function(data){
+								console.log(data);
+								$.ajax({
+									url: "/payment/payment-edit.dox",
+									method: "POST",
+									data: {
+										orderNo : orderNo,
+										category : "oneday",
+										impUid : self.payInfo.paymentImpUid
+									},
+									success : function(data){
+										if(data.result == 'success') {
+											self.fnClass();
+										}
+									}
+								})
+							}
+						})
+					}
+				});
 			},
 			fnCancel(classNo){
 				var self = this;
