@@ -54,7 +54,7 @@
                             </div>
                             <div class="bot-box">
                                 <div class="ip-ra-txt">
-                                    <input type="radio" name="as" value="10" id="r1" @click="fnDeliveryInfo(10)"><label for="r1">주문자정보와 동일</label>
+                                    <input type="radio" name="as" value="10" id="r1" @click="fnDeliveryInfo(10)" checked="checked"><label for="r1">주문자정보와 동일</label>
                                     <input type="radio" name="as" value="20" id="r2" @click="fnDeliveryInfo(20)"><label for="r2">직접입력</label> 
                                 </div>
                             </div>
@@ -271,6 +271,7 @@
                         console.log("다음찍히는 콘솔이 userinfo");
                         console.log(data.info);
                         self.myPoint = data.info.mileageTotal;
+						self.fnDeliveryInfo(10);
                     }
                 });
             },

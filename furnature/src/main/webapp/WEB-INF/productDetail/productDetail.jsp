@@ -53,7 +53,7 @@
 						<div class="info">								
 							<div class="total-wrap">
 								<div class="total-box" v-for="(item,index) in selectedSize">
-									<p class="tit">{{productDetail.productName}} {{ item.size }}번 사이즈</p>
+									<p class="tit">{{productDetail.productName}} {{ item.size }}번 사이즈	</p>
 									<div class="option-box">
 										<div class="option">
 											<button type="button" class="btn minus" @click="fnDown(index)">-</button>
@@ -63,6 +63,7 @@
 											<button type="button" class="btn plus" @click="fnUp(index)">+</button>
 										</div>
 										<p class="price"><b>{{(item.price * item.count).toLocaleString()}}</b>원</p>
+										<button type="button" class="" @click="fnDelteOption(index)">X</button>
 									</div>
 								</div>
 							</div>						
@@ -77,7 +78,9 @@
 					<div class="btn-box">
 						<button type="button" @click="fnPay(1)">구매하기</button>
 						<button type="button" @click="fnPay(2)">장바구니</button>
-						<button type="button" @click="fnCustom">커스텀 버튼</button>
+						<template v-if="productDetail.productCustom == 'Y'">
+							<button type="button" @click="fnCustom">커스텀 버튼</button>
+						</template>
 					</div>				
 				</div>
 			</div>
@@ -117,8 +120,8 @@
 									<div class="bot-box">
 										<div class="select-box">
 											<select v-model="reviewRating">												
-												<option v-for="(title, index) in reviewTitle" :key="index" :value="index + 1">
-													{{ '★'.repeat(index + 1) + '☆'.repeat(5 - (index + 1)) }} - {{ title }}
+												<option v-for="(title, index) in reviewTitle" :key="index" :value="5-index">
+													{{ '★'.repeat(5 - (index)) + '☆'.repeat(index) }} - {{ title }}
 												</option>
 											</select>
 										</div>
@@ -134,7 +137,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="ip-list">
+								<div class="ip-list" v-if="!updateModal">
 									<div class="tit-box">
 										<p class="tit">사진첨부</p>
 									</div>
@@ -145,7 +148,8 @@
 									</div>
 								</div>
 								<div class="popup-btn-box">
-									<button @click="fnReviewInsertSave">리뷰작성</button>
+									<template v-if="updateModal"><button @click="fnReviewUpdateSave(updateReviewNo)">수정완료</button></template>
+									<template v-else><button @click="fnReviewInsertSave">리뷰작성</button></template>
 									<button @click="fnCancel">취소</button>
 								</div>	
 							</div>							
@@ -177,28 +181,11 @@
 												<button type="button" @click="fnReviewUpdate(item.reviewNo)">수정</button>
 												<button type="button" @click="fnReviewDelete(item.reviewNo)">삭제</button>
 											</div>
-											<div v-if="updateModal && updateReviewNo === item.reviewNo">
-												{{updateReviewNo}}모달 수정영역 {{item.reviewNo}}
-												<!-- repeqt는 숫자만큼 '' 안에 문자열을 출력해주는 함수-->
-												<div class="select-box">
-													<select v-model="reviewRating">
-														<option v-for="(title, index) in reviewTitle" :key="index" :value="index + 1">
-															{{ '★'.repeat(index + 1) + '☆'.repeat(5 - (index + 1)) }} - {{ title }}
-														</option>
-													</select>
-												</div>
-												<div class="text-box">내용<textarea v-model="reviewContents"></textarea></div>
-												<!-- <div>사진첨부<input type="file" accept=".gif,.jpg,.png" @change="fnReviewAttach"></div> -->
-												<div class="front-btn-box">
-													<button @click="fnReviewUpdateSave(item.reviewNo)">수정완료</button>
-													<button @click="fnCancel">취소</button>
-												</div>
-											</div>											
 										</template>
 									</div>
 								</template>
 							</div>
-							<div class="pagenation">
+							<div class="pagenation" v-if="!(reviewList == null || reviewList.length  === 0)">
 								<button type="button" class="prev" @click="fnBeforPage()" :disabled="currentPage == 1">이전</button>
 								<button type="button" class="num" v-for="page in totalPages" :class="{active: page == currentPage}" @click="fnGetReviewList(page)">
 									{{page}}
@@ -235,7 +222,7 @@
 				reviewList : [],
 				insertModal : false,
 				updateModal : false,
-				reviewTitle : ['별로에요', '그저그래요', '좋아요', '맘에들어요', '아주좋아요'],	//리뷰제목
+				reviewTitle : ['아주좋아요', '맘에들어요', '좋아요', '그저그래요', '별로에요'],	//리뷰제목
 				reviewContents : "",	//리뷰내용
 				reviewRating : 5,	//리뷰평점
 				file : null,
@@ -303,6 +290,11 @@
           	},
 			// 커스텀 버튼
 			fnCustom(){
+				if(self.sessionId == null || self.sessionId == ''){
+					alert('로그인 후 이용 가능합니다.');
+					window.location.reload();
+					return;
+				}
 				confirm('커스텀 하시겠습니까?');
 			},
 			// 결제 , 장바구니 버튼    shoppingCart
@@ -447,10 +439,24 @@
 					if(confirm('리뷰를 작성하시겠습니까?')){
 						self.insertModal = !self.insertModal;
 						console.log(self.reviewFlag);
+						self.updateModal = false;
 					}
 					//location.href='/productDetail/reviewInsert.do?productNo='+ encodeURIComponent(self.productNo);
 				}else{
 					alert('로그인 후 이용해주세요.');
+				}
+			},
+			//리뷰 수정 모달버튼
+			fnReviewUpdate(reviewNo){
+				var self = this;
+				if(confirm('리뷰를 수정하시겠습니까?')){
+					self.reviewContents = "";
+				  	self.updateReviewNo = reviewNo; // 현재 수정할 리뷰 번호 저장
+				  	self.insertModal = true;
+					self.updateModal = true;
+				}else{
+					self.insertModal = false;
+					self.updateModal = false;
 				}
 			},
 			//리뷰 삭제버튼
@@ -465,25 +471,9 @@
 						data : nparmap,
 						success : function(data) {
 							self.fnGetProductDetail();
-							alert('리뷰가 삭제되었습니다.')
 							window.location.reload();
 						}
 					});
-				} else {
-				    // 사용자가 "취소"를 클릭한 경우
-				    alert('삭제가 취소되었습니다.');
-				}
-			},
-			//리뷰 수정 모달버튼
-			fnReviewUpdate(reviewNo){
-				var self = this;
-				var self = this;
-				if(confirm('리뷰를 수정하시겠습니까?')){
-					self.reviewContents = "";
-				  	self.updateReviewNo = reviewNo; // 현재 수정할 리뷰 번호 저장
-				  	self.updateModal = true;
-				}else{
-					self.updateModal = false;
 				}
 			},
 			fnReviewAttach(event){
@@ -500,6 +490,10 @@
 				productNo : self.productNo,
 				reviewRating : self.reviewRating
 			};
+			if(self.reviewContents == null || self.reviewContents == ''){
+				alert('리뷰내용을 입력해주세요!');
+				return;
+			}
 			$.ajax({
 				url:"/productDetail/reviewInsert.dox",
 				dataType:"json",	
@@ -549,6 +543,10 @@
 					reviewContents : self.reviewContents,
 					reviewRating : self.reviewRating
 				};
+				if(self.reviewContents == null || self.reviewContents == ''){
+					alert('수정할 리뷰내용을 입력해주세요!');
+					return;
+				}
 				if (confirm('정말 수정하시겠습니까?')) {
 					$.ajax({
 						url:"/productDetail/updateReview.dox",
@@ -588,9 +586,6 @@
 					});
 					window.location.reload();
 					alert("리뷰가 수정되었습니다.");
-				} else {
-				    // 사용자가 "취소"를 클릭한 경우
-				    alert('삭제가 취소되었습니다.');
 				}
 			},
 			//취소 버튼
@@ -599,7 +594,6 @@
 				self.updateModal = false;
 				self.insertModal = false;
 				self.contents = "";
-				alert('취소되었습니다.');
 			},
 			fnBeforPage(){
 				var self = this;
@@ -683,6 +677,11 @@
 			},
 			fnListMove() {
 				$.pageChange("/product/product.do",{});
+			},
+			fnDelteOption(index) {
+				var self = this;
+				self.selectedSize.splice(index, 1); // .splice() 해당 인덱스의 1개 항목을 제거
+				console.log('삭제된 후 selectedSize:', this.selectedSize);
 			}
         },
         mounted() {
