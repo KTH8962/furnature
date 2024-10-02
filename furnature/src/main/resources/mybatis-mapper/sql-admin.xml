@@ -19,7 +19,7 @@
 			AND USER_NAME LIKE '%' || #{keyword} || '%'
 		</if>
 		ORDER BY USER_AUTH ASC, USER_NAME
-		
+		OFFSET #{currentPage} ROWS FETCH FIRST #{pageSize} ROWS ONLY
 	</select>
 	
 	<select id="selectAllUser" parameterType="hashmap" resultType="com.example.furnature.model.Admin">

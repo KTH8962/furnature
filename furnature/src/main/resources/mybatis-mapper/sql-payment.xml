@@ -6,7 +6,10 @@
 	<select id="selectPaymentInfo" parameterType="hashmap" resultType="com.example.furnature.model.Pay">
 		SELECT *
 		FROM TBL_PAYMENT
-		WHERE PAYMENT_CATEGORY = #{category} AND ORDER_NO = #{auctionNo} 
+		WHERE PAYMENT_CATEGORY = #{category} AND PAYMENT_STATUS = 'P' AND ORDER_NO =
+		<if test="category == 'auction'"> #{auctionNo}</if>
+		<if test="category == 'oneday'"> #{classNo}</if>
+		<if test="category == 'product'"> #{productNo}</if>
 	</select>
 	
 	<insert id="insertPayment" parameterType="hashmap">
@@ -25,6 +28,21 @@
 		INSERT INTO TBL_PRODUCT_ORDER(PAY_NO, ORDER_ID, PRODUCT_NO, USER_ID, ORDER_SIZE, ORDER_COUNT, PRODUCT_PRICE, ORDER_DATE, 
 		ORDER_CATE, DELIVERY_CATE)
 		VALUES (PAY_NO_SEQ.NEXTVAL, #{merchantUid}, #{orderNo}, #{sessionId}, NULL, 1, #{amount}, SYSDATE + INTERVAL '9' HOUR, 
-		<if test="category == 'auction'">'경매'</if>, 0)
+		<if test="category == 'auction'">'경매'</if>
+		<if test="category == 'product'">'상품구매'</if>, 0)
 	</insert>
+	
+	<update id="updateOneday" parameterType="hashmap">
+		UPDATE TBL_PARTICIPANT
+		SET	PAY_ID = #{merchantUid},
+			PAY_UID = #{impUid},
+			PAY_DAY = SYSDATE + INTERVAL '9' HOUR,
+			PRICE = #{amount}
+		WHERE CLASS_NO = #{orderNo} AND USER_ID = #{sessionId}
+	</update>
+	
+	<delete id="deleteOneday" parameterType="hashmap">
+		DELETE FROM TBL_PARTICIPANT
+		WHERE CLASS_NO = #{orderNo} AND PAY_UID = #{impUid}
+	</delete>
 </mapper>

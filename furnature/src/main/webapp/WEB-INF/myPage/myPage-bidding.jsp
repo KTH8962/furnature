@@ -165,7 +165,7 @@
 							}
                         })
                     } else {
-                        alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
+                        alert(rsp.error_msg);
                     }
 	            });
 			},
