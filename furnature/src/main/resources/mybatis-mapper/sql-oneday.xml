@@ -9,7 +9,7 @@
 		SELECT C.*, O.*,
 			TO_CHAR(C.START_DAY, 'YYYY-MM-DD') AS START_DAY2, 
             TO_CHAR(C.END_DAY, 'YYYY-MM-DD') AS END_DAY2,
-            TO_CHAR(C.CLASS_DATE, 'YYYY-MM-DD HH12:MI') AS CLASS_DATE2
+            TO_CHAR(C.CLASS_DATE, 'YYYY-MM-DD HH24:MI') AS CLASS_DATE2
 		FROM TBL_CLASS C
 		INNER JOIN TBL_ONEDAYFILE O
 		ON C.CLASS_NO = O.CLASS_NO
@@ -28,7 +28,10 @@
 	
 	<!--원데이클래스 개별 상세정보 출력-->
 	<select id="onedayDetail" parameterType="hashmap" resultType="com.example.furnature.model.Oneday">
-	    SELECT C.*, O.* 
+	    SELECT C.*, O.*,
+	    	TO_CHAR(C.START_DAY, 'YYYY-MM-DD') AS START_DAY2, 
+            TO_CHAR(C.END_DAY, 'YYYY-MM-DD') AS END_DAY2,
+            TO_CHAR(C.CLASS_DATE, 'YYYY-MM-DD HH24:MI') AS CLASS_DATE2
 	    FROM TBL_CLASS C
 	    INNER JOIN TBL_ONEDAYFILE O 
 	    ON C.CLASS_NO = O.CLASS_NO

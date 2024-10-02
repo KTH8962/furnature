@@ -12,7 +12,7 @@
 			<div id="container">            
 	            <p class="blind">원데이클래스</p>
 		
-		<h2 class="sub-tit">클래스 정보 수정</h2>   
+		<h2 class="sub-tit">클래스 정보 </h2>   
         
         <div class="ip-list">
             <div class="tit-box">
