@@ -12,6 +12,20 @@
 				<h2 class="sub-tit">질문 수정</h2>
 				<div class="ip-list">
 					<div class="tit-box">
+						<p class="tit" v-if="sessionAuth == '2'" >카테고리 선택</p>
+					</div>
+					<div class="bot-box">
+						<div class="select-box">
+							<select name="category" v-model="category" v-if="sessionAuth == '2'">
+								<!--<option value="" selected>전체</option>-->
+								<option value="1">Q&A</option>
+								<option value="2">공지사항</option>
+							</select>
+						</div>
+					</div>
+				</div>				
+				<div class="ip-list">
+					<div class="tit-box">
 						<p class="tit">제목</p>
 					</div>
 					<div class="bot-box">
@@ -44,9 +58,11 @@
         data() {
             return {
 				sessionId : '${sessionId}',
+				sessionAuth : '${sessionAuth}',
 				qnaNo : '${qnaNo}',
 				title : "",
 				contents : "",
+				category : "1",
 				list : {}
 				
             };

@@ -18,7 +18,7 @@
 	<insert id="insertId" parameterType="hashmap">
 		INSERT INTO 
 		TBL_USER
-		VALUES(#{id}, #{pwd}, #{addr}, #{phone}, #{email}, #{name}, #{birth}, 1, 'Y', 'Y')
+		VALUES(#{id}, #{pwd}, #{zipCode}, #{addr}, #{phone}, #{email}, #{name}, #{birth}, 1, 'Y', 'Y')
 	</insert>
 	
 	<select id="findInfo" parameterType="hashmap" resultType="com.example.furnature.model.User">

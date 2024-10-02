@@ -39,9 +39,9 @@ public class QnaServiceImpl implements QnaService {
 		 HashMap<String, Object> resultMap = new HashMap<>(); 
 		 try {
 			 Qna list = qnaMapper.QnaView(map);
-			 List<Qna> commnets = qnaMapper.commentView(map);
+			 List<Qna> comments = qnaMapper.commentView(map);
 			 resultMap.put("list", list);
-			 resultMap.put("comments", commnets);
+			 resultMap.put("comments", comments);
 			 resultMap.put("message", "success");
 		} catch (Exception e) {
 			resultMap.put("message", "fail");
