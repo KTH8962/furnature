@@ -178,4 +178,3 @@
     });
     app.mount('#app');
 </script>
-​ 

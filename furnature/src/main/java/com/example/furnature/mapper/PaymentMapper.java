@@ -16,4 +16,7 @@ public interface PaymentMapper {
 	
 	// 결제 내역 수정 - 결제 취소
 	void updatePayment(HashMap<String, Object> map);
+	
+	// 경매 주문 내역 추가
+	void insertProductOrder(HashMap<String, Object> map);
 }
