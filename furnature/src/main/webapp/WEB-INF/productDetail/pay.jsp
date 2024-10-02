@@ -270,7 +270,9 @@
                         self.info = data.info;
                         console.log("다음찍히는 콘솔이 userinfo");
                         console.log(data.info);
-                        self.myPoint = data.info.mileageTotal;
+						if(!(self.myPoint == null || self.myPoint == '')){
+	                        self.myPoint = data.info.mileageTotal;
+						}
 						self.fnDeliveryInfo(10);
                     }
                 });
@@ -344,8 +346,11 @@
             fnOrder() {
                 var self = this;
                 var orderList = JSON.stringify(self.selectedSize);
+				//결제시 orderList에 담긴 배열을 JSON.stringify JSON 형식의 문자열로 변환해줍니다.
+				// 이후에 컨트롤러 단에 넘겨주고 컨트롤러단에서 다시 List형식인 list에 담아주고 map에 넣어 서비스단으로 넘겨줬습니다.
+				//이후 서비스단에서 리스트 길이만큼 for문 돌려서 사이즈별로 가격 개수 등을 다르게 insert 돌려주는 형식으로 처리했었어요.
                 if (!self.name || !self.phone || !self.postcode || !self.address || !self.detailAddress) {
-                    alert('모든 입력 항목을 채워주세요.');
+                    alert('모든 입력 항목을 채워주세요.');	
                     return;
                 }
                 IMP.request_pay({
