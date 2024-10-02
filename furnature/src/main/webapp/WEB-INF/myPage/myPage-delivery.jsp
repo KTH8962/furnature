@@ -20,13 +20,13 @@
                         <div class="myPage-img-list-box" v-for="item in list">
                             <template v-if="item.orderCate =='상품'">
                                 <div class="img-box">
-                                    <a href="#" @click="fnProDetail(item.productNo, item.orderCate)"><img :src="item.productThumbnail"></a>
+                                    <a href="javascript:void(0);" @click="fnProDetail(item.productNo, item.orderCate)"><img :src="item.productThumbnail"></a>
                                 </div>
                                 <div class="tit-box">
                                     <div class="top">
                                         <div class="num">Order Id. {{item.orderId}}</div>
                                         <div class="num">Product No. {{item.productNo}}</div>
-                                        <div class="tit"><a href="#" @click="fnProDetail(item.productNo)">{{item.productName}}</a></div>
+                                        <div class="tit"><a href="javascript:void(0);" @click="fnProDetail(item.productNo, item.orderCate)">{{item.productName}}</a></div>
                                         <div class="delivery-box">
                                             <div class="delivery-state" :class="'state' + item.deliveryCate">{{item.cateName}}</div>
                                             <div class="delivert-cnt">{{item.orderCount}}개</div>
@@ -36,13 +36,13 @@
                             </template>	
                             <template v-if="item.orderCate =='경매'">
                                 <div class="img-box">
-                                    <a href="#" @click="fnProDetail(item.productNo, item.orderCate)"><img :src="item.productThumbnail"></a>
+                                    <a href="javascript:void(0);" @click="fnProDetail(item.productNo, item.orderCate)"><img :src="item.productThumbnail"></a>
                                 </div>
                                 <div class="tit-box">
                                     <div class="top">
                                         <div class="num">Order Id. {{item.orderId}}</div>
                                         <div class="num">Auction No. {{item.productNo}}</div>
-                                        <div class="tit"><a href="#" @click="fnProDetail(item.productNo)">{{item.productName}}</a></div>
+                                        <div class="tit"><a href="javascript:void(0);" @click="fnProDetail(item.productNo, item.orderCate)">{{item.productName}}</a></div>
                                         <div class="delivery-box">
                                             <div class="delivery-state">{{item.cateName}}</div>
                                             <div class="delivert-cnt">{{item.orderCount}}개</div>
