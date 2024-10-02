@@ -116,6 +116,10 @@
 			},
 			fnComments() {
 				var self = this;
+				if(self.commentsUp == ""){
+					alert("댓글을 입력해주세요");
+					return;
+				}
 				var nparam = {
 					qnaNo: self.qnaNo,
 					comments: self.comments,
@@ -138,6 +142,10 @@
 			},
 			fnComUpdate(commentNo) {
 				var self = this;
+				if(self.commentsUp == ""){
+					alert("댓글을 입력해주세요");
+					return;
+				}
 				self.comUpdateFlg = true;
 				var nparam = {
 					commentNo: commentNo,
@@ -150,6 +158,7 @@
 					data: nparam,
 					success: function (data) {
 						alert("댓글을 수정하였습니다.");
+						self.commentsUp = "";
 						self.fnView();
 					}
 				});

@@ -375,11 +375,11 @@
 				}else if(self.productCustom==""){
 					alert("커스텀 유무를 선택해주세요");
 					return;
-				}else if(self.productCate1 == self.productCate2){
-					alert("각각다른 카테고리를 선택해주세요");
-					return;
-				}else if (self.productCate1 == ""|| self.productCate2==""){
+				}else if(self.productCate1 ==""){
 					alert("카테고리를 선택해주세요");
+					return;
+				}else if (self.productCate1 == self.productCate2){
+					alert("각각 다른 카테고리를 선택해주세요");
 					return;
 				}else if(self.productSize1==""){
 					alert("사이즈를 입력해주세요");
@@ -478,11 +478,11 @@
 				}else if(self.productCustom==""){
 					alert("커스텀 유무를 선택해주세요");
 					return;
-				}else if(self.productCate1 == self.productCate2){
-					alert("각각다른 카테고리를 선택해주세요");
-					return;
-				}else if (self.productCate1 == ""|| self.productCate2==""){
+				}else if(self.productCate1 == ""){
 					alert("카테고리를 선택해주세요");
+					return;
+				}else if (self.productCate1 == self.productCate2){
+					alert("각각다른 카테고리를 선택해주세요");
 					return;
 				}else if(self.productSize1==""){
 					alert("사이즈를 입력해주세요");
