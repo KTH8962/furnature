@@ -196,7 +196,7 @@ const app = Vue.createApp({
                 data: nparam,
                 success: function(data) {
                     alert("저장되었습니다.");
-					$.pageChange("/adminOneday.do", {});
+					$.pageChange("/oneday/oneday-join.do", {classNo:self.classNo});
                 }
             });
         }

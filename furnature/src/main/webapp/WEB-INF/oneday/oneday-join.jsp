@@ -82,6 +82,9 @@
 						</p>
 					</div>
 				</div>
+				<div class="front-btn-box">
+					<button @click="fnList">목록</button>
+				</div>	
 			</div>	
 		</div>		
     </div>
@@ -289,6 +292,10 @@
 				fnTab(num) {
 					var self = this;
 					self.bottomBox = num;
+				},
+				fnList(){
+					var self = this;
+					$.pageChange("/oneday/oneday.do", {});
 				}
 			},
             mounted() {
