@@ -57,7 +57,7 @@
 					</tbody>
 				</table>
 				<div class="front-btn-box">
-					<button @click="fnInsert()">게시글작성</button>
+					<button @click="fnInsert()" v-if="sessionId !== userId">게시글작성</button>
 				</div>
 				<div class="pagenation">
 					<button type="button" class="prev" @click="fnBeforePage()" :disabled="currentPage == 1">이전</button>
