@@ -160,10 +160,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="front-btn-box">
-                    <button type="button" @click="fnBuy(productDetail.productName, totalPrice, name, phone, productNo)">결제하기</button>
-                    <button type="button" @click="fnPorductDetail">취소하기/돌아가기</button>
-                </div>
+            </div>
+            <div class="front-btn-box">
+                <button type="button" @click="fnBuy(productDetail.productName, totalPrice, name, phone, productNo)">결제하기</button>
+                <button type="button" @click="fnPorductDetail">취소하기</button>
             </div>
         </div>
     </div>
@@ -235,9 +235,6 @@
                         if (typeof self.selectedSize === 'string') {
                             self.selectedSize = JSON.parse(self.selectedSize);
                         }
-                        console.log(data);
-                        console.log(self.sizeList);
-                        console.log(self.selectedSize);
                     }
                 });
             },
@@ -294,7 +291,7 @@
                 console.log(value);
             },
             fnBuy(title, totalPrice, name, phone, orderNo){
-				var self = this;
+                var self = this;
 				IMP.request_pay({
 	                pg: "html5_inicis",
 	                pay_method: "card",
@@ -328,7 +325,8 @@
 										amount: rsp.paid_amount,
 										name : rsp.buyer_name,
 										phone : rsp.buyer_tel,
-										orderNo: orderNo
+										orderNo: orderNo,
+                                        selectedSize: JSON.stringify(self.selectedSize)
 									},
 									success : function(data){
 										if(data.result == 'success') {

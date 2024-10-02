@@ -25,11 +25,20 @@
 	</update>
 	
 	<insert id="insertProductOrder" parameterType="hashmap">
-		INSERT INTO TBL_PRODUCT_ORDER(PAY_NO, ORDER_ID, PRODUCT_NO, USER_ID, ORDER_SIZE, ORDER_COUNT, PRODUCT_PRICE, ORDER_DATE, 
-		ORDER_CATE, DELIVERY_CATE)
-		VALUES (PAY_NO_SEQ.NEXTVAL, #{merchantUid}, #{orderNo}, #{sessionId}, NULL, 1, #{amount}, SYSDATE + INTERVAL '9' HOUR, 
-		<if test="category == 'auction'">'경매'</if>
-		<if test="category == 'product'">'상품'</if>, 0)
+		<if test="category == 'product'">
+			 INSERT ALL
+		    <foreach collection="selectedSize" item="item" separator=" ">
+		        INTO TBL_PRODUCT_ORDER(PAY_NO, ORDER_ID, PRODUCT_NO, USER_ID, ORDER_SIZE, ORDER_COUNT, PRODUCT_PRICE, ORDER_DATE, ORDER_CATE, DELIVERY_CATE
+		        )
+		        VALUES (PAY_NO_SEQ.NEXTVAL, #{merchantUid}, #{orderNo}, #{sessionId}, #{item.size}, #{item.count}, #{item.price}, 
+		            SYSDATE + INTERVAL '9' HOUR, '상품', 0)
+		    </foreach>
+		    SELECT * FROM DUAL
+		</if>
+		<if test="category == 'auction'">
+			INSERT INTO TBL_PRODUCT_ORDER(PAY_NO, ORDER_ID, PRODUCT_NO, USER_ID, ORDER_SIZE, ORDER_COUNT, PRODUCT_PRICE, ORDER_DATE, ORDER_CATE, DELIVERY_CATE)
+			VALUES (PAY_NO_SEQ.NEXTVAL, #{merchantUid}, #{orderNo}, #{sessionId}, NULL , 1, #{amount}, SYSDATE + INTERVAL '9' HOUR, '경매', 0)
+		</if>		
 	</insert>
 	
 	<update id="updateOneday" parameterType="hashmap">

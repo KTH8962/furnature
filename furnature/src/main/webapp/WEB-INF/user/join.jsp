@@ -114,18 +114,18 @@
     const app = Vue.createApp({
         data() {
             return {
-				id : "user4",
-				pwd : "user123!",
-				pwdRe : "user123!",
+				id : "",
+				pwd : "",
+				pwdRe : "",
 				addr: "",
 				address : "",
 				detailAddress : "",
 				zipCode: "",
-				name : "김이름",
-				email : "test@test.com",
-				phone : "01012341234",
-				birth : "1994-02-03",
-				idCheck : true
+				name : "",
+				email : "",
+				phone : "",
+				birth : "",
+				idCheck : false
             };
         },
         methods: {
@@ -148,27 +148,29 @@
 				    var email = self.email;
 					var birth = self.birth;
 				    /* 아이디 */
-				    if(id.value == "") {
-				        window.alert('아이디를 입력해주세요');
-				        id.focus();
+				    if(id == "") {
+				        alert('아이디를 입력해주세요');
 				        return;
 				    } else if(!self.compare(check1,id, "idRef","아이디는 5~20자의 영문 대소문자와 숫자로만 입력해주세요.")){
 				        return;
 				    } else if(!self.compare(check2,pwd, "pwdRef","비밀번호는 영문, 숫자, 특수기호 조합 8자 이상 입력해주세요.")){
 				        return;
 				    } else if(pwd != pwdRe){
-				        window.alert('비밀번호가 일치하지 않습니다.');
+				        alert('비밀번호가 일치하지 않습니다.');
 				        return;
 				    } else if(address == "" || detailAddress == "") {
 						alert("주소를 입력해주세요");
 						self.$refs.addrRef.focus();
+						return;
 					} else if(name == ""){
-				        window.alert('이름을 입력해주세요.');
+				        alert('이름을 입력해주세요.');
 				        self.$refs.nameRef.focus();
 				        return;
 				    } else if(!self.compare(check3, email, "emailRef","적합하지 않은 이메일 형식입니다")){
 				        return;
-				    } else if(!self.compare(check4, phone, "phoneRef","전화번호는 숫자만 작성해주세요.")){
+				    } else if(self.phone == "") {
+						alert("전화번호를 입력해주세요.");
+					} else if(!self.compare(check4, phone, "phoneRef","전화번호는 숫자만 작성해주세요.")){
 				        return;
 				    } else if(birth == ""){
 						alert("생일을 입력해주세요");

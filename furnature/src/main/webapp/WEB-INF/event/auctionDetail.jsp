@@ -146,8 +146,14 @@
 			fnBidding(){
 				var self = this;
 				if(self.sessionId != "") {
-					//if(!confirm("입찰하시겠습니까?")) return;
-					if(self.biddingPrice <= self.detailInfo.auctionPriceCurrent) {
+					if(self.sessionId == 'admin') {
+						alert("관리자는 입찰 불가합니다"); 
+						return;
+					}
+					if(self.biddingPrice < 0) {
+						alert("입찰 금액은 음수는 입력이 불가합니다.");
+						return;
+					} else if(self.biddingPrice <= self.detailInfo.auctionPriceCurrent) {
 						alert("현재 입찰가보다 큰 금액이어야 입찰에 가능합니다.");
 						return;
 					}
@@ -164,8 +170,7 @@
 								self.detailImgListPath = []; 
 								self.detailInfo = {};
 								self.fnAuctionDetail();
-							} else {
-								//alert(data.file);
+								alert("입찰 되었습니다.");
 							}
 						}
 					});
