@@ -58,4 +58,6 @@ public interface ProductMapper {
 	//구매 사용자 정보가져오기
 	List<Product> searchUser(HashMap<String, Object> map);
 	
+	//수정할 리뷰정보
+	Product reviewInfo(HashMap<String, Object> map);
 }

@@ -214,8 +214,9 @@ public class ProductServiceImpl implements ProductService{
 	public HashMap<String, Object> reviewInfo(HashMap<String, Object> map) {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		try {
-			//Product reviewInfo = productmapper.reviewInfo(map);
-			//resultMap.put("reviewInfo", reviewInfo);
+			System.out.println("reviewInfOOOOOOOOOOOOOOOO"+map);
+			Product reviewInfo = productmapper.reviewInfo(map);
+			resultMap.put("reviewInfo", reviewInfo);
 			resultMap.put("message", ResMessage.RM_SUCCESS);
 		} catch (Exception e) {
 			// TODO: handle exception

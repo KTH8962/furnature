@@ -219,6 +219,7 @@ public class ProductController {
    @ResponseBody
    public String reviewInfo(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 	   HashMap<String, Object> resultMap = new HashMap<String, Object>();
+	   System.out.println("reviewINFOOOOOOOOOOOOOOOOO"+map);
 	   resultMap = productService.reviewInfo(map);
 	   return new Gson().toJson(resultMap);
    }
