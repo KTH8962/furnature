@@ -6,13 +6,12 @@
 
 	<!--원데이클래스 목록 출력-->
 	<select id="onedayList" parameterType="hashmap" resultType="com.example.furnature.model.Oneday">
-	    SELECT C.*, O.*, T.*
+	    SELECT C.*, T.*
 	    FROM TBL_CLASS C
-	    INNER JOIN TBL_ONEDAYFILE O ON C.CLASS_NO = O.CLASS_NO
 	    INNER JOIN TBL_ONEDAYTHUMB T ON C.CLASS_NO = T.CLASS_NO
-	    ORDER BY O.CLASS_NO ASC 
-	    OFFSET #{startIndex} ROWS 
-	    FETCH FIRST #{outputNumber} ROWS ONLY
+	    ORDER BY C.CLASS_NO ASC 
+	  <!--  OFFSET #{startIndex} ROWS 
+	    FETCH FIRST #{outputNumber} ROWS ONLY-->
 	</select>
 
 	<!--원데이클래스 개시글 수 조회-->
@@ -45,9 +44,13 @@
 	
 	<!--원데이클래스 등록(관리자)-->
 	<insert id="onedayReg" parameterType="hashmap" useGeneratedKeys="true" keyProperty="classNo" keyColumn="CLASS_NO">
-		INSERT INTO TBL_CLASS 
-		(CLASS_NO, CLASS_NAME, PRICE, NUMBER_LIMIT, CLASS_DATE, START_DAY, END_DAY, DESCRIPTION)
-		VALUES (CLASS_NO_SEQ.NEXTVAL, #{className}, #{price}, #{numberLimit}, #{classDate}, #{startDay}, #{endDay}, #{description})
+	 INSERT INTO TBL_CLASS 
+    (CLASS_NO, CLASS_NAME, PRICE, NUMBER_LIMIT, CLASS_DATE, START_DAY, END_DAY, DESCRIPTION)
+    VALUES (CLASS_NO_SEQ.NEXTVAL, #{className}, #{price}, #{numberLimit}, 
+            TO_DATE(#{classDate}, 'YYYY-MM-DD HH24:MI'), 
+            TO_DATE(#{startDay}, 'YYYY-MM-DD HH24:MI'), 
+            TO_DATE(#{endDay}, 'YYYY-MM-DD HH24:MI'), 
+            #{description})
 	</insert>
 	
 	<!--원데이클래스 등록시 파일업로드-->
@@ -57,10 +60,11 @@
 		VALUES (#{fileName}, #{filePath}, #{fileSize}, #{extName}, #{classNo}, FILE_NO_SEQ.NEXTVAL)
 	</insert>
 	
+	<!--원데이클래스 등록시 썸네일 업로드-->
 	<insert id="onedayThumbFile" parameterType="hashmap">
 		INSERT INTO TBL_ONEDAYTHUMB
-		(FILE_NAME, FILE_PATH, FILE_SIZE, EXT_NAME, CLASS_NO, FILE_NO)
-		VALUES (#{fileName}, #{filePath}, #{fileSize}, #{extName}, #{classNo}, FILE_NO_SEQ.NEXTVAL)
+		(THUMB_NAME, THUMB_PATH, THUMB_SIZE, EXT_NAME, CLASS_NO, THUMB_NO)
+		VALUES (#{thumbName}, #{thumbPath}, #{thumbSize}, #{extName}, #{classNo}, THUMB_NO_SEQ.NEXTVAL)
 	</insert>
 	
     <!--원데이클래스 인원초과 여부 확인-->

@@ -36,6 +36,12 @@ public class MyPage {
 	private String payStatus;
 	private String fileNo;
 	private String filePath;
+	private String thumbName;
+	private String thumbNo;
+	private String thumbSize;
+	private String thumbPath;
+	private String thumb;
+	
 	
 	// 이벤트 - 경매
 	private String auctionBiddingNo;

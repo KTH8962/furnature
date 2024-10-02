@@ -90,12 +90,18 @@
 		    </div>
 		    <div class="bot-box">
 		        <div class="ip-box">
-		           <input type="text" v-model="description" rows="10" cols="200"></textarea>
+		           <textarea type="text" v-model="description" rows="10" cols="200"></textarea>
 		        </div>
 		    </div>
 		</div>
 		
 		<div class="ip-list">
+			<div class="tit-box">
+		        <p class="tit">썸네일업로드</p>
+		    </div>
+			<div class="ip-box">
+			   <input type="file" @change="fnThumbUpload">
+			</div>
 		    <div class="tit-box">
 		        <p class="tit">파일업로드</p>
 		    </div>
@@ -122,7 +128,8 @@
 	                startDay: "",
 	                endDay: "",
 					description : "",
-					file : []
+					file : [],
+					thumb : ""
 	            };
 	        },
 	        methods: {
@@ -136,13 +143,15 @@
 				validateNumber(){
 					this.numberLimit = this.numberLimit.replace(/[^0-9]/g, '');
 				},
+				fnThumbUpload(event){
+					this.thumb = event.target.files[0];
+				},
 				fnFileUpload(event){
 					this.file = event.target.files; 
 				},
 				
 				fnSave(){
 					var self = this;
-	
 					var startDay = new Date(self.startDay);
 					var endDay = new Date(self.endDay);
 					var classDate = new Date(self.classDate);
@@ -155,14 +164,18 @@
 						alert("모집시작일이 수업일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
 						return;
 					}
-					if(endDay<classDate){
-						alert("수업일이 모집마감일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
+					if(classDate<endDay){
+						alert("수업일이 모집마감일 전입니다. 올바른 날짜를 입력해주세요.");
 						return;
 					}
 					
 					if(!self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay || !self.description) {
 					        alert("빈칸을 채워주세요.");
 					        return;
+					}
+					if(!self.thumb){
+						alert("썸네일을 등록해주세요.");
+						return;
 					}
 					if(self.file.length<2){
 						alert("파일을 2개 이상 업로드해주세요.");
@@ -177,7 +190,6 @@
 						endDay : self.endDay.replace('T', ' '),
 						description : self.description		
 					};
-					console.log(self.classDate, self.startDay, self.endDay);
 					$.ajax({
 						url:"/oneday/oneday-register.dox",
 						dataType:"json",	
@@ -186,29 +198,42 @@
 						success : function(data) {
 							console.log(data);
 							var classNo = data.classNo;	 
-							 if(self.file.length!==0){
+							if(self.thumb){
 								const formData = new FormData();
-								for(var i=0; i<self.file.length; i++){
-									formData.append('file', self.file[i]);
-								} 	formData.append('classNo', classNo);
-								
+								formData.append('thumb', self.thumb);
+								formData.append('classNo', classNo);
 								$.ajax({
-									url: '/oneday/oneday-file.dox',
+									url: '/oneday/oneday-thumb.dox',
 									type : 'POST',
 									data : formData,
 									processData : false,
 									contentType : false,
 									success: function(){
-										
-										//$.pageChange("/oneday/oneday.do", {});
-
-									}
+										console.log('썸네일 업로드 성공!');
+										if(self.file.length!==0){
+											const formData = new FormData();
+											for(var i=0; i<self.file.length; i++){
+												formData.append('file', self.file[i]);
+											} 	formData.append('classNo', classNo);
+											$.ajax({
+												url: '/oneday/oneday-file.dox',
+												type : 'POST',
+												data : formData,
+												processData : false,
+												contentType : false,
+												success: function(){
+													console.log('파일 업로드 성공!');
+													$.pageChange("/adminOneday.do", {});
+												}
+											})
+										}
+									}	
 								})
-							 }
+							}			
 						}
-					});
-				}
-			 	},
+					})
+			 	}
+				},
 			mounted() {
 				var self = this;
             }
