@@ -179,8 +179,7 @@
 				fnThumbUpload(event){
 					this.thumb = event.target.files[0];
 				},
-				
-				fnSave(){
+				fnValidate(){
 					var self = this;
 					var startDay = new Date(self.startDay);
 					var endDay = new Date(self.endDay);
@@ -188,21 +187,41 @@
 					
 					if (startDay > endDay) {
 						alert("모집 시작일이 모집 마감일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
-						return;
+						return false;
 					}
 					if (classDate < startDay) {
 						alert("모집 시작일이 수업일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
-						return;
+						return false;
 					}
 					if (classDate < endDay) {
 						alert("수업일이 모집 마감일 전입니다. 올바른 날짜를 입력해주세요.");
-						return;
+						return false;
 					}
 					
 					if (!self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay || !self.description) {
 					        alert("빈칸을 채워주세요.");
-					        return;
+					        return false;
 					}
+					return true;
+				},
+				fnNparam() {
+				    var self = this;
+				    return {
+				        classNo: self.classNo, 
+				        className: self.className,
+				        classDate: self.classDate.replace('T', ' '),
+				        numberLimit: self.numberLimit,
+				        price: self.price,
+				        startDay: self.startDay.replace('T', ' '),
+				        endDay: self.endDay.replace('T', ' '),
+				        description: self.description
+				    };
+				},
+				
+				fnSave(){
+					var self = this;
+					if(!self.fnValidate()) return;
+					
 					if(!self.thumb){
 						alert("썸네일을 등록해주세요.");
 						return;
@@ -211,16 +230,7 @@
 						alert("파일을 2개 이상 업로드해주세요.");
 						return;
 					}
-
-					var nparam = {
-						className: self.className,
-						classDate: self.classDate.replace('T', ' '),
-						numberLimit: self.numberLimit,
-						price: self.price,
-						startDay: self.startDay.replace('T', ' '),
-						endDay: self.endDay.replace('T', ' '),
-						description: self.description
-					};
+					var nparam = self.fnNparam();
 
 					$.ajax({
 						url: "/oneday/oneday-register.dox",
@@ -233,29 +243,23 @@
 							if (self.thumb) {
 								const formDataThumb = new FormData();
 								formDataThumb.append('thumb', self.thumb);
-								formDataThumb.append('classNo', classNo);
-								
+								formDataThumb.append('classNo', classNo);		
 								$.ajax({
 									url: '/oneday/oneday-thumb.dox',
 									type: 'POST',
 									data: formDataThumb,
 									processData: false,
 									contentType: false,
-									success: function() {
-										console.log('썸네일 업로드 성공!');
-										
+									success: function() {									
 									}
 								});
 							}
-
-							// 파일 업로드
 							if (self.file.length > 0) {
 								const formDataFile = new FormData();
 								for (var i = 0; i < self.file.length; i++) {
 									formDataFile.append('file', self.file[i]);
 								}
 								formDataFile.append('classNo', classNo);
-
 								$.ajax({
 									url: '/oneday/oneday-file.dox',
 									type: 'POST',
@@ -263,7 +267,6 @@
 									processData: false,
 									contentType: false,
 									success: function() {
-										console.log('파일 업로드 성공!');
 										$.pageChange("/adminOneday.do", {});
 									}
 								});
@@ -273,38 +276,8 @@
 			 	},
 				fnUpdate(){
 					var self = this;
-					var startDay = new Date(self.startDay);
-					var endDay = new Date(self.endDay);
-					var classDate = new Date(self.classDate);
-					
-					if (startDay > endDay) {
-						alert("모집 시작일이 모집 마감일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
-						return;
-					}
-					if (classDate < startDay) {
-						alert("모집 시작일이 수업일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
-						return;
-					}
-					if (classDate < endDay) {
-						alert("수업일이 모집 마감일 전입니다. 올바른 날짜를 입력해주세요.");
-						return;
-					}
-					
-					if (!self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay || !self.description) {
-					        alert("빈칸을 채워주세요.");
-					        return;
-					}
-					var nparam = {
-						classNo: self.classNo,
-						className: self.className,
-						classDate: self.classDate.replace('T', ' '),
-						numberLimit: self.numberLimit,
-						price: self.price,
-						startDay: self.startDay.replace('T', ' '),
-						endDay: self.endDay.replace('T', ' '),
-						description: self.description
-					};
-	
+					if(!self.fnValidate()) return;					
+					var nparam = self.fnNparam();
 					$.ajax({
 						url: "/oneday/oneday-update.dox",
 						dataType: "json",
