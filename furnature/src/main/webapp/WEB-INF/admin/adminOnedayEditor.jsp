@@ -2,118 +2,129 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head>
-	<jsp:include page="/layout/headlink.jsp"></jsp:include>
-	<style>
-		img{
-			width:400px;
-		}
-	</style>	
-</head>
-<body>
-	<jsp:include page="/layout/header.jsp"></jsp:include>
-		<div id="app">
-			<div id="container">            
-	            <p class="blind">원데이클래스</p>
-		
-		<h2 class="sub-tit">원데이클래스 등록</h2>
-		
-		<div class="ip-list">
-		    <div class="tit-box">
-		        <p class="tit">클래스명</p>
-		    </div>
-		    <div class="bot-box">
-		        <div class="ip-box">
-		            <input type="text" v-model="className" @input="validateClassName">
-		        </div>
-		    </div>
+	<head>
+		<jsp:include page="/layout/headlink.jsp"></jsp:include>
+	</head>
+	<body>
+		<div id="app" class="admin">
+	        <p class="blind">관리자 페이지 - 원데이 클래스 정보 등록 및 수정</p>
+	        <div id="admin-header">
+	            <h1 class="a-logo"><a href="/admin.do">관리자 페이지 로고</a></h1>
+	            <jsp:include page="/layout/adminSnb.jsp"></jsp:include>
+	        </div>
+	        <div id="admin-container">    
+	            <div class="contents-top"><a href="/main.do">메인페이지 이동</a></div>
+	            <div class="contents editor-mode">
+	                <div class="contens-tit-wrap">
+	                    <h2 class="admin-tit">원데이 클래스 정보 수정</h2>
+	                </div>
+	                <div class="contents-editor">
+	                    <div class="editor-wrap">
+							<div class="ip-list">
+							    <div class="tit-box">
+							        <p class="tit">클래스명</p>
+							    </div>
+							    <div class="bot-box">
+							        <div class="ip-box">
+							            <input type="text" v-model="className" @input="validateClassName">
+							        </div>
+							    </div>
+							</div>
+							
+							<div class="ip-list">
+							    <div class="tit-box">
+							        <p class="tit">수업일자</p>
+							    </div>
+							    <div class="bot-box">
+							        <div class="ip-box">
+							            <input type="datetime-local" v-model="classDate">
+							        </div>
+							    </div>
+							</div>
+							
+							<div class="ip-list">
+							    <div class="tit-box">
+							        <p class="tit">수강인원</p>
+							    </div>
+							    <div class="bot-box">
+							        <div class="ip-box">
+							            <input type="text" v-model="numberLimit">
+							        </div>
+							    </div>
+							</div>
+							
+							<div class="ip-list">
+							    <div class="tit-box">
+							        <p class="tit">수강료</p>
+							    </div>
+							    <div class="bot-box">
+							        <div class="ip-box">
+							           <input type="text" v-model="price" @input="validatePrice">
+							        </div>
+							    </div>
+							</div>
+							
+							<div class="ip-list">
+							    <div class="tit-box">
+							        <p class="tit">모집시작일</p>
+							    </div>
+							    <div class="bot-box">
+							        <div class="ip-box">
+							           <input type="datetime-local" v-model="startDay">
+							        </div>
+							    </div>
+							</div>
+							
+							<div class="ip-list">
+							    <div class="tit-box">
+							        <p class="tit">모집마감일</p>
+							    </div>
+							    <div class="bot-box">
+							        <div class="ip-box">
+							           <input type="datetime-local" v-model="endDay">
+							        </div>
+							    </div>
+							</div>
+							
+							<div class="ip-list">
+							    <div class="tit-box">
+							        <p class="tit">상세설명</p>
+							    </div>
+							    <div class="bot-box">
+							        <div class="ip-box">
+										<div class="text-box">
+											<textarea v-model="description"></textarea>
+										</div>
+									</div>
+							    </div>
+							</div>
+							
+							<div class="ip-list" v-if="isRegist">
+								<div class="tit-box">
+							        <p class="tit">썸네일업로드</p>
+							    </div>
+								<div class="ip-box">
+								   <input type="file" @change="fnThumbUpload">
+								</div>
+							    <div class="tit-box">
+							        <p class="tit">파일업로드</p>
+							    </div>
+								<div class="ip-box">
+								   <input type="file" multiple @change="fnFileUpload">
+								   <span v-if="file.length > 0"></span>
+								</div>		
+							</div>
+						</div> 
+					</div> 
+					<div class="btn-box">
+						<button type="button" class="admin-btn" @click="fnSave" v-if="isRegist">등록</button>
+	                    <button type="button" class="admin-btn" @click="fnUpdate" v-if="!isRegist">수정</button>
+	                    <button type="button" class="admin-btn" @click="fnBack">취소</button>
+	                </div>
+	            </div>
+	        </div>
 		</div>
-		
-		<div class="ip-list">
-		    <div class="tit-box">
-		        <p class="tit">수업일자</p>
-		    </div>
-		    <div class="bot-box">
-		        <div class="ip-box">
-		            <input type="datetime-local" v-model="classDate">
-		        </div>
-		    </div>
-		</div>
-		
-		<div class="ip-list">
-		    <div class="tit-box">
-		        <p class="tit">수강인원</p>
-		    </div>
-		    <div class="bot-box">
-		        <div class="ip-box">
-		            <input type="text" v-model="numberLimit">
-		        </div>
-		    </div>
-		</div>
-		
-		<div class="ip-list">
-		    <div class="tit-box">
-		        <p class="tit">수강료</p>
-		    </div>
-		    <div class="bot-box">
-		        <div class="ip-box">
-		           <input type="text" v-model="price" @input="validatePrice">
-		        </div>
-		    </div>
-		</div>
-		
-		<div class="ip-list">
-		    <div class="tit-box">
-		        <p class="tit">모집시작일</p>
-		    </div>
-		    <div class="bot-box">
-		        <div class="ip-box">
-		           <input type="datetime-local" v-model="startDay">
-		        </div>
-		    </div>
-		</div>
-		
-		<div class="ip-list">
-		    <div class="tit-box">
-		        <p class="tit">모집마감일</p>
-		    </div>
-		    <div class="bot-box">
-		        <div class="ip-box">
-		           <input type="datetime-local" v-model="endDay">
-		        </div>
-		    </div>
-		</div>
-		
-		<div class="ip-list">
-		    <div class="tit-box">
-		        <p class="tit">상세설명</p>
-		    </div>
-		    <div class="bot-box">
-		        <div class="ip-box">
-		           <textarea type="text" v-model="description" rows="10" cols="200"></textarea>
-		        </div>
-		    </div>
-		</div>
-		
-		<div class="ip-list" v-if="isRegist">
-			<div class="tit-box">
-		        <p class="tit">썸네일업로드</p>
-		    </div>
-			<div class="ip-box">
-			   <input type="file" @change="fnThumbUpload">
-			</div>
-		    <div class="tit-box">
-		        <p class="tit">파일업로드</p>
-		    </div>
-			<div class="ip-box">
-			   <input type="file" multiple @change="fnFileUpload">
-			   <span v-if="file.length > 0">파일{{file.length}}개</span>
-			</div>		
-		</div>
-		<div><button @click="fnSave">저장</button></div>	
-	</div>
-	<jsp:include page="/layout/footer.jsp"></jsp:include>
-</body>
+	</body>
 </html>
 <script>
 	const app = Vue.createApp({
@@ -232,6 +243,7 @@
 									contentType: false,
 									success: function() {
 										console.log('썸네일 업로드 성공!');
+										
 									}
 								});
 							}
@@ -258,11 +270,59 @@
 							}
 						}
 					});
-			 	}
+			 	},
+				fnUpdate(){
+					var self = this;
+					var startDay = new Date(self.startDay);
+					var endDay = new Date(self.endDay);
+					var classDate = new Date(self.classDate);
+					
+					if (startDay > endDay) {
+						alert("모집 시작일이 모집 마감일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
+						return;
+					}
+					if (classDate < startDay) {
+						alert("모집 시작일이 수업일보다 뒤입니다. 올바른 날짜를 입력해주세요.");
+						return;
+					}
+					if (classDate < endDay) {
+						alert("수업일이 모집 마감일 전입니다. 올바른 날짜를 입력해주세요.");
+						return;
+					}
+					
+					if (!self.className || !self.classDate || !self.numberLimit || !self.price || !self.startDay || !self.endDay || !self.description) {
+					        alert("빈칸을 채워주세요.");
+					        return;
+					}
+					var nparam = {
+						classNo: self.classNo,
+						className: self.className,
+						classDate: self.classDate.replace('T', ' '),
+						numberLimit: self.numberLimit,
+						price: self.price,
+						startDay: self.startDay.replace('T', ' '),
+						endDay: self.endDay.replace('T', ' '),
+						description: self.description
+					};
+	
+					$.ajax({
+						url: "/oneday/oneday-update.dox",
+						dataType: "json",
+						type: "POST",
+						data: nparam,
+						success: function(data){
+							$.pageChange("/adminOneday.do", {});
+						}
+					});	
+				},
+				fnBack(){
+					$.pageChange("/adminOneday.do", {});
+				}
 			},
+			
 			mounted() {
 				var self = this;
-				if(self.classNo===''){
+				if(self.classNo==''){
 					self.isRegist = true;
 				}
 				self.fnGetInfo();

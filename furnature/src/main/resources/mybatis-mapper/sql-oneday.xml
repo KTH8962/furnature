@@ -78,13 +78,12 @@
 	<update id="onedayUpdate" parameterType="hashmap">
 		UPDATE TBL_CLASS 
 			SET 
-			    CLASS_NO = #{classNo}, 
 			    CLASS_NAME = #{className}, 
 			    PRICE = #{price}, 
 			    NUMBER_LIMIT = #{numberLimit}, 
-			    CLASS_DATE = #{classDate},
-			    START_DAY = #{startDay},
-			    END_DAY = #{endDay}, 
+			    CLASS_DATE = TO_DATE(#{classDate}, 'YYYY-MM-DD HH24:MI:SS'),
+			    START_DAY = TO_DATE(#{startDay}, 'YYYY-MM-DD HH24:MI:SS'),
+			    END_DAY = TO_DATE(#{endDay}, 'YYYY-MM-DD HH24:MI:SS'),
 			    DESCRIPTION = #{description}
 			WHERE 
 			    CLASS_NO = #{classNo}  
