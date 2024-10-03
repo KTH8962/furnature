@@ -30,6 +30,8 @@ public interface AdminMapper {
 	void onedayDelete(HashMap<String, Object> map);
 	//원데이클래스 파일삭제
 	void onedayFileDelete(HashMap<String, Object> map);
+	//원데이클래스 썸네일삭제
+	void onedayThumbDelete(HashMap<String,Object> map);
 	//원데이클래스 개별조회
 	Admin onedayInfo(HashMap<String, Object> map);
 	//원데이클래스 클래스수

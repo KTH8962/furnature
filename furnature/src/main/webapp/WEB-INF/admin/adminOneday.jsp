@@ -93,6 +93,7 @@
             };
         },
         methods: {
+	
 			fnGetList(page){
 				var self = this;	
 				var startIndex = (page-1)*self.pageSize;
@@ -105,6 +106,7 @@
 	               type: "POST",
 	               data: nparmap,
 	               success: function(data) {
+					console.log(data);
 					self.list = data.currentNumber;
 					self.totalCount = data.totalCount;
 					self.totalPages = Math.ceil(self.totalCount / self.pageSize);

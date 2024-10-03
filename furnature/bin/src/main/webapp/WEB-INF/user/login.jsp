@@ -57,8 +57,8 @@
     const app = Vue.createApp({
         data() {
             return {
-				id : "user1",
-				pwd : "user1",
+				id : "user3",
+				pwd : "user3",
             };
         },
         methods: {
