@@ -89,8 +89,8 @@
 		        <p class="tit">상세설명</p>
 		    </div>
 		    <div class="bot-box">
-		        <div class="ip-box">
-		           <textarea type="text" v-model="description" rows="10" cols="200"></textarea>
+				<div class="text-box">
+		            <textarea v-model="description" rows="10" cols="200"></textarea>
 		        </div>
 		    </div>
 		</div>
@@ -110,7 +110,9 @@
 			   <span v-if="file.length > 0">파일 {{file.length}}개</span>
 			</div>
 			<div>
-				<button @click="fnSave">저장</button>
+				<div class="front-btn-box">
+					<button type="button" @click="fnSave">저장</button>
+				</div>
 			</div>			
 		</div>
 		

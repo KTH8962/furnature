@@ -140,7 +140,8 @@
 					description : "",
 					isRegist : false,
 					file : [],
-					thumb : ""
+					thumb : "",
+					sessionAuth : '${sessionAuth}'
 	            };
 	        },
 	        methods: {
@@ -299,6 +300,9 @@
 					self.isRegist = true;
 				}
 				self.fnGetInfo();
+				if(self.sessionAuth=='' || self.sessionAuth==1){
+					$.pageChange("/oneday/oneday.do", {});
+				}
             }
         });
 	    app.mount('#app');
