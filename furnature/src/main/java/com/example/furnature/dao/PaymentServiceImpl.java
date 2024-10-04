@@ -102,11 +102,23 @@ public class PaymentServiceImpl implements PaymentService{
 	@Override
 	public HashMap<String, Object> addPayment(HashMap<String, Object> map) {
 		HashMap <String, Object> resultMap = new HashMap<>();
+		System.out.println("SSSSSSSS"+map);
 		try {
 			System.out.println(map);
 			paymentMapper.insertPayment(map);
 			if(map.get("category").toString().equals("oneday")) {
 				paymentMapper.updateOneday(map);
+			} else if(map.get("category").toString().equals("product")) {
+				System.out.println(map);
+				if(Integer.parseInt(map.get("pointPay").toString()) > 0) {
+					//사용 마일리지가 0이상일땐 마일리지 사용
+					paymentMapper.useMileage(map);
+					paymentMapper.insertProductOrder(map);
+				}else {
+					//사용 마일리지가 없을땐 마일리지 적립
+					paymentMapper.saveMileage(map);
+					paymentMapper.insertProductOrder(map);
+				}
 			} else {
 				paymentMapper.insertProductOrder(map);
 			}

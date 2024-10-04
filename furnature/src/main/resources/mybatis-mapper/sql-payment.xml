@@ -54,4 +54,15 @@
 		DELETE FROM TBL_PARTICIPANT
 		WHERE CLASS_NO = #{orderNo} AND PAY_UID = #{impUid}
 	</delete>
+	
+	<!--상품 구매시 마일리지 사용-->
+	<insert id="useMileage" parameterType="hashmap">
+        INSERT INTO TBL_MILEAGE
+        VALUES(MILEAGE_SEQ.NEXTVAL, #{sessionId}, '상품구매', #{pointPay}, '사용', SYSDATE)
+	</insert>
+	<!--상품 구매시 마일리지 적립-->
+	<insert id="saveMileage" parameterType="hashmap">
+        INSERT INTO TBL_MILEAGE
+		VALUES(MILEAGE_SEQ.NEXTVAL, #{sessionId}, '상품구매', #{mileage}, '적립', SYSDATE)
+	</insert>
 </mapper>
