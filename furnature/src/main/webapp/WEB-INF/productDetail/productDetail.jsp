@@ -79,7 +79,7 @@
 						<button type="button" @click="fnPay(1)">구매하기</button>
 						<button type="button" @click="fnPay(2)">장바구니</button>
 						<template v-if="productDetail.productCustom == 'Y' && customFlg !='true' ">
-							<button type="button" @click="fnCustomContents()">커스텀신청</button>
+							<button type="button" @click="fnCustom()">커스텀신청</button>
 						</template>
 						<template v-if="productDetail.productCustom == 'Y' && customFlg =='true' ">
 							<button type="button" @click="fnCustomCancel()">커스텀취소</button>
