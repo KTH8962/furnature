@@ -14,7 +14,7 @@
 	
 	<insert id="insertPayment" parameterType="hashmap">
 		INSERT INTO TBL_PAYMENT(PAYMENT_NO, USER_ID, PAYMENT_PHONE, PAYMENT_NAME, PAYMENT_IMP_UID, PAYMENT_MERCHANT_UID, PAYMENT_AMOUNT, PAYMENT_CATEGORY, PAYMENT_STATUS, PAYMENT_PAY_DATE, ORDER_NO)
-		VALUES(PAYMENT_SEQ.NEXTVAL, #{sessionId}, #{name}, #{phone}, #{impUid}, #{merchantUid}, #{amount}, #{category}, 'P', SYSDATE + INTERVAL '9' HOUR, #{orderNo})
+		VALUES(PAYMENT_SEQ.NEXTVAL, #{sessionId}, #{phone}, #{name}, #{impUid}, #{merchantUid}, #{amount}, #{category}, 'P', SYSDATE + INTERVAL '9' HOUR, #{orderNo})
 	</insert>
 	
 	<update id="updatePayment" parameterType="hashmap">
