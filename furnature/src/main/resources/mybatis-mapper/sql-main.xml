@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.furnature.mapper.MainMapper">
+	<select id="selectProductList" parameterType="hashmap" resultType="com.example.furnature.model.Product">
+		SELECT P.PRODUCT_NO, P.PRODUCT_NAME, P.PRODUCT_PRICE, PRODUCT_THUMBNAIL
+		FROM TBL_PRODUCT P
+		INNER JOIN TBL_PRODUCT_IMG I ON P.PRODUCT_NO = I.PRODUCT_NO
+		WHERE PRODUCT_CUSTOM = 'Y'
+		ORDER BY PRODUCT_NO DESC
+		OFFSET 0 ROWS FETCH FIRST 8 ROWS ONLY
+	</select>
+	
+	<select id="selectOnedayList" parameterType="hashmap" resultType="com.example.furnature.model.Oneday">
+		SELECT C.CLASS_NO, C.CLASS_NAME, C.CLASS_DATE, C.PRICE, THUMB_PATH
+		FROM TBL_CLASS C
+		INNER JOIN TBL_ONEDAYTHUMB T ON C.CLASS_NO = T.CLASS_NO
+		ORDER BY C.CLASS_NO 
+		OFFSET 0 ROWS FETCH FIRST 4 ROWS ONLY
+	</select>
+</mapper>
