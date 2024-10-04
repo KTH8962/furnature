@@ -64,6 +64,9 @@ public interface AdminMapper {
 	
 	//게시판삭제
 	void qnaDelete(HashMap<String,Object> map);
+	
+	//게시판 댓글 삭제
+	void commentAllDelete(HashMap<String,Object> map);
 
 	//커스텀리스트
 	List<Admin> adminCustomList(HashMap<String, Object> map);

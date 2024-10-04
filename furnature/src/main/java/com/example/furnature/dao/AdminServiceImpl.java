@@ -334,6 +334,7 @@ public class AdminServiceImpl implements AdminService{
 	public HashMap<String, Object> qnaDelete(HashMap<String, Object> map) {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		try {
+			adminMapper.commentAllDelete(map);
 			adminMapper.qnaDelete(map);
 			resultMap.put("message", "success");
 		} catch (Exception e) {

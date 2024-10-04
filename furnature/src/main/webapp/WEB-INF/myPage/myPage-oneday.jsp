@@ -22,12 +22,13 @@
 								<div class="tit-box">
 									<div class="top">
 										<div class="tit">{{item.className}}</div>
-									</div>
-									<div>신청인원 : {{item.count}} </div>
-									<div>신청자 이름 : {{item.userName}} </div>
-									<div v-if="item.payStatus==1">결제상태: 결제예정</div>
-									<div v-else>결제상태: 결제완료
-										<div>결제번호: {{item.payId}}</div>
+										<div class="desc">신청인원 : {{item.count}} </div>
+										<div class="desc">신청자 이름 : {{item.userName}} </div>
+										<div class="desc" v-if="item.payStatus==1">결제상태: 결제예정</div>
+										<div class="desc" v-else>
+											결제상태: 결제완료 <br>
+											결제번호: {{item.payId}}
+										</div>
 									</div>
 									<div class="price-box">
 										<div class="price" v-if="item.payStatus==2">결제 금액 : {{item.price}} </div>
