@@ -52,13 +52,17 @@ public class PaymentController {
 	@RequestMapping(value = "/payment/payment-add.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String addPayment(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		String json = map.get("selectedSize").toString(); 
-		ObjectMapper mapper = new ObjectMapper();
-		List<Object> selectedSize = mapper.readValue(json, new TypeReference<List<Object>>(){});
-		map.put("selectedSize", selectedSize);
-		resultMap = paymentService.addPayment(map);
-		return new Gson().toJson(resultMap);
+	    HashMap<String, Object> resultMap = new HashMap<String, Object>();
+	    //selectSize 없을경우에는 실행안함 ( 원데이클래스 String json 선언할때 널값이라고 오류나와서 if묶어놨습니다.
+	    if (map.containsKey("selectedSize") && map.get("selectedSize") != null) {
+	        String json = map.get("selectedSize").toString(); 
+	        ObjectMapper mapper = new ObjectMapper();
+	        List<Object> selectedSize = mapper.readValue(json, new TypeReference<List<Object>>() {});
+	        map.put("selectedSize", selectedSize);
+	    }
+	    System.out.println("CCCCCCCC" + map);
+	    resultMap = paymentService.addPayment(map);
+	    return new Gson().toJson(resultMap);
 	}
 	
 	// 결제 취소 전 정보 불러오기

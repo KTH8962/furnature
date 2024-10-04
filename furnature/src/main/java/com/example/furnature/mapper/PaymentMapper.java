@@ -25,4 +25,10 @@ public interface PaymentMapper {
 	
 	// 결재 내역 삭제 - 원데이클래스
 	void deleteOneday(HashMap<String, Object> map);
+	
+	//상품구매 마일리지 적립
+	void saveMileage(HashMap<String, Object> map);
+	//상품구매 마일리지 사용
+	void useMileage(HashMap<String, Object> map);
+	
 }
