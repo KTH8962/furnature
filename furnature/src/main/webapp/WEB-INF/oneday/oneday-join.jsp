@@ -31,7 +31,7 @@
 					<div class="detail-box">
 						<div class="tit">수강 신청</div>
 						<div class="info">	
-							<template v-if="message1=='모집일자가 지났습니다.' || numberLimit==currentNumber">	
+							<template v-if="message1=='모집일자가 지났습니다.' || numberLimit<=currentNumber">	
 								<div>{{message1}}</div>
 								<div>{{message2}}</div>
 							</template>
@@ -74,7 +74,7 @@
 					<div class="detail-bottom-box" v-if="bottomBox == '2'">
 						<p>- 전화번호 : 010-5678-1234</p>
 						<br><br>
-						<p>- 주소 : 서울시 마포구 홍익로 5길 15 5층 FURNATURE</p>
+						<p>- 주소 : 서울시 마포구 홍익로 5길 15, 5층 FURNATURE</p>
 						<br><br>
 						<p>- 오시는 길 : <br><br>
 						2호선 홍대입구역 9번 출구로 나와 300m 직진 후 첫 번째 교차로에서 우회전합니다.
@@ -104,7 +104,7 @@
 				   filePath : [],
 				   userId : "${sessionId}",
 				   name : "",
-				   count : 0,
+				   count : 1,
 				   price : "",
 				   payId : "",
 				   numberLimit : "",
@@ -120,7 +120,7 @@
 				   message2 : "",
 				   currentSlide: 0,
 				   alreadyIn : false,
-				   bottomBox : 1
+				   bottomBox : 1 
                 };
             },
             methods: {
@@ -134,8 +134,6 @@
 					type : "POST",
 					data : nparmap,
 					success : function(data){
-						console.log(self.data);
-					
 						self.detail = data.onedayDetail;
 						self.classNo = data.onedayDetail[0].classNo;
 						self.className = data.onedayDetail[0].className;
@@ -170,7 +168,7 @@
 							success : function(data){
 								self.numberLimit = data.numberLimit.numberLimit;
 								self.currentNumber = data.numberLimit.currentNumber;
-								if(self.numberLimit==self.currentNumber){
+								if(self.numberLimit<=self.currentNumber){
 									self.message2 = "모집 인원이 초과되었습니다.";
 									return;
 								}else{
@@ -195,6 +193,13 @@
 					       alert("유효한 수강 인원을 입력해주세요.");
 					       return;
 				   	}
+					var remainingSeats = parseInt(self.numberLimit) - parseInt(self.currentNumber);
+					console.log(remainingSeats);
+					
+					if (count > remainingSeats) {
+					    alert("현재 남은 정원은 "+remainingSeats+"명입니다.");
+					    return;
+					}
 					
 					var nparmap = {classNo:self.classNo, userId:self.userId, count:count};
 					$.ajax({

@@ -66,7 +66,8 @@
 			    payId : "",
 				price : "",
 				name : "",
-				payInfo: {}
+				payInfo: {},
+				name: ""
             };
         },
         methods: {
@@ -83,7 +84,7 @@
 	                   success: function(data) {
 						   console.log(data);
 	                       self.list = data.onedayInfo;		
-						   self.name = data.onedayInfo[0].userName;					
+						   self.name = data.onedayInfo.userName;		  			
 	                   }
 	               });
 				}else{
@@ -101,7 +102,7 @@
 					buyer_name: self.name,
 					buyer_tel: "01012349876",
 				}, function (rsp){ 
-					//console.log(rsp);
+					console.log(rsp);
 			        if (rsp.success) {
 						$.ajax({
 							url: "/payment/payment/" + rsp.imp_uid,
