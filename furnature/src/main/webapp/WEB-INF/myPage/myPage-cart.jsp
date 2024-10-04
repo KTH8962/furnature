@@ -31,7 +31,7 @@
             font-size: 20px;
             font-weight: 500;
             line-height: 1.6;
-            margin-top: 40px;
+            margin-top: 20px;
             margin-bottom: 10px;
         }
 
@@ -157,6 +157,22 @@
                         <div><button @click="fnBuy">구매하러가기</button></div>
                     </div>
                     <div class="myPage-img-list-wrap">
+						<div  class="myPage-img-list-box" >
+							<div class="tit-box" style="margin-left: 250px;">
+								<div class="top">
+									상품명 / 옵션정보
+								</div>
+								<div class="middle">
+									수량 / 판매가
+								</div>
+								<div class="middle2">
+									최종 가격
+								</div>
+								<div class="middle">
+									주문 관리
+								</div>
+							</div>
+						</div>
                         <div v-for="(item, index) in list" class="myPage-img-list-box">
                             <div class="img-box">
                                 <a href="#" @click="fnProDetail(item.productNo)">
@@ -170,7 +186,6 @@
                                     <div class="size">{{item.productSize}}</div>
                                 </div>
                                 <div class="middle">
-                                    <div class="tit">수량</div>
                                     <div class="option-box">
                                         <div class="option">
                                             <button type="button" class="btn minus" @click="fnDown(index)">-</button>
@@ -183,7 +198,6 @@
                                     <div class="tit">판매가  {{(item.productPrice*1).toLocaleString()}}원 </div>
                                 </div>
                                 <div class="middle2">
-                                    <div class="tit">최종 가격</div>
                                     <div class="tit">{{(item.count * item.productPrice).toLocaleString()}}원</div> 
                                 </div>
                                 <div class="middle">
@@ -233,19 +247,21 @@
                 sessionId: '${sessionId}',
                 list: [],
                 selectCheck: [],
-                selectAll: false,
+                selectAll: true
             };
         },
         computed: {
-            totalPrice() {
-                var self = this;
-                var total = 0;
-                for (var i = 0; i < self.list.length; i++) {
-                    var item = self.list[i];
-                    total += item.productPrice * item.count;
-                }
-                return total;
-            }
+			totalPrice() {
+              var self = this;
+              var total = 0;
+              for (var i = 0; i < self.list.length; i++) {
+                  var item = self.list[i];
+                  if (self.selectCheck.includes(item.cartNo)) {
+                      total += item.productPrice * item.count;
+                  }
+              }
+              return total;
+          }
         },
         methods: {
             fnGetCartList() {
@@ -259,6 +275,8 @@
                     success: function(data) {
                         console.log(data);
                         self.list = data.cartList;
+						
+						self.selectCheck = self.list.map(item => item.cartNo);
                     }
                 });
             },
@@ -329,10 +347,12 @@
                     var item = self.list[i];
                     if (!self.selectCheck.includes(item.cartNo)) {
                         allChecked = false;
+						console.log(self.selectCheck);
                         break;
                     }
                 }
                 self.selectAll = allChecked;
+				console.log(self.selectCheck);
             },
             fnPay() {
 				alert('아직 구현중입니다.');

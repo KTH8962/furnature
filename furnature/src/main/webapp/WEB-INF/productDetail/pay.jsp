@@ -123,7 +123,7 @@
                         </div>
                         <div class="ip-list">
                             <div class="tit-box">
-                                <p class="tit">보유 마일리지</p>
+                                <p class="tit">보유 마일리지</p>{{myPoint}}
                             </div>
                             <div class="bot-box">
                                 <div class="ip-box">{{(myPoint*1).toLocaleString()}}</div>
@@ -162,7 +162,7 @@
                 </div>
             </div>
             <div class="front-btn-box">
-                <button type="button" @click="fnBuy(productDetail.productName, totalPrice, name, phone, productNo)">결제하기</button>
+                <button type="button" @click="fnBuy(productDetail.productName, totalPrice, name, phone, productNo,mileage,pointPay)">결제하기</button>
                 <button type="button" @click="fnPorductDetail">취소하기</button>
             </div>
         </div>
@@ -267,7 +267,8 @@
                         self.info = data.info;
                         console.log("다음찍히는 콘솔이 userinfo");
                         console.log(data.info);
-						if(!(self.myPoint == null || self.myPoint == '')){
+						console.log(data.info.mileageTotal);
+						if((self.myPoint == null || self.myPoint == '')){
 	                        self.myPoint = data.info.mileageTotal;
 						}
 						self.fnDeliveryInfo(10);
@@ -290,7 +291,7 @@
                 }
                 console.log(value);
             },
-            fnBuy(title, totalPrice, name, phone, orderNo){
+            fnBuy(title, totalPrice, name, phone, orderNo, mileage, pointPay){
                 var self = this;
 				IMP.request_pay({
 	                pg: "html5_inicis",
@@ -326,7 +327,9 @@
 										name : rsp.buyer_name,
 										phone : rsp.buyer_tel,
 										orderNo: orderNo,
-                                        selectedSize: JSON.stringify(self.selectedSize)
+                                        selectedSize: JSON.stringify(self.selectedSize),
+										mileage : mileage,
+										pointPay : pointPay
 									},
 									success : function(data){
 										if(data.result == 'success') {
