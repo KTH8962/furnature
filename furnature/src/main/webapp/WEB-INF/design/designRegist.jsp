@@ -65,6 +65,10 @@
 			},
             fnDesignRegist(){
 				var self = this;
+				if(self.file == null){
+					alert("파일을 첨부해주세요");
+					return;
+				}
 				var nparmap = {
 					designTitle : self.designTitle,
 					designContents : self.designContents,
