@@ -85,7 +85,7 @@
 									</a>
 									<div class="txt-box">
 										<p class="tit">{{item.auctionTitle}}</p>
-										<p class="price">수강료: {{item.auctionPriceCurrent}}원</p>
+										<p class="price">경매가: {{item.auctionPriceCurrent}}원</p>
 										<p class="date">경매 종료 일자: {{item.endDay}}</p>
 									</div>
 								</div>

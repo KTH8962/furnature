@@ -541,6 +541,20 @@ body {
 	padding: 5px 10px;
 	background-color: var(--color-green);
 }
+#container .img-list li .custom {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	top: 0;
+	left: 0;
+	font-size: 14px;
+	font-Weight: 700;
+	color: var(--base-white);
+	background-color: #E0A969;
+	width: 30px;
+	height: 30px;
+}
 #container .img-list li.end .img::before {
 	position: absolute;
 	top: 0;
