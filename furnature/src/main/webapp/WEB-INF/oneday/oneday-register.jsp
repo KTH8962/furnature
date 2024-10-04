@@ -218,7 +218,7 @@
 									processData: false,
 									contentType: false,
 									success: function() {
-										console.log('썸네일 업로드 성공!');
+										//console.log('썸네일 업로드 성공!');
 									}
 								});
 							}
@@ -238,7 +238,7 @@
 									processData: false,
 									contentType: false,
 									success: function() {
-										console.log('파일 업로드 성공!');
+										//console.log('파일 업로드 성공!');
 										$.pageChange("/adminOneday.do", {});
 									}
 								});

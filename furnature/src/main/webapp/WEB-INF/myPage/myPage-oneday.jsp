@@ -83,7 +83,6 @@
 	                   type: "POST",
 	                   data: nparmap,
 	                   success: function(data) {
-						   console.log(data);
 	                       self.list = data.onedayInfo;
 						   self.name = data.onedayInfo[0].userName;		
 						  	 
@@ -104,7 +103,7 @@
 					buyer_name: self.name,
 					buyer_tel: "01012349876",
 				}, function (rsp){ 
-					console.log(rsp);
+					//console.log(rsp);
 			        if (rsp.success) {
 						$.ajax({
 							url: "/payment/payment/" + rsp.imp_uid,
@@ -117,7 +116,7 @@
 								phone: rsp.buyer_tel
 							},
 							success: function (data) {
-								console.log(data)
+								//console.log(data)
 								$.ajax({
 									url: "/payment/payment-add.dox",
 									method: "POST",
@@ -152,7 +151,7 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-						console.log(data);
+						//console.log(data);
 						self.payInfo = data.payInfo;				
 						$.ajax({
 							url: '/payment/cancel/' + data.payInfo.paymentImpUid,
@@ -163,7 +162,7 @@
 								amount: self.payInfo.paymentAmount
 							},
 							success: function(data){
-								console.log(data);
+								//console.log(data);
 								$.ajax({
 									url: "/payment/payment-edit.dox",
 									method: "POST",
