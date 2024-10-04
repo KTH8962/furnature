@@ -145,7 +145,7 @@
 			fnBuyCancel(orderNo) {
 				var self = this;
 				confirm("결제를 취소하시겠습니까?");
-				var nparmap = {classNo: orderNo, category: "oneday"};
+				var nparmap = {classNo: orderNo, category: "oneday", sessionId: self.userId};
 				$.ajax({
 					url:"/payment/payment-info.dox",
 					dataType:"json",	

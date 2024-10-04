@@ -8,7 +8,7 @@
 		FROM TBL_PAYMENT
 		WHERE PAYMENT_CATEGORY = #{category} AND PAYMENT_STATUS = 'P' AND ORDER_NO =
 		<if test="category == 'auction'"> #{auctionNo}</if>
-		<if test="category == 'oneday'"> #{classNo}</if>
+		<if test="category == 'oneday'"> #{classNo} AND USER_ID = #{sessionId}</if>
 		<if test="category == 'product'"> #{productNo}</if>
 	</select>
 	
