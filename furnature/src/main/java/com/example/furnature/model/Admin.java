@@ -70,6 +70,9 @@ public class Admin {
 	private String productCdateTime;//생성일
 	private String productUdateTime;//수정일
 	
+	private String customNo;
+	private String customCon;
+	
 	//상품 이미지 테이블
 	private String prodcutThumbnail; //상품 썸네일 이미지 URL
 	private String productDetail1; //상품 상세이미지1 URL

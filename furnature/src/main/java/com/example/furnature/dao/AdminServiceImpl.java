@@ -343,4 +343,33 @@ public class AdminServiceImpl implements AdminService{
 		
 		return resultMap;
 	}
+
+	@Override
+	public HashMap<String, Object> adminCustomList(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			List<Admin> list = adminMapper.adminCustomList(map);
+			resultMap.put("list", list);
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (Exception e) {
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		
+		return resultMap;
+	}
+
+	//커스텀확정
+	@Override
+	public HashMap<String, Object> customConfirm(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			System.out.println("커스텀!!!!"+map);
+			adminMapper.customConfirm(map);
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (Exception e) {
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		
+		return resultMap;
+	}
 }

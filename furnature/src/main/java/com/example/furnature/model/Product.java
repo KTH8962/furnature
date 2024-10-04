@@ -27,6 +27,13 @@ public class Product {
 	private String productCdateTime;//생성일
 	private String productUdateTime;//수정일
 	
+	//커스텀
+	private String customNo;
+	private String customCon;
+	private int CNT;
+	public int getCNT() {
+		return CNT;
+	}
 	//카테고리
 	private String cateNo; 			//카테고리넘버
 	private String cateName;		//카테고리이름 

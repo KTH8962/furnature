@@ -52,7 +52,6 @@
 		FROM TBL_QNA_COMMENT Q
 		INNER JOIN TBL_USER U ON Q.USER_ID = U.USER_ID
 		WHERE QNA_NO = #{qnaNo}
-		ORDER BY UDATETIME
 		ORDER BY COMMENT_NO ASC
 	</select>
 	<insert id="commentRegist" parameterType="hashmap">

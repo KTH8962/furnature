@@ -65,4 +65,10 @@ public interface AdminMapper {
 	//게시판삭제
 	void qnaDelete(HashMap<String,Object> map);
 
+	//커스텀리스트
+	List<Admin> adminCustomList(HashMap<String, Object> map);
+	
+	//커스텀확정
+	void customConfirm(HashMap<String, Object> map);
+
 }

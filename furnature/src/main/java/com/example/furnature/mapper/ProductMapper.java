@@ -60,4 +60,16 @@ public interface ProductMapper {
 	
 	//수정할 리뷰정보
 	Product reviewInfo(HashMap<String, Object> map);
+	
+	//커스텀체크
+	int productCustomCheck(HashMap<String, Object> map);
+	
+	//커스텀취소
+	void productCustomCancel(HashMap<String, Object> map);
+	
+	//커스텀
+	void productCustom(HashMap<String,Object> map);
+
+	//커스텀리스트확인
+	Product customCheck(HashMap<String, Object> map);
 }

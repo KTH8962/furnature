@@ -7,4 +7,6 @@
 	<li><a href="/adminOneday.do" class="${activePage == "oneday" ? "active" : ""}">원데이 클래스 정보</a></li>
 	<li><a href="/adminDesign.do" class="${activePage == "design" ? "active" : ""}">디자인추천 관리</a></li>
 	<li><a href="/adminQna.do" class="${activePage == "qna" ? "active" : ""}">질문 게시판 관리</a></li>
+	<li><a href="/adminCustom.do" class="${activePage == "custom" ? "active" : ""}">커스텀 신청 관리</a></li>
 </ul>
+

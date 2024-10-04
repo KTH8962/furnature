@@ -275,5 +275,31 @@ public class ProductController {
     	return new Gson().toJson(resultMap);
     }
     
+    // 커스텀
+    @RequestMapping(value = "/productDetail/productCustom.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String productCustom(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+    	HashMap<String, Object> resultMap = new HashMap<String, Object>();
+    	resultMap = productService.productCustom(map);
+    	return new Gson().toJson(resultMap);
+    }
+    
+    // 커스텀체크
+    @RequestMapping(value = "/productDetail/productCustomCheck.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String productCustomCheck(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+    	HashMap<String, Object> resultMap = new HashMap<String, Object>();
+    	resultMap = productService.productCustomCheck(map);
+    	return new Gson().toJson(resultMap);
+    }
+    // 커스텀취소
+    @RequestMapping(value = "/productDetail/productCustomCancel.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String productCustomCancel(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+    	HashMap<String, Object> resultMap = new HashMap<String, Object>();
+    	resultMap = productService.productCustomCancel(map);
+    	return new Gson().toJson(resultMap);
+    }
+    
 	 
 }
