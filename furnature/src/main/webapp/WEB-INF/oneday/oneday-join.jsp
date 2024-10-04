@@ -11,10 +11,6 @@
 	<div id="app">
 		<div id="container">            
             <p class="blind">원데이클래스</p>
-			<div v-if="sessionAuth > 1">
-				<button type="button" @click="fnUpdate(detail[0].classNo)">수정</button>
-				<button type="button" @click="fnDelete(detail[0].classNo)">삭제</button>
-			</div>
 			<div class="detail-top">
 				<div class="thumb-wrap oneday-detail-thumb-list">
 					<div class="thumb-list">
@@ -31,7 +27,7 @@
 					<div class="detail-box">
 						<div class="tit">수강 신청</div>
 						<div class="info">	
-							<template v-if="message1=='모집일자가 지났습니다.' || numberLimit==currentNumber">	
+							<template v-if="message1=='모집일자가 지났습니다.' || numberLimit<=currentNumber">	
 								<div>{{message1}}</div>
 								<div>{{message2}}</div>
 							</template>
@@ -74,16 +70,21 @@
 					<div class="detail-bottom-box" v-if="bottomBox == '2'">
 						<p>- 전화번호 : 010-5678-1234</p>
 						<br><br>
-						<p>- 주소 : 서울시 마포구 홍익로 5길 15 5층 FURNATURE</p>
+						<p>- 주소 : 서울특별시 영등포구 여의도로 88, 5층 FURNATURE</p>
 						<br><br>
 						<p>- 오시는 길 : <br><br>
-						2호선 홍대입구역 9번 출구로 나와 300m 직진 후 첫 번째 교차로에서 우회전합니다.
+						5호선 여의도역 9번 출구에서 300m 직진 후 첫번째 교차로에서 우회전합니다.
 						우측에 있는 건물 5층으로 올라오시면 됩니다. 
 						</p>
+						<br><br>
+						<p> - 클래스 시간 동안 주차비는 무료입니다. </p>
+						<br><br>
 					</div>
 				</div>
 				<div class="front-btn-box">
-					<button @click="fnList">목록</button>
+					<button type="button" @click="fnUpdate(detail[0].classNo)" v-if="sessionAuth > 1">수정</button>
+					<button type="button" @click="fnDelete(detail[0].classNo)" v-if="sessionAuth > 1">삭제</button>
+					<button type="button" @click="fnList">목록</button>
 				</div>	
 			</div>	
 		</div>		
@@ -104,7 +105,7 @@
 				   filePath : [],
 				   userId : "${sessionId}",
 				   name : "",
-				   count : 0,
+				   count : 1,
 				   price : "",
 				   payId : "",
 				   numberLimit : "",
@@ -120,7 +121,7 @@
 				   message2 : "",
 				   currentSlide: 0,
 				   alreadyIn : false,
-				   bottomBox : 1
+				   bottomBox : 1 
                 };
             },
             methods: {
@@ -134,8 +135,6 @@
 					type : "POST",
 					data : nparmap,
 					success : function(data){
-						console.log(self.data);
-					
 						self.detail = data.onedayDetail;
 						self.classNo = data.onedayDetail[0].classNo;
 						self.className = data.onedayDetail[0].className;
@@ -160,7 +159,7 @@
 						}else{
 							self.message1 = "";
 						}
-						console.log(self.message1);
+						
 						var nparmap = {classNo:self.classNo};
 						$.ajax({
 							url : "/oneday/oneday-numberLimit.dox",
@@ -170,7 +169,7 @@
 							success : function(data){
 								self.numberLimit = data.numberLimit.numberLimit;
 								self.currentNumber = data.numberLimit.currentNumber;
-								if(self.numberLimit==self.currentNumber){
+								if(self.numberLimit<=self.currentNumber){
 									self.message2 = "모집 인원이 초과되었습니다.";
 									return;
 								}else{
@@ -195,6 +194,13 @@
 					       alert("유효한 수강 인원을 입력해주세요.");
 					       return;
 				   	}
+					var remainingSeats = parseInt(self.numberLimit) - parseInt(self.currentNumber);
+					//console.log(remainingSeats);
+					
+					if (count > remainingSeats) {
+					    alert("현재 남은 정원은 "+remainingSeats+"명입니다.");
+					    return;
+					}
 					
 					var nparmap = {classNo:self.classNo, userId:self.userId, count:count};
 					$.ajax({
@@ -238,7 +244,7 @@
 					  }	, function (rsp){ // callback
 				        if (rsp.success) {
 				            alert("성공");
-				            console.log(rsp);
+				            //console.log(rsp);
 				            self.fnSave(rsp);
 				        } else {
 				            alert("실패");
@@ -277,7 +283,6 @@
 				        type: "POST",
 				        data: nparmap,
 				        success: function(data) {
-				         	console.log(data);
 							$.pageChange("/oneday/oneday.do", {});
 				        }
 				    });

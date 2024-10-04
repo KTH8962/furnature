@@ -8,13 +8,13 @@
 		FROM TBL_PAYMENT
 		WHERE PAYMENT_CATEGORY = #{category} AND PAYMENT_STATUS = 'P' AND ORDER_NO =
 		<if test="category == 'auction'"> #{auctionNo}</if>
-		<if test="category == 'oneday'"> #{classNo}</if>
+		<if test="category == 'oneday'"> #{classNo} AND USER_ID = #{sessionId}</if>
 		<if test="category == 'product'"> #{productNo}</if>
 	</select>
 	
 	<insert id="insertPayment" parameterType="hashmap">
 		INSERT INTO TBL_PAYMENT(PAYMENT_NO, USER_ID, PAYMENT_PHONE, PAYMENT_NAME, PAYMENT_IMP_UID, PAYMENT_MERCHANT_UID, PAYMENT_AMOUNT, PAYMENT_CATEGORY, PAYMENT_STATUS, PAYMENT_PAY_DATE, ORDER_NO)
-		VALUES(PAYMENT_SEQ.NEXTVAL, #{sessionId}, #{name}, #{phone}, #{impUid}, #{merchantUid}, #{amount}, #{category}, 'P', SYSDATE + INTERVAL '9' HOUR, #{orderNo})
+		VALUES(PAYMENT_SEQ.NEXTVAL, #{sessionId}, #{phone}, #{name}, #{impUid}, #{merchantUid}, #{amount}, #{category}, 'P', SYSDATE + INTERVAL '9' HOUR, #{orderNo})
 	</insert>
 	
 	<update id="updatePayment" parameterType="hashmap">
@@ -26,10 +26,12 @@
 	
 	<insert id="insertProductOrder" parameterType="hashmap">
 		<if test="category == 'product'">
-			INSERT ALL
+			 INSERT ALL
 		    <foreach collection="selectedSize" item="item" separator=" ">
-		        INTO TBL_PRODUCT_ORDER (PAY_NO, ORDER_ID, PRODUCT_NO, USER_ID, ORDER_SIZE, ORDER_COUNT, PRODUCT_PRICE, ORDER_DATE, ORDER_CATE, DELIVERY_CATE)
-		        VALUES (PAY_NO(), #{merchantUid}, #{orderNo}, #{sessionId}, #{item.size}, #{item.count}, #{item.price}, SYSDATE + INTERVAL '9' HOUR, '상품', 0)
+		        INTO TBL_PRODUCT_ORDER(PAY_NO, ORDER_ID, PRODUCT_NO, USER_ID, ORDER_SIZE, ORDER_COUNT, PRODUCT_PRICE, ORDER_DATE, ORDER_CATE, DELIVERY_CATE
+		        )
+		        VALUES (PAY_NO_SEQ.NEXTVAL, #{merchantUid}, #{orderNo}, #{sessionId}, #{item.size}, #{item.count}, #{item.price}, 
+		            SYSDATE + INTERVAL '9' HOUR, '상품', 0)
 		    </foreach>
 		    SELECT * FROM DUAL
 		</if>
@@ -52,4 +54,15 @@
 		DELETE FROM TBL_PARTICIPANT
 		WHERE CLASS_NO = #{orderNo} AND PAY_UID = #{impUid}
 	</delete>
+	
+	<!--상품 구매시 마일리지 사용-->
+	<insert id="useMileage" parameterType="hashmap">
+        INSERT INTO TBL_MILEAGE
+        VALUES(MILEAGE_SEQ.NEXTVAL, #{sessionId}, '상품구매', #{pointPay}, '사용', SYSDATE)
+	</insert>
+	<!--상품 구매시 마일리지 적립-->
+	<insert id="saveMileage" parameterType="hashmap">
+        INSERT INTO TBL_MILEAGE
+		VALUES(MILEAGE_SEQ.NEXTVAL, #{sessionId}, '상품구매', #{mileage}, '적립', SYSDATE)
+	</insert>
 </mapper>

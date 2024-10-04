@@ -24,6 +24,7 @@
 										<div class="tit">{{item.className}}</div>
 									</div>
 									<div>신청인원 : {{item.count}} </div>
+									<div>신청자 이름 : {{item.userName}} </div>
 									<div v-if="item.payStatus==1">결제상태: 결제예정</div>
 									<div v-else>결제상태: 결제완료
 										<div>결제번호: {{item.payId}}</div>
@@ -36,7 +37,7 @@
 									<div class="date" v-if="item.payStatus==2">결제일자: {{item.payDay}}</div>
 									<div class="result">
 										<button type="button" @click="fnCancel(item.classNo)" v-if="item.payStatus==1">수강취소</button>
-										<button type="button" @click="fnBuy(item.className, item.classNo, item.price)" v-if="item.payStatus==1">결제</button>
+										<button type="button" @click="fnBuy(item.className, item.classNo, item.price, item.count)" v-if="item.payStatus==1">결제</button>
 										<button type="button" @click="fnBuyCancel(item.classNo)" v-if="item.payStatus==2">결제 취소</button>
 									</div>
 								</div>
@@ -66,7 +67,8 @@
 			    payId : "",
 				price : "",
 				name : "",
-				payInfo: {}
+				payInfo: {},
+				count: ""
             };
         },
         methods: {
@@ -81,23 +83,23 @@
 	                   type: "POST",
 	                   data: nparmap,
 	                   success: function(data) {
-						   console.log(data);
-	                       self.list = data.onedayInfo;		
-						   self.name = data.onedayInfo[0].userName;					
+	                       self.list = data.onedayInfo;
+						   self.name = data.onedayInfo[0].userName;		
+						  	 
 	                   }
 	               });
 				}else{
 					self.isCustomer = false;
 				}
             },
-			fnBuy(className, classNo, price) {
+			fnBuy(className, classNo, price, count) {
 			    var self = this;
 				IMP.request_pay({
 					pg: "html5_inicis",
 					pay_method: "card",
 					merchant_uid: 'oneday' + new Date().getTime(),
 					name: className,
-					amount: price,
+					amount: price*count,
 					buyer_name: self.name,
 					buyer_tel: "01012349876",
 				}, function (rsp){ 
@@ -114,7 +116,7 @@
 								phone: rsp.buyer_tel
 							},
 							success: function (data) {
-								console.log(data)
+								//console.log(data)
 								$.ajax({
 									url: "/payment/payment-add.dox",
 									method: "POST",
@@ -142,14 +144,14 @@
 			fnBuyCancel(orderNo) {
 				var self = this;
 				confirm("결제를 취소하시겠습니까?");
-				var nparmap = {classNo: orderNo, category: "oneday"};
+				var nparmap = {classNo: orderNo, category: "oneday", sessionId: self.userId};
 				$.ajax({
 					url:"/payment/payment-info.dox",
 					dataType:"json",	
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-						console.log(data);
+						//console.log(data);
 						self.payInfo = data.payInfo;				
 						$.ajax({
 							url: '/payment/cancel/' + data.payInfo.paymentImpUid,
@@ -160,7 +162,7 @@
 								amount: self.payInfo.paymentAmount
 							},
 							success: function(data){
-								console.log(data);
+								//console.log(data);
 								$.ajax({
 									url: "/payment/payment-edit.dox",
 									method: "POST",
@@ -199,7 +201,8 @@
 			}
         },
         mounted() {
-            this.fnClass();
+			var self = this;
+            self.fnClass();
         }
     });
     app.mount('#app');

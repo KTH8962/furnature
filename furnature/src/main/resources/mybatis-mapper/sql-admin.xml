@@ -78,7 +78,7 @@
 	    <if test="searchOption == 'endDay' and (keyword != null and keyword != '')">
 	        AND TO_CHAR(END_DAY, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{keyword} || '%'
 	    </if>
-	    ORDER BY C.CLASS_NO DESC
+	    ORDER BY C.CLASS_NO ASC
 	    OFFSET #{startIndex} ROWS FETCH FIRST #{outputNumber} ROWS ONLY
 	</select>
 	

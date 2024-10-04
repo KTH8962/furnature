@@ -101,9 +101,10 @@
                </div>
            </div>
        </div>
-		
-        
-        <div><button @click="fnUpdate()">저장</button></div>		
+	   <div class="front-btn-box">
+			<button type="button" @click="fnUpdate">저장</button>
+			<button type="button" @click="fnBack">취소</button>
+		</div>
 	</div>	
     </div>
     <jsp:include page="/layout/footer.jsp"></jsp:include>
@@ -171,7 +172,7 @@ const app = Vue.createApp({
                 endDay: self.endDay,
 				description: self.description               
             };
-			console.log(self.classDate);
+			
             var startDay = new Date(self.startDay);
             var endDay = new Date(self.endDay);
             var classDate = new Date(self.classDate);
@@ -188,7 +189,6 @@ const app = Vue.createApp({
                 alert("빈칸을 채워주세요.");
                 return;
             }
-            console.log(classDate);
             $.ajax({
                 url: "/oneday/oneday-update.dox",
                 dataType: "json",    
@@ -199,7 +199,10 @@ const app = Vue.createApp({
 					$.pageChange("/oneday/oneday-join.do", {classNo:self.classNo});
                 }
             });
-        }
+        },
+		fnBack(){
+			$.pageChange("/oneday/oneday.do", {});
+		}
     },
     mounted() {
 		var self = this;

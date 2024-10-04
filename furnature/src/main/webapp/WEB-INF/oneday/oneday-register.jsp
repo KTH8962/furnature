@@ -112,6 +112,7 @@
 			<div>
 				<div class="front-btn-box">
 					<button type="button" @click="fnSave">저장</button>
+					<button type="button" @click="fnBack">취소</button>
 				</div>
 			</div>			
 		</div>
@@ -217,7 +218,7 @@
 									processData: false,
 									contentType: false,
 									success: function() {
-										console.log('썸네일 업로드 성공!');
+										//console.log('썸네일 업로드 성공!');
 									}
 								});
 							}
@@ -237,14 +238,17 @@
 									processData: false,
 									contentType: false,
 									success: function() {
-										console.log('파일 업로드 성공!');
+										//console.log('파일 업로드 성공!');
 										$.pageChange("/adminOneday.do", {});
 									}
 								});
 							}
 						}
 					});
-			 	}
+			 	},
+				fnBack(){
+					$.pageChange("/oneday/oneday.do", {});
+				}
 			},
 			mounted() {
 				var self = this;
