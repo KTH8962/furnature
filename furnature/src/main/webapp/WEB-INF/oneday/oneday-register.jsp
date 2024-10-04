@@ -112,6 +112,7 @@
 			<div>
 				<div class="front-btn-box">
 					<button type="button" @click="fnSave">저장</button>
+					<button type="button" @click="fnBack">취소</button>
 				</div>
 			</div>			
 		</div>
@@ -244,7 +245,10 @@
 							}
 						}
 					});
-			 	}
+			 	},
+				fnBack(){
+					$.pageChange("/oneday/oneday.do", {});
+				}
 			},
 			mounted() {
 				var self = this;
