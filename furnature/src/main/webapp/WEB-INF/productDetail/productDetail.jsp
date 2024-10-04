@@ -79,7 +79,7 @@
 						<button type="button" @click="fnPay(1)">구매하기</button>
 						<button type="button" @click="fnPay(2)">장바구니</button>
 						<template v-if="productDetail.productCustom == 'Y' && customFlg !='true' ">
-							<button type="button" @click="fnCustom(productDetail.productCustom)">커스텀신청</button>
+							<button type="button" @click="fnCustomContents()">커스텀신청</button>
 						</template>
 						<template v-if="productDetail.productCustom == 'Y' && customFlg =='true' ">
 							<button type="button" @click="fnCustomCancel()">커스텀취소</button>
@@ -299,7 +299,7 @@
 				});
           	},
 			// 커스텀 버튼
-			fnCustom(productCustom){
+			fnCustom(){
 				var self = this;
 				if(self.sessionId == null || self.sessionId == ''){
 					alert('로그인 후 이용 가능합니다.');
@@ -320,6 +320,7 @@
 						success : function(data) { 
 							console.log(data);
 							alert("커스텀 신청이 완료되었습니다. 관리자를 통해 2~3일 이내로 연락이 옵니다.");
+							self.customContentFlg = false;
 						}
 					});
 					window.location.reload();
@@ -340,7 +341,6 @@
 					success : function(data) {
 						self.customFlg = data.customFlg;
 						self.customCheckList = data.list;
-						console.log("커스텀",self.customCheckList.customCon);
 					}
 				});
 			},
