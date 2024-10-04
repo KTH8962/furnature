@@ -218,6 +218,7 @@
 									data : nparmap,
 									success : function(data){
 										alert("수강신청 되었습니다.");
+										$.pageChange("/myPage/oneday.do", {});
 									}
 								});
 							}else{
