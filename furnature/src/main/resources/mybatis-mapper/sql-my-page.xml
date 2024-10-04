@@ -180,4 +180,12 @@
 		WHERE CART_NO IN  
 		<foreach collection="list" item="item" open="(" close=")" separator=","> #{item}</foreach>
 	</delete>
+	<select id="paymentList" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
+		SELECT *
+		FROM TBL_PAYMENT P
+		LEFT JOIN TBL_PRODUCT_ORDER O ON P.PAYMENT_MERCHANT_UID = O.ORDER_ID
+		LEFT JOIN TBL_PRODUCT PD ON O.PRODUCT_NO = PD.PRODUCT_NO
+		LEFT JOIN TBL_PRODUCT_IMG PI ON PD.PRODUCT_NO = PI.PRODUCT_NO
+		WHERE P.USER_ID = 'user1' AND O.ORDER_CATE = '상품'
+	</select>
 </mapper>

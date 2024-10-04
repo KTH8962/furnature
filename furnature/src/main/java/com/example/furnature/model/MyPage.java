@@ -85,7 +85,9 @@ public class MyPage {
 	private String productSize;
 	private String cdatetime;
 	private String time;
-
+	
+	private String paymentAmount;
+	
 	public String getAuctionBiddingPrice() {
 		return auctionBiddingPrice;
 	}

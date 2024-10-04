@@ -272,6 +272,27 @@ public class MyPageServiceImpl implements MyPageService {
 		
 		return resultMap;
 	}
+	//결제내역
+	@Override
+	public HashMap<String, Object> paymentList(HashMap<String, Object> map) {
+		 HashMap<String, Object> resultMap = new HashMap<>();
+	        try {
+	        	List<MyPage> list = myPageMapper.paymentList(map);
+	            resultMap.put("list", list);
+	            resultMap.put("result", "success");
+	            resultMap.put("message", ResMessage.RM_SUCCESS);
+	        } catch (DataAccessException e) {
+	            resultMap.put("result", "fail");
+	            resultMap.put("message", ResMessage.RM_DB_ACCESS_ERROR);
+	        } catch (PersistenceException e) {
+	            resultMap.put("result", "fail");
+	            resultMap.put("message", ResMessage.RM_MYBATIS_ERROR);
+	        } catch (Exception e) {
+	            resultMap.put("result", "fail");
+	            resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+	        }
+	        return resultMap;
+	}
 
 }
 
