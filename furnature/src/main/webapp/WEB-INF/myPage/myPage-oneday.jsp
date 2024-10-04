@@ -24,6 +24,7 @@
 										<div class="tit">{{item.className}}</div>
 									</div>
 									<div>신청인원 : {{item.count}} </div>
+									<div>신청자 이름 : {{item.userName}} </div>
 									<div v-if="item.payStatus==1">결제상태: 결제예정</div>
 									<div v-else>결제상태: 결제완료
 										<div>결제번호: {{item.payId}}</div>
@@ -36,7 +37,7 @@
 									<div class="date" v-if="item.payStatus==2">결제일자: {{item.payDay}}</div>
 									<div class="result">
 										<button type="button" @click="fnCancel(item.classNo)" v-if="item.payStatus==1">수강취소</button>
-										<button type="button" @click="fnBuy(item.className, item.classNo, item.price)" v-if="item.payStatus==1">결제</button>
+										<button type="button" @click="fnBuy(item.className, item.classNo, item.price, item.count)" v-if="item.payStatus==1">결제</button>
 										<button type="button" @click="fnBuyCancel(item.classNo)" v-if="item.payStatus==2">결제 취소</button>
 									</div>
 								</div>
@@ -66,7 +67,8 @@
 			    payId : "",
 				price : "",
 				name : "",
-				payInfo: {}
+				payInfo: {},
+				count: ""
             };
         },
         methods: {
@@ -82,26 +84,27 @@
 	                   data: nparmap,
 	                   success: function(data) {
 						   console.log(data);
-	                       self.list = data.onedayInfo;		
-						   self.name = data.onedayInfo[0].userName;					
+	                       self.list = data.onedayInfo;
+						   self.name = data.onedayInfo[0].userName;		
+						  	 
 	                   }
 	               });
 				}else{
 					self.isCustomer = false;
 				}
             },
-			fnBuy(className, classNo, price) {
+			fnBuy(className, classNo, price, count) {
 			    var self = this;
 				IMP.request_pay({
 					pg: "html5_inicis",
 					pay_method: "card",
 					merchant_uid: 'oneday' + new Date().getTime(),
 					name: className,
-					amount: price,
+					amount: price*count,
 					buyer_name: self.name,
 					buyer_tel: "01012349876",
 				}, function (rsp){ 
-					//console.log(rsp);
+					console.log(rsp);
 			        if (rsp.success) {
 						$.ajax({
 							url: "/payment/payment/" + rsp.imp_uid,
@@ -199,7 +202,8 @@
 			}
         },
         mounted() {
-            this.fnClass();
+			var self = this;
+            self.fnClass();
         }
     });
     app.mount('#app');

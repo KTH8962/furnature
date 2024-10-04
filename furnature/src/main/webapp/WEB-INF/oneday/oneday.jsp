@@ -72,7 +72,7 @@
 					type : "POST",
 					data : nparmap,
 					success : function(data){
-						console.log(data)	
+						
 						self.list = [];
 						for(var i=0; i<data.onedayList.length; i++){
 							self.list.push(data.onedayList[i]);

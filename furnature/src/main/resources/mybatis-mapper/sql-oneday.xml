@@ -10,8 +10,8 @@
 	    FROM TBL_CLASS C
 	    INNER JOIN TBL_ONEDAYTHUMB T ON C.CLASS_NO = T.CLASS_NO
 	    ORDER BY C.CLASS_NO ASC 
-	  <!--  OFFSET #{startIndex} ROWS 
-	    FETCH FIRST #{outputNumber} ROWS ONLY-->
+	    OFFSET #{startIndex} ROWS 
+	    FETCH FIRST #{outputNumber} ROWS ONLY
 	</select>
 
 	<!--원데이클래스 개시글 수 조회-->

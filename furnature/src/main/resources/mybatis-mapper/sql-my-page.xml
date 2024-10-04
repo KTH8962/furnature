@@ -31,7 +31,7 @@
 
 	<!--원데이클래스 신청내역 조회(회원)-->
 	<select id="onedayInfo" parameterType="hashmap" resultType="com.example.furnature.model.MyPage">
-		SELECT U.USER_NAME,
+	   SELECT U.USER_NAME,
        C.PRICE, 
        P.NAME, 
        P.PAY_ID, 
