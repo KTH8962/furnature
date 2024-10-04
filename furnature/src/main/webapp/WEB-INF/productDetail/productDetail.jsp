@@ -95,6 +95,7 @@
 					<img :src="productDetail.productDetail1" alt="제품상세정보">
 				</div>
 				<div class="detail-bottom-box" v-if="bottomBox == '2'">
+					<img src="../uploadImages/product/delivery1.jpg" alt="배송교환정보">
 				</div>
 				<div class="detail-bottom-box" v-if="bottomBox == '3'">
 					<ul class="img-list product-list">
