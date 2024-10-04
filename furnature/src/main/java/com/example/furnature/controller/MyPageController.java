@@ -69,6 +69,13 @@ public class MyPageController {
     	return "/myPage/myPage-cart";
     }
     
+    // 장바구니 리스트 조회 페이지
+    @RequestMapping("/myPage/payment.do")
+    public String payment(Model model) throws Exception{
+    	model.addAttribute("activePage","cart");
+    	return "/myPage/myPage-payment";
+    }
+    
     // 마이페이지 리스트 db
     @RequestMapping(value = "/myPage/myPage.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
@@ -171,6 +178,15 @@ public class MyPageController {
 		resultMap = myPageService.removeCartCheck(map);
 		return new Gson().toJson(resultMap);
 	}
+    // 장바구니 목록 조회
+    @RequestMapping(value = "/myPage/payment.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String payment(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+    	HashMap<String, Object> resultMap = new HashMap<String, Object>();
+    	resultMap = myPageService.paymentList(map);
+    	System.out.println("CCCCCCCC"+map);
+    	return new Gson().toJson(resultMap);
+    }
 
 }
 
