@@ -344,4 +344,21 @@
 		FROM TBL_QNA
 		WHERE QNA_NO = #{qnaNo}
 	</delete>
+	
+	<!--관리자 커스텀 리스트-->
+	<select id="adminCustomList" parameterType="hashmap" resultType="com.example.furnature.model.Admin">
+		SELECT 
+		    *
+		FROM
+			TBL_CUSTOM C
+		INNER JOIN TBL_USER U ON C.USER_ID = U.USER_ID
+	</select>
+	
+	<!--관리자 커스텀 확정-->
+	<update id="customConfirm" parameterType="hashmap">
+		UPDATE TBL_CUSTOM
+		SET
+		CUSTOM_CON = 'Y'
+		WHERE PRODUCT_NO = #{productNo} AND USER_ID = #{userId}
+	</update>
 </mapper>

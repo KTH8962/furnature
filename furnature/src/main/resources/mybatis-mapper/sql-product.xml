@@ -171,4 +171,32 @@
 		GROUP BY O.ORDER_ID, U.USER_ID, O.PRODUCT_NO
 	</select>
 	
+	<!--커스텀-->
+	<insert id="productCustom" parameterType="hashmap">
+		INSERT INTO
+		TBL_CUSTOM
+		VALUES(CUSTOM_NO_SEQ.NEXTVAL,#{productNo},#{productName},#{userId},'N')
+	</insert>
+
+	<!--커스텀취소-->
+	<delete id="productCustomCancel" parameterType="hashmap">
+		DELETE FROM
+			TBL_CUSTOM
+		WHERE PRODUCT_NO = #{productNo} AND USER_ID = #{userId}
+	</delete>
+	
+	<!--커스텀체크-->
+	<select id="productCustomCheck" parameterType="hashmap" resultType="int">
+		SELECT COUNT(*) AS CNT
+		FROM TBL_CUSTOM
+		WHERE PRODUCT_NO = #{productNo} AND USER_ID = #{userId}
+	</select>
+	
+	<!--커스텀데이터확인-->
+	<select id="customCheck" parameterType="hashmap" resultType="com.example.furnature.model.Product">
+		SELECT *
+		FROM TBL_CUSTOM
+		WHERE PRODUCT_NO = #{productNo} AND USER_ID = #{userId}
+	</select>
+	
 </mapper>

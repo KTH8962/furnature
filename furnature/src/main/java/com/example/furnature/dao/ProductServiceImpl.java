@@ -268,4 +268,55 @@ public class ProductServiceImpl implements ProductService{
 		return resultMap;
 	}
 	
+	//커스텀
+	@Override
+	public HashMap<String, Object> productCustom(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			productmapper.productCustom(map);
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+	
+	//커스텀
+	@Override
+	public HashMap<String, Object> productCustomCheck(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			int count = productmapper.productCustomCheck(map);
+			Product list = productmapper.customCheck(map);
+			System.out.println("커스텀!@!!!!!!"+map);
+			if(count >= 1) {
+				resultMap.put("message", ResMessage.RM_SUCCESS);
+				resultMap.put("customFlg", "true");
+				resultMap.put("list",list);
+			}else {
+				resultMap.put("customFlg", "false");								
+				resultMap.put("list",list);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+	
+	//커스텀취소
+	@Override
+	public HashMap<String, Object> productCustomCancel(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			productmapper.productCustomCancel(map);
+			resultMap.put("message", ResMessage.RM_SUCCESS);
+		} catch (Exception e) {
+			// TODO: handle exception
+			resultMap.put("message", ResMessage.RM_UNKNOWN_ERROR);
+		}
+		return resultMap;
+	}
+	
 }

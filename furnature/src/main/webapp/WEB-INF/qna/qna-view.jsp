@@ -9,9 +9,7 @@
 		<div id="app">
 			<div id="container">
 				<div class="sub-tit">
-					<template v-if="list.qnaCategory==1">질문 </template>
-					<template v-if="list.qnaCategory==2">공지사항 </template>
-					게시판
+				질문게시판
 				</div>
 				<table class="table-type2">
 					<colgroup>

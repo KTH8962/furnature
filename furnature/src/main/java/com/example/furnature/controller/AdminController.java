@@ -54,6 +54,12 @@ public class AdminController {
 		model.addAttribute("activePage", "admin");
 		return "/admin/adminUser";
 	}
+	// 커스텀 신청 목록
+	@RequestMapping("/adminCustom.do")
+	public String admincustom(Model model) throws Exception {
+		model.addAttribute("activePage", "custom");
+		return "/admin/adminCustom";
+	}
 
 	// 유저 정보 수정
 	@RequestMapping("/adminEditor.do")
@@ -342,6 +348,22 @@ public class AdminController {
 	public String qnadelete(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap = adminService.qnaDelete(map);
+		return new Gson().toJson(resultMap);
+	}
+	// 커스텀리스트
+	@RequestMapping(value = "/admin/adminCustomList.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String adminCustomList(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = adminService.adminCustomList(map);
+		return new Gson().toJson(resultMap);
+	}
+	// 커스텀확정
+	@RequestMapping(value = "/admin/adminCustomConfirm.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String adminCustomConfirm(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = adminService.customConfirm(map);
 		return new Gson().toJson(resultMap);
 	}
 }

@@ -43,4 +43,10 @@ public interface AdminService {
 	
 	//게시판삭제
 	HashMap<String, Object> qnaDelete(HashMap<String, Object> map);
+	
+	//커스텀리스트
+	HashMap<String, Object> adminCustomList(HashMap<String, Object> map);
+	
+	//커스텀확정
+	HashMap<String, Object> customConfirm(HashMap<String, Object> map);
 }

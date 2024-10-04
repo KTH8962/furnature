@@ -34,4 +34,13 @@ public interface ProductService {
 	HashMap<String, Object> recommend(HashMap<String, Object> map);
 	//상품 구매한 사용자 정보
 	HashMap<String, Object> searchUser(HashMap<String, Object> map);
+
+	//커스텀
+	HashMap<String, Object> productCustom(HashMap<String, Object> map);
+
+	//커스텀취소
+	HashMap<String, Object> productCustomCancel(HashMap<String, Object> map);
+	
+	//커스텀체크
+	HashMap<String, Object> productCustomCheck(HashMap<String, Object> map);
 }

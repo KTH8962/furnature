@@ -78,8 +78,11 @@
 					<div class="btn-box">
 						<button type="button" @click="fnPay(1)">구매하기</button>
 						<button type="button" @click="fnPay(2)">장바구니</button>
-						<template v-if="productDetail.productCustom == 'Y'">
-							<button type="button" @click="fnCustom">커스텀 버튼</button>
+						<template v-if="productDetail.productCustom == 'Y' && customFlg !='true' ">
+							<button type="button" @click="fnCustom(productDetail.productCustom)">커스텀신청</button>
+						</template>
+						<template v-if="productDetail.productCustom == 'Y' && customFlg =='true' ">
+							<button type="button" @click="fnCustomCancel()">커스텀취소</button>
 						</template>
 					</div>				
 				</div>
@@ -220,10 +223,12 @@
 				sizeSelect : "",	// select v-model 사용하기 위한 변수
 				addPrice :	"",		// 사이즈에 가격 넣기위한 변수
 				productNo : '${productNo}', //상품페이지 에서 클릭한 상품번호 받아오는 변수
+				productName : "",
 				selectedSize : [],	// 선택된 select 변수로 저장하기위한 리스트
 				sessionId: "${sessionId}",
 				sessionAuth: "${sessionAuth}",
 				reviewList : [],
+				customFlg : "",
 				insertModal : false,
 				updateModal : false,
 				reviewTitle : ['아주좋아요', '맘에들어요', '좋아요', '그저그래요', '별로에요'],	//리뷰제목
@@ -237,6 +242,7 @@
 				ratingAvg : 0,
 				bottomBox : 4,
 				recommendList : [],
+				customCheckList : [],
 				userInfo : [],
 				reviewFlag : false
             };
@@ -265,6 +271,7 @@
 						console.log("pruductdetail");
 						console.log(data);
 						self.productDetail = data.productDetail;
+						self.productName = self.productDetail.productName;
 						//상품번호에 맞는 사이즈를 리스트 안에 담아주기
 						self.sizeList = [
 						     data.productDetail.productSize1,
@@ -293,17 +300,75 @@
 				});
           	},
 			// 커스텀 버튼
-			fnCustom(){
+			fnCustom(productCustom){
 				var self = this;
 				if(self.sessionId == null || self.sessionId == ''){
 					alert('로그인 후 이용 가능합니다.');
 					window.location.reload();
 					return;
 				}
-				if(confirm('커스텀 신청하시겠습니까?')){
-					alert('커스텀 신청이 완료되었습니다.');
+				if(confirm('커스텀 신청하시겠습니까?')){ 
+					var nparmap = {
+						productNo : self.productNo,
+						productName : self.productName,
+						userId	: self.sessionId
+					};
+					$.ajax({
+						url:"/productDetail/productCustom.dox",
+						dataType:"json",	
+						type : "POST", 
+						data : nparmap,
+						success : function(data) { 
+							console.log(data);
+							alert("커스텀 신청이 완료되었습니다. 관리자를 통해 2~3일 이내로 연락이 옵니다.");
+						}
+					});
 					window.location.reload();
 				}
+			},
+			//커스텀체크
+			fnCustomCheck(){
+				var self = this;
+				var nparmap = {
+					productNo : self.productNo,
+					userId	: self.sessionId
+				};
+				$.ajax({
+					url:"/productDetail/productCustomCheck.dox",
+					dataType:"json",	
+					type : "POST", 
+					data : nparmap,
+					success : function(data) {
+						self.customFlg = data.customFlg;
+						self.customCheckList = data.list;
+						console.log("커스텀",self.customCheckList.customCon);
+					}
+				});
+			},
+			fnCustomCancel(){
+				var self = this;
+				if(confirm('커스텀신청을 취소하시겠습니까?')){
+					if(self.customCheckList.customCon == 'Y'){
+						alert("이미 커스텀이 진행중임으로 취소할수없습니다.");
+						return;
+					}else{
+						var nparmap = {
+							productNo : self.productNo,
+							userId	: self.sessionId
+						};
+						$.ajax({
+							url:"/productDetail/productCustomCancel.dox",
+							dataType:"json",	
+							type : "POST", 
+							data : nparmap,
+							success : function(data) { 
+								alert("커스텀신청을 취소하셨습니다.");
+								self.fnCustomCheck();
+							}
+						});
+					}
+				}
+				window.location.reload();
 			},
 			// 결제 , 장바구니 버튼    shoppingCart
 			fnPay(buttonNo){
@@ -712,6 +777,7 @@
             var self = this;
 			self.fnGetProductDetail();
 			self.fnGetReviewList(1);
+			self.fnCustomCheck();
         }
     });
     app.mount('#app');
