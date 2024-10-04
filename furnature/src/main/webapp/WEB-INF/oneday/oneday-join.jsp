@@ -72,6 +72,8 @@
 						<div><pre>{{description}}</pre></div>
 					</div>
 					<div class="detail-bottom-box" v-if="bottomBox == '2'">
+						<img src="../uploadImages/oneday/지도.jpg">
+						<br><br>
 						<p>- 전화번호 : 010-5678-1234</p>
 						<br><br>
 						<p>- 주소 : 서울시 마포구 홍익로 5길 15, 5층 FURNATURE</p>
@@ -79,6 +81,7 @@
 						<p>- 오시는 길 : <br><br>
 						2호선 홍대입구역 9번 출구로 나와 300m 직진 후 첫 번째 교차로에서 우회전합니다.
 						우측에 있는 건물 5층으로 올라오시면 됩니다. 
+						<br><br>
 						</p>
 					</div>
 				</div>
