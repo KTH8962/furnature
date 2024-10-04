@@ -42,9 +42,10 @@
 					</a>
 					<span class="tit">{{item.productName}}</span>
 					<span class="price">{{item.productPrice}}원</span>
-					<span class="date">
-						{{item.productSize1}}
-					<span>
+					<span class="date">{{item.productSize1}}<span>
+					<template v-if="item.productCustom == 'Y'">
+						<span class="custom">C</span>
+					</template>
 				</li>
 			</ul>
 			<!--페이징처리-->
