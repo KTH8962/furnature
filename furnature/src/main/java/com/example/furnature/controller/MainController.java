@@ -42,4 +42,13 @@ public class MainController {
 		resultMap = mainService.searchOnedayList(map);
 		return new Gson().toJson(resultMap);
 	}
+	
+	// 경매 정보 목록 db
+	@RequestMapping(value = "/main/main-auction.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String searchAuctionList(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap = mainService.searchAuctionList(map);
+		return new Gson().toJson(resultMap);
+	}
 }
