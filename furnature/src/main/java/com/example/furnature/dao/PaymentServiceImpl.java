@@ -103,12 +103,10 @@ public class PaymentServiceImpl implements PaymentService{
 	public HashMap<String, Object> addPayment(HashMap<String, Object> map) {
 		HashMap <String, Object> resultMap = new HashMap<>();
 		try {
+			System.out.println(map);
 			paymentMapper.insertPayment(map);
 			if(map.get("category").toString().equals("oneday")) {
 				paymentMapper.updateOneday(map);
-			} else if(map.get("category").toString().equals("product")) {
-				System.out.println(map);
-				paymentMapper.insertProductOrder(map);
 			} else {
 				paymentMapper.insertProductOrder(map);
 			}
