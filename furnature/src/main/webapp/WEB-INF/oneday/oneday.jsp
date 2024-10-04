@@ -33,8 +33,9 @@
                    <button type="button" class="num" v-for="item in totalPages" :class="{active: item == currentPage}" @click="fnPageChange(item)">{{item}}</button>
                    <button type="button" class="next" :disabled="currentPage == totalPages" @click="fnPageChange(currentPage + 1)">다음</button>
                </div>
-
-				<button @click="fnRegister" v-if="isAdmin">클래스 등록</button>
+			   <div class="front-btn-box">
+		   			<button type="button" @click="fnRegister" v-if="isAdmin">클래스 등록</button>
+		   		</div>	
 			</div>
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
@@ -71,6 +72,7 @@
 					type : "POST",
 					data : nparmap,
 					success : function(data){
+						console.log(data)	
 						self.list = [];
 						for(var i=0; i<data.onedayList.length; i++){
 							self.list.push(data.onedayList[i]);

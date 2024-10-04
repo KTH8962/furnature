@@ -89,78 +89,71 @@ public class OnedayController {
 		return new Gson().toJson(resultMap);
 	}
 	
-	//원데이클래스 파일등록(관리자)
-	@RequestMapping(value = "/oneday/oneday-file.dox")
-	 public String result(@RequestParam("file") MultipartFile[] multi, @RequestParam("thumb") MultipartFile thumb, @RequestParam("classNo") int classNo, HttpServletRequest request,HttpServletResponse response, Model model)
-    {
-        String url = null;
-        String path=System.getProperty("user.dir");
+	// 파일 업로드
+    @RequestMapping(value = "/oneday/oneday-file.dox", method = RequestMethod.POST)
+    public String uploadFiles(@RequestParam("file") MultipartFile[] files, @RequestParam("classNo") int classNo, HttpServletRequest request, Model model) {
         try {
-        	if(thumb != null && !thumb.isEmpty()) {
-        		String thumbExtName = thumb.getOriginalFilename().substring(thumb.getOriginalFilename().lastIndexOf("."));
-                String thumbFileName = genSaveFileName(thumbExtName);	
-                File thumbSaveFile = new File(path + "\\src\\main\\webapp\\uploadImages\\oneday\\thumb", thumbFileName);
-                thumb.transferTo(thumbSaveFile);
-                
-                HashMap<String, Object> thumbMap = new HashMap<>();
-                thumbMap.put("fileName", thumbFileName);
-                thumbMap.put("filePath", "../uploadImages/oneday/thumb/" + thumbFileName);
-                thumbMap.put("fileSize", thumb.getSize());
-                thumbMap.put("extName", thumbExtName);
-                thumbMap.put("classNo", classNo);
-                onedayService.onedayFile(thumbMap);
-        	}
-            //String uploadpath = request.getServletContext().getRealPath(path);
-            String filePath = path;
-            for(MultipartFile files : multi) {
-            	if(!files.isEmpty()) {
-	            	String originFilename = files.getOriginalFilename();
-	                String extName = originFilename.substring(originFilename.lastIndexOf("."),originFilename.length());
-	                long size = files.getSize();
-	                String saveFileName = genSaveFileName(extName);	
-	                
-	                File saveFile = new File(path + "\\src\\main\\webapp\\uploadImages\\oneday", saveFileName);
-	                files.transferTo(saveFile);
-	                
-	                HashMap<String, Object> map = new HashMap<String, Object>();
-	                map.put("fileName", saveFileName);
-	                map.put("filePath", "../uploadImages/oneday/" + saveFileName);
-	                map.put("fileSize", size);
-	                map.put("extName", extName);
-	                map.put("classNo", classNo);
-	                onedayService.onedayFile(map);
-	                // insert 쿼리 실행         
+            String path = System.getProperty("user.dir") + "\\src\\main\\webapp\\uploadImages\\oneday";
+            for (MultipartFile file : files) {
+                if (!file.isEmpty()) {
+                    String fileName = genSaveFileName(file.getOriginalFilename());
+                    File saveFile = new File(path, fileName);
+                    file.transferTo(saveFile);
+
+                    HashMap<String, Object> fileMap = new HashMap<>();
+                    fileMap.put("fileName", fileName);
+                    fileMap.put("filePath", "../uploadImages/oneday/" + fileName);
+                    fileMap.put("fileSize", file.getSize());
+                    fileMap.put("extName", getFileExtension(file.getOriginalFilename()));
+                    fileMap.put("classNo", classNo);
+
+                    onedayService.onedayFile(fileMap);
+                }
             }
-       
-            }      
-//                model.addAttribute("fileName", multi.getOriginalFilename());
-//                model.addAttribute("filePath", file.getAbsolutePath());
-                
-                return "redirect:/oneday/oneday.do";
-            
-        }catch(Exception e) {
-            System.out.println(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/oneday/errorPage";
         }
         return "redirect:/oneday/oneday.do";
     }
-    
-    // 현재 시간을 기준으로 파일 이름 생성
-    private String genSaveFileName(String extName) {
-        String fileName = "";
-        
-        Calendar calendar = Calendar.getInstance();
-        fileName += calendar.get(Calendar.YEAR);
-        fileName += calendar.get(Calendar.MONTH);
-        fileName += calendar.get(Calendar.DATE);
-        fileName += calendar.get(Calendar.HOUR);
-        fileName += calendar.get(Calendar.MINUTE);
-        fileName += calendar.get(Calendar.SECOND);
-        fileName += calendar.get(Calendar.MILLISECOND);
-        fileName += extName;
-        
-        return fileName;
+
+    // 썸네일 업로드
+    @RequestMapping(value = "/oneday/oneday-thumb.dox", method = RequestMethod.POST)
+    public String uploadThumbnail(@RequestParam("thumb") MultipartFile thumb, @RequestParam("classNo") int classNo, HttpServletRequest request, Model model) {
+        try {
+            String path = System.getProperty("user.dir") + "\\src\\main\\webapp\\uploadImages\\oneday\\thumb";
+            if (thumb != null && !thumb.isEmpty()) {
+                String fileName = genSaveFileName(thumb.getOriginalFilename());
+                File saveFile = new File(path, fileName);
+                thumb.transferTo(saveFile);
+
+                HashMap<String, Object> thumbMap = new HashMap<>();
+                thumbMap.put("thumbName", fileName);
+                thumbMap.put("thumbPath", "../uploadImages/oneday/thumb/" + fileName);
+                thumbMap.put("thumbSize", thumb.getSize());
+                thumbMap.put("extName", getFileExtension(thumb.getOriginalFilename()));
+                thumbMap.put("classNo", classNo);
+
+                onedayService.onedayThumb(thumbMap);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/oneday/errorPage";
+        }
+        return "redirect:/oneday/oneday.do";
     }
-    
+
+    // 파일 이름 생성
+    private String genSaveFileName(String originalFilename) {
+        String extName = originalFilename.substring(originalFilename.lastIndexOf("."));
+        return System.currentTimeMillis() + extName;
+    }
+
+    // 파일 확장자 추출
+    private String getFileExtension(String fileName) {
+        return fileName.substring(fileName.lastIndexOf("."));
+    }
+
     //원데이클래스 인원초과 여부 확인
     @RequestMapping(value = "/oneday/oneday-numberLimit.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
   	@ResponseBody
