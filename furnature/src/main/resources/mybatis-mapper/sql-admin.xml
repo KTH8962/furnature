@@ -344,6 +344,11 @@
 		FROM TBL_QNA
 		WHERE QNA_NO = #{qnaNo}
 	</delete>
+	<delete id="commentAllDelete" parameterType="hashmap">
+		DELETE 
+		FROM TBL_QNA_COMMENT
+		WHERE QNA_NO = #{qnaNo}
+	</delete>
 	
 	<!--관리자 커스텀 리스트-->
 	<select id="adminCustomList" parameterType="hashmap" resultType="com.example.furnature.model.Admin">

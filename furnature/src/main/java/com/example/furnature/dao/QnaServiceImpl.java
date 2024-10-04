@@ -20,7 +20,6 @@ public class QnaServiceImpl implements QnaService {
 	public HashMap<String, Object> QnaList(HashMap<String, Object> map) {
 		 HashMap<String, Object> resultMap = new HashMap<>(); 
 		 try {
-			 System.out.println("qweqweqweqweqweqwe" + map);
 			 List<Qna> list = qnaMapper.QnaList(map);
 			 int count = qnaMapper.listCount(map);
 			 resultMap.put("list", list);
@@ -53,7 +52,6 @@ public class QnaServiceImpl implements QnaService {
 	public HashMap<String, Object> commentRegist(HashMap<String, Object> map) {
 		HashMap<String, Object> resultMap = new HashMap<>(); 
 		 try {
-			 System.out.println("##################comment@"+map);
 			 qnaMapper.commentRegist(map);
 			 resultMap.put("message", "success");
 		} catch (Exception e) {
@@ -110,7 +108,6 @@ public class QnaServiceImpl implements QnaService {
 	public HashMap<String, Object> qnaUpdate(HashMap<String, Object> map) {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		try {
-			System.out.println("@@@이거거거거거거거거map@@@"+map);
 			qnaMapper.qnaUpdate(map);
 			resultMap.put("message", "success");
 		} catch (Exception e) {
@@ -125,6 +122,7 @@ public class QnaServiceImpl implements QnaService {
 	public HashMap<String, Object> qnaDelete(HashMap<String, Object> map) {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		try {
+			qnaMapper.commentAllDelete(map);
 			qnaMapper.qnaDelete(map);
 			resultMap.put("message", "success");
 		} catch (Exception e) {

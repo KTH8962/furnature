@@ -26,6 +26,7 @@
                                 <div class="th">커스텀 제품이름</div>
                                 <div class="th">상품번호</div>
                                 <div class="th">전화번호</div>
+                                <div class="th">확정</div>
                             </div>
                         </div>
 						<div class="tbody">
@@ -36,7 +37,7 @@
                                 <div class="td">{{item.userPhone}}</div>
 								<div class="td">
 				                    <div class="tbl-btn-box">
-										<button  @click="fnCustom(item.userId,item.productNo)"  title="수정" class="edit">커스텀확정</button>
+										<button  @click="fnCustom(item.userId,item.productNo)"  title="커스텀확정" class="check">커스텀확정</button>
 				                    </div>
 				                </div>
 							</div>

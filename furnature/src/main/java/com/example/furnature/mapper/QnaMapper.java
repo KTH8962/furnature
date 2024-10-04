@@ -31,4 +31,6 @@ public interface QnaMapper {
 	void qnaUpdate(HashMap<String,Object> map);
 	
 	void qnaDelete(HashMap<String,Object> map);
+	
+	void commentAllDelete(HashMap<String,Object> map);
 }

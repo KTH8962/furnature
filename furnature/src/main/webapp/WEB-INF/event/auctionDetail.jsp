@@ -111,7 +111,7 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-						console.log(data);
+						//console.log(data);
 						for(var img of data.detailList) {
 							self.detailImgList.push(img.auctionImgName);
 							self.detailImgListPath.push(img.auctionImgPath);

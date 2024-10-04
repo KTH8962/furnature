@@ -1460,9 +1460,17 @@ body {
 	margin-bottom: 10px;
 	margin-left: 0px;
 }
+.myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .tit-box .desc {
+	font-size: 15px;
+	font-Weight: 400;
+	line-height: 1.6;
+}
 .myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .tit-box .price-box {
 	display: flex;
 	gap: 0 10px;
+}
+.myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .tit-box .price-box > * {
+	line-height: 1.6;
 }
 .myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .tit-box .date, .myPage-wrap .myPage-img-list-wrap .myPage-img-list-box .tit-box .end-day {
 	font-size: 14px;
@@ -1607,8 +1615,8 @@ body {
 	background-size: auto;
 	background-repeat: no-repeat;
 	background-image: url("../images/h_logo.png");
-	width: 99px;
-	height: 18px;
+	width: 126px;
+	height: 23px;
 }
 #admin-header .snb {
 	margin-top: 30px;
@@ -1638,8 +1646,21 @@ body {
 	height: 100%;
 }
 #admin-container .contents-top {
+	display: flex;
+	align-items: center;
 	border-bottom: 1px solid var(--color-contrastyC);
+	padding: 0px 40px;
 	height: 70px;
+}
+#admin-container .contents-top a {
+	padding-top: 2px;
+	padding-right: 30px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	font-size: 22px;
+	font-Weight: 500;
+	background: right center/auto no-repeat;
+	background-image: url("../images/ico/ico_moving2.png");
 }
 #admin-container .contents {
 	display: flex;
@@ -1721,7 +1742,6 @@ body {
 
 .admin-btn {
 	display: flex;
-	justify-content: center;
 	align-items: center;
 	font-size: 16px;
 	font-Weight: 500;
@@ -1740,7 +1760,6 @@ body {
 
 .tbl-btn-box {
 	display: flex;
-	justify-content: center;
 	align-items: center;
 	gap: 0 6px;
 }
@@ -1757,6 +1776,9 @@ body {
 }
 .tbl-btn-box button.remove {
 	background-image: url("../images/ico/ico_remove.png");
+}
+.tbl-btn-box button.check {
+	background-image: url("../images/ico/ico_check2.png");
 }
 
 /* //admin */
@@ -2046,6 +2068,22 @@ table img {
 	width: 25%;
 }
 .qna-table .tr > *:nth-of-type(5) {
+	width: 5%;
+}
+
+.custom-table .tr > *:nth-of-type(1) {
+	width: 15%;
+}
+.custom-table .tr > *:nth-of-type(2) {
+	width: 40%;
+}
+.custom-table .tr > *:nth-of-type(3) {
+	width: 15%;
+}
+.custom-table .tr > *:nth-of-type(4) {
+	width: 25%;
+}
+.custom-table .tr > *:nth-of-type(5) {
 	width: 5%;
 }
 

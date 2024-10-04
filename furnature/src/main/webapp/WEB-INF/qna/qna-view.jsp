@@ -114,7 +114,7 @@
 			},
 			fnComments() {
 				var self = this;
-				if(self.commentsUp == ""){
+				if(self.comments == ""){
 					alert("댓글을 입력해주세요");
 					return;
 				}
@@ -130,6 +130,7 @@
 					data: nparam,
 					success: function (data) {
 						alert("댓글을 입력하셨습니다.");
+						self.comments = "";
 						self.fnView();
 					}
 				});
@@ -198,8 +199,9 @@
 					type: "POST",
 					data: nparam,
 					success: function (data) {
+						console.log(data);
 						alert("게시물을 삭제하였습니다.");
-						location.href="/qna/qnalist.do"
+						location.href="/qna/qnalist.do";
 					}
 				});
 			},

@@ -84,6 +84,11 @@
 		FROM TBL_QNA
 		WHERE QNA_NO = #{qnaNo}
 	</delete>
+	<delete id="commentAllDelete" parameterType="hashmap">
+		DELETE 
+		FROM TBL_QNA_COMMENT
+		WHERE QNA_NO = #{qnaNo}
+	</delete>
 	<update id="commentUpdate" parameterType="hashmap">
 		UPDATE TBL_QNA_COMMENT
 		SET COMMENT_CONTENTS = #{commentContents}
