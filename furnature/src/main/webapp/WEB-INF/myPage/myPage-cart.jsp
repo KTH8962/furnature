@@ -273,7 +273,7 @@
                     type: "POST",
                     data: nparmap,
                     success: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         self.list = data.cartList;
 						
 						self.selectCheck = self.list.map(item => item.cartNo);
@@ -290,8 +290,8 @@
                     data: nparmap,
                     success: function(data) {
                         self.info = data.info;
-                        console.log("다음찍히는 콘솔이 userinfo");
-                        console.log(data.info);
+                        //console.log("다음찍히는 콘솔이 userinfo");
+                       // console.log(data.info);
                         self.myPoint = data.info.mileageTotal;
                     }
                 });
@@ -321,7 +321,7 @@
                         success: function(data) {
                             self.fnGetCartList();
                             alert("삭제되었습니다.");
-                            console.log(self.selectCheck);
+                            //onsole.log(self.selectCheck);
                         }
                     });
                 } else {
@@ -347,12 +347,12 @@
                     var item = self.list[i];
                     if (!self.selectCheck.includes(item.cartNo)) {
                         allChecked = false;
-						console.log(self.selectCheck);
+						//console.log(self.selectCheck);
                         break;
                     }
                 }
                 self.selectAll = allChecked;
-				console.log(self.selectCheck);
+				//console.log(self.selectCheck);
             },
             fnPay() {
 				alert('아직 구현중입니다.');
@@ -367,7 +367,7 @@
 			    var self = this;
 			    // index를 사용해 list의 item을 찾고 수량을 증가시킴
 			    self.list[index].count++;
-			    console.log(self.totalPrice);
+			    //console.log(self.totalPrice);
 			},
 			// 수량 + 버튼
 			fnDown(index) {
@@ -378,7 +378,7 @@
 			    } else {
 			        alert('수량은 1개 이상이어야 합니다!');
 			    }
-			    console.log(self.totalPrice);
+			    //console.log(self.totalPrice);
 			}
         },
         mounted() {

@@ -221,7 +221,7 @@
                     type: "POST", 
                     data: nparmap,
                     success: function(data) { 
-                        console.log(data);
+                        //console.log(data);
                         self.productDetail = data.productDetail;
                         
                         //상품번호에 맞는 사이즈를 리스트 안에 담아주기
@@ -265,9 +265,9 @@
                     data: nparmap,
                     success: function(data) {
                         self.info = data.info;
-                        console.log("다음찍히는 콘솔이 userinfo");
-                        console.log(data.info);
-						console.log(data.info.mileageTotal);
+                        //console.log("다음찍히는 콘솔이 userinfo");
+                        //console.log(data.info);
+						//console.log(data.info.mileageTotal);
 						if((self.myPoint == null || self.myPoint == '')){
 	                        self.myPoint = data.info.mileageTotal;
 						}
@@ -289,10 +289,14 @@
                     self.address = "";
                     self.postcode = "";
                 }
-                console.log(value);
+                //console.log(value);
             },
             fnBuy(title, totalPrice, name, phone, orderNo, mileage, pointPay){
                 var self = this;
+				if (!self.name || !self.phone || !self.postcode || !self.address || !self.detailAddress) {
+	                alert('모든 입력 항목을 채워주세요.');	
+	                return;
+	            }
 				IMP.request_pay({
 	                pg: "html5_inicis",
 	                pay_method: "card",
@@ -387,10 +391,10 @@
                         });
                     } else { //결제 실패
                         var msg = '결제를 실패하였습니다.';
-                        console.log(rsp.merchant_uid);
-                        console.log(self.info.userId);
-                        console.log(self.productNo);
-                        console.log(self.selectedSize);
+                        //console.log(rsp.merchant_uid);
+                        //console.log(self.info.userId);
+                        //console.log(self.productNo);
+                        //console.log(self.selectedSize);
                     }
                     alert(msg);
                     window.location.href = "/myPage/delivery.do";

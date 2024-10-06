@@ -55,5 +55,6 @@ public class Product {
 	private String userId;
 	private String avgRating;
 	private String orderDate;
+	private String cnt;
 	
 }
