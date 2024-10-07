@@ -71,6 +71,7 @@ public class PaymentController {
 	public String searchPayment(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap = paymentService.searchPaymentInfo(map);
+		System.out.println("CCCCCCCCCCCCC"+map);
 		return new Gson().toJson(resultMap);
 	}
 	

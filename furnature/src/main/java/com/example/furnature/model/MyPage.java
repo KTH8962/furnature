@@ -87,6 +87,7 @@ public class MyPage {
 	private String time;
 	
 	private String paymentAmount;
+	private String paymentPayDate;
 	
 	public String getAuctionBiddingPrice() {
 		return auctionBiddingPrice;
