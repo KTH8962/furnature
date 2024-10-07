@@ -9,7 +9,7 @@
 		WHERE PAYMENT_CATEGORY = #{category} AND PAYMENT_STATUS = 'P' AND ORDER_NO =
 		<if test="category == 'auction'"> #{auctionNo}</if>
 		<if test="category == 'oneday'"> #{classNo} AND USER_ID = #{sessionId}</if>
-		<if test="category == 'product'"> #{productNo}</if>
+		<if test="category == 'product'"> #{productNo} AND USER_ID = #{sessionId} AND PAYMENT_MERCHANT_UID = #{orderId}</if>
 	</select>
 	
 	<insert id="insertPayment" parameterType="hashmap">
@@ -22,6 +22,7 @@
 		SET PAYMENT_REFUND_DATE = SYSDATE + INTERVAL '9' HOUR,
 			PAYMENT_STATUS = 'R'
 		WHERE PAYMENT_CATEGORY = #{category} AND ORDER_NO = #{orderNo}
+		<if test="category == 'product'"> AND PAYMENT_MERCHANT_UID = #{orderId} </if>
 	</update>
 	
 	<insert id="insertProductOrder" parameterType="hashmap">
