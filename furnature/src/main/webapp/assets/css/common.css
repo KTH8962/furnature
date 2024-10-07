@@ -1879,6 +1879,9 @@ table img {
 .table-type1 tbody tr td {
 	padding: 20px 5px;
 }
+.table-type1 thead tr > *:nth-of-type(1), .table-type1 tbody tr > *:nth-of-type(1) {
+	padding-left: 15px;
+}
 
 .table-type2 {
 	border-top: 2px solid var(--color-contrasty2);

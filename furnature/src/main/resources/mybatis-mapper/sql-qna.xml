@@ -57,12 +57,12 @@
 	<insert id="commentRegist" parameterType="hashmap">
 		INSERT
 		INTO TBL_QNA_COMMENT
-		VALUES(SEQ_COMMENT_NO.NEXTVAL,#{qnaNo},#{userId},#{comments},SYSDATE,SYSDATE)
+		VALUES(SEQ_COMMENT_NO.NEXTVAL,#{qnaNo},#{userId},#{comments}, SYSDATE + INTERVAL '9' HOUR, SYSDATE + INTERVAL '9' HOUR)
 	</insert>
 	<insert id="qnaRegist" parameterType="hashmap" useGeneratedKeys="true" keyProperty="qnaNo" keyColumn="QNA_NO">
 		INSERT
 		INTO TBL_QNA(QNA_NO,USER_ID,QNA_TITLE,QNA_CONTENTS,QNA_CATEGORY,QNA_COUNT,CDATETIME,UDATETIME)
-		VALUES(QNA_SEQ.NEXTVAL,#{userId},#{qnaTitle},#{qnaContents},1,0,SYSDATE,SYSDATE)
+		VALUES(QNA_SEQ.NEXTVAL,#{userId},#{qnaTitle},#{qnaContents},1,0, SYSDATE + INTERVAL '9' HOUR, SYSDATE + INTERVAL '9' HOUR)
 	</insert>
 	<update id="fileRegist" parameterType="hashmap">
 		UPDATE TBL_QNA

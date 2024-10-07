@@ -27,16 +27,14 @@
 				</div>
 				<table class="table-type1">
 					<colgroup>
-						<col style="width: 5%;">
-						<col style="width: 10%;">
+						<col style="width: 7%;">
 						<col style="width: 12%;">
-						<col style="width: 58%;">
+						<col style="width: 66%;">
 						<col style="width: 15%;">
 					</colgroup>
 					<thead>
 						<tr>
 							<th>번호</th>
-							<th>카테고리</th>
 							<th>작성자</th>
 							<th>제목</th>
 							<th>작성일</th>
@@ -45,7 +43,7 @@
 					<tbody>
 						<tr v-for="item in list">
 							<td>{{item.qnaNo}}</td>
-							<td v-if="item.qnaCategory == 1"><p>Q&A질문</p></td>
+							<!-- <td v-if="item.qnaCategory == 1"><p>Q&A질문</p></td> -->
 							<td>{{item.userName}}</td>
 							<td>
 								<a href="javascript:void(0);" @click="fnView(item.qnaNo)">
