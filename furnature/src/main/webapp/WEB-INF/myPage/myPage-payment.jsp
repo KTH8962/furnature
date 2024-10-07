@@ -30,12 +30,19 @@
 									<div v-else>결제상태: 결제완료
 										<div>결제번호: {{item.orderId}}</div>
 									</div>
-									<div class="price-box">
-										<div class="price" v-if="item.payStatus==2">결제 금액 : {{item.price}} </div>
-										<div class="price" v-if="item.payStatus==1">결제 예정 금액 : {{item.price}} </div>
-									</div>
-									<div class="date" v-if="item.payStatus==1">신청일자: {{item.joinDay}}</div>
-									<div class="date" v-if="item.payStatus==2">결제일자: {{item.payDay}}</div>
+									<div class="date">결제일자: {{item.paymentPayDate}}</div>
+								</div>
+								<div class="result">
+									{{item.paymentStatus}}
+									<template v-if="item.paymentStatus == 'P'">
+										<p class="desc buy">
+											결제가 완료 되었습니다.
+										</p>
+										<button @click="fnBuyCancel(item.orderNo)">취소하기</button>
+									</template>
+									<template v-else>
+										<p class="desc">결제가 취소 된 품목 입니다.</p>
+									</template>
 								</div>
 							</div>
 						</div>
@@ -69,10 +76,9 @@
 	                   type: "POST",
 	                   data: nparmap,
 	                   success: function(data) {
-							//console.log(data);
-							//console.log(data.list);
+							console.log(data);
+							console.log(data.list);
 							self.list = data.list;
-							//console.log(self.list);
 	                   }
 	               });
 			},
@@ -82,6 +88,45 @@
 	            } else if(orderCate == "경매") {
 	                $.pageChange("/event/auctionDetail.do",{auctionNo : productNo});
 	            }
+			},
+			fnBuyCancel(orderNo) {
+				var self = this;
+				var nparmap = {productNo: orderNo, category: "product"};
+				$.ajax({
+					url:"/payment/payment-info.dox",
+					dataType:"json",	
+					type : "POST", 
+					data : nparmap,
+					success : function(data) {
+						console.log(data);				
+						$.ajax({
+							url: '/payment/cancel/' + data.payInfo.paymentMerchantUid,
+							method: 'POST',
+							data: {
+								imp_uid : data.payInfo.paymentImpUid,
+								merchant_uid: data.payInfo.paymentMerchantUid,
+								amount: data.payInfo.paymentAmount
+							},
+							success: function(data){
+								console.log(data);
+								$.ajax({
+									url: "/payment/payment-edit.dox",
+									method: "POST",
+									data: {
+										orderNo : orderNo,
+										category : "product",
+										userId : self.userId
+									},
+									success : function(data){
+										if(data.result == 'success') {
+											self.fnOrderInfo();
+										}
+									}
+								})
+							}
+						})
+					}
+				});
 			}
         },
         mounted() {

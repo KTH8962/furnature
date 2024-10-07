@@ -27,6 +27,4 @@ public interface MyPageService {
     HashMap<String, Object> removeCartCheck(HashMap<String, Object> map);
     //구매목록
     HashMap<String, Object> paymentList(HashMap<String, Object> map);
-    
-
 }
