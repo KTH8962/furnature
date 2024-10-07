@@ -346,13 +346,13 @@ jQuery.extend( {
 		prevBtn.onclick = () => {
 			cnt -= 1;
 			if(cnt < 0) cnt = 0;
-			this.mainMovingSlider(sliderList, sliderCnt, movingSize, cnt);
+			this.mainMovingSlider(sliderList, sliderCnt, movingSize, cnt, prevBtn, nextBtn);
 		}
 	
 		nextBtn.onclick = () => {
 			cnt += 1;
 			if (cnt > maxCnt) cnt = maxCnt;
-			this.mainMovingSlider(sliderList, sliderCnt, movingSize, cnt);
+			this.mainMovingSlider(sliderList, sliderCnt, movingSize, cnt, prevBtn, nextBtn);
 		}
 
 		prevBtn.onclick();
@@ -393,11 +393,21 @@ jQuery.extend( {
 	movingSlider: function (sliderwrap, movingSize, cnt) {
 		sliderwrap.style.transform = "translateX(" + (-movingSize*cnt) +"px)";
 	},	
-	mainMovingSlider: function (sliderwrap, sliderCnt, movingSize, cnt) {
+	mainMovingSlider: function (sliderwrap, sliderCnt, movingSize, cnt, prevBtn, nextBtn) {
 		sliderwrap.style.transform = "translateX(" + (-movingSize*cnt) +"px)";
 		sliderCnt.forEach((e) => {
 			e.classList.remove("active");
 			sliderCnt[cnt].classList.add("active");
+			if(cnt == 0) {
+				prevBtn.disabled = true;
+			} else {
+				prevBtn.disabled = false;
+			}
+			if(cnt + 1 == sliderCnt.length){
+				nextBtn.disabled = true;
+			} else {
+				nextBtn.disabled = false;
+			}
 		});
 	},
 	isNumeric: function( obj ) {
