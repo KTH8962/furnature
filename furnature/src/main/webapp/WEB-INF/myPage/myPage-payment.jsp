@@ -91,7 +91,7 @@
 			},
 			fnBuyCancel(orderNo) {
 				var self = this;
-				var nparmap = {productNo: orderNo, category: "product"};
+				var nparmap = {productNo: orderNo, category: "product", sessionId: self.userId};
 				$.ajax({
 					url:"/payment/payment-info.dox",
 					dataType:"json",	
