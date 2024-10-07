@@ -1218,7 +1218,6 @@ body {
 	margin-bottom: 0px;
 	margin-left: 20px;
 	display: flex;
-	justify-content: space-between;
 	flex-direction: column;
 }
 .review-wrap .review-box .info-box .desc-box {
@@ -1477,6 +1476,9 @@ body {
 	margin-right: 0px;
 	margin-bottom: 0px;
 	margin-left: 0px;
+}
+.myPage-wrap .myPage .list-none-box {
+	border-bottom: 1px solid var(--color-contrastyC);
 }
 .myPage-wrap .myPage-list {
 	display: flex;
@@ -2461,6 +2463,7 @@ table img {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	padding: 20px 0px;
 	height: 100%;
 }
 .list-none-box .txt {

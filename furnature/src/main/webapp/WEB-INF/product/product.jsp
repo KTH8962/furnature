@@ -102,7 +102,7 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-						console.log(data);
+						//console.log(data);
 						self.productList = data.productList;
 						self.totalPages = Math.ceil(data.count/self.pageSize);								
 					}

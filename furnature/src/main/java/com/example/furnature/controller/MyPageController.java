@@ -38,7 +38,6 @@ public class MyPageController {
     	request.setAttribute("classNo", map.get("classNo"));
         return "/myPage/myPage-oneday";
     }
-
     
     // 경매 입찰 리스트 조회 페이지
     @RequestMapping("/myPage/bidding.do")
@@ -69,10 +68,10 @@ public class MyPageController {
     	return "/myPage/myPage-cart";
     }
     
-    // 장바구니 리스트 조회 페이지
+    // 상품 구매 리스트 조회 페이지
     @RequestMapping("/myPage/payment.do")
     public String payment(Model model) throws Exception{
-    	model.addAttribute("activePage","cart");
+    	model.addAttribute("activePage","payment");
     	return "/myPage/myPage-payment";
     }
     

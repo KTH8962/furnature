@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     <div v-if="!list || list.length === 0">
-                       구매 목록이 없습니다.
+                       <div class="list-none-box"><div class="txt">배송 목록이 없습니다</div></div>
                     </div>
 				</div>   
             </div>
@@ -83,7 +83,7 @@
                     type: "POST",
                     data: nparmap,
                     success: function(data) {
-						console.log(data);
+						//console.log(data);
                         self.list = data.list;
                     }
                 });
