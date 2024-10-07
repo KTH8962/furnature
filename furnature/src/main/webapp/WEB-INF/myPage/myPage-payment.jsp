@@ -13,7 +13,7 @@
                 <div class="myPage-snb-wrap">
                     <jsp:include page="/layout/myPageSnb.jsp"></jsp:include>
                 </div>
-                <div class="myPage myPage-oneday">
+                <div class="myPage myPage-info">
 					<h2 class="myPage-tit">상품 구매내역</h2>			
 						<div class="myPage-img-list-wrap">
 							<div class="myPage-img-list-box" v-for="item in list">
@@ -23,26 +23,25 @@
 								<div class="tit-box">
 									<div class="top">
 										<div class="tit"><a href="javascript:void(0);" @click="fnProDetail(item.productNo, item.orderCate)">{{item.productName}}</a></div>
+										<div class="desc">선택옵션 : {{item.orderSize}} </div>
+										<div  class="desc">상품가격 : {{item.productPrice}} </div>
+										<div class="desc" >주문번호: {{item.orderId}}</div>
+										<div  class="desc">결제금액 : {{item.paymentAmount}} </div>
+										<div v-if="item.paymentStatus=='P'" class="desc">결제상태: 결제완료</div>
+										<div class="desc" v-else >결제상태: 결제취소</div>
+										<div class="date">결제일자: {{item.paymentPayDate}}</div>
 									</div>
-									<div>선택옵션 : {{item.orderSize}} </div>
-									<div>상품가격 : {{item.productPrice}} </div>
-									<div v-if="item.payStatus==1">결제상태: 결제예정</div>
-									<div v-else>결제상태: 결제완료
-										<div>결제번호: {{item.orderId}}</div>
+									<div class="result">
+										<template v-if="item.paymentStatus == 'P'">
+											<p class="desc buy">
+												결제가 완료 되었습니다.
+											</p>
+											<button @click="fnBuyCancel(item.orderNo, item.orderId)">결제 취소</button>
+										</template>
+										<template v-else>
+											<p class="desc wait">결제가 취소 된 품목 입니다.</p>
+										</template>
 									</div>
-									<div class="date">결제일자: {{item.paymentPayDate}}</div>
-								</div>
-								<div class="result">
-									{{item.paymentStatus}}
-									<template v-if="item.paymentStatus == 'P'">
-										<p class="desc buy">
-											결제가 완료 되었습니다.
-										</p>
-										<button @click="fnBuyCancel(item.orderNo)">취소하기</button>
-									</template>
-									<template v-else>
-										<p class="desc">결제가 취소 된 품목 입니다.</p>
-									</template>
 								</div>
 							</div>
 						</div>
@@ -89,9 +88,9 @@
 	                $.pageChange("/event/auctionDetail.do",{auctionNo : productNo});
 	            }
 			},
-			fnBuyCancel(orderNo) {
+			fnBuyCancel(orderNo , orderId) {
 				var self = this;
-				var nparmap = {productNo: orderNo, category: "product", sessionId: self.userId};
+				var nparmap = {productNo: orderNo, category: "product", sessionId: self.userId, orderId : orderId};
 				$.ajax({
 					url:"/payment/payment-info.dox",
 					dataType:"json",	
@@ -115,7 +114,8 @@
 									data: {
 										orderNo : orderNo,
 										category : "product",
-										userId : self.userId
+										userId : self.userId,
+										orderId : orderId
 									},
 									success : function(data){
 										if(data.result == 'success') {
