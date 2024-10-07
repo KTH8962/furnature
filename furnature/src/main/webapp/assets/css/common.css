@@ -1812,6 +1812,7 @@ body {
 
 .admin-btn {
 	display: flex;
+	justify-content: center;
 	align-items: center;
 	font-size: 16px;
 	font-Weight: 500;
@@ -2009,6 +2010,9 @@ table img {
 	font-family: "RubikNoto2", sans-serif;
 	align-self: center;
 	height: 50px;
+}
+.flex-table .tbody .tr .td {
+	padding-right: 8px;
 }
 .flex-table .tbody .tr b {
 	margin-top: 0px;
