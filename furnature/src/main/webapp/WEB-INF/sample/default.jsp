@@ -26,7 +26,7 @@
 				var self = this;
 				var nparmap = {};
 				$.ajax({
-					url:"/sample/sample.dox",
+					url:"",
 					dataType:"json",	
 					type : "POST", 
 					data : nparmap,

@@ -4,120 +4,106 @@
 <html>
 <head>
 	<jsp:include page="/layout/headlink.jsp"></jsp:include>
-	<style>
-		img {
-			width: 400px;
-		}
-	</style>	
 </head>
 <body>
 	<jsp:include page="/layout/header.jsp"></jsp:include>
 		<div id="app">
 			<div id="container">            
-	            <p class="blind">원데이클래스</p>
-		
-		<h2 class="sub-tit">원데이클래스 등록</h2>
-		
-		<div class="ip-list">
-		    <div class="tit-box">
-		        <p class="tit">클래스명</p>
-		    </div>
-		    <div class="bot-box">
-		        <div class="ip-box">
-		            <input type="text" v-model="className" @input="validateClassName">
-		        </div>
-		    </div>
-		</div>
-		
-		<div class="ip-list">
-		    <div class="tit-box">
-		        <p class="tit">수업일자</p>
-		    </div>
-		    <div class="bot-box">
-		        <div class="ip-box">
-		            <input type="datetime-local" v-model="classDate">
-		        </div>
-		    </div>
-		</div>
-		
-		<div class="ip-list">
-		    <div class="tit-box">
-		        <p class="tit">수강인원</p>
-		    </div>
-		    <div class="bot-box">
-		        <div class="ip-box">
-		            <input type="text" v-model="numberLimit">
-		        </div>
-		    </div>
-		</div>
-		
-		<div class="ip-list">
-		    <div class="tit-box">
-		        <p class="tit">수강료</p>
-		    </div>
-		    <div class="bot-box">
-		        <div class="ip-box">
-		           <input type="text" v-model="price" @input="validatePrice">
-		        </div>
-		    </div>
-		</div>
-		
-		<div class="ip-list">
-		    <div class="tit-box">
-		        <p class="tit">모집시작일</p>
-		    </div>
-		    <div class="bot-box">
-		        <div class="ip-box">
-		           <input type="datetime-local" v-model="startDay">
-		        </div>
-		    </div>
-		</div>
-		
-		<div class="ip-list">
-		    <div class="tit-box">
-		        <p class="tit">모집마감일</p>
-		    </div>
-		    <div class="bot-box">
-		        <div class="ip-box">
-		           <input type="datetime-local" v-model="endDay">
-		        </div>
-		    </div>
-		</div>
-		
-		<div class="ip-list">
-		    <div class="tit-box">
-		        <p class="tit">상세설명</p>
-		    </div>
-		    <div class="bot-box">
-				<div class="text-box">
-		            <textarea v-model="description" rows="10" cols="200"></textarea>
-		        </div>
-		    </div>
-		</div>
-		
-		<div class="ip-list">
-			<div class="tit-box">
-		        <p class="tit">썸네일 업로드</p>
-		    </div>
-			<div class="ip-box">
-			   <input type="file" @change="fnThumbUpload">
-			</div>
-		    <div class="tit-box">
-		        <p class="tit">파일 업로드</p>
-		    </div>
-			<div class="ip-box">
-			   <input type="file" multiple @change="fnFileUpload">
-			   <span v-if="file.length > 0">파일 {{file.length}}개</span>
-			</div>
-			<div>
-				<div class="front-btn-box">
-					<button type="button" @click="fnSave">저장</button>
-					<button type="button" @click="fnBack">취소</button>
+	            <p class="blind">원데이클래스</p>		
+				<h2 class="sub-tit">원데이클래스 등록</h2>				
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">클래스명</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+							<input type="text" v-model="className" @input="validateClassName">
+						</div>
+					</div>
+				</div>				
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">수업일자</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+							<input type="datetime-local" v-model="classDate">
+						</div>
+					</div>
+				</div>				
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">수강인원</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+							<input type="text" v-model="numberLimit">
+						</div>
+					</div>
+				</div>				
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">수강료</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+						<input type="text" v-model="price" @input="validatePrice">
+						</div>
+					</div>
+				</div>				
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">모집시작일</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+						<input type="datetime-local" v-model="startDay">
+						</div>
+					</div>
+				</div>				
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">모집마감일</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+						<input type="datetime-local" v-model="endDay">
+						</div>
+					</div>
+				</div>				
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">상세설명</p>
+					</div>
+					<div class="bot-box">
+						<div class="text-box">
+							<textarea v-model="description" rows="10" cols="200"></textarea>
+						</div>
+					</div>
+				</div>				
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">썸네일 업로드</p>
+					</div>
+					<div class="ip-box">
+					<input type="file" @change="fnThumbUpload">
+					</div>
+					<div class="tit-box">
+						<p class="tit">파일 업로드</p>
+					</div>
+					<div class="ip-box">
+					<input type="file" multiple @change="fnFileUpload">
+					<span v-if="file.length > 0">파일 {{file.length}}개</span>
+					</div>
+					<div>
+						<div class="front-btn-box">
+							<button type="button" @click="fnSave">저장</button>
+							<button type="button" @click="fnBack">취소</button>
+						</div>
+					</div>			
 				</div>
-			</div>			
+			</div>
 		</div>
-		
-	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
 </body>
 </html>

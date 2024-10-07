@@ -35,7 +35,7 @@
 				</div>
 			</div>
 			<!--상품 리스트출력 -->
-			<ul class="img-list product-list" style="display:flex;">
+			<ul class="img-list product-list">
 				<li v-for="item in productList">
 					<a href="javascript:void(0);" @click="fnPorductDetail(item.productNo)">
 						<figure class="img"><img :src="item.productThumbnail"></figure>

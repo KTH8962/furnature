@@ -64,7 +64,7 @@
 			</div>
 			<div class="detail-tab">
 				<button type="button" @click="fnTab(1)" :class="bottomBox == '1' ? 'active' : ''">상세 정보 설명</button>
-				<button type="button" @click="fnTab(2)" :class="bottomBox == '2' ? 'active' : ''">택배</button>
+				<button type="button" @click="fnTab(2)" :class="bottomBox == '2' ? 'active' : ''">배송 및 교환 정보</button>
 			</div>
 			<div class="detail-bottom">
 				<div class="detail-bottom-box" v-if="bottomBox == '1'">
@@ -72,7 +72,7 @@
 					<div>{{detailInfo.auctionContents}}</div>
 				</div>
 				<div class="detail-bottom-box" v-if="bottomBox == '2'">
-					택배
+					<jsp:include page="/layout/delivery.jsp"></jsp:include>
 				</div>
 			</div>
 			<div class="front-btn-box">				

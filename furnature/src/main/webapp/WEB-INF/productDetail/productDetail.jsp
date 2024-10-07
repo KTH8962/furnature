@@ -89,7 +89,7 @@
 			</div>
 			<div class="detail-tab">
 				<button type="button" @click="fnTab(1)" :class="bottomBox == '1' ? 'active' : ''">상세 정보 설명</button>
-				<button type="button" @click="fnTab(2)" :class="bottomBox == '2' ? 'active' : ''">배송 교환 정보</button>
+				<button type="button" @click="fnTab(2)" :class="bottomBox == '2' ? 'active' : ''">배송 및 교환 정보</button>
 				<button type="button" @click="fnTab(3)" :class="bottomBox == '3' ? 'active' : ''">관련 추천 상품</button>
 				<button type="button" @click="fnTab(4)" :class="bottomBox == '4' ? 'active' : ''">후기</button>
 			</div>			
@@ -98,7 +98,7 @@
 					<img :src="productDetail.productDetail1" alt="제품상세정보">
 				</div>
 				<div class="detail-bottom-box" v-if="bottomBox == '2'">
-					<img src="../uploadImages/product/delivery1.jpg" alt="배송교환정보">
+					<jsp:include page="/layout/delivery.jsp"></jsp:include>
 				</div>
 				<div class="detail-bottom-box" v-if="bottomBox == '3'">
 					<ul class="img-list product-list">
@@ -240,7 +240,7 @@
 				pageSize: 4,        
 				totalPages: 1,
 				ratingAvg : 0,
-				bottomBox : 4,
+				bottomBox : 1,
 				recommendList : [],
 				customCheckList : [],
 				userInfo : [],
