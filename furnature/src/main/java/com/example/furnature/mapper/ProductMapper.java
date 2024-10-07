@@ -72,4 +72,7 @@ public interface ProductMapper {
 
 	//커스텀리스트확인
 	Product customCheck(HashMap<String, Object> map);
+	
+	//리뷰중복확인
+	int reviewInsertCnt(HashMap<String, Object> map);
 }

@@ -101,15 +101,20 @@
 					<jsp:include page="/layout/delivery.jsp"></jsp:include>
 				</div>
 				<div class="detail-bottom-box" v-if="bottomBox == '3'">
-					<ul class="img-list product-list">
-						<li v-for="item in recommendList">
-							<a href="javascript:void(0);" @click="fnPorductDetail(item.productNo)">
-								<figure class="img"><img :src="item.productThumbnail"></figure>
-							</a>
-							<span class="tit">{{item.productName}}</span>
-							<span class="price">{{(item.productPrice*1).toLocaleString()}}원~</span>
-						</li>
-					<ul>
+					<ul class="img-list product-list" v-if="recommendList && Array.isArray(recommendList) && recommendList.length > 0">
+					     <li v-for="item in recommendList" :key="item.productNo">
+					         <a href="javascript:void(0);" @click="fnPorductDetail(item.productNo)">
+					             <figure class="img"><img :src="item.productThumbnail"></figure>
+					         </a>
+					         <span class="tit">{{item.productName}}</span>
+					         <span class="price">{{(item.productPrice * 1).toLocaleString()}}원~</span>
+					     </li>
+					 </ul>
+					 <ul v-else>
+					     <li>
+					         <span class="tit">관련 추천 상품이 없습니다.</span>
+					     </li>
+					 </ul>
 				</div>
 				<div class="detail-bottom-box" v-if="bottomBox == '4'">
 					<div id="review"> 
@@ -244,7 +249,8 @@
 				recommendList : [],
 				customCheckList : [],
 				userInfo : [],
-				reviewFlag : false
+				reviewFlag : false,
+				reviewInsertCnt : ""
             };
         },
 		computed: {
@@ -268,8 +274,8 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) { 
-						console.log("pruductdetail");
-						console.log(data);
+						//console.log("pruductdetail");
+						//console.log(data);
 						self.productDetail = data.productDetail;
 						self.productName = self.productDetail.productName;
 						//상품번호에 맞는 사이즈를 리스트 안에 담아주기
@@ -278,7 +284,7 @@
 						     data.productDetail.productSize2,
 						     data.productDetail.productSize3
 						 ].filter(size => size != null); // null 값을 제외하고 필터링
-						console.log(self.sizeList);
+						//console.log(self.sizeList);
 						self.updateData();
 						self.FnRecommend();
 						self.fnGetInfo();
@@ -319,7 +325,7 @@
 						type : "POST", 
 						data : nparmap,
 						success : function(data) { 
-							console.log(data);
+							//console.log(data);
 							alert("커스텀 신청이 완료되었습니다. 관리자를 통해 2~3일 이내로 연락이 옵니다.");
 							self.customContentFlg = false;
 						}
@@ -379,7 +385,7 @@
 				}else{
 					if(self.selectedSize == null || self.selectedSize ==''){
 						alert('선택된 상품이 없습니다.');
-						console.log("???"+self.selectedSize);
+						//console.log("???"+self.selectedSize);
 					}else{
 						
 						for(var i=0; i<self.selectedSize.length;i++){	//선택 순서에 따라 담긴 list에 맞는 사이즈로 변경 
@@ -455,14 +461,14 @@
 				}
 				
 				self.sizeSelect = '';
-				console.log(self.sizeSelect);
-				console.log(self.selectedSize);
+				//console.log(self.sizeSelect);
+				//console.log(self.selectedSize);
 			},
 			//수량 - 버튼
 			fnUp(index){
 				var self=this;
 				self.selectedSize[index].count ++;
-				console.log(self.totalPrice);
+				//console.log(self.totalPrice);
 			},
 			// 수량 + 버튼
 			fnDown(index){
@@ -472,7 +478,7 @@
 					alert('수량은 1개 이상 !');
 					self.selectedSize[index].count = 1;
 				}
-					console.log(self.totalPrice);
+					//console.log(self.totalPrice);
 			},
 			//리뷰 목록 출력
 			fnGetReviewList(page){
@@ -484,6 +490,7 @@
 					productNo : self.productNo,
 					startIndex : startIndex,
 			 	    outputNumber : outputNumber,
+					userId : self.sessionId
 				};
 				$.ajax({
 					url:"/productDetail/productReview.dox",
@@ -491,9 +498,10 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) { 
-						console.log(data);
-						self.reviewList = data.reviewList;
+						//console.log(data);
+						self.reviewList = data.reviewList ;
 						self.totalPages = Math.ceil(data.count/self.pageSize);
+						self.reviewInsertCnt = data.reviewInsertCnt;
 						if(data != null && data.reviewList.length > 0){
 							self.ratingAvg = data.reviewList[0].avgRating
 						}
@@ -501,24 +509,28 @@
 				});
 	      	},
 			//리뷰 작성 모달버튼
-			fnReviewInsert(){
-				var self = this;
-				if(self.sessionId != ""){
-					var self = this;
-					if(self.reviewFlag==false){
-						alert('상품을 구매하셔야 리뷰작성이 가능합니다.');
-						return;
-					}
-					if(confirm('리뷰를 작성하시겠습니까?')){
-						self.reviewContents = "";
-						self.insertModal = !self.insertModal;
-						console.log(self.reviewFlag);
-						self.updateModal = false;
-					}
-					//location.href='/productDetail/reviewInsert.do?productNo='+ encodeURIComponent(self.productNo);
-				}else{
-					alert('로그인 후 이용해주세요.');
-				}
+			fnReviewInsert() {
+			    var self = this;
+			    if (self.sessionId != "") {
+			        // 리뷰 중복 확인
+			        if (self.reviewInsertCnt > 0) {
+			            alert('이미 리뷰를 작성하셨습니다.');
+			            return;
+			        }
+			        if (self.reviewFlag == false) {
+			            alert('상품을 구매하셔야 리뷰작성이 가능합니다.');
+			            return;
+			        }
+			        if (confirm('리뷰를 작성하시겠습니까?')) {
+			            self.reviewContents = "";
+			            self.insertModal = !self.insertModal;
+			            //console.log(self.reviewFlag);
+			            self.updateModal = false;
+			        }
+			        // location.href='/productDetail/reviewInsert.do?productNo=' + encodeURIComponent(self.productNo);
+			    } else {
+			        alert('로그인 후 이용해주세요.');
+			    }
 			},
 			//리뷰 수정 모달버튼
 			fnReviewUpdate(reviewNo){
@@ -575,11 +587,11 @@
 				type : "POST", 
 				data : nparmap,
 				success : function(data) {
-					console.log(data);
-					console.log(data.reviewNo);
+					//console.log(data);
+					//console.log(data.reviewNo);
 					var reviewNo = data.reviewNo;
 					if(self.file){
-						console.log(data.reviewNo);
+						//console.log(data.reviewNo);
 					  const formData = new FormData();
 					  formData.append('file1', self.file);
 					  formData.append('reviewNo', reviewNo);
@@ -599,7 +611,7 @@
 							}
 						},
 						error: function(jqXHR, textStatus, errorThrown) {
-						  console.error('업로드 실패!', textStatus, errorThrown);
+						  //console.error('업로드 실패!', textStatus, errorThrown);
 						}
 					  });
 					}
@@ -629,8 +641,8 @@
 						type : "POST", 
 						data : nparmap,
 						success : function(data) {
-							console.log(data);
-							console.log(data.reviewNo);
+							//console.log(data);
+							//console.log(data.reviewNo);
 							var reviewNo = data.reviewNo;
 							if(self.file){
 								console.log(data.reviewNo);
@@ -653,7 +665,7 @@
 									}
 								},
 								error: function(jqXHR, textStatus, errorThrown) {
-								  console.error('업로드 실패!', textStatus, errorThrown);
+								 // console.error('업로드 실패!', textStatus, errorThrown);
 								}
 							  });
 							}
@@ -702,7 +714,7 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) { 
-						console.log(data);
+						//console.log(data);
 						self.recommendList = data.list;
 						self.fnrandomList(self.recommendList);
 					}
@@ -712,10 +724,12 @@
 				$.pageChange("/productDetail/productDetail.do",{productNo : productNo});
 			},
 			fnrandomList(list) {
-			    for (var i = list.length - 1; i > 0; i--) {
-			        var j = Math.floor(Math.random() * (i + 1));
-			        [list[i], list[j]] = [list[j], list[i]];
-			    }
+				if (Array.isArray(list) && list.length > 0) {
+				    for (var i = list.length - 1; i > 0; i--) {
+				        var j = Math.floor(Math.random() * (i + 1));
+				        [list[i], list[j]] = [list[j], list[i]];
+				    }
+				}
 			},
 			fnGetInfo() {
 			      var self = this;
@@ -727,7 +741,7 @@
 			          data: nparmap,
 			          success: function(data) {
 			              self.userInfo = data.list;
-			              console.log(data);
+			              //console.log(data);
 
 						  // 최근 주문 확인
 						  var dateLimte = new Date();
@@ -743,9 +757,9 @@
 
 						  // hasRecentOrder가 true이면 최근 주문이 있는 것입니다.
 						  if (self.reviewFlag) {
-						      console.log("최근 주문이 있습니다.");
+						     // console.log("최근 주문이 있습니다.");
 						  } else {
-						      console.log("최근 주문이 없습니다.");
+						      //console.log("최근 주문이 없습니다.");
 						  }
 			          }
 			      });
@@ -756,7 +770,7 @@
 			fnDelteOption(index) {
 				var self = this;
 				self.selectedSize.splice(index, 1); // .splice() 해당 인덱스의 1개 항목을 제거
-				console.log('삭제된 후 selectedSize:', this.selectedSize);
+				//console.log('삭제된 후 selectedSize:', this.selectedSize);
 			},
 			fnGetReviewInfo(reviewNo){
 				var self = this;
@@ -767,7 +781,7 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-						console.log(data); 
+						//console.log(data); 
 						self.reviewContents = data.reviewInfo.reviewContents;
 					}
 				});

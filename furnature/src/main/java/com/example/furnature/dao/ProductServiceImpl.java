@@ -145,9 +145,12 @@ public class ProductServiceImpl implements ProductService{
 			List<Product> reviewList = productmapper.productReview(map);
 			System.out.println("REVEIWSSSSSSSSSSSS"+map);
 			int count = productmapper.reviewCnt(map);
+			int reviewInsertCnt = productmapper.reviewInsertCnt(map);
 			System.out.println(count);
+			System.out.println("reviewInsertCntreviewInsertCntreviewInsertCnt"+reviewInsertCnt);
 			
 			resultMap.put("reviewList", reviewList);
+			resultMap.put("reviewInsertCnt", reviewInsertCnt);
 			resultMap.put("count", count);
 			resultMap.put("result", "success");
 			resultMap.put("message", ResMessage.RM_SUCCESS);

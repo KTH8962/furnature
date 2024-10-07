@@ -69,10 +69,10 @@
 	                   type: "POST",
 	                   data: nparmap,
 	                   success: function(data) {
-							console.log(data);
-							console.log(data.list);
+							//console.log(data);
+							//console.log(data.list);
 							self.list = data.list;
-							console.log(self.list);
+							//console.log(self.list);
 	                   }
 	               });
 			},
