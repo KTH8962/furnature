@@ -267,6 +267,7 @@ body {
 	color: var(--color-contrasty2);
 	line-height: 1;
 	font-family: var(--base-font);
+	overflow-x: hidden;
 }
 
 /** app **/
@@ -877,7 +878,8 @@ body {
 	margin-left: 0px;
 }
 #main-visual .visual-wrap {
-	width: 1920px;
+	width: 100%;
+	min-width: 1920px;
 	height: 730px;
 	overflow: hidden;
 }
@@ -887,7 +889,8 @@ body {
 }
 #main-visual .visual-wrap .visual-list .visual-box {
 	position: relative;
-	width: 1920px;
+	min-width: 1920px;
+	width: 1920%;
 	height: 730px;
 }
 #main-visual .visual-wrap .visual-list .visual-box a {
