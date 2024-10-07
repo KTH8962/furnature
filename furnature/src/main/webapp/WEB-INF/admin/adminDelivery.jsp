@@ -42,14 +42,16 @@
                                 <div class="td">{{item.userId}}</div>
                                 <div class="td">{{item.productName}}</div>
                                 <div class="td">{{item.orderCount}}</div>
-								<div class="select-box">
-		                            <select v-model="item.deliveryCate">
-		                                <option value="0">상품준비중</option>
-		                                <option value="1">배송준비중</option>
-		                                <option value="2">배송중</option>
-		                                <option value="3">배송완료</option>
-		                            </select>
-		                        </div>
+								<div class="td">
+									<div class="select-box">
+										<select v-model="item.deliveryCate">
+											<option value="0">상품준비중</option>
+											<option value="1">배송준비중</option>
+											<option value="2">배송중</option>
+											<option value="3">배송완료</option>
+										</select>
+									</div>
+								</div>
 								<div class="td">
                                     <div class="tbl-btn-box">
 										<button  @click="fnUpdate(item.deliveryCate,item.orderId)"  title="수정" class="edit">수정</button>

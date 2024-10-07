@@ -49,12 +49,14 @@
                     </div>
                 </div>
             </div>
-			<div class="pagenation">
-			    <button type="button" class="prev"   @click="fnBeforePage()">이전</button>
-			    <button type="button" class="num" v-for="page in totalPages" :class="{active: page == currentPage}" @click="fnGetList(page)">
-			        {{ page }}
-			    </button>
-			    <button type="button" class="next"  @click="fnAfterPage()">다음</button>
+			<div class="contents-bottom">
+				<div class="pagenation">
+					<button type="button" class="prev"   @click="fnBeforePage()">이전</button>
+					<button type="button" class="num" v-for="page in totalPages" :class="{active: page == currentPage}" @click="fnGetList(page)">
+						{{ page }}
+					</button>
+					<button type="button" class="next"  @click="fnAfterPage()">다음</button>
+				</div>
 			</div>
         </div>
 	</div>
