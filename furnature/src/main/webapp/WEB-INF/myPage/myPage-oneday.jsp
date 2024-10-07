@@ -43,6 +43,9 @@
 									</div>
 								</div>
 							</div>
+							<div v-if="!list || list.length === 0">
+								<div class="list-none-box"><div class="txt">수강신청 목록이 없습니다</div></div>
+							</div>
 						</div>
 					</div>					
                 </div>
@@ -85,8 +88,7 @@
 	                   data: nparmap,
 	                   success: function(data) {
 	                       self.list = data.onedayInfo;
-						   self.name = data.onedayInfo[0].userName;		
-						  	 
+						   self.name = data.onedayInfo[0].userName;
 	                   }
 	               });
 				}else{

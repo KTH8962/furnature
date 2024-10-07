@@ -66,6 +66,9 @@
 								</div>
 							</div>
 						</div>
+						<div v-if="!biddingList || biddingList.length === 0">
+							<div class="list-none-box"><div class="txt">경매 입찰 목록이 없습니다</div></div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -171,7 +174,7 @@
 			},
 			fnBuyCancel(orderNo) {
 				var self = this;
-				var nparmap = {auctionNo: orderNo, category: "auction"};
+				var nparmap = {auctionNo: orderNo, category: "auction", sessionId: self.sessionId};
 				$.ajax({
 					url:"/payment/payment-info.dox",
 					dataType:"json",	

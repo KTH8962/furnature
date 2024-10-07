@@ -57,7 +57,8 @@
 					type : "POST", 
 					data : nparmap,
 					success : function(data) {
-						console.log(data);
+						//console.log(data);
+						if(Object.keys(data.groupedMileage).length == 0) return; 
 						const keys = Object.keys(data.groupedMileage);
 						if(data.groupedMileage[keys[0]].length > 0) {
 							self.mileageList = data.groupedMileage;

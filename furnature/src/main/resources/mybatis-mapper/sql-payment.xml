@@ -6,10 +6,10 @@
 	<select id="selectPaymentInfo" parameterType="hashmap" resultType="com.example.furnature.model.Pay">
 		SELECT *
 		FROM TBL_PAYMENT
-		WHERE PAYMENT_CATEGORY = #{category} AND PAYMENT_STATUS = 'P' AND ORDER_NO =
+		WHERE PAYMENT_CATEGORY = #{category} AND PAYMENT_STATUS = 'P' AND USER_ID = #{sessionId} AND ORDER_NO =
 		<if test="category == 'auction'"> #{auctionNo}</if>
-		<if test="category == 'oneday'"> #{classNo} AND USER_ID = #{sessionId}</if>
-		<if test="category == 'product'"> #{productNo} AND USER_ID = #{sessionId} AND PAYMENT_MERCHANT_UID = #{orderId}</if>
+		<if test="category == 'oneday'"> #{classNo}</if>
+		<if test="category == 'product'"> #{productNo}} AND PAYMENT_MERCHANT_UID = #{orderId}</if>
 	</select>
 	
 	<insert id="insertPayment" parameterType="hashmap">
