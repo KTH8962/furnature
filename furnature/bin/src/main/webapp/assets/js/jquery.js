@@ -326,6 +326,43 @@ jQuery.extend( {
 		form.submit();
 		document.body.removeChild(form);
 	},
+	sliderEvent : function() {
+		const {sliderWrap, sliderList, sliderCnt, prevBtn, nextBtn} = {
+			sliderWrap : document.querySelector(".thumb-wrap"),
+			sliderList : document.querySelector(".thumb-list"),
+			sliderCnt : document.querySelectorAll(".thumb-box"),
+			prevBtn : document.querySelector(".thumb-arrow .prev"),
+			nextBtn : document.querySelector(".thumb-arrow .next")            
+		};
+		let styleWrap = window.getComputedStyle(sliderWrap);
+		
+		let cnt = 0;
+		let maxCnt = sliderCnt.length-1;
+	
+		if(sliderCnt.length < 2) {
+			document.querySelector(".thumb-arrow").style.display = 'none';
+		}
+
+		let sliderSize = parseInt(styleWrap.getPropertyValue("width"));
+		sliderList.style.width = parseInt(sliderSize) * sliderCnt.length + "px";
+		var movingSize = parseInt(sliderSize);
+		
+		prevBtn.onclick = () => {
+			cnt -= 1;
+			if(cnt < 0) cnt = 0;
+			this.movingSlider(sliderList, movingSize, cnt);
+		}
+	
+		nextBtn.onclick = () => {
+			cnt += 1;
+			if (cnt > maxCnt) cnt = maxCnt;
+			this.movingSlider(sliderList, movingSize, cnt);
+		}
+
+	},	
+	movingSlider: function (sliderwrap, movingSize, cnt) {
+		sliderwrap.style.transform = "translateX(" + (-movingSize*cnt) +"px)";
+	},
 	isNumeric: function( obj ) {
 
 		// parseFloat NaNs numeric-cast false positives (null|true|false|"")

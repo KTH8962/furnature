@@ -10,7 +10,7 @@ public class Oneday {
 	private String count;
 	private String className;
 	private String price;
-	private String headCount;
+	private String numberLimit;
 	private String classDate;
 	private String startDay;
 	private String endDay;
@@ -20,5 +20,14 @@ public class Oneday {
 	private String filePath;
 	private String fileSize;
 	private String orgName;
-	
+	private String currentNumber;
+	private String description;
+	private String joinDay;
+	private String payDay;
+	private String onedayCheck;
+	private String thumbName;
+	private String thumbNo;
+	private String thumbSize;
+	private String thumbPath;
+	private String thumb;
 }

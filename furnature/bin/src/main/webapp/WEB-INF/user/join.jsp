@@ -10,91 +10,100 @@
 	<div id="app">
 		<div id="container">            
             <p class="blind">회원가입 페이지</p>
-			<div class="ip-list">
-                <div class="tit-box">
-                    <p class="tit">아이디</p>
-                </div>
-                <div class="bot-box">
-                    <div class="ip-box">
-                        <input type="text" placeholder="아이디를 입력해주세요." v-model="id" ref="idRef" @change="idCheck = false">
-						<button type="button" @click="fnIdCheck">중복체크</button>
-                    </div>
-                </div>
-            </div>
-			<div class="ip-list">
-                <div class="tit-box">
-                    <p class="tit">비밀번호</p>
-                </div>
-                <div class="bot-box">
-                    <div class="ip-box">
-                        <input type="password" v-model="pwd" ref="pwdRef">
-                    </div>
-                </div>
-            </div>
-			<div class="ip-list">
-                <div class="tit-box">
-                    <p class="tit">비밀번호 확인</p>
-                </div>
-                <div class="bot-box">
-                    <div class="ip-box">
-                        <input type="password" v-model="pwdRe" ref="pwdReRef">
-                    </div>
-                </div>
-            </div>
-			<div class="ip-list">
-			    <div class="tit-box">
-			        <p class="tit">주소</p>
-			    </div>
-			    <div class="bot-box">
-			        <div class="ip-box">
-						<input type="hidden" id="postcode" placeholder="우편번호" readonly="readonly">
-						<button type="button" @click="daumPost">주소검색</button><br>
-						<input type="text" id="address" placeholder="주소"  readonly="readonly" v-model="address"><br>
-						<input type="text" id="detailAddress" placeholder="상세주소" v-model="detailAddress" ref="addrRef">
-			        </div>
-			    </div>
+			<h2 class="sub-tit">회원가입</h2>
+			<div class="join-wrap">	
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">아이디</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box ip-ico-box type2" placeholder="아이디는 5자 이상 입력해주세요">
+							<input type="text" placeholder="아이디를 입력해주세요." v-model="id" ref="idRef" @change="idCheck = false">
+							<div class="btn-box type2">
+								<button type="button" @click="fnIdCheck">중복체크</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">비밀번호</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+							<input type="password" v-model="pwd" ref="pwdRef" placeholder="비밀번호는 영어 숫자 특수문자를 포함해 8자 이상 입력해주세요">
+						</div>
+					</div>
+				</div>
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">비밀번호 확인</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+							<input type="password" v-model="pwdRe" ref="pwdReRef" placeholder="비밀번호를 재입력 입력해주세요">
+						</div>
+					</div>
+				</div>
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">주소</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box ip-ico-box type2">
+							<input type="hidden" id="postcode" placeholder="우편번호" readonly="readonly" v-model="zipCode">						
+							<input type="text" id="address" placeholder="주소"  readonly="readonly" v-model="address">
+							<div class="btn-box type2">
+								<button type="button" @click="daumPost">주소검색</button>
+							</div>
+						</div>
+						<div class="ip-box mgt10">
+							<input type="text" id="detailAddress" placeholder="상세주소를 입력해주세요" v-model="detailAddress" ref="addrRef">
+						</div>
+					</div>
+				</div>
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">이름</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+							<input type="text" v-model="name" ref="nameRef" placeholder="이름을 입력해주세요">
+						</div>
+					</div>
+				</div>
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">이메일</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+							<input type="text" v-model="email" ref="emailRef" placeholder="이메일은 형식에 맞게 입력해주세요">
+						</div>
+					</div>
+				</div>
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">핸드폰번호</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+							<input type="text" v-model="phone" ref="phoneRef" placeholder="핸드폰 번호는 숫자만 입력해주세요">
+						</div>
+					</div>
+				</div>
+				<div class="ip-list">
+					<div class="tit-box">
+						<p class="tit">생일</p>
+					</div>
+					<div class="bot-box">
+						<div class="ip-box">
+							<input type="date" v-model="birth" ref="birthRef" placeholder="생일을 입력해주세요">
+						</div>
+					</div>
+				</div>
+				<div class="btn-box front-box mgt20"><button type="button" @click="fnJoin">회원가입</button></div>
 			</div>
-			<div class="ip-list">
-                <div class="tit-box">
-                    <p class="tit">이름</p>
-                </div>
-                <div class="bot-box">
-                    <div class="ip-box">
-                        <input type="text" v-model="name" ref="nameRef">
-                    </div>
-                </div>
-            </div>
-			<div class="ip-list">
-                <div class="tit-box">
-                    <p class="tit">이메일</p>
-                </div>
-                <div class="bot-box">
-                    <div class="ip-box">
-                        <input type="text" v-model="email" ref="emailRef">
-                    </div>
-                </div>
-            </div>
-			<div class="ip-list">
-                <div class="tit-box">
-                    <p class="tit">핸드폰번호</p>
-                </div>
-                <div class="bot-box">
-                    <div class="ip-box">
-                        <input type="text" v-model="phone" ref="phoneRef">
-                    </div>
-                </div>
-            </div>
-			<div class="ip-list">
-			    <div class="tit-box">
-			        <p class="tit">생일</p>
-			    </div>
-			    <div class="bot-box">
-			        <div class="ip-box">
-			            <input type="date" v-model="birth" ref="birthRef">
-			        </div>
-			    </div>
-			</div>
-			<div><button type="button" @click="fnJoin">회원가입</button></div>
 		</div>
 	</div>
 	<jsp:include page="/layout/footer.jsp"></jsp:include>
@@ -105,17 +114,18 @@
     const app = Vue.createApp({
         data() {
             return {
-				id : "user4",
-				pwd : "user123!",
-				pwdRe : "user123!",
+				id : "",
+				pwd : "",
+				pwdRe : "",
 				addr: "",
 				address : "",
 				detailAddress : "",
-				name : "김이름",
-				email : "test@test.com",
-				phone : "01012341234",
-				birth : "1994-02-03",
-				idCheck : true
+				zipCode: "",
+				name : "",
+				email : "",
+				phone : "",
+				birth : "",
+				idCheck : false
             };
         },
         methods: {
@@ -138,27 +148,29 @@
 				    var email = self.email;
 					var birth = self.birth;
 				    /* 아이디 */
-				    if(id.value == "") {
-				        window.alert('아이디를 입력해주세요');
-				        id.focus();
+				    if(id == "") {
+				        alert('아이디를 입력해주세요');
 				        return;
 				    } else if(!self.compare(check1,id, "idRef","아이디는 5~20자의 영문 대소문자와 숫자로만 입력해주세요.")){
 				        return;
 				    } else if(!self.compare(check2,pwd, "pwdRef","비밀번호는 영문, 숫자, 특수기호 조합 8자 이상 입력해주세요.")){
 				        return;
 				    } else if(pwd != pwdRe){
-				        window.alert('비밀번호가 일치하지 않습니다.');
+				        alert('비밀번호가 일치하지 않습니다.');
 				        return;
 				    } else if(address == "" || detailAddress == "") {
 						alert("주소를 입력해주세요");
 						self.$refs.addrRef.focus();
+						return;
 					} else if(name == ""){
-				        window.alert('이름을 입력해주세요.');
+				        alert('이름을 입력해주세요.');
 				        self.$refs.nameRef.focus();
 				        return;
 				    } else if(!self.compare(check3, email, "emailRef","적합하지 않은 이메일 형식입니다")){
 				        return;
-				    } else if(!self.compare(check4, phone, "phoneRef","전화번호는 숫자만 작성해주세요.")){
+				    } else if(self.phone == "") {
+						alert("전화번호를 입력해주세요.");
+					} else if(!self.compare(check4, phone, "phoneRef","전화번호는 숫자만 작성해주세요.")){
 				        return;
 				    } else if(birth == ""){
 						alert("생일을 입력해주세요");
@@ -169,7 +181,7 @@
 					}
 					
 					var self = this;
-					var nparmap = {id: self.id, pwd: self.pwd, addr: self.addr, name: self.name, email: self.email, phone: self.phone, birth: self.birth};
+					var nparmap = {id: self.id, pwd: self.pwd, zipCode: self.zipCode, addr: self.addr, name: self.name, email: self.email, phone: self.phone, birth: self.birth};
 					console.log(nparmap);
 					$.ajax({
 						url:"/user/join.dox",
@@ -219,7 +231,6 @@
             },
 			compare(check, form, name, message) {
 				var self = this;
-				//console.log(check, form, check.test(form))
 			    if(check.test(form)) {
 			        return true;
 			    }
@@ -231,16 +242,12 @@
 				var self = this;
 			    new daum.Postcode({
 			        oncomplete: function(data) {
-			            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
-			            // 예제를 참고하여 다양한 활용법을 확인해 보세요.
-			            
-			            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
 			            if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
 			                addr = data.roadAddress;
 			            } else { // 사용자가 지번 주소를 선택했을 경우(J)
 			                addr = data.jibunAddress;
 			            }
-			            document.getElementById('postcode').value = data.zonecode;
+			            self.zipCode = data.zonecode;
 			            self.address = addr;
 			            document.getElementById('detailAddress').focus();
 			        }

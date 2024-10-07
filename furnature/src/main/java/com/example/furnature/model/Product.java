@@ -1,5 +1,7 @@
 package com.example.furnature.model;
 
+import java.sql.Date;
+
 import lombok.Data;
 
 @Data
@@ -25,15 +27,34 @@ public class Product {
 	private String productCdateTime;//생성일
 	private String productUdateTime;//수정일
 	
+	//커스텀
+	private String customNo;
+	private String customCon;
 	//카테고리
 	private String cateNo; 			//카테고리넘버
 	private String cateName;		//카테고리이름 
 	
 	//상품 이미지 테이블
-	private String prodcutThumbnail; //상품 썸네일 이미지 URL
+	private String productThumbnail; //상품 썸네일 이미지 URL
 	private String productDetail1; //상품 상세이미지1 URL
-	private String productDetail2; //상품 상세이미지2 URL
-	private String productDetail3; //상품 상세이미지3 URL
-	private String productDetail4; //상품 상세이미지4 URL
-
+	
+	//주문
+	private String orderId;
+	private String orderPrice;
+	private String mileagePrice;
+	
+	//리뷰
+	private String reviewNo;
+	private String reviewRating;
+	private String reviewLike;
+	private String reviewTitle;
+	private String reviewContents;
+	private String reviewImgPath;
+	private String reviewCdateTime; 
+	private String reviewUdateTime;
+	private String userId;
+	private String avgRating;
+	private String orderDate;
+	private String cnt;
+	
 }

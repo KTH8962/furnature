@@ -326,6 +326,80 @@ jQuery.extend( {
 		form.submit();
 		document.body.removeChild(form);
 	},
+	mainSlider : function() {
+		const {sliderWrap, sliderList, sliderCnt, prevBtn, nextBtn} = {
+			sliderWrap : document.querySelector(".visual-wrap"),
+			sliderList : document.querySelector(".visual-list"),
+			sliderCnt : document.querySelectorAll(".visual-box"),
+			prevBtn : document.querySelector(".visual-arrow .prev"),
+			nextBtn : document.querySelector(".visual-arrow .next")
+		};
+
+		let styleWrap = window.getComputedStyle(sliderWrap);
+		let sliderSize = parseInt(styleWrap.getPropertyValue("width"));
+		let movingSize = parseInt(sliderSize);
+		let cnt = 0;
+		let maxCnt = sliderCnt.length-1;
+
+		sliderList.style.width = parseInt(sliderSize) * sliderCnt.length + "px";
+		
+		prevBtn.onclick = () => {
+			cnt -= 1;
+			if(cnt < 0) cnt = 0;
+			this.mainMovingSlider(sliderList, sliderCnt, movingSize, cnt);
+		}
+	
+		nextBtn.onclick = () => {
+			cnt += 1;
+			if (cnt > maxCnt) cnt = maxCnt;
+			this.mainMovingSlider(sliderList, sliderCnt, movingSize, cnt);
+		}
+
+		prevBtn.onclick();
+	},
+	sliderEvent : function() {
+		const {sliderWrap, sliderList, sliderCnt, prevBtn, nextBtn} = {
+			sliderWrap : document.querySelector(".thumb-wrap"),
+			sliderList : document.querySelector(".thumb-list"),
+			sliderCnt : document.querySelectorAll(".thumb-box"),
+			prevBtn : document.querySelector(".thumb-arrow .prev"),
+			nextBtn : document.querySelector(".thumb-arrow .next")            
+		};
+		let styleWrap = window.getComputedStyle(sliderWrap);
+		let sliderSize = parseInt(styleWrap.getPropertyValue("width"));
+		let movingSize = parseInt(sliderSize);
+		let cnt = 0;
+		let maxCnt = sliderCnt.length-1;
+
+		sliderList.style.width = parseInt(sliderSize) * sliderCnt.length + "px";
+		
+		if(sliderCnt.length < 2) {
+			document.querySelector(".thumb-arrow").style.display = 'none';
+		}		
+		
+		prevBtn.onclick = () => {
+			cnt -= 1;
+			if(cnt < 0) cnt = 0;
+			this.movingSlider(sliderList, movingSize, cnt);
+		}
+	
+		nextBtn.onclick = () => {
+			cnt += 1;
+			if (cnt > maxCnt) cnt = maxCnt;
+			this.movingSlider(sliderList, movingSize, cnt);
+		}
+
+	},	
+	movingSlider: function (sliderwrap, movingSize, cnt) {
+		sliderwrap.style.transform = "translateX(" + (-movingSize*cnt) +"px)";
+	},	
+	mainMovingSlider: function (sliderwrap, sliderCnt, movingSize, cnt) {
+		sliderwrap.style.transform = "translateX(" + (-movingSize*cnt) +"px)";
+		sliderCnt.forEach((e) => {
+			e.classList.remove("active");
+			sliderCnt[cnt].classList.add("active");
+		});
+	},
 	isNumeric: function( obj ) {
 
 		// parseFloat NaNs numeric-cast false positives (null|true|false|"")
