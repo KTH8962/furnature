@@ -67,7 +67,7 @@
             </tr>
             <tr>
                 <td>정세진</td>
-                <td>https://github.com/</td>
+                <td>https://github.com/sesejinjin1</td>
             </tr>
             <tr>
                 <td>김성현</td>
