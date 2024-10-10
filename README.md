@@ -3,7 +3,7 @@
     </div>
     
 <div align="center">
-    <img src="https://github.com/dlehdwo01/TeamProject1-FOOD114/assets/153072974/b841dedd-0e14-4cf8-9cd1-1459a6ebdb2e" style="width:600px;">
+<!--     <img src="https://github.com/dlehdwo01/TeamProject1-FOOD114/assets/153072974/b841dedd-0e14-4cf8-9cd1-1459a6ebdb2e" style="width:600px;"> -->
     </div> 
 <div style="font-weight: 700; font-size: 15px; text-align: center; color: #282d33;" align="center">  
 <!--     <a href='http://3.38.73.131:8080/food114.do'> FOOD114 시연 사이트 클릭</a> -->
