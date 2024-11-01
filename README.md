@@ -18,8 +18,11 @@
 <div style= "text-align:left;">
     <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;">💡 프로젝트 소개 </h2>
     <li>합리적인 가구 구매를 위한 커스텀 가구 쇼핑몰 </li>
+        <ul></ul>
     <li>가구 구매 방식의 다양화</li>
+        <ul></ul>
     <li>소비자들의 니즈를 고려한 게시판</li>
+        <ul></ul>
 
 </div>
 <div style= "text-align:left;">
