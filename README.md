@@ -1,4 +1,4 @@
-<div align="center">
+![image](https://github.com/user-attachments/assets/f79fff8f-607d-4f7b-bbd1-cae55a2a1020)<div align="center">
     <img src="https://capsule-render.vercel.app/api?type=waving&color=ff8002&height=260&text=FURNATURE&animation=&fontColor=ffffff&fontSize=50" />
     </div>
     
@@ -18,11 +18,17 @@
 <div style= "text-align:left;">
     <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;">💡 프로젝트 소개 </h2>
     <li>합리적인 가구 구매를 위한 커스텀 가구 쇼핑몰 </li>
-        <ul></ul>
+        <ul>
+            필요한 제품을 쉽게 선택하고 구매할 수 있는 효율적인 플랫폼을 제공하고자  획일화된 규격이 아니라 소비자가 원하는 규격을 검색 및 설정할 수 있게 함으로써 보다 실용적인 쇼핑몰을 구성하였습니다.
+        </ul>
     <li>가구 구매 방식의 다양화</li>
-        <ul></ul>
+        <ul>
+            좋은 가구를 합리적인 가격에 구매할 수 있는 경매 페이지와,  자체제작 경험을 제공하는 원데이 클래스를 통해 소비자들이 가구 구매 과정에서 일반적인 제품 구매 방식 외에도 다양하고 창의적인 경로를 택할 수 있게 하였습니다.
+        </ul>
     <li>소비자들의 니즈를 고려한 게시판</li>
-        <ul></ul>
+        <ul>
+            가구와 홈 인테리어에 관심이 많은 소비자층을 고려해 디자인 추천 게시판과 Q&A 게시판을 만들었습니다. 디자인 추천 게시판의 경우, 가장 많은 추천을 받은 디자인이 이달의 디자인으로 선정되어 고객들의 참여를 유도합니다.
+        </ul>
 
 </div>
 <div style= "text-align:left;">
