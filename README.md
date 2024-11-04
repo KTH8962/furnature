@@ -102,14 +102,14 @@
           <img src="https://img.shields.io/badge/Javascript-F7DF1E?style=for-the-badge&logo=Javascript&logoColor=white">
           </div>
     </div>
-    <div style= "text-align:left;">
+    <!--  <div style= "text-align:left;">
     <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;"> 📕 발표 PPT </h2>  
-<!--         <a href="" target="_blank">▶FURNATURE 발표 PPT</a> -->
-       </div>          
-    <div style= "text-align:left;">
+       <a href="" target="_blank">▶FURNATURE 발표 PPT</a>
+       </div>           -->
+   <!--    <div style= "text-align:left;">
     <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;"> 🎞 시연 영상 </h2>    
-<!--         <a href="https://www.youtube.com/watch?">▶FURNATURE 시연영상</a> -->
-    </div>
+      <a href="https://www.youtube.com/watch?">▶FURNATURE 시연영상</a>
+    </div> -->
     <div style= "text-align:left;">
     <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33; ">  👨‍👩‍👦‍👦 역할 분담 </h2>       
         <h3>😎김태환</h3>            
