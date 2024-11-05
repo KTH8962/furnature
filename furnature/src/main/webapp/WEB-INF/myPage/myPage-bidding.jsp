@@ -79,7 +79,7 @@
 </html>
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script>
-	const userCode = "imp80826844"; 
+	const userCode = ""; 
 	IMP.init(userCode);
     const app = Vue.createApp({
         data() {
