@@ -32,7 +32,6 @@ public class PaymentController {
 	@Autowired
 	PaymentServiceImpl paymentService;
 	
-	//private IamportClient iamportClient;
 	
 	// 결제
 	@PostMapping("/payment/payment/{imp_uid}")
@@ -60,7 +59,6 @@ public class PaymentController {
 	        List<Object> selectedSize = mapper.readValue(json, new TypeReference<List<Object>>() {});
 	        map.put("selectedSize", selectedSize);
 	    }
-	    System.out.println("CCCCCCCC" + map);
 	    resultMap = paymentService.addPayment(map);
 	    return new Gson().toJson(resultMap);
 	}
@@ -71,7 +69,6 @@ public class PaymentController {
 	public String searchPayment(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap = paymentService.searchPaymentInfo(map);
-		System.out.println("CCCCCCCCCCCCC"+map);
 		return new Gson().toJson(resultMap);
 	}
 	
@@ -84,15 +81,4 @@ public class PaymentController {
 		return new Gson().toJson(resultMap);
 	}
 	
-	
-	private IamportClient iamportClient;
-	public PaymentController() {
-        this.iamportClient = new IamportClient("2547521225544270", "m9t32DK2cjfLX6Fo2NUVcAsQySGqEO1GUBbnpXX1mUBHyxUGE0qqiSopsGbPwsSmYyfHjFrYs79ajDuw");
-    }
-
-//    
-    @PostMapping("/cancel/{imp_uid}")
-    private IamportResponse<Payment> cancelPaymentByImpUid(@PathVariable("imp_uid") String imp_uid) throws IamportResponseException, IOException {
-        return iamportClient.cancelPaymentByImpUid(new CancelData(imp_uid, true));
-    }
 }
