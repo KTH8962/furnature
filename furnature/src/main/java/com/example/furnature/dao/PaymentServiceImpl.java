@@ -102,7 +102,6 @@ public class PaymentServiceImpl implements PaymentService{
 	@Override
 	public HashMap<String, Object> addPayment(HashMap<String, Object> map) {
 		HashMap <String, Object> resultMap = new HashMap<>();
-		System.out.println("SSSSSSSS"+map);
 		try {
 			System.out.println(map);
 			paymentMapper.insertPayment(map);
@@ -164,7 +163,6 @@ public class PaymentServiceImpl implements PaymentService{
 	@Override
 	public HashMap<String, Object> editPayment(HashMap<String, Object> map) {
 		HashMap <String, Object> resultMap = new HashMap<>();
-		System.out.println("SSSSSSSSSSSSSSS"+map);
 		try {
 			paymentMapper.updatePayment(map);
 			if(map.get("category").toString().equals("oneday")) {
