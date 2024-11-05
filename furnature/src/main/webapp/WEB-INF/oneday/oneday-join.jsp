@@ -94,7 +94,7 @@
 </html>
 <script>
 	const userCode = ""; 
-	IMP.init("imp52370275");
+	IMP.init("");
 	//포트원 결제 api 사용
     const app = Vue.createApp({
             data() {

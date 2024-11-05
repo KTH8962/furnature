@@ -173,7 +173,7 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
     //포트원 결제 api 사용
-    IMP.init("imp80826844");
+    IMP.init("");
     
     const app = Vue.createApp({
         data() {
