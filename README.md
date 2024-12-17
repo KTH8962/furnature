@@ -55,6 +55,10 @@
             </ul>
         </li>
     </ul>
+</div>
+<div style= "text-align:left;">
+    <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;"> 🎬시연영상 </h2>  
+    https://youtu.be/c08y3F-U16Q
 </div>    
 <div style= "text-align:left;"> 
     <div style="font-weight: 700; font-size: 15px; text-align: left; color: #282d33;">  </div> 
@@ -84,7 +88,7 @@
             </tr>
             <tr>
                 <td>김성현</td>
-                <td>https://github.com/</td>
+                <td>https://github.com/Kimss430</td>
             </tr>
             </table>
         </div>
@@ -168,12 +172,12 @@
         <ul>
             <li><h4>작업 페이지</h4>
                 <ul>                    
-                    <li></li>
+                    <li>QnA 질문 게시판 페이지, 게시글 쓰기 페이지, 질문 상세보기 페이지, 관리자 페이지(수정,삭제)</li>
                 </ul>
             </li>            
             <li><h4>구현 기능</h4>
                 <ul>                    
-                    <li></li>
+                    <li>전체,제목,작성자 카테고리별 검색긴능, 로그인 시 글쓰기 기능, 댓글 개수가 0 이상일때 개수를 표시, 첨부파일 등록, 게시글과 댓글 등록,수정,삭제 기능, 관리자로 수정,삭제 기능</li>
                 </ul>
             </li>
         </ul>
